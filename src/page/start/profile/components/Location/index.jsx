@@ -2,7 +2,7 @@ import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
 import { useState } from "react";
 
-const ProfileName = (props) => {
+const ProfileLocation = (props) => {
 
     const [ data, setData ] = useState({
         firstName: '',
@@ -18,21 +18,21 @@ const ProfileName = (props) => {
     }
 
     return (
-        <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
+        <div id="RD-CreateProfile-location" className="RD-CreateProfileComponents">
             <Typography.Featured
                 alignment='left'
             >
-                Create your RADIAN passport
+                Basic Info
             </Typography.Featured>
             <div className="pt-4 pb-2">
                 <Typography.H2
                     alignment="left"
                 >
-                    My name is
+                    Your Location
                 </Typography.H2>
             </div>
             <div className="mt-10 inline-flex">
-                <div className="max-w-sm mr-5">
+                <div className="w-1/3 mr-5">
                     <TextField.Outlined
                         name='firstName'
                         placeholder="Firstname"
@@ -54,4 +54,4 @@ const ProfileName = (props) => {
 };
 
 
-export default ProfileName;
+export default ProfileLocation;

@@ -2,11 +2,11 @@ import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
 import { useState } from "react";
 
-const ProfileName = (props) => {
+const ProfilePhone = (props) => {
 
     const [ data, setData ] = useState({
-        firstName: '',
-        lastName: ''
+        countryCode: '',
+        number: ''
     });
 
     const handleChange = (e) => {
@@ -18,33 +18,33 @@ const ProfileName = (props) => {
     }
 
     return (
-        <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
+        <div id='RD-CreateProfile-phone' className="RD-CreateProfileComponents"> 
             <Typography.Featured
                 alignment='left'
             >
-                Create your RADIAN passport
+                Basic Info
             </Typography.Featured>
             <div className="pt-4 pb-2">
                 <Typography.H2
                     alignment="left"
                 >
-                    My name is
+                    You can reach me at
                 </Typography.H2>
             </div>
             <div className="mt-10 inline-flex">
-                <div className="max-w-sm mr-5">
+                <div className="max-w-none w-60 mr-5">
                     <TextField.Outlined
-                        name='firstName'
-                        placeholder="Firstname"
-                        value={data.firstName}
+                        name='countryCode'
+                        placeholder="Country Code"
+                        value={data.countryCode}
                         onChange={handleChange}
                     />
                 </div>
                 <div className="max-w-sm mr-5">
                     <TextField.Outlined
-                        name='lastName'
-                        placeholder="Lastname"
-                        value={data.lastName}
+                        name='number'
+                        placeholder="000000000"
+                        value={data.number}
                         onChange={handleChange}
                     />
                 </div>
@@ -54,4 +54,4 @@ const ProfileName = (props) => {
 };
 
 
-export default ProfileName;
+export default ProfilePhone;

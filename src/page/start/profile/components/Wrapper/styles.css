@@ -1,12 +1,16 @@
 
 #RD-createProfileRoot {
-    height: calc(100vh - 80px);
+    /* height: calc(100vh - 80px); */
 }
 
 #RD-createProfileBody {
-    min-height: 60vh;
+    height: 100vh;
 }
 
 #RD-createProfileFooterBody {
     background: linear-gradient(90deg, #000000 0%, #1E1E1E 35.42%, #1E1E1E 73.96%, #000000 100%);
+}
+
+.RD-CreateProfileComponents {
+    position: fixed;
 }

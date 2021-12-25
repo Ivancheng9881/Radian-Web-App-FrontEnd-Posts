@@ -2,13 +2,17 @@ import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
 import { useState } from "react";
 
-const ProfileName = (props) => {
+const ProfileBirth = (props) => {
 
     const [ data, setData ] = useState({
-        firstName: '',
-        lastName: ''
+        day: '',
+        month: '',
+        year: ''
     });
 
+    /**
+     * @todo validate is number 
+     */
     const handleChange = (e) => {
         e.preventDefault();
         setData({
@@ -18,33 +22,41 @@ const ProfileName = (props) => {
     }
 
     return (
-        <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
+        <div id="RD-CreateProfile-dob" className="RD-CreateProfileComponents">
             <Typography.Featured
                 alignment='left'
             >
-                Create your RADIAN passport
+                Basic Info
             </Typography.Featured>
             <div className="pt-4 pb-2">
                 <Typography.H2
                     alignment="left"
                 >
-                    My name is
+                    Birthday is on the
                 </Typography.H2>
             </div>
             <div className="mt-10 inline-flex">
-                <div className="max-w-sm mr-5">
+                <div className="w-48 mr-5">
                     <TextField.Outlined
-                        name='firstName'
-                        placeholder="Firstname"
-                        value={data.firstName}
+                        name='day'
+                        placeholder="DD"
+                        value={data.day}
                         onChange={handleChange}
                     />
                 </div>
-                <div className="max-w-sm mr-5">
+                <div className="w-48 mr-5">
                     <TextField.Outlined
-                        name='lastName'
-                        placeholder="Lastname"
-                        value={data.lastName}
+                        name='month'
+                        placeholder="MM"
+                        value={data.month}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div className="w-48 mr-5">
+                    <TextField.Outlined
+                        name='year'
+                        placeholder="YYYY"
+                        value={data.year}
                         onChange={handleChange}
                     />
                 </div>
@@ -54,4 +66,4 @@ const ProfileName = (props) => {
 };
 
 
-export default ProfileName;
+export default ProfileBirth;

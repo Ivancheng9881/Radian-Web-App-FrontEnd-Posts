@@ -1,13 +1,14 @@
-
-
-import ProfileName from "./components/Name";
+import CreateProfileProvider from "./context/profile.provider";
+import CreateProfileController from "./components/StepController";
 
 const CreateProfilePage = (props) => {
-    return (
-        <div>
-            <ProfileName />
 
-        </div>
+    return (
+        <CreateProfileProvider>
+            <div>
+                <CreateProfileController />
+            </div>
+        </CreateProfileProvider>
     )
 };
 
