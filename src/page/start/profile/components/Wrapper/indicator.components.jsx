@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import CreateProfileContext from "../../context/profile.context";
 
 
 const Indicator = ({label, value, current}) => {
@@ -12,7 +14,7 @@ const Indicator = ({label, value, current}) => {
 
 const CreateProfileIndicator = (props) => {
 
-    const current = 'basicInfo'
+    const { step, setStep, stepList } = useContext(CreateProfileContext);
 
     const indicatorOpts = [
         {value: 'basicInfo', label: 'Basic Info'},
@@ -28,7 +30,7 @@ const CreateProfileIndicator = (props) => {
                     return (
                         <Indicator 
                             key={opts.value}
-                            current={current}
+                            current={stepList[step].stage}
                             {...opts}
                         />
                     )

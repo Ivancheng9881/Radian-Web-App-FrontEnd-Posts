@@ -1,8 +1,11 @@
 import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import CreateProfileContext from "../../context/profile.context";
 
 const ProfileLocation = (props) => {
+
+    const { profile, updateProfile } = useContext(CreateProfileContext);
 
     const [ data, setData ] = useState({
         firstName: '',
@@ -36,16 +39,16 @@ const ProfileLocation = (props) => {
                     <TextField.Outlined
                         name='firstName'
                         placeholder="Firstname"
-                        value={data.firstName}
-                        onChange={handleChange}
+                        value={profile.firstName}
+                        onChange={updateProfile}
                     />
                 </div>
                 <div className="max-w-sm mr-5">
                     <TextField.Outlined
                         name='lastName'
                         placeholder="Lastname"
-                        value={data.lastName}
-                        onChange={handleChange}
+                        value={profile.lastName}
+                        onChange={updateProfile}
                     />
                 </div>
             </div>

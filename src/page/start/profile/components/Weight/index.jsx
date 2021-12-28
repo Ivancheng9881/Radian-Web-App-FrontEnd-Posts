@@ -1,33 +1,24 @@
 import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
-import { useState } from "react";
+import { useContext } from "react";
 import Toggler from "../../../../../components/Toggler";
+import CreateProfileContext from "../../context/profile.context";
 
 const ProfileWeight = (props) => {
+
+    const { profile, updateProfile } = useContext(CreateProfileContext);
 
     const unitOpts = [
         { value: 'lbs', label: 'lbs' },
         { value: 'kg', label: 'kg' }
     ]
 
-    const [ data, setData ] = useState({
-        value: undefined,
-        unit: 'lbs'
-    });
-
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        })
-    };
-
     const toggleUnit = (val) => {
-        setData({
-            ...data,
-            unit: val
-        })
+        let update = { target: {
+            name: 'weightUnit',
+            value: val
+        }}
+        updateProfile(update);
     }
 
     return (
@@ -47,15 +38,15 @@ const ProfileWeight = (props) => {
             <div className="mt-10 inline-flex items-end">
                 <div className="w-1/3 mr-5">
                     <TextField.Outlined
-                        name='value'
-                        placeholder={data.unit.toUpperCase()}
-                        value={data.value}
-                        onChange={handleChange}
+                        name='weight'
+                        placeholder={profile.weightUnit.toUpperCase()}
+                        value={profile.weight}
+                        onChange={updateProfile}
                     />
                 </div>
                 <div className="max-w-sm mr-5">
                     <Toggler 
-                        value={data.unit}
+                        value={profile.weightUnit}
                         opts={unitOpts}
                         handleToggle={toggleUnit}
                     />

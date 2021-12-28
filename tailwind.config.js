@@ -36,7 +36,11 @@ module.exports = {
       'theme-danger': customTheme.danger,
       'theme-dragon': customTheme.dragonPink,
     },
-    extend: {},
+    extend: {
+      width: {
+        '140': '35rem'
+      },
+    },
   },
   plugins: [],
 }

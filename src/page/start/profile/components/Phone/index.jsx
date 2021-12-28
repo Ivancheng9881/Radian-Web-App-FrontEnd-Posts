@@ -1,21 +1,11 @@
 import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
-import { useState } from "react";
+import { useContext } from "react";
+import CreateProfileContext from "../../context/profile.context";
 
 const ProfilePhone = (props) => {
 
-    const [ data, setData ] = useState({
-        countryCode: '',
-        number: ''
-    });
-
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        })
-    }
+    const { profile, updateProfile } = useContext(CreateProfileContext);
 
     return (
         <div id='RD-CreateProfile-phone' className="RD-CreateProfileComponents"> 
@@ -36,16 +26,16 @@ const ProfilePhone = (props) => {
                     <TextField.Outlined
                         name='countryCode'
                         placeholder="Country Code"
-                        value={data.countryCode}
-                        onChange={handleChange}
+                        value={profile.countryCode}
+                        onChange={updateProfile}
                     />
                 </div>
                 <div className="max-w-sm mr-5">
                     <TextField.Outlined
                         name='number'
                         placeholder="000000000"
-                        value={data.number}
-                        onChange={handleChange}
+                        value={profile.number}
+                        onChange={updateProfile}
                     />
                 </div>
             </div>

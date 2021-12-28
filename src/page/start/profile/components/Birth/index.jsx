@@ -1,25 +1,11 @@
 import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
-import { useState } from "react";
+import { useContext } from "react";
+import CreateProfileContext from "../../context/profile.context";
 
 const ProfileBirth = (props) => {
 
-    const [ data, setData ] = useState({
-        day: '',
-        month: '',
-        year: ''
-    });
-
-    /**
-     * @todo validate is number 
-     */
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        })
-    }
+    const { profile, updateProfile } = useContext(CreateProfileContext);
 
     return (
         <div id="RD-CreateProfile-dob" className="RD-CreateProfileComponents">
@@ -40,24 +26,24 @@ const ProfileBirth = (props) => {
                     <TextField.Outlined
                         name='day'
                         placeholder="DD"
-                        value={data.day}
-                        onChange={handleChange}
+                        value={profile.day}
+                        onChange={updateProfile}
                     />
                 </div>
                 <div className="w-48 mr-5">
                     <TextField.Outlined
                         name='month'
                         placeholder="MM"
-                        value={data.month}
-                        onChange={handleChange}
+                        value={profile.month}
+                        onChange={updateProfile}
                     />
                 </div>
                 <div className="w-48 mr-5">
                     <TextField.Outlined
                         name='year'
                         placeholder="YYYY"
-                        value={data.year}
-                        onChange={handleChange}
+                        value={profile.year}
+                        onChange={updateProfile}
                     />
                 </div>
             </div>

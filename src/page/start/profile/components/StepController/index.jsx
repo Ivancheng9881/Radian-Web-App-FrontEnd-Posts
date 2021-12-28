@@ -9,6 +9,7 @@ import ProfileHeight from "../Height";
 import ProfileNationality from "../Nationality";
 import ProfileLocation from "../Location";
 import FadeInOut from "../../../../../components/Transaction/FadeInout.components";
+import DatingSexualOrientation from "../Orientation";
 
 const CreateProfileController = () => {
 
@@ -36,6 +37,9 @@ const CreateProfileController = () => {
             </FadeInOut>
             <FadeInOut visible={step==6} scrollUp={scrollDirection}>
                 <ProfileLocation />
+            </FadeInOut>
+            <FadeInOut visible={step==8} scrollUp={scrollDirection}>
+                <DatingSexualOrientation />
             </FadeInOut>
         </ProfileWrapper>
     )
