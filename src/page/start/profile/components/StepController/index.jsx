@@ -10,36 +10,44 @@ import ProfileNationality from "../Nationality";
 import ProfileLocation from "../Location";
 import FadeInOut from "../../../../../components/Transaction/FadeInout.components";
 import DatingSexualOrientation from "../Orientation";
+import DatingLookingFor from "../LookingFor";
+import DatingInterest from "../Interest";
 
 const CreateProfileController = () => {
 
-    const { step, scrollDirection } = useContext(CreateProfileContext);
+    const { step, stepList, scrollDirection } = useContext(CreateProfileContext);
 
     return (
         <ProfileWrapper>
-            <FadeInOut visible={step==0} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='name'} scrollUp={scrollDirection}>
                 <ProfileName />
             </FadeInOut>
-            <FadeInOut visible={step==1} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='phone'} scrollUp={scrollDirection}>
                 <ProfilePhone />
             </FadeInOut>
-            <FadeInOut visible={step==2} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='dob'} scrollUp={scrollDirection}>
                 <ProfileBirth />
             </FadeInOut>
-            <FadeInOut visible={step==3} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='weight'} scrollUp={scrollDirection}>
                 <ProfileWeight />
             </FadeInOut>
-            <FadeInOut visible={step==4} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='height'} scrollUp={scrollDirection}>
                 <ProfileHeight />
             </FadeInOut>
-            <FadeInOut visible={step==5} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='nationality'} scrollUp={scrollDirection}>
                 <ProfileNationality />
             </FadeInOut>
-            <FadeInOut visible={step==6} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='location'} scrollUp={scrollDirection}>
                 <ProfileLocation />
             </FadeInOut>
-            <FadeInOut visible={step==8} scrollUp={scrollDirection}>
+            <FadeInOut visible={stepList[step].id==='orientation'} scrollUp={scrollDirection}>
                 <DatingSexualOrientation />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='lookingFor'} scrollUp={scrollDirection}>
+                <DatingLookingFor />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='interest'} scrollUp={scrollDirection}>
+                <DatingInterest />
             </FadeInOut>
         </ProfileWrapper>
     )

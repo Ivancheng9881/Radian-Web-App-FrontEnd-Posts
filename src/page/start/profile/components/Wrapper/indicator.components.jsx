@@ -14,7 +14,7 @@ const Indicator = ({label, value, current}) => {
 
 const CreateProfileIndicator = (props) => {
 
-    const { step, setStep, stepList } = useContext(CreateProfileContext);
+    const { step, stepList } = useContext(CreateProfileContext);
 
     const indicatorOpts = [
         {value: 'basicInfo', label: 'Basic Info'},

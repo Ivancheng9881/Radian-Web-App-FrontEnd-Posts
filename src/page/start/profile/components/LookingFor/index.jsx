@@ -1,34 +1,22 @@
 import Typography from "../../../../../components/Typography";
 import { useContext } from "react";
-import Toggler from "../../../../../components/Toggler";
 import CreateProfileContext from "../../context/profile.context";
+import ItemOptionList from "../../../../../components/ItemOptions";
 
 const DatingLookingFor = (props) => {
 
     const { profile, updateProfile } = useContext(CreateProfileContext);
 
-    const genderOpts = [
-        { value: 'male', label: 'Male' },
-        { value: 'female', label: 'Female' }
-    ];
-
-    const orientationOpts = [
-        { value: 'male', label: 'Male' },
-        { value: 'female', label: 'Female' },
-        { value: 'both', label: 'Both' }        
+    const options = [
+        { value: 'serious-relationship', label: 'Serious Relationship'},
+        { value: 'casual-relationship', label: 'Casual Relationship'},
+        { value: 'marriage', label: 'Marriage' },
+        { value: 'friends', label: 'Friends' },
     ]
 
-    const toggleGender = (val) => {
+    const handleSelect = (val) => {
         let update = { target: {
-            name: 'gender',
-            value: val
-        }}
-        updateProfile(update);
-    };
-
-    const toggleOrientation = (val) => {
-        let update = { target: {
-            name: 'orientation',
+            name: 'lookingFor',
             value: val
         }}
         updateProfile(update);
@@ -42,38 +30,21 @@ const DatingLookingFor = (props) => {
                 Dating Preference
             </Typography.Featured>
             <div className="w-4/5">
-                <div className="inline-flex items-end">
+                <div className="inline items-end">
                     <div className="pt-4 pb-2 pr-4 w-140">
                         <Typography.H2
                             alignment="left"
                         >
-                            You defined yourself as
+                            I am looking for
                         </Typography.H2>
                     </div>
                     <div className="mt-10 inline-flex items-end">
                         <div className="mr-5">
-                            <Toggler 
-                                value={profile.gender}
-                                opts={genderOpts}
-                                handleToggle={toggleGender}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="inline-flex items-end">
-                <div className="pt-4 pb-2 pr-4 w-140">
-                        <Typography.H2
-                            alignment="left"
-                        >
-                            You are interested in
-                        </Typography.H2>
-                    </div>
-                    <div className="mt-10 inline-flex items-end">
-                        <div className="mr-5">
-                            <Toggler 
-                                value={profile.orientation}
-                                opts={orientationOpts}
-                                handleToggle={toggleOrientation}
+                            <ItemOptionList 
+                                value={[profile.lookingFor]}
+                                options={options}
+                                handleSelect={handleSelect}
+                                arrangment="inline"
                             />
                         </div>
                     </div>

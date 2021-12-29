@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import CreateProfileContext from "./profile.context";
 import { getQuery, setQuery } from "../../../../utils/query";
@@ -19,7 +19,8 @@ function CreateProfileProvider({children}) {
         {id: 'location', stage: basicInfo},
         {id: 'profilePicture', stage: basicInfo},
         {id: 'orientation', stage: datingPreference},
-        {id: 'lookingFor', stage: datingPreference}
+        {id: 'lookingFor', stage: datingPreference},
+        {id: 'interest', stage: datingPreference}
     ];
 
     const [ profile, setProfile ] = useState({
@@ -37,6 +38,8 @@ function CreateProfileProvider({children}) {
         nationality: '',
         gender: 'male',
         orientation: 'male',
+        lookingFor: '',
+        interest: [],
     })
     const [ step, setStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
