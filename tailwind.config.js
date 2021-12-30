@@ -1,6 +1,7 @@
 const customTheme = {
   primaryDark: '#ac0329',
   darkBlue: '#3B04DE',
+  lightBlue: "#5359F6",
   white: '#fff',
   bodyText: "#B9B9B9",
   black: '#000',
@@ -27,6 +28,7 @@ module.exports = {
       'theme-white': customTheme.white,
       'theme-body-text': customTheme.bodyText,
       'theme-black': customTheme.black,
+      'theme-light-blue': customTheme.lightBlue,
       'theme-dark-blue': customTheme.darkBlue,
       'theme-bg-light': customTheme.backgroundLight,
       'theme-bg-dark': customTheme.backgroundDark,

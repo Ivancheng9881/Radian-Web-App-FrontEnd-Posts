@@ -1,8 +1,11 @@
 import Router from "./router";
+import SolanaProvider from "./utils/web3/solana/solana.provider";
 
 function App() {
   return (
-    <Router />
+    <SolanaProvider>
+      <Router />
+    </SolanaProvider>
   );
 }
 

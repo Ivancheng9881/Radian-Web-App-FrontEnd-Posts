@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Dropdown from "react-dropdown";
 import { useHistory } from "react-router-dom";
 
@@ -10,11 +10,13 @@ import './selectWallet.styles.css';
 import MetamaskIcon from "../../../../components/Icons/metamask.components";
 import PhantomIcon from "../../../../components/Icons/phantom.components";
 import { createProfileRoute } from "../../../../commons/route";
+import SolanaContext from "../../../../utils/web3/solana/solana.context";
 
 
 const SelectWallet = (props) => {
 
     const history = useHistory();
+    const Solana = useContext(SolanaContext);
 
     const walletOptions = [
         { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
@@ -23,9 +25,12 @@ const SelectWallet = (props) => {
 
     const [selectedWallet, setSelectedWallet ] = useState(undefined);
 
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         setSelectedWallet(e.value);
-        history.push(createProfileRoute);
+        const pubKey = await Solana.connect();
+        if (pubKey) {
+            history.push(createProfileRoute);
+        }
     }
 
     return (
