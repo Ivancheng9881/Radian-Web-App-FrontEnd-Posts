@@ -12,6 +12,7 @@ import FadeInOut from "../../../../../components/Transaction/FadeInout.component
 import DatingSexualOrientation from "../Orientation";
 import DatingLookingFor from "../LookingFor";
 import DatingInterest from "../Interest";
+import DatingAgeRange from "../AgeRange";
 
 const CreateProfileController = () => {
 
@@ -48,6 +49,9 @@ const CreateProfileController = () => {
             </FadeInOut>
             <FadeInOut visible={stepList[step].id==='interest'} scrollUp={scrollDirection}>
                 <DatingInterest />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='ageRange'} scrollUp={scrollDirection}>
+                <DatingAgeRange />
             </FadeInOut>
         </ProfileWrapper>
     )

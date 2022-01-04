@@ -5,6 +5,7 @@ const Toggler = ({
     value, 
     opts,
     handleToggle,
+    size='large'
 }) => {
 
     const onClick = (val) => {
@@ -21,6 +22,7 @@ const Toggler = ({
                         value={o.value}
                         label={o.label} 
                         onClick={onClick}
+                        size={size}
                     />
                 })}
             </div>

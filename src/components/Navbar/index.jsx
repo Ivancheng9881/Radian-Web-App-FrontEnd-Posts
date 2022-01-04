@@ -26,7 +26,7 @@ const Navbar = (props) => {
                     { 
                         Solana.wallet && 
                         <RoundedButton onClick={() => {}}>
-                            {truncateAddress(SolanaUtils.parser.publicKeyToString(Solana.wallet))}
+                            {truncateAddress(Solana.wallet.toString())}
                         </RoundedButton> 
                     }
                 </div>

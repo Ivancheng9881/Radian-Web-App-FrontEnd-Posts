@@ -20,7 +20,8 @@ function CreateProfileProvider({children}) {
         {id: 'profilePicture', stage: basicInfo},
         {id: 'orientation', stage: datingPreference},
         {id: 'lookingFor', stage: datingPreference},
-        {id: 'interest', stage: datingPreference}
+        {id: 'interest', stage: datingPreference},
+        {id: 'ageRange', stage: datingPreference}
     ];
 
     const [ profile, setProfile ] = useState({
@@ -40,6 +41,9 @@ function CreateProfileProvider({children}) {
         orientation: 'male',
         lookingFor: '',
         interest: [],
+        ageRangeMin: 20,
+        ageRangeMax: 80,
+        ageRangeIsDealBreaker: 0,
     })
     const [ step, setStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
@@ -97,12 +101,22 @@ function CreateProfileProvider({children}) {
             ...profile,
             [e.target.name]: e.target.value,
         })
+    };
+
+    const updateProfileByKey = (key, val) => {
+        console.log(key, val);
+        console.log(profile)
+        setProfile({
+            ...profile,
+            [key]: val,
+        })
     }
 
     return (
         <CreateProfileContext.Provider value={{
             profile,
             updateProfile,
+            updateProfileByKey,
             step, 
             updateStep, 
             stepList, 
