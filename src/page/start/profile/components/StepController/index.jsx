@@ -13,6 +13,10 @@ import DatingSexualOrientation from "../Orientation";
 import DatingLookingFor from "../LookingFor";
 import DatingInterest from "../Interest";
 import DatingAgeRange from "../AgeRange";
+import DatingDistance from "../Distance";
+import DatingEthnicity from "../Ethnicity";
+import DatingReligion from "../Religion";
+import ProfilePassport from "../Passport";
 
 const CreateProfileController = () => {
 
@@ -52,6 +56,18 @@ const CreateProfileController = () => {
             </FadeInOut>
             <FadeInOut visible={stepList[step].id==='ageRange'} scrollUp={scrollDirection}>
                 <DatingAgeRange />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='distanceMax'} scrollUp={scrollDirection}>
+                <DatingDistance />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='datingEthnicity'} scrollUp={scrollDirection}>
+                <DatingEthnicity />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='datingReligion'} scrollUp={scrollDirection}>
+                <DatingReligion />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='overview'} scrollUp={scrollDirection}>
+                <ProfilePassport />
             </FadeInOut>
         </ProfileWrapper>
     )

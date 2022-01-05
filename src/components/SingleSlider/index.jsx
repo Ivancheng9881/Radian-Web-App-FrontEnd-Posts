@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import SliderThumb from "./thumb.components";
 
-const DoubleSlider = (props) => {
+const SingleSlider = (props) => {
 
     const {
         max,
         min,
     } = props;
 
- 
-    const [ lower, setLower ] = useState(props.lower);
     const [ upper, setUpper ] = useState(props.upper);
     const [ boundary, setBoundary ] = useState([0, 0]) // represent [w, x1, x2]
     let total = max - min;
@@ -39,16 +37,14 @@ const DoubleSlider = (props) => {
                     id='RD-DoubleSlider-SelectedBar'
                     className={`bg-theme-light-blue w-1/2 h-full block absolute`}  
                     style={{
-                        left: `${lower * 100 / total}%`,
-                        width: `${(upper - lower) * 100 / total}%`
+                        left: `0%`,
+                        width: `${(upper - min) * 100 / total}%`
                     }}             
                 />
                 <SliderThumb 
                     total={total}
                     boundary={boundary}
                     {...props}
-                    lower={lower}
-                    setLower={setLower}
                     upper={upper}
                     setUpper={setUpper}
                 />
@@ -58,4 +54,4 @@ const DoubleSlider = (props) => {
     )
 };
 
-export default DoubleSlider;
+export default SingleSlider;

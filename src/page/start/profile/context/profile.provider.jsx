@@ -9,6 +9,7 @@ function CreateProfileProvider({children}) {
 
     let basicInfo = 'basicInfo';
     let datingPreference = 'datingPreference'
+    let completeRegistration = 'completeRegistration';
     const stepList = [
         {id: 'name', stage: basicInfo},
         {id: 'phone', stage: basicInfo},
@@ -21,7 +22,11 @@ function CreateProfileProvider({children}) {
         {id: 'orientation', stage: datingPreference},
         {id: 'lookingFor', stage: datingPreference},
         {id: 'interest', stage: datingPreference},
-        {id: 'ageRange', stage: datingPreference}
+        {id: 'ageRange', stage: datingPreference},
+        {id: 'distanceMax', stage: datingPreference},
+        {id: 'datingEthnicity', stage: datingPreference},
+        {id: 'datingReligion', stage: datingPreference},
+        {id: 'overview', stage: completeRegistration},
     ];
 
     const [ profile, setProfile ] = useState({
@@ -44,6 +49,10 @@ function CreateProfileProvider({children}) {
         ageRangeMin: 20,
         ageRangeMax: 80,
         ageRangeIsDealBreaker: 0,
+        distanceMax: 0,
+        distanceIsDealBreaker: 0,
+        datingEthnicity: [],
+        datingReligion: [],
     })
     const [ step, setStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
@@ -104,8 +113,6 @@ function CreateProfileProvider({children}) {
     };
 
     const updateProfileByKey = (key, val) => {
-        console.log(key, val);
-        console.log(profile)
         setProfile({
             ...profile,
             [key]: val,

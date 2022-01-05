@@ -2,22 +2,20 @@ import Typography from "../../../../../components/Typography";
 import { useContext } from "react";
 import CreateProfileContext from "../../context/profile.context";
 import Toggler from "../../../../../components/Toggler";
-import DoubleSlider from "../../../../../components/DoubleSlider";
+import SingleSlider from "../../../../../components/SingleSlider";
 
-const DatingAgeRange = (props) => {
+const DatingDistance = (props) => {
 
-    const { profile, updateProfile, updateProfileByKey } = useContext(CreateProfileContext);
+    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
 
     const dealBreakerOpts = [
         { value: 1, label: 'yes' },
         { value: 0, label: 'no' }
     ]
 
-    const handleToggle = (val) => updateProfileByKey('ageRangeIsDealBreaker', val);
-    
-    const handleMinChange = (val) => updateProfileByKey('ageRangeMin', val);
+    const handleToggle = (val) => updateProfileByKey('distanceIsDealBreaker', val);
 
-    const handleMaxChange = (val) => updateProfileByKey('ageRangeMax', val);
+    const handleMaxChange = (val) => updateProfileByKey('distanceMax', val);
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">
@@ -32,17 +30,16 @@ const DatingAgeRange = (props) => {
                         <Typography.H2
                             alignment="left"
                         >
-                            Age Range
+                            Maximum Distance
                         </Typography.H2>
                     </div>
                     <div className="mt-10 w-full min-w-2/3vw" >
-                        <DoubleSlider 
-                            upper={profile.ageRangeMax}
-                            lower={profile.ageRangeMin}
+                        <SingleSlider 
+                            upper={profile.distanceMax}
                             max={100}
                             min={0}
-                            handleMinChange={handleMinChange}
                             handleMaxChange={handleMaxChange}
+                            unit='mi'
                         />
                     </div>
                     <div className="inline-flex items-end pt-16">
@@ -71,4 +68,4 @@ const DatingAgeRange = (props) => {
 };
 
 
-export default DatingAgeRange;
+export default DatingDistance;
