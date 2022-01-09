@@ -16,8 +16,9 @@ const customTheme = {
 
 
 module.exports = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
+  purge: [
+    './src/**/*.{js,jsx}',
+    './public/index.html'
   ],
   theme: {
     fontFamily: {

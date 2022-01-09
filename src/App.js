@@ -1,11 +1,11 @@
 import Router from "./router";
-import SolanaProvider from "./utils/web3/solana/solana.provider";
+import Web3Provider from "./utils/web3/context/web3.provider";
 
 function App() {
   return (
-    <SolanaProvider>
+    <Web3Provider>
       <Router />
-    </SolanaProvider>
+    </Web3Provider>
   );
 }
 

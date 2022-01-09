@@ -1,13 +1,13 @@
 import { useContext } from "react";
-import SolanaContext from "../../utils/web3/solana/solana.context";
-import SolanaUtils from "../../utils/web3/solana/solana.utils";
+import Web3Context from "../../utils/web3/context/web3.context";
+import SolanaUtils from "../../utils/web3/context/solana.utils";
 import RoundedButton from "../Button/Rounded.components";
 import { truncateAddress } from "../../utils/web3/general/parser.utils";
 import "./styles.css";
 
 const Navbar = (props) => {
 
-    const Solana = useContext(SolanaContext);
+    const web3Context = useContext(Web3Context);
 
     return (
         <div id='RD-navbar' className="fixed w-full top-0 z-50">
@@ -24,9 +24,9 @@ const Navbar = (props) => {
                 </div>
                 <div>
                     { 
-                        Solana.wallet && 
+                        web3Context.wallet && 
                         <RoundedButton onClick={() => {}}>
-                            {truncateAddress(Solana.wallet.toString())}
+                            {truncateAddress(web3Context.wallet.toString())}
                         </RoundedButton> 
                     }
                 </div>

@@ -35,3 +35,7 @@ input:focus {
   -webkit-text-fill-color: transparent; 
   -moz-text-fill-color: transparent;
 }
+
+body > iframe {
+  display: none;
+}

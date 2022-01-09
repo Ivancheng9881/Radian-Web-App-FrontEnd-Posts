@@ -1,7 +1,7 @@
 module.exports = {
     style: {
       reactStrictMode: true,
-      postcssOptions: {
+      postcss: {
         plugins: [
           require('tailwindcss'),
           require('autoprefixer'),

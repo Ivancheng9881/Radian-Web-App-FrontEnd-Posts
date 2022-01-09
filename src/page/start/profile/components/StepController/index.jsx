@@ -17,6 +17,7 @@ import DatingDistance from "../Distance";
 import DatingEthnicity from "../Ethnicity";
 import DatingReligion from "../Religion";
 import ProfilePassport from "../Passport";
+import ProfilePicture from "../ProfilePicture";
 
 const CreateProfileController = () => {
 
@@ -45,6 +46,9 @@ const CreateProfileController = () => {
             <FadeInOut visible={stepList[step].id==='location'} scrollUp={scrollDirection}>
                 <ProfileLocation />
             </FadeInOut>
+            <FadeInOut visible={stepList[step].id==='profilePicture'} scrollUp={scrollDirection}>
+                <ProfilePicture />
+            </FadeInOut>           
             <FadeInOut visible={stepList[step].id==='orientation'} scrollUp={scrollDirection}>
                 <DatingSexualOrientation />
             </FadeInOut>
