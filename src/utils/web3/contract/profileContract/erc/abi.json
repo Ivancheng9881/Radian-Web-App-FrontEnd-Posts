@@ -573,11 +573,6 @@
             "internalType": "string",
             "name": "identityID",
             "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "descriptionID",
-            "type": "string"
           }
         ],
         "name": "updateProfileEVM",

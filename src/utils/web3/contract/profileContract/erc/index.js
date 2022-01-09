@@ -14,8 +14,15 @@ async function initProfileCOntract() {
 }
 
 export async function createProfileErc(identityId) {
+    let currentProfile =  await getProfileErc();
     let contract = await initProfileCOntract();
-    let txn = await contract.createProfileEVM(identityId)
+    let txn;
+    if (currentProfile) {
+        // perform update
+        txn = await contract.updateProfileEVM(identityId)
+    } else {
+        txn = await contract.createProfileEVM(identityId)
+    }
     return txn
 }
 

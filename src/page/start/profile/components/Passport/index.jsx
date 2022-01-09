@@ -19,7 +19,10 @@ const ProfilePassport = (props) => {
         let profileString = JSON.stringify(profile);
         const cid = await ipfsUtils.uploadContent(profileString);
         if (cid) {
-            createProfileErc(cid.toString())
+            let txn = createProfileErc(cid.toString())
+            if (txn) {
+                getProfile()
+            }
         }
     };
 
