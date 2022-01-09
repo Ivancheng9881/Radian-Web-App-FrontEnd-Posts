@@ -46,13 +46,14 @@ const ProfilePassport = (props) => {
                     <div className="mt-10 w-full">
                         <div className="block">
                             {
-                                Object.keys(id).map((i) => {
+                                id && Object.keys(id).map((i) => {
                                     let val = JSON.stringify(id[i]);
-
+                                    let contentType = i == 'profilePictureCid' ? 'image' : 'text';
                                     return (
                                         <PassportItem  
                                             label={i}
                                             value={val}
+                                            contentType={contentType}
                                         />
                                     )
                                 })
