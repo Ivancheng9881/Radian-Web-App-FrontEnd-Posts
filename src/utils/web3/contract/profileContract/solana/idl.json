@@ -1,0 +1,346 @@
+{
+    "version": "0.1.0",
+    "name": "identity_program",
+    "instructions": [
+      {
+        "name": "initialize",
+        "accounts": [
+          {
+            "name": "daoaccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "user",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "daoBump",
+            "type": "u8"
+          }
+        ]
+      },
+      {
+        "name": "createProfileMapping",
+        "accounts": [
+          {
+            "name": "daoaccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "profileMapping",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "user",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "profileMappingBump",
+            "type": "u8"
+          }
+        ]
+      },
+      {
+        "name": "createProfile",
+        "accounts": [
+          {
+            "name": "profileMapping",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "profile",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "address",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "profileBump",
+            "type": "u8"
+          },
+          {
+            "name": "identityId",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          },
+          {
+            "name": "descriptionId",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "updateProfile",
+        "accounts": [
+          {
+            "name": "profileMapping",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "profile",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "address",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "identityId",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          },
+          {
+            "name": "descriptionId",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "verifyIdentity",
+        "accounts": [
+          {
+            "name": "daoaccount",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "profile",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "daoauthority",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "profileId",
+            "type": "u64"
+          },
+          {
+            "name": "verifyId",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "addNewAddress",
+        "accounts": [
+          {
+            "name": "profileMapping",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "user",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "profileMappingBump",
+            "type": "u8"
+          },
+          {
+            "name": "profileId",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "verifyNewAddress",
+        "accounts": [
+          {
+            "name": "profileMapping",
+            "isMut": false,
+            "isSigner": false
+          },
+          {
+            "name": "profileMappingNew",
+            "isMut": true,
+            "isSigner": false
+          },
+          {
+            "name": "address",
+            "isMut": false,
+            "isSigner": true
+          },
+          {
+            "name": "systemProgram",
+            "isMut": false,
+            "isSigner": false
+          }
+        ],
+        "args": [
+          {
+            "name": "newAddress",
+            "type": "publicKey"
+          }
+        ]
+      }
+    ],
+    "accounts": [
+      {
+        "name": "DaoAccount",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "daoauthority",
+              "type": "publicKey"
+            },
+            {
+              "name": "profileCount",
+              "type": "u64"
+            },
+            {
+              "name": "bump",
+              "type": "u8"
+            }
+          ]
+        }
+      },
+      {
+        "name": "ProfileMapping",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "address",
+              "type": "publicKey"
+            },
+            {
+              "name": "profileId",
+              "type": "u64"
+            },
+            {
+              "name": "verified",
+              "type": "bool"
+            },
+            {
+              "name": "bump",
+              "type": "u8"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Profile",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "identityId",
+              "type": {
+                "array": [
+                  "u8",
+                  64
+                ]
+              }
+            },
+            {
+              "name": "descriptionId",
+              "type": {
+                "array": [
+                  "u8",
+                  64
+                ]
+              }
+            },
+            {
+              "name": "verifyId",
+              "type": {
+                "array": [
+                  "u8",
+                  64
+                ]
+              }
+            },
+            {
+              "name": "bump",
+              "type": "u8"
+            }
+          ]
+        }
+      }
+    ],
+    "metadata": {
+      "address": "8GWLR2ip5jB2EA6dMQZtW9SdHDnLNFPZHBf5ZY71mVNj"
+    }
+  }

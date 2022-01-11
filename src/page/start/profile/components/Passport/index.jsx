@@ -5,11 +5,14 @@ import PassportItem from "./item.components";
 import RoundedButton from "../../../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../../../utils/web3/ipfs/ipfs.utils";
 import { createProfileErc, getProfileErc } from "../../../../../utils/web3/contract/profileContract/erc";
+import { createProfileSolana } from "../../../../../utils/web3/contract/profileContract/solana";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const ProfilePassport = (props) => {
 
     const { profile } = useContext(CreateProfileContext);
     const [ id, setId ] = useState(null);
+    const solanaWallet = useWallet();
 
     useEffect(() => {
         getProfile();
@@ -33,6 +36,10 @@ const ProfilePassport = (props) => {
             let identity = await ipfsUtils.getContentJson(identityID);
             setId(identity);    
         }
+    };
+
+    const creaetProfileOnSolana = async () => {
+        await createProfileSolana(solanaWallet);
     }
 
     return (
@@ -42,11 +49,16 @@ const ProfilePassport = (props) => {
             >
                 Radian Passport Summary
             </Typography.Featured>
-            <RoundedButton
+            <RoundedButton 
+                onClick={creaetProfileOnSolana}
+            >
+                create profile on solana
+            </RoundedButton>
+            {/* <RoundedButton
                 onClick={createProfileCid}
             >
                 create profile id
-            </RoundedButton>
+            </RoundedButton> */}
             <div className="w-4/5">
                 <div className="inline items-end">
                     <div className="mt-10 w-full">

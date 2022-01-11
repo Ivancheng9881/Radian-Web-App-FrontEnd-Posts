@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
-import ipfsUtils from "../ipfs/ipfs.utils";
-
+import SolanaWalletProvider from "./solanaWallet.provider";
 
 const Web3Provider = ({children}) => {
 
@@ -76,7 +75,9 @@ const Web3Provider = ({children}) => {
 
     return (
         <Web3Context.Provider value={providerValue}>
-            {children}
+            <SolanaWalletProvider>
+                {children}
+            </SolanaWalletProvider>
         </Web3Context.Provider>
     )
 };
