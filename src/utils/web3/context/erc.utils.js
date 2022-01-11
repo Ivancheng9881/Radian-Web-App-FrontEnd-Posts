@@ -39,9 +39,7 @@ async function connectWallet() {
 
 
 async function initContract(address, abi) {
-    console.log(abi)
     let signer = await getSigner()
-    console.log(signer)
     const contract = new ethers.Contract(address, abi, signer);
     return contract;
 }
