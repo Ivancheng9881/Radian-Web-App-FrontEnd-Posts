@@ -1,12 +1,15 @@
 import Router from "./router";
+import SolanaWalletProvider from "./utils/web3/context/solanaWallet.provider";
 import Web3Provider from "./utils/web3/context/web3.provider";
 
 function App() {
 
   return (
-    <Web3Provider>
-      <Router />
-    </Web3Provider>
+    <SolanaWalletProvider>
+      <Web3Provider>
+        <Router />
+      </Web3Provider>
+    </SolanaWalletProvider>
   );
 }
 

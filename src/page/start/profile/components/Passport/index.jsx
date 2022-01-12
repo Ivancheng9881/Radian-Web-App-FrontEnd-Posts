@@ -5,41 +5,78 @@ import PassportItem from "./item.components";
 import RoundedButton from "../../../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../../../utils/web3/ipfs/ipfs.utils";
 import { createProfileErc, getProfileErc } from "../../../../../utils/web3/contract/profileContract/erc";
-import { createProfileSolana } from "../../../../../utils/web3/contract/profileContract/solana";
+import { createProfilePipelineSolana, getProfileMappingSolana } from "../../../../../utils/web3/contract/profileContract/solana";
 import { useWallet } from "@solana/wallet-adapter-react";
+import Web3Context from "../../../../../utils/web3/context/web3.context";
+import SolanaUtils from "../../../../../utils/web3/context/solana.utils";
 
 const ProfilePassport = (props) => {
 
+    const { provider, wallet } = useContext(Web3Context);
     const { profile } = useContext(CreateProfileContext);
     const [ id, setId ] = useState(null);
     const solanaWallet = useWallet();
+
 
     useEffect(() => {
         getProfile();
     }, [])
 
+    useEffect(() => {
+        console.log(provider)
+    }, [provider]);
+
+
+    useEffect(() => {
+
+    }, [])
+
     const createProfileCid = async () => {
+        let txn;
+
         let profileString = JSON.stringify(profile);
         const cid = await ipfsUtils.uploadContent(profileString);
-        if (cid) {
-            let txn = await createProfileErc(cid.toString());
-            if (txn) {
-                await getProfile()
-            }
+            
+        if (provider.split('@')[1] === 'solana') {
+            txn = await createProfileOnSolana(cid.toString());
+        } else {
+            txn = await createProfileErc(cid.toString());
+        }
+
+        if (txn) {
+            await getProfile()
         }
     };
 
     const getProfile = async () => {
+        let identityID;
+
+        if (!provider) {
+            //
+        } else if (provider.split('@')[1] === 'solana') {
+            
+        } else {
+            identityID = await getProfileErc().identityID;
+        }
         
-        const { identityID } = await getProfileErc();
         if (identityID) {
             let identity = await ipfsUtils.getContentJson(identityID);
             setId(identity);    
         }
     };
 
-    const creaetProfileOnSolana = async () => {
-        await createProfileSolana(solanaWallet);
+    const createProfileOnSolana = async (cid) => {
+        if (!solanaWallet.connected) {
+            await solanaWallet.connect()
+        } else {
+            console.log(solanaWallet)
+            await createProfilePipelineSolana(solanaWallet, cid);
+        }
+    }
+
+    const fetchProfileMappingSolana = async () => {
+        let profileMapping = await getProfileMappingSolana(solanaWallet);
+        console.log(profileMapping.profileId.toString());
     }
 
     return (
@@ -50,9 +87,9 @@ const ProfilePassport = (props) => {
                 Radian Passport Summary
             </Typography.Featured>
             <RoundedButton 
-                onClick={creaetProfileOnSolana}
+                onClick={createProfileCid}
             >
-                create profile on solana
+                {solanaWallet.connected ? `create profile on solana` : `connect wallet`}
             </RoundedButton>
             {/* <RoundedButton
                 onClick={createProfileCid}

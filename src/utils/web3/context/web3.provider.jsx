@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
 import SolanaWalletProvider from "./solanaWallet.provider";
 
 const Web3Provider = ({children}) => {
 
-    const [ provider, setProvider ] = useState(null);
+    const [ provider, setProvider ] = useState('phantom@solana');
     const [ wallet, setWallet ] = useState(null);
 
     useEffect(() => {
@@ -75,9 +74,7 @@ const Web3Provider = ({children}) => {
 
     return (
         <Web3Context.Provider value={providerValue}>
-            <SolanaWalletProvider>
                 {children}
-            </SolanaWalletProvider>
         </Web3Context.Provider>
     )
 };
