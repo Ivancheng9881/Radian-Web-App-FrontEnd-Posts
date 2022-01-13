@@ -16,7 +16,7 @@ import DatingAgeRange from "../AgeRange";
 import DatingDistance from "../Distance";
 import DatingEthnicity from "../Ethnicity";
 import DatingReligion from "../Religion";
-// import ProfilePassport from "../Passport";
+import ProfileNFT from "../UploadNFT";
 import ProfilePicture from "../ProfilePicture";
 
 const CreateProfileController = () => {
@@ -70,9 +70,9 @@ const CreateProfileController = () => {
             <FadeInOut visible={stepList[step].id==='datingReligion'} scrollUp={scrollDirection}>
                 <DatingReligion />
             </FadeInOut>
-            {/* <FadeInOut visible={stepList[step].id==='overview'} scrollUp={scrollDirection}>
-                <ProfilePassport />
-            </FadeInOut> */}
+            <FadeInOut visible={stepList[step].id==='nft'} scrollUp={scrollDirection}>
+                <ProfileNFT />
+            </FadeInOut>
         </ProfileWrapper>
     )
 };

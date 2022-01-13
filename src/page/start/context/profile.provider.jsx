@@ -10,7 +10,8 @@ function CreateProfileProvider({children}) {
 
     let basicInfo = 'basicInfo';
     let datingPreference = 'datingPreference'
-    let completeRegistration = 'completeRegistration';
+    let asset = 'asset';
+
     const stepList = [
         {id: 'name', stage: basicInfo},
         {id: 'phone', stage: basicInfo},
@@ -27,7 +28,15 @@ function CreateProfileProvider({children}) {
         {id: 'distanceMax', stage: datingPreference},
         {id: 'datingEthnicity', stage: datingPreference},
         {id: 'datingReligion', stage: datingPreference},
+        {id: 'nft', stage: asset},
     ];
+
+    const checkoutStepList = [
+        {id: 'identityInformation', stage: 'identityInformation'},
+        {id: 'descriptionInformation', stage: 'descriptionInformation'},
+        {id: 'nft', stage: 'nft'},
+        {id: 'profileCreated', stage: 'profileCreated'},
+    ]
 
     const [ profile, setProfile ] = useState({
         firstName: 'Kayton',
@@ -38,6 +47,7 @@ function CreateProfileProvider({children}) {
         countryCode: '+852',
         profilePictureCid: 'QmTDg4VWmgysNRKpUp5CwESnhE9Srkgz8KWyFYr3mfcV8M',
         number: '12345678',
+        location: 'Hong Kong',
         weight: '80',
         weightUnit: 'kg',
         height: '170',
@@ -54,8 +64,14 @@ function CreateProfileProvider({children}) {
         distanceIsDealBreaker: 0,
         datingEthnicity: ['asian'],
         datingReligion: ['spiritual'],
+        nft: [
+            'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh', 
+            'Qmbdji7XbW24ZTDYyxJ1xoCZ9UB5hGiP8gqf4T2yJsNbqH', 
+            'QmaPjbWNWTid6Lgne7yiLCsctoYiwfjD9qKge8BmhzwDmn'
+        ]
     })
     const [ step, setStep ] = useState(0);
+    const [ checkoutStep, setCheckoutStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
 
     /**
@@ -91,10 +107,9 @@ function CreateProfileProvider({children}) {
     const updateStep = (val) => {
         // invalid value for step
         if (isNaN(val)) val = 0;
-
         // invalid value for step
-        if (val > stepList.length - 1) val = 0;
-        if (val >= stepList.length - 1) {
+        if (val > stepList.length + 1) val = 0;
+        if (val >= stepList.length) {
             history.push(checkoutProfileRoute)
         } else {
             let query = getQuery(history.location.search);
@@ -121,6 +136,18 @@ function CreateProfileProvider({children}) {
             ...profile,
             [key]: val,
         })
+    };
+
+    const updateCheckoutStep = (val) => {
+        if (isNaN(val)) val = 0;
+
+        // invalid value for step
+        if (val > checkoutStepList.length - 1) val = 0;
+        let query = getQuery(history.location.search);
+        query.step = val;
+        setQuery(history, query);
+        setCheckoutStep(Number(val));
+
     }
 
     return (
@@ -132,7 +159,10 @@ function CreateProfileProvider({children}) {
             updateStep, 
             stepList, 
             scrollDirection, 
-            setScrollDirection
+            setScrollDirection,
+            checkoutStep,
+            checkoutStepList,
+            updateCheckoutStep
         }}>
             {children}
         </CreateProfileContext.Provider>

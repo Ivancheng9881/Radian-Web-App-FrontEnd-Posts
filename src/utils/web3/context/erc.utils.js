@@ -30,11 +30,17 @@ async function getAddress() {
  */
 async function connectWallet() {
     try {
-        let resp = await window.ethereum.request({method: 'eth_requestAccounts'})
+        let resp = await window.ethereum.request({method: 'eth_requestAccounts', params: [ { eth_accounts: {} }]})
+        console.log()
         return resp;
     } catch (err) {
         return false
     }
+}
+
+function isConnected() {
+    console.log(window.ethereum)
+    return window.ethereum.isConnected()
 }
 
 
@@ -49,6 +55,7 @@ const ERCUtils = {
     getAddress,
     connectWallet,
     initContract,
+    isConnected,
 }
 
 export default ERCUtils;

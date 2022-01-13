@@ -35,19 +35,11 @@ const ProfileLocation = (props) => {
                 </Typography.H2>
             </div>
             <div className="mt-10 inline-flex">
-                <div className="w-1/3 mr-5">
+                <div className="w-2/3 mr-5">
                     <TextField.Outlined
-                        name='firstName'
-                        placeholder="Firstname"
-                        value={profile.firstName}
-                        onChange={updateProfile}
-                    />
-                </div>
-                <div className="max-w-sm mr-5">
-                    <TextField.Outlined
-                        name='lastName'
-                        placeholder="Lastname"
-                        value={profile.lastName}
+                        name='location'
+                        placeholder="location"
+                        value={profile.location}
                         onChange={updateProfile}
                     />
                 </div>
