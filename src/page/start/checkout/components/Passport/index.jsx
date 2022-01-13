@@ -1,14 +1,15 @@
 import Typography from "../../../../../components/Typography";
 import { useContext, useEffect, useState } from "react";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 import PassportItem from "./item.components";
 import RoundedButton from "../../../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../../../utils/web3/ipfs/ipfs.utils";
 import { createProfileErc, getProfileErc } from "../../../../../utils/web3/contract/profileContract/erc";
-import { createProfilePipelineSolana, getProfileMappingSolana } from "../../../../../utils/web3/contract/profileContract/solana";
+import { createProfilePipelineSolana, getProfileMappingSolana, getProfileSolana } from "../../../../../utils/web3/contract/profileContract/solana";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Web3Context from "../../../../../utils/web3/context/web3.context";
 import SolanaUtils from "../../../../../utils/web3/context/solana.utils";
+import { PhantomWalletName } from "@solana/wallet-adapter-phantom";
 
 const ProfilePassport = (props) => {
 
@@ -23,13 +24,29 @@ const ProfilePassport = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log(provider)
-    }, [provider]);
+        // console.log(provider)
+        // console.log(solanaWallet)
+        // if (provider.split('@')[1] === 'solana') {
+        //     if (!solanaWallet.connected) {
+        //         initSolanaWallet();
+        //     }
+        // }
+        console.log(solanaWallet)
+        if (solanaWallet.wallet) {
+            if (!solanaWallet.connected) {
+                solanaWallet.connect()
+            } else {
+                getProfile();
+            }
+        }
+    }, [solanaWallet]);
 
 
     useEffect(() => {
-
-    }, [])
+        if (provider.split('@')[1] === 'solana') {
+            solanaWallet.select(PhantomWalletName);
+        }
+    }, [provider]);
 
     const createProfileCid = async () => {
         let txn;
@@ -50,18 +67,20 @@ const ProfilePassport = (props) => {
 
     const getProfile = async () => {
         let identityID;
+        console.log(provider);
 
         if (!provider) {
             //
         } else if (provider.split('@')[1] === 'solana') {
-            
+            identityID = await getProfileSolana(solanaWallet);
+            console.log(identityID)
         } else {
             identityID = await getProfileErc().identityID;
         }
         
         if (identityID) {
             let identity = await ipfsUtils.getContentJson(identityID);
-            setId(identity);    
+            setId(identity);
         }
     };
 
@@ -72,7 +91,7 @@ const ProfilePassport = (props) => {
             console.log(solanaWallet)
             await createProfilePipelineSolana(solanaWallet, cid);
         }
-    }
+    };
 
     const fetchProfileMappingSolana = async () => {
         let profileMapping = await getProfileMappingSolana(solanaWallet);

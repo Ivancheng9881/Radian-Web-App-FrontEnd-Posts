@@ -35,9 +35,13 @@ const publicKeyToString = (bn) => {
 };
 
 const connectWallet = async (wallet) => {
-    console.log('connecting solana wallet')
+    console.log('connecting solana wallet');
+    console.log(wallet)
     let {publicKey} = await window.solana.connect();
+    wallet.select(PhantomWalletName);
     if (publicKey) {
+        console.log(publicKey, wallet)
+
         await wallet.connect().then(res => console.log(wallet))
         return publicKey;
     } else {

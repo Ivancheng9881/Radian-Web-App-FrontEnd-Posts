@@ -2,7 +2,7 @@ import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
 import { useContext } from "react";
 import Toggler from "../../../../../components/Toggler";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 
 const ProfileWeight = (props) => {
 

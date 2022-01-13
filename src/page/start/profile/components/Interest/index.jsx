@@ -1,6 +1,6 @@
 import Typography from "../../../../../components/Typography";
 import { useContext } from "react";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 import ItemOptionList from "../../../../../components/ItemOptions";
 
 const DatingInterest = (props) => {

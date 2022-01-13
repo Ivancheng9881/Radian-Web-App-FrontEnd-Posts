@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 
 
 const Indicator = ({label, value, current}) => {

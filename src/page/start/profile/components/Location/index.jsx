@@ -1,7 +1,7 @@
 import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
 import { useContext, useState } from "react";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 
 const ProfileLocation = (props) => {
 

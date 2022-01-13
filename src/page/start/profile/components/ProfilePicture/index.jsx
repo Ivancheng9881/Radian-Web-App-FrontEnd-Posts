@@ -1,10 +1,9 @@
 import Typography from "../../../../../components/Typography";
 import { useContext, useEffect, useState } from "react";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 import UploadButton from "../../../../../components/Button/UploadButton.components";
 import ipfsUtils from "../../../../../utils/web3/ipfs/ipfs.utils";
 import ProfilePictureFrame from "../../../../../components/ProfilePictureFrame";
-import Web3Context from "../../../../../utils/web3/context/web3.context";
 
 const ProfilePicture = (props) => {
 

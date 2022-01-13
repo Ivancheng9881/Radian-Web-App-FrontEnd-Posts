@@ -4,7 +4,7 @@ import ArrowDownButton from "../../../../../components/Button/ArrowDownButton.co
 import ArrowUpButton from "../../../../../components/Button/ArrowUpButton.components";
 import CreateProfileIndicator from './indicator.components';
 import { useContext } from 'react';
-import CreateProfileContext from '../../context/profile.context';
+import CreateProfileContext from '../../../context/profile.context';
 
 const CreateProfileBodyWrapper = ({children}) => {
 

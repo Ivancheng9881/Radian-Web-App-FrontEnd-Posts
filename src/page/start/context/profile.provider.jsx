@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import CreateProfileContext from "./profile.context";
-import { getQuery, setQuery } from "../../../../utils/query";
+import { getQuery, setQuery } from "../../../utils/query";
+import { checkoutProfileRoute } from "../../../commons/route";
 
 function CreateProfileProvider({children}) {
 
@@ -26,7 +27,6 @@ function CreateProfileProvider({children}) {
         {id: 'distanceMax', stage: datingPreference},
         {id: 'datingEthnicity', stage: datingPreference},
         {id: 'datingReligion', stage: datingPreference},
-        {id: 'overview', stage: completeRegistration},
     ];
 
     const [ profile, setProfile ] = useState({
@@ -94,12 +94,15 @@ function CreateProfileProvider({children}) {
 
         // invalid value for step
         if (val > stepList.length - 1) val = 0;
-
-        let query = getQuery(history.location.search);
-        query.step = val;
-        setQuery(history, query);
-        storeTempProfile()
-        setStep(Number(val));
+        if (val >= stepList.length - 1) {
+            history.push(checkoutProfileRoute)
+        } else {
+            let query = getQuery(history.location.search);
+            query.step = val;
+            setQuery(history, query);
+            storeTempProfile()
+            setStep(Number(val));
+        }
     };
 
     const storeTempProfile = () => {

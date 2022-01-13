@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import CreateProfileContext from "../../context/profile.context";
+import CreateProfileContext from "../../../context/profile.context";
 import ProfileBirth from "../Birth";
 import ProfileName from "../Name";
 import ProfilePhone from "../Phone";
@@ -16,7 +16,7 @@ import DatingAgeRange from "../AgeRange";
 import DatingDistance from "../Distance";
 import DatingEthnicity from "../Ethnicity";
 import DatingReligion from "../Religion";
-import ProfilePassport from "../Passport";
+// import ProfilePassport from "../Passport";
 import ProfilePicture from "../ProfilePicture";
 
 const CreateProfileController = () => {
@@ -70,9 +70,9 @@ const CreateProfileController = () => {
             <FadeInOut visible={stepList[step].id==='datingReligion'} scrollUp={scrollDirection}>
                 <DatingReligion />
             </FadeInOut>
-            <FadeInOut visible={stepList[step].id==='overview'} scrollUp={scrollDirection}>
+            {/* <FadeInOut visible={stepList[step].id==='overview'} scrollUp={scrollDirection}>
                 <ProfilePassport />
-            </FadeInOut>
+            </FadeInOut> */}
         </ProfileWrapper>
     )
 };

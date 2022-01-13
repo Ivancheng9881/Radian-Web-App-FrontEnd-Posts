@@ -1,6 +1,4 @@
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
-import CreateProfileContext from "../../page/start/profile/context/profile.context";
-
 
 const SliderThumb = (props) => {
 
