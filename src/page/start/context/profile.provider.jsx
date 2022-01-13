@@ -38,7 +38,7 @@ function CreateProfileProvider({children}) {
         {id: 'profileCreated', stage: 'profileCreated'},
     ]
 
-    const [ profile, setProfile ] = useState({
+    const defaultProfile = {
         firstName: 'Kayton',
         lastName: 'Chiu',
         day: '01',
@@ -69,7 +69,38 @@ function CreateProfileProvider({children}) {
             'Qmbdji7XbW24ZTDYyxJ1xoCZ9UB5hGiP8gqf4T2yJsNbqH', 
             'QmaPjbWNWTid6Lgne7yiLCsctoYiwfjD9qKge8BmhzwDmn'
         ]
-    })
+    };
+
+    const initProfile = {
+        firstName: '',
+        lastName: '',
+        day: '',
+        month: '',
+        year: '',
+        countryCode: '',
+        profilePictureCid: '',
+        number: '',
+        location: '',
+        weight: '',
+        weightUnit: '',
+        height: '',
+        heightUnit: '',
+        nationality: '',
+        gender: '',
+        orientation: '',
+        lookingFor: '',
+        interest: [],
+        ageRangeMin: 1,
+        ageRangeMax: 100,
+        ageRangeIsDealBreaker: 1,
+        distanceMax: 1,
+        distanceIsDealBreaker: 0,
+        datingEthnicity: [],
+        datingReligion: [],
+        nft: []
+    }
+
+    const [ profile, setProfile ] = useState(initProfile)
     const [ step, setStep ] = useState(0);
     const [ checkoutStep, setCheckoutStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);

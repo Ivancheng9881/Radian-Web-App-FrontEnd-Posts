@@ -14,6 +14,7 @@ const ProfileWeight = (props) => {
     ]
 
     const toggleUnit = (val) => {
+        console.log(val);
         let update = { target: {
             name: 'weightUnit',
             value: val
@@ -44,7 +45,7 @@ const ProfileWeight = (props) => {
                         onChange={updateProfile}
                     />
                 </div>
-                <div className="max-w-sm mr-5">
+                <div className="max-w-sm mr-5 z-10" >
                     <Toggler 
                         value={profile.weightUnit}
                         opts={unitOpts}

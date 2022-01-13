@@ -44,7 +44,7 @@ const ProfileHeight = (props) => {
                         onChange={updateProfile}
                     />
                 </div>
-                <div className="max-w-sm mr-5">
+                <div className="max-w-sm mr-5 z-10">
                     <Toggler 
                         value={profile.heightUnit}
                         opts={unitOpts}
