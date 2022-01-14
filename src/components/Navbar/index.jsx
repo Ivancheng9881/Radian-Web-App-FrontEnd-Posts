@@ -5,7 +5,7 @@ import RoundedButton from "../Button/Rounded.components";
 import { truncateAddress } from "../../utils/web3/general/parser.utils";
 import "./styles.css";
 import { useHistory } from "react-router-dom";
-import { startRoute } from "../../commons/route";
+import { mainRoute } from "../../commons/route";
 
 const Navbar = (props) => {
 
@@ -19,7 +19,7 @@ const Navbar = (props) => {
             >
                 <div 
                     className="cursor-pointer"
-                    onClick={() => history.push(startRoute)}>
+                    onClick={() => history.push(mainRoute)}>
                     <img 
                         src="/logos/radian.png"
                         width="149px"

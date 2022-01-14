@@ -6,7 +6,8 @@ import {
 } from 'react-router-dom';
 
 import { mainRoute, startRoute } from './commons/route'
-import HomeMain from './page/start'
+import HomePage from './page/home';
+import StartMain from './page/start'
 
 
 export default function Router() {
@@ -16,12 +17,12 @@ export default function Router() {
                 <Route 
                     exact
                     path={mainRoute}
-                >
-                    <Redirect to={startRoute} />
-                </Route>
+                    component={HomePage}
+
+                />
                 <Route
                     path={startRoute}
-                    component={HomeMain}
+                    component={StartMain}
                 />
             </Switch>
         </BrowserRouter>

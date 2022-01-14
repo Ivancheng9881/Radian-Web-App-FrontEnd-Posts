@@ -2,6 +2,8 @@ import { ethers } from "ethers";
 import Web3 from "web3";
 
 async function initEtherProvider() {
+    let resp = await connectWallet();
+    if (!resp) return false; 
     return new ethers.providers.Web3Provider(window.ethereum);
 }
 
@@ -15,11 +17,13 @@ function ercErrorHandler(code) {
 
 async function getSigner() {
     let provider = await initEtherProvider();
+    if (!provider) return false
     return await provider.getSigner()
 };
 
 async function getAddress() {
     let signer = await getSigner();
+    if (!signer) return false
     return await signer.getAddress();
 }
 
@@ -31,7 +35,6 @@ async function getAddress() {
 async function connectWallet() {
     try {
         let resp = await window.ethereum.request({method: 'eth_requestAccounts', params: [ { eth_accounts: {} }]})
-        console.log()
         return resp;
     } catch (err) {
         return false
@@ -39,7 +42,6 @@ async function connectWallet() {
 }
 
 function isConnected() {
-    console.log(window.ethereum)
     return window.ethereum.isConnected()
 }
 

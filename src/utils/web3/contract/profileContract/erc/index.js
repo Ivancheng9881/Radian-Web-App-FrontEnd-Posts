@@ -13,9 +13,14 @@ async function initProfileContract() {
     );
 }
 
+async function getProfileFromID(id) {
+    console.log(id)
+    let contract = await initProfileContract();
+    return await contract.getProfilefromID(id);
+}
+
 export async function createProfileErc(identityId) {
     let currentProfile =  await getProfileErc();
-    console.log(currentProfile)
     let contract = await initProfileContract();
     let txn;
     if (currentProfile.identityID) {
@@ -25,13 +30,34 @@ export async function createProfileErc(identityId) {
         txn = await contract.createProfileEVM(identityId)
     }
     return txn
-}
+};
 
-export async function getProfileErc() {
+export async function getProfileListErc() {
+    let arr = [1,2,3,4,5]
+
+    let profiles = await Promise.all(
+        arr.map(async (id) => { return await getProfileFromID(id)})
+    )
+    .then(resp => resp)
+    .catch(err => console.log(err))
+
+    let profileList = [];
+    profiles.map((p) => {
+        if (!profileList.includes(p[0])) {
+            profileList.push(p[0])
+        }
+    })
+    
+    return profileList
+};
+
+export async function getProfileErc(address=undefined) {
     try {
         let contract = await initProfileContract();
-        let signerAddress = await ERCUtils.getAddress();
-        let profileId = await contract.getProfilefromAddress(signerAddress);
+        if (!address) {
+            address = await ERCUtils.getAddress();
+        }
+        let profileId = await contract.getProfilefromAddress(address);
         return profileId        
     } catch (err) {
         return { identityID: null }

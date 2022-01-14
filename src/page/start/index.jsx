@@ -1,10 +1,10 @@
 import HomeRouter from "./router"
 
 
-const HomeMain = (props) => {
+const StartMain = (props) => {
     return (
         <HomeRouter />
     )
 };
 
-export default HomeMain;
+export default StartMain;
