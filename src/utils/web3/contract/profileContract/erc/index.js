@@ -40,7 +40,7 @@ export async function getProfileListCountErc() {
     return count
 }
 
-export async function getProfileListErc() {
+export async function getProfileListErc(skip, limit) {
     let arr = [1,2,3,4]
 
     let profiles = await Promise.all(

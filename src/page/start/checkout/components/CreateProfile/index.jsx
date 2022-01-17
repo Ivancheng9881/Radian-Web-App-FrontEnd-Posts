@@ -17,6 +17,10 @@ const CheckoutCreateProfile = () => {
     const { profile } = useContext(CreateProfileContext);
     const [ id, setId ] = useState(null);
     const [ solTxn, setSolTxn ] = useState(false);
+    const [ error, setError ] = useState({
+        state: false,
+        msg: ''
+    })
     const solanaWallet = useWallet();
 
     let logoWidth = 130;
@@ -49,10 +53,13 @@ const CheckoutCreateProfile = () => {
         let publicKey = await ERCUtils.connectWallet();
         // check if the wallet is connected
         if(publicKey) {
+            if (window.ethereum.networkVersion) {
+                setError({state: true, msg: 'Please switch to polygon network'})
+                return
+            }
             console.log('is connected')
             let cid = await createProfileCid();
-            console.log(cid.toString())
-            txn = await createProfileErc(cid.toString());
+            // txn = await createProfileErc(cid.toString());
         }
     }
 
@@ -124,7 +131,7 @@ const CheckoutCreateProfile = () => {
                                     </div>
                                 </div>
                                 <div 
-                                    className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
+                                    className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
                                     onClick={createProfilePolygon}
                                 > 
                                     <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">
@@ -154,6 +161,9 @@ const CheckoutCreateProfile = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div id='RD-CheckoutErrorMsg' className="h-2 font-semibold">
+                        <span>{error.state && error.msg}</span>
                     </div>
                 </div>
             </div>
