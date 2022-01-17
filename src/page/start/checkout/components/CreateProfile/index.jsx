@@ -38,6 +38,7 @@ const CheckoutCreateProfile = () => {
     }, [provider]);
 
     const createProfileCid = async () => {
+        console.log(profile)
         let profileString = JSON.stringify(profile);
         const cid = await ipfsUtils.uploadContent(profileString);
         return cid;
@@ -50,6 +51,7 @@ const CheckoutCreateProfile = () => {
         if(publicKey) {
             console.log('is connected')
             let cid = await createProfileCid();
+            console.log(cid.toString())
             txn = await createProfileErc(cid.toString());
         }
     }

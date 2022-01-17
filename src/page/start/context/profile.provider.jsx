@@ -100,7 +100,7 @@ function CreateProfileProvider({children}) {
         nft: []
     }
 
-    const [ profile, setProfile ] = useState(initProfile)
+    const [ profile, setProfile ] = useState(defaultProfile)
     const [ step, setStep ] = useState(0);
     const [ checkoutStep, setCheckoutStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);

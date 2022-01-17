@@ -35,17 +35,6 @@ const CreateProfileCheckoutController = () => {
                     checkoutStepList[checkoutStep].id==='profileCreated' &&
                     <CheckoutCreateProfile />
                 }
-
-               
-                {/* <FadeInOut visible={checkoutStepList[checkoutStep].id==='dob'} scrollUp={scrollDirection}>
-                    <ProfileBirth />
-                </FadeInOut>
-                <FadeInOut visible={checkoutStepList[checkoutStep].id==='weight'} scrollUp={scrollDirection}>
-                    <ProfileWeight />
-                </FadeInOut>
-                <FadeInOut visible={checkoutStepList[checkoutStep].id==='height'} scrollUp={scrollDirection}>
-                    <ProfileHeight />
-                </FadeInOut> */}
             </CheckoutWrapper>
         </div>
     )

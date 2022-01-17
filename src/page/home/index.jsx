@@ -4,7 +4,7 @@ import { createProfileRoute, startRoute } from "../../commons/route";
 import RoundedButton from "../../components/Button/Rounded.components";
 import Layout from "../../components/Layout";
 import ERCUtils from "../../utils/web3/context/erc.utils";
-import { getProfileErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
+import { getProfileErc, getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
 import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
@@ -12,6 +12,8 @@ import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
 function ProfileFrame(props) {
 
+
+    let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
     const [ profile, setProfile ] = useState(null)
 
     useEffect(() => {
@@ -20,6 +22,10 @@ function ProfileFrame(props) {
 
     const fetchProfile = async () => {
         let p = await ipfsUtils.getContentJson(props.pid);
+        if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
+            p.profilePictureCid = defaultProfilePictureId;
+            console.log(p.profilePictureCid)
+        }
         setProfile(p)
     };
 
@@ -33,7 +39,7 @@ function ProfileFrame(props) {
                         style={{
                             backgroundImage: `url(${ipfsUtils.getContentUrl(profile.profilePictureCid)})`,
                             backgroundPosition: 'center center',
-                            backgroundSize: 'contain'
+                            backgroundSize: 'cover'
                         }}
                     >
                         <span className={`absolute bg-theme-bg-dark w-fit text-theme-white 
@@ -64,6 +70,7 @@ function PersonalProfile({
     }, [pid]);
 
     const fetchProfile = async () => {
+        console.log(pid)
         let p = await ipfsUtils.getContentJson(pid[0]);
         setProfile(p);
     };
@@ -119,19 +126,49 @@ export default function HomePage() {
 
     const [ profileList, setProfileList ] = useState([]) 
     const [ profile, setProfile ] = useState([]);
+    const [ pagination, setPagination ] = useState({
+        count: 0,
+        skip: 0,
+        limit: 10,
+    });
 
     useEffect(() => {
-        getProfiles();
-    }, []);
+        getProfileListCount();
+    }, [])
 
+    useEffect(() => {
+        if (pagination.count > 0) getProfiles();
+    }, [pagination]);
 
     useEffect(() => {
         fetchPersonalProfile();
     }, [])
 
+    const getProfileListCount = async () => {
+        let count = await getProfileListCountErc();
+        setPagination({...pagination, count: count})
+        console.log(count.toString())
+    }
+
     const getProfiles = async () => {
-        let profiles = await getProfileListErc();
+        let { count, skip, limit } = pagination;
+        let pageSize = skip;
+        if (skip >= count) {
+            return
+        } else if (skip + limit > count) {
+            pageSize = count - skip;
+        } else {
+            pageSize = count;
+        }
+
+        console.log(skip, pageSize);
+        let profiles = await getProfileListErc(skip, pageSize);
+        
         setProfileList(profiles);
+        setPagination({
+            ...pagination,
+            skip: skip + pageSize   
+        })
     };
 
     const fetchPersonalProfile = async () => {

@@ -14,7 +14,6 @@ async function initProfileContract() {
 }
 
 async function getProfileFromID(id) {
-    console.log(id)
     let contract = await initProfileContract();
     return await contract.getProfilefromID(id);
 }
@@ -34,8 +33,15 @@ export async function createProfileErc(identityId) {
     return txn
 };
 
+export async function getProfileListCountErc() {
+    let contract = await initProfileContract();
+    let count = await contract.getProfilesCount();
+
+    return count
+}
+
 export async function getProfileListErc() {
-    let arr = [1,2,3,4,5]
+    let arr = [1,2,3,4]
 
     let profiles = await Promise.all(
         arr.map(async (id) => { return await getProfileFromID(id)})
@@ -43,12 +49,16 @@ export async function getProfileListErc() {
     .then(resp => resp)
     .catch(err => console.log(err))
 
+    console.log(profiles)
+
     let profileList = [];
     profiles.map((p) => {
         if (!profileList.includes(p[0])) {
             profileList.push(p[0])
         }
     })
+
+    console.log(profileList)
     
     return profileList
 };
