@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import CreateProfileContext from "./profile.context";
 import { getQuery, setQuery } from "../../../utils/query";
-import { checkoutProfileRoute } from "../../../commons/route";
+import { checkoutProfileRoute, startRoute } from "../../../commons/route";
 
 function CreateProfileProvider({children}) {
 
@@ -121,7 +121,10 @@ function CreateProfileProvider({children}) {
      */
     const setInitialStep = () => {
         let query = getQuery(history.location.search);
-
+        if (history.location.pathname == startRoute) {
+            return
+        }
+        console.log(query)
         if (!query.step) {
             query = {...query, step: step}
             setQuery(history, query);

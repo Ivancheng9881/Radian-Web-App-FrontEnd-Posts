@@ -142,6 +142,7 @@ export default function HomePage() {
 
     useEffect(() => {
         fetchPersonalProfile();
+        return () => setProfile([]);
     }, [])
 
     const getProfileListCount = async () => {
