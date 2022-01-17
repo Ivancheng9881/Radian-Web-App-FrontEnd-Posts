@@ -8,19 +8,19 @@ const Web3Provider = ({children}) => {
     const [ provider, setProvider ] = useState('phantom@solana');
     const [ wallet, setWallet ] = useState(null);
 
-    useEffect(() => {
-        // handle solana wallet eager connection
-        if (window.solana?.isPhantom) {
-            window.solana.connect({onlyIfTrusted: true })
-                .then(({publicKey}) => {
-                    setProvider('phantom@solana');
-                    setWallet(publicKey);
-                })
-                .catch((err) => {
-                    console.error(err);
-                } )
-        }
-    }, [])
+    // useEffect(() => {
+    //     // handle solana wallet eager connection
+    //     if (window.solana?.isPhantom) {
+    //         window.solana.connect({onlyIfTrusted: true })
+    //             .then(({publicKey}) => {
+    //                 setProvider('phantom@solana');
+    //                 setWallet(publicKey);
+    //             })
+    //             .catch((err) => {
+    //                 console.error(err);
+    //             } )
+    //     }
+    // }, [])
 
     const handleConnectEvent = () => {
         console.log('connected')
@@ -63,14 +63,14 @@ const Web3Provider = ({children}) => {
     };
 
 
-    useEffect(() => {
-        window.solana?.on('connect', handleConnectEvent)
-    }, []);
+    // useEffect(() => {
+    //     window.solana?.on('connect', handleConnectEvent)
+    // }, []);
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-    }, [])
+    // }, [])
 
     return (
         <Web3Context.Provider value={providerValue}>
