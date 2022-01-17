@@ -12,7 +12,7 @@ import StartMain from './page/start'
 
 export default function Router() {
     return (
-        <BrowserRouter basename=''>
+        <BrowserRouter basename='/'>
             <Switch>
                 <Route 
                     exact
