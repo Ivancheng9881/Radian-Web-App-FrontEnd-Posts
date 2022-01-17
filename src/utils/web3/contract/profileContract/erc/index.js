@@ -4,7 +4,7 @@ import {abi} from './abi.json';
 
 export const profileContract__evm__abi = abi;
 
-export const profileContract__evm__address = '0x56560Ea78EC27771C9E3d5380827544DD95e39B2';
+export const profileContract__evm__address = '0x6c853aA1830591Db08eC31510227C0521935e55D';
 
 async function initProfileContract() {
     return await await ERCUtils.initContract(
@@ -21,6 +21,8 @@ async function getProfileFromID(id) {
 
 export async function createProfileErc(identityId) {
     let currentProfile =  await getProfileErc();
+    console.log("Current Profile");
+    console.log(currentProfile);
     let contract = await initProfileContract();
     let txn;
     if (currentProfile.identityID) {

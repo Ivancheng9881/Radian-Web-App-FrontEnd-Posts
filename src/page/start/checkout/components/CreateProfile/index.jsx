@@ -118,7 +118,7 @@ const CheckoutCreateProfile = () => {
                                         height={'auto'}
                                     />
                                     <div className="pt-4">
-                                        Phantom
+                                        Metamask
                                     </div>
                                 </div>
                                 <div 
@@ -139,7 +139,7 @@ const CheckoutCreateProfile = () => {
                                         height={'auto'}
                                     />
                                     <div className="pt-4">
-                                        Metamask
+                                        Phantom
                                     </div>
                                 </div>
                                 <div 
