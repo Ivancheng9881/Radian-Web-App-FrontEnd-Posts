@@ -53,13 +53,15 @@ const CheckoutCreateProfile = () => {
         let publicKey = await ERCUtils.connectWallet();
         // check if the wallet is connected
         if(publicKey) {
-            if (window.ethereum.networkVersion) {
+            console.log(window.ethereum.networkVersion == 137)
+            if (window.ethereum.networkVersion != 137) {
                 setError({state: true, msg: 'Please switch to polygon network'})
                 return
             }
+            setError({state: false, msg: ''})
             console.log('is connected')
             let cid = await createProfileCid();
-            // txn = await createProfileErc(cid.toString());
+            txn = await createProfileErc(cid.toString());
         }
     }
 
