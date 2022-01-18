@@ -12,6 +12,7 @@ const ProfilePicture = (props) => {
 
     const handleUpload = async (file) => {
         const cid = await ipfsUtils.uploadContent(file);
+        console.log(cid);
         updateProfileByKey('profilePictureCid', cid.toString())
     };
 
