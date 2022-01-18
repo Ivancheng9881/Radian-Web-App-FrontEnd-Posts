@@ -9,7 +9,8 @@ async function initIpfs() {
 
 async function uploadContent(content) {
     const ipfs = await initIpfs();
-    const { cid } = await ipfs.add(content);
+    const { cid } = await ipfs.add(content, {"pin": true});
+    console.log(cid);
     return cid
 };
 
