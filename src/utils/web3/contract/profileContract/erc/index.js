@@ -4,12 +4,27 @@ import {abi} from './abi.json';
 
 export const profileContract__evm__abi = abi;
 
-export const profileContract__evm__address = '0x6c853aA1830591Db08eC31510227C0521935e55D';
+export const profileContract__evm__address = '0x1EFC4aBA053A793933df06f16B11a69bbAAdB38F';
+const paymasterAddress = "0xDeB767A9F567FfC6cbcCB8E48940b4ADB7A2aD88";
 
 async function initProfileContract() {
-    return await await ERCUtils.initContract(
+    return await ERCUtils.initContract(
         profileContract__evm__address,
         profileContract__evm__abi,
+    );
+}
+
+async function initGaslessProfileContract() {
+    const config = { 
+        preferredRelays: ["https://relay.server.polygon.radian.community/gsn1"],
+        relayLookupWindowBlocks: 500,
+        relayRegistrationLookupBlocks: 500,
+        paymasterAddress,
+    }
+    return await ERCUtils.initContractGasless(
+        profileContract__evm__address,
+        profileContract__evm__abi,
+        config
     );
 }
 
@@ -18,13 +33,15 @@ async function getProfileFromID(id) {
     return await contract.getProfilefromID(id);
 }
 
-export async function createProfileErc(identityId) {
+export async function createProfileErc(identityId, useGasStation) {
     let currentProfile =  await getProfileErc();
     console.log("Current Profile");
     console.log(currentProfile);
-    let contract = await initProfileContract();
+    console.log("from address");
+    console.log(await ERCUtils.getAddress());
+    let contract = useGasStation ? await initGaslessProfileContract() : await initProfileContract();
     let txn;
-    if (currentProfile.identityID) {
+    if (currentProfile) {
         // perform update
         txn = await contract.updateProfileEVM(identityId)
     } else {
@@ -41,7 +58,10 @@ export async function getProfileListCountErc() {
 }
 
 export async function getProfileListErc(skip, limit) {
-    let arr = [1,2,3,4]
+    let arr = [];
+    for ( let i = skip + 1 ; i < limit + skip + 1; i ++) { 
+        arr.push(i); 
+    }
 
     let profiles = await Promise.all(
         arr.map(async (id) => { return await getProfileFromID(id)})
@@ -69,8 +89,10 @@ export async function getProfileErc(address=undefined) {
         if (!address) {
             address = await ERCUtils.getAddress();
         }
-        let profileId = await contract.getProfilefromAddress(address);
-        return profileId        
+        if ((await contract.addressProfileMapping(address)).toNumber() > 0 ) {
+            return await contract.getProfilefromAddress(address);
+        }
+        return undefined;
     } catch (err) {
         return { identityID: null }
     }

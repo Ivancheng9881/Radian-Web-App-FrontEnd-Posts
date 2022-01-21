@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import Web3 from "web3";
+const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider() {
     let resp = await connectWallet();
@@ -52,11 +53,23 @@ async function initContract(address, abi) {
     return contract;
 }
 
+async function initContractGasless(address, abi, config) {
+    let provider = await initEtherProvider();
+    // console.log(provider);
+    // console.log(window.ethereum);
+    provider = await RelayProvider.newProvider({ provider: window.ethereum, config }).init();
+    const provider2 = new ethers.providers.Web3Provider(provider);
+    const signer = provider2.getSigner();
+    const contract = new ethers.Contract(address, abi, signer);
+    return contract;
+}
+
 const ERCUtils = {
     getSigner,
     getAddress,
     connectWallet,
     initContract,
+    initContractGasless,
     isConnected,
 }
 
