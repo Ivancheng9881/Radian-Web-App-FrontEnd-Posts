@@ -9,8 +9,8 @@ async function initIpfs() {
 
 async function uploadContent(content) {
     const ipfs = await initIpfs();
-    const { cid } = await ipfs.add(content, {"pin": true});
-    console.log(cid);
+    const { cid } = await ipfs.add(content, { "pin": true });
+    console.log('cid', cid);
     return cid
 };
 
@@ -21,10 +21,10 @@ function getContentUrl(cid) {
 async function getContentJson(cid) {
     try {
         let resp = await axios.get(getContentUrl(cid));
-        console.log(resp)
+        console.log('axios-get-contentUrl', resp)
         return resp.data
-    } catch(err) {
-        console.log(err)
+    } catch (err) {
+        console.log('Error in getting contentJson', err)
     }
 }
 

@@ -9,6 +9,7 @@ const CreateProfilePage = (props) => {
 
     useEffect(() => {
         let query = getQuery(props.history.location.search);
+        console.log('CreateProfilePage-steps:', query)
         if (query?.step) {
             updateStep(query.step)
         }

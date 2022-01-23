@@ -9,25 +9,25 @@ const opts = {
 }
 
 const numberToBytes = (number) => {
-    if ( number <= 1) {
-      const byteArray = new Uint8Array(1);
-      byteArray[0] = number;
-      return byteArray;
+    if (number <= 1) {
+        const byteArray = new Uint8Array(1);
+        byteArray[0] = number;
+        return byteArray;
     }
     // you can use constant number of bytes by using 8 or 4
     const len = Math.ceil(Math.log2(number) / 8);
     const byteArray = new Uint8Array(len);
-  
-    for (let index = byteArray.length - 1 ; index >= 0 ; index--) {
+
+    for (let index = byteArray.length - 1; index >= 0; index--) {
         const byte = number & 0xff;
         byteArray[index] = byte;
         number = (number - byte) / 256;
     }
-  
+
     return byteArray;
 }
-  
-  
+
+
 const publicKeyToString = (bn) => {
     const publicKey = new PublicKey(bn);
     console.log(publicKey)
@@ -37,7 +37,7 @@ const publicKeyToString = (bn) => {
 const connectWallet = async (wallet) => {
     console.log('connecting solana wallet');
     console.log(wallet)
-    let {publicKey} = await window.solana.connect();
+    let { publicKey } = await window.solana.connect();
     wallet.select(PhantomWalletName);
     if (publicKey) {
         console.log(publicKey, wallet)
@@ -54,6 +54,7 @@ const isConnected = async (wallet, callback) => {
         return true
     } else {
         let publicKey = await connectWallet(wallet);
+        console.log('Wallet isConnected', publicKey)
         if (publicKey) {
             return true
         } else {
@@ -104,7 +105,7 @@ const getProvider = async (wallet) => {
 const getProgram = async (idl, programId, wallet) => {
     let provider = await getProvider(wallet)
     let program = new Program(idl, programId, provider);
-    return {program, provider}
+    return { program, provider }
 }
 
 const parser = {

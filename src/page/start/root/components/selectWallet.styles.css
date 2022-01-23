@@ -1,16 +1,19 @@
 #RD-SelectWallet .Dropdown-root {
     /* background-color: #3B04DE; */
 }
-  
+
 #RD-SelectWallet .Dropdown-control,
 #RD-SelectWallet .Dropdown-menu .Dropdown-option {
-    --rd-dropdown-theme: #3B04DE;
+    --rd-dropdown-theme: #3b04de;
     background-color: var(--rd-dropdown-theme);
     border: 1px solid var(--rd-dropdown-theme);
     border-radius: 300px;
     padding: 5px 0px;
     text-align: center;
     height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #RD-SelectWallet .Dropdown-menu {
@@ -23,10 +26,10 @@
 }
 
 #RD-SelectWallet .Dropdown-control .Dropdown-placeholder {
+    text-align: center;
     color: #fff;
     font-size: 1.5rem;
-    font-weight: 400;  
-    line-height: 2.8rem;
+    font-weight: 400;
 }
 
 #RD-SelectWallet .Dropdown-menu .Dropdown-option {
@@ -38,10 +41,9 @@
     border-color: #fff transparent transparent;
     border-width: 7px 7px 0;
     right: 20px;
-    top: 17px;
+    top: 20px;
 }
 
 .Dropdown-root img {
     margin: auto;
 }
-  

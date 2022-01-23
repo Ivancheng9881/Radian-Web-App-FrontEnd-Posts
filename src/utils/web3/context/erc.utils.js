@@ -3,14 +3,14 @@ import Web3 from "web3";
 
 async function initEtherProvider() {
     let resp = await connectWallet();
-    if (!resp) return false; 
+    if (!resp) return false;
     return new ethers.providers.Web3Provider(window.ethereum);
 }
 
 function ercErrorHandler(code) {
-    switch(code) {
+    switch (code) {
         case 4001:
-            return { }
+            return {}
 
     }
 }
@@ -34,9 +34,12 @@ async function getAddress() {
  */
 async function connectWallet() {
     try {
-        let resp = await window.ethereum.request({method: 'eth_requestAccounts', params: [ { eth_accounts: {} }]})
-        return resp;
+        if (window.ethereum !== undefined) {
+            let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
+            return resp;
+        }
     } catch (err) {
+        console.log('Error in connecting wallet', err.message);
         return false
     }
 }

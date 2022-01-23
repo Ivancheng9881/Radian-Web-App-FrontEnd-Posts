@@ -5,7 +5,7 @@ import RoundedButton from "../../components/Button/Rounded.components";
 import Layout from "../../components/Layout";
 import ERCUtils from "../../utils/web3/context/erc.utils";
 import { getProfileErc, getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
-import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
+// import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
 
@@ -80,7 +80,8 @@ function PersonalProfile({
     }
 
     return (
-        <div className='p-2 pl-4 pr-4' style={{height: '60vh'}}>
+        <div className='p-2 pl-4 pr-4' style={{ height: '60vh', minWidth: '400px', minHeight: '480px'}}
+        >
             <div className='bg-theme-bg-light rounded-lg w-full h-full overflow-hidden'>
                 <div
                     className={`w-full h-full relative`}
