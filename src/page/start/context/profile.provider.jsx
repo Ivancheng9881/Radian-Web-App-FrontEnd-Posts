@@ -158,7 +158,16 @@ function CreateProfileProvider({children}) {
         window.localStorage.setItem('tempProfile', JSON.stringify(profile));
     }
 
+    //Country Code Selection
+    const updateProfileByDropdownSelect = (key, val) => {
+        setProfile({
+            ...profile,
+            [key]: val,
+        })
+    };
+
     const updateProfile = (e) => {
+
         setProfile({
             ...profile,
             [e.target.name]: e.target.value,
@@ -189,6 +198,7 @@ function CreateProfileProvider({children}) {
             profile,
             updateProfile,
             updateProfileByKey,
+            updateProfileByDropdownSelect,
             step, 
             updateStep, 
             stepList, 

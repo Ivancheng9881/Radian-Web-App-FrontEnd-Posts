@@ -1,12 +1,29 @@
+import { useContext , useState } from "react";
+import Dropdown from "react-dropdown";
 import Typography from "../../../../../components/Typography";
 import TextField from "../../../../../components/Textfield";
-import { useContext } from "react";
+
 import CreateProfileContext from "../../../context/profile.context";
+
+import 'react-dropdown/style.css';
+import './selectCountryCode.styles.css';
+
+import {country_code_list as countryCodeOptions } from './countryCode.json';
 
 const ProfilePhone = (props) => {
 
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+    const { profile, updateProfile, updateProfileByDropdownSelect } = useContext(CreateProfileContext);
+    const [selectedCountryCode, setSelectedCountryCode ] = useState(`Select Code`);
 
+    const handleChange = async (e) => {
+        let eValue = e.value.replace('+','')
+
+        setSelectedCountryCode(e.value)
+
+        //update profile state 
+        updateProfileByDropdownSelect('countryCode', eValue)
+    }
+    
     return (
         <div id='RD-CreateProfile-phone' className="RD-CreateProfileComponents"> 
             <Typography.Featured
@@ -22,13 +39,14 @@ const ProfilePhone = (props) => {
                 </Typography.H2>
             </div>
             <div className="mt-10 inline-flex">
-                <div className="max-w-none w-60 mr-5">
-                    <TextField.Outlined
-                        name='countryCode'
-                        placeholder="Country Code"
-                        value={profile.countryCode}
-                        onChange={updateProfile}
-                    />
+                <div className='max-w-none w-60 mr-5' id="RD-SelectCountryCode">            
+                <Dropdown 
+                options={countryCodeOptions}
+                value={selectedCountryCode}
+                // value={`+${String(profile.countryCode)}`}
+                onChange={handleChange}
+                placeholder={selectedCountryCode}
+            />
                 </div>
                 <div className="max-w-sm mr-5">
                     <TextField.Outlined

@@ -1,0 +1,55 @@
+.RD-SelectCountryCode .Dropdown-control,
+#RD-SelectCountryCode .Dropdown-menu .Dropdown-option {
+    --rd-dropdown-theme: #3B04DE;
+    background-color: var(--rd-dropdown-theme);
+    border: 1px solid var(--rd-dropdown-theme);
+    border-radius: 300px;
+    padding: 5px 0px;
+    text-align: center;
+    height: 50px;
+}
+  
+#RD-SelectCountryCode .Dropdown-control,
+#RD-SelectCountryCode .Dropdown-menu .Dropdown-option {
+    --rd-dropdown-theme: #3B04DE;
+    background-color: var(--rd-dropdown-theme);
+    border: 1px solid var(--rd-dropdown-theme);
+    border-radius: 300px;
+    padding: 5px 0px;
+    text-align: center;
+    height: 50px;
+}
+
+#RD-SelectCountryCode .Dropdown-menu {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#RD-SelectCountryCode .Dropdown-control {
+    text-align: center;
+}
+
+#RD-SelectCountryCode .Dropdown-control .Dropdown-placeholder {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+#RD-SelectCountryCode .Dropdown-menu .Dropdown-option {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#RD-SelectCountryCode .Dropdown-arrow-wrapper .Dropdown-arrow {
+    border-color: #fff transparent transparent;
+    border-width: 7px 7px 0;
+    right: 20px;
+    top: 20px;
+}
+
+.Dropdown-root img {
+    margin: auto;
+}
+  
