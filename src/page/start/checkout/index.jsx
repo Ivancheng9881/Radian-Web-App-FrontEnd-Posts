@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { getQuery } from "../../../utils/query";
-import CreateProfileContext from "../context/profile.context";
+import CreateProfileContext from "../context/profile/profile.context";
 import CreateProfileCheckoutController from "./CheckoutController.components";
 
 

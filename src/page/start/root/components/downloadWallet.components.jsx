@@ -9,8 +9,6 @@ const DownloadWallet = (props) => {
         const { name } = userAgent.getBrowser();
         let downloadLink;
 
-        console.log('Agent name', name);
-
         switch (name.toUpperCase()) {
             case 'CHROME':
                 downloadLink =
