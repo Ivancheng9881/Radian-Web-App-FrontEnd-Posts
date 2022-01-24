@@ -5,7 +5,7 @@ import ArrowUpButton from "../../../../../components/Button/ArrowUpButton.compon
 import RoundedButton from "../../../../../components/Button/Rounded.components";
 import CreateProfileIndicator from '../../../components/indicator.components';
 import { useContext, useEffect, useState } from 'react';
-import CreateProfileContext from '../../../context/profile.context';
+import CreateProfileContext from '../../../context/profile/profile.context';
 import { useHistory } from 'react-router-dom';
 import { buildQueryString, getQuery } from '../../../../../utils/query';
 import { checkoutProfileRoute } from '../../../../../commons/route';
@@ -59,7 +59,7 @@ const CreateProfileBodyWrapper = ({children}) => {
     }
 
     return (
-        <div id='RD-createProfileRoot' className="relative" >
+        <div id='RD-createProfileRoot' className="relative">
             <div 
                 id='RD-createProfileBody'  
                 className="h-100 w-full pt-64 pl-10 pr-10 bg-theme-bg-dark" 
@@ -77,7 +77,7 @@ const CreateProfileBodyWrapper = ({children}) => {
                     id='RD-createProfileFooterBody'
                     className="relative m-auto w-4/5"
                 >
-                    <div className="absolute -top-32">
+                    <div className="absolute -top-36 -right-0">
                         <div className='inline-flex'>
                             { !isEdit && <div className={`pr-2 pl-2`}>
                                 <ArrowUpButton 

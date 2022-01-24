@@ -1,47 +1,38 @@
-import { useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { createProfileRoute } from "../../../../../commons/route";
-import EditIcon from "../../../../../components/Icons/edit.components";
-import EyesIcon from "../../../../../components/Icons/eyes.components";
-import { buildQueryString, getQuery } from "../../../../../utils/query";
-import CreateProfileContext from "../../../context/profile.context";
+import { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { createProfileRoute } from '../../../../../commons/route';
+import EditIcon from '../../../../../components/Icons/edit.components';
+import EyesIcon from '../../../../../components/Icons/eyes.components';
+import { buildQueryString, getQuery } from '../../../../../utils/query';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
-
-const InfoDisplayGroup = ({
-    label,
-    value,
-    stepName
-}) => {
-
+const InfoDisplayGroup = ({ label, value, stepName }) => {
     const history = useHistory();
     const { stepList } = useContext(CreateProfileContext);
 
     const constructQuery = (target) => {
-        console.log(target)
         let currentStep = getQuery(history.location.search).step;
         let query = {
             returnStep: currentStep,
             isEdit: true,
-            step: target,
+            step: target
         };
         let qs = buildQueryString(query);
-        console.log(qs);
         history.push({
             pathname: createProfileRoute,
             search: `?${qs}`
-        })
-    }
+        });
+    };
 
     const handleClick = () => {
         let target;
-        console.log(stepName)
-        for(let i = 0; i < stepList.length; i++) {
+        console.log('stepName', stepName);
+        for (let i = 0; i < stepList.length; i++) {
             if (stepList[i].id === stepName) {
                 target = i;
-                break
+                break;
             }
         }
-
         constructQuery(target);
     };
 
@@ -64,8 +55,7 @@ const InfoDisplayGroup = ({
                 </div>
             </div>
         </div>
-    )
+    );
 };
-
 
 export default InfoDisplayGroup;

@@ -1,18 +1,21 @@
-import Typography from "../../../../../components/Typography";
-import { useContext, useEffect, useState } from "react";
-import CreateProfileContext from "../../../context/profile.context";
-import RoundedButton from "../../../../../components/Button/Rounded.components";
-import ipfsUtils from "../../../../../utils/web3/ipfs/ipfs.utils";
-import { createProfileErc, getProfileErc } from "../../../../../utils/web3/contract/profileContract/erc";
-import { createProfilePipelineSolana, getProfileMappingSolana, getProfileSolana } from "../../../../../utils/web3/contract/profileContract/solana";
-import { useWallet } from "@solana/wallet-adapter-react";
-import Web3Context from "../../../../../utils/web3/context/web3.context";
-import SolanaUtils from "../../../../../utils/web3/context/solana.utils";
-import { PhantomWalletName } from "@solana/wallet-adapter-phantom";
-import ERCUtils from "../../../../../utils/web3/context/erc.utils";
+import Typography from '../../../../../components/Typography';
+import { useContext, useEffect, useState } from 'react';
+import CreateProfileContext from '../../../context/profile/profile.context';
+// import RoundedButton from '../../../../../components/Button/Rounded.components';
+import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
+import { createProfileErc, getProfileErc } from '../../../../../utils/web3/contract/profileContract/erc';
+import {
+    createProfilePipelineSolana,
+    // getProfileMappingSolana,
+    getProfileSolana
+} from '../../../../../utils/web3/contract/profileContract/solana';
+import { useWallet } from '@solana/wallet-adapter-react';
+import Web3Context from '../../../../../utils/web3/context/web3.context';
+// import SolanaUtils from '../../../../../utils/web3/context/solana.utils';
+import { PhantomWalletName } from '@solana/wallet-adapter-phantom';
+import ERCUtils from '../../../../../utils/web3/context/erc.utils';
 
 const CheckoutCreateProfile = () => {
-
     const { provider, wallet } = useContext(Web3Context);
     const { profile } = useContext(CreateProfileContext);
     const [ id, setId ] = useState(null);
@@ -20,179 +23,163 @@ const CheckoutCreateProfile = () => {
     const [ error, setError ] = useState({
         state: false,
         msg: ''
-    })
+    });
     const solanaWallet = useWallet();
 
     let logoWidth = 130;
 
-    useEffect(async () => {
-        console.log(solanaWallet);
-        if (solTxn && solanaWallet.connected) {
-            console.log('solana wallet is connecting. redo txn now')
-            await createProfileOnSolana();
-            setSolTxn(false);
-        } 
-    }, [solanaWallet.connected])
+    useEffect(
+        async () => {
+            console.log('solanaWallet:', solanaWallet);
+            if (solTxn && solanaWallet.connected) {
+                console.log('solana wallet is connecting. redo txn now');
+                await createProfileOnSolana();
+                setSolTxn(false);
+            }
+        },
+        [ solanaWallet.connected ]
+    );
 
-
-    useEffect(() => {
-        if (provider.split('@')[1] === 'solana') {
-            solanaWallet.select(PhantomWalletName);
-        }
-    }, [provider]);
+    useEffect(
+        () => {
+            if (provider.split('@')[1] === 'solana') {
+                solanaWallet.select(PhantomWalletName);
+            }
+        },
+        [ provider ]
+    );
 
     const createProfileCid = async () => {
-        console.log(profile)
         let profileString = JSON.stringify(profile);
+        console.log('createProfileCid', profileString);
         const cid = await ipfsUtils.uploadContent(profileString);
         return cid;
     };
 
     const createProfilePolygon = async (useGasStation) => {
-        let txn; 
+        let txn;
         let publicKey = await ERCUtils.connectWallet();
         // check if the wallet is connected
-        if(publicKey) {
-            console.log(window.ethereum.networkVersion == 137)
+        if (publicKey) {
+            console.log(window.ethereum.networkVersion == 137);
             if (window.ethereum.networkVersion != 137) {
-                setError({state: true, msg: 'Please switch to polygon network'})
-                return
+                setError({ state: true, msg: 'Please switch to polygon network' });
+                return;
             }
-            setError({state: false, msg: ''})
-            console.log('is connected')
+            setError({ state: false, msg: '' });
+            console.log('is connected');
             let cid = await createProfileCid();
             txn = await createProfileErc(cid.toString(), useGasStation);
         }
-    }
+    };
 
     const getProfile = async () => {
         let identityID;
-        console.log(provider);
+        console.log('getProfile provider', provider);
 
         if (!provider) {
-            //
         } else if (provider.split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
-            console.log(identityID)
+            console.log('identityID', identityID);
         } else {
             identityID = await getProfileErc().identityID;
         }
-        
+
         if (identityID) {
             let identity = await ipfsUtils.getContentJson(identityID);
             setId(identity);
         }
     };
 
-
-
     const createProfileOnSolana = async (cid) => {
         setSolTxn(true);
-        console.log(solanaWallet)
+        console.log(solanaWallet);
         if (!solanaWallet.connected) {
             console.log('solana wallet not connected');
-            console.log('trying to connect now')
+            console.log('trying to connect now');
             await solanaWallet.connect();
         } else {
             let cid = await createProfileCid();
             let txn = await createProfilePipelineSolana(solanaWallet, cid);
-            console.log(txn)
+            console.log(txn);
         }
-
     };
 
-    const fetchProfileMappingSolana = async () => {
-        let profileMapping = await getProfileMappingSolana(solanaWallet);
-        console.log(profileMapping.profileId.toString());
-    }
+    // const fetchProfileMappingSolana = async () => {
+    //     let profileMapping = await getProfileMappingSolana(solanaWallet);
+    //     console.log(profileMapping.profileId.toString());
+    // };
 
     return (
         <div id="RD-CheckoutProfileRoot">
             <div className="m-auto bg-theme-bg-light w-full max-w-screen-lg rounded text-theme-white">
                 <div className="p-16 text-center">
                     <div>
-                        <Typography.H2>
-                            Create profile on
-                        </Typography.H2>
-                        <div className="pt-6 pb-6">
-                            Add interactivity tools to keep your audience engaged.
-                        </div>
+                        <Typography.H2>Create profile on</Typography.H2>
+                        <div className="pt-6 pb-6">Add interactivity tools to keep your audience engaged.</div>
                     </div>
                     <div className="">
                         <div className="inline-flex w-full">
                             <div className="p-4 w-1/2 ">
                                 <div className="text-center">
-                                    <img 
+                                    <img
                                         className="m-auto"
-                                        src='/logos/polygonRounded.png'
+                                        src="/logos/polygonRounded.png"
                                         width={logoWidth}
                                         height={'auto'}
                                     />
-                                    <div className="pt-4">
-                                        Metamask
-                                    </div>
+                                    <div className="pt-4">Metamask</div>
                                 </div>
-                                <div 
+                                <div
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={()=>createProfilePolygon(false)}
-                                > 
-                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">
-                                        Polygon
-                                    </div>
+                                    onClick={() => createProfilePolygon(false)}
+                                >
+                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">Polygon</div>
                                 </div>
                             </div>
                             <div className="p-4 w-1/2 ">
                                 <div className="text-center">
-                                    <img 
+                                    <img
                                         className="m-auto"
-                                        src='/logos/polygonRounded.png'
+                                        src="/logos/polygonRounded.png"
                                         width={logoWidth}
                                         height={'auto'}
                                     />
-                                    <div className="pt-4">
-                                        Metamask
-                                    </div>
+                                    <div className="pt-4">Metamask</div>
                                 </div>
-                                <div 
+                                <div
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={()=>createProfilePolygon(true)}
-                                > 
-                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">
-                                        Polygon (Free)
-                                    </div>
+                                    onClick={() => createProfilePolygon(true)}
+                                >
+                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">Polygon (Free)</div>
                                 </div>
                             </div>
                             <div className="p-4 w-1/2 ">
                                 <div className="text-center">
-                                    <img 
+                                    <img
                                         className="m-auto"
-                                        src='/logos/solanaRounded.png'
+                                        src="/logos/solanaRounded.png"
                                         width={logoWidth}
                                         height={'auto'}
                                     />
-                                    <div className="pt-4">
-                                        Phantom
-                                    </div>
+                                    <div className="pt-4">Phantom</div>
                                 </div>
-                                <div 
+                                <div
                                     className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
                                     onClick={createProfileOnSolana}
-                                > 
-                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">
-                                        Solana
-                                    </div>
+                                >
+                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">Solana</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id='RD-CheckoutErrorMsg' className="h-2 font-semibold">
+                    <div id="RD-CheckoutErrorMsg" className="h-2 font-semibold">
                         <span>{error.state && error.msg}</span>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 };
 
-
-export default CheckoutCreateProfile
+export default CheckoutCreateProfile;
