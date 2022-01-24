@@ -34,11 +34,11 @@ async function getProfileFromID(id) {
 }
 
 export async function createProfileErc(identityId, useGasStation) {
+    console.log('createProfileErc', identityId, useGasStation)
+
     let currentProfile = await getProfileErc();
-    console.log("Current Profile");
-    console.log(currentProfile);
-    console.log("from address");
-    console.log(await ERCUtils.getAddress());
+    console.log("Current Profile", currentProfile);
+    console.log("from address", await ERCUtils.getAddress());
     let contract = useGasStation ? await initGaslessProfileContract() : await initProfileContract();
     let txn;
     if (currentProfile) {
@@ -53,7 +53,6 @@ export async function createProfileErc(identityId, useGasStation) {
 export async function getProfileListCountErc() {
     let contract = await initProfileContract();
     let count = await contract.getProfilesCount();
-    console.log('getProfileListCountErc', count)
     return count
 }
 
@@ -67,9 +66,7 @@ export async function getProfileListErc(skip, limit) {
         arr.map(async (id) => { return await getProfileFromID(id) })
     )
         .then(resp => resp)
-        .catch(err => console.log(err))
-
-    console.log('getProfileListErc...', profiles)
+        .catch(err => console.log('Error in getting profile list', err))
 
     let profileList = [];
     profiles.map((p) => {
@@ -78,7 +75,7 @@ export async function getProfileListErc(skip, limit) {
         }
     })
 
-    console.log('profileList...', profileList)
+    console.log('updated profileList:', profileList)
 
     return profileList
 };
@@ -90,7 +87,8 @@ export async function getProfileErc(address = undefined) {
             address = await ERCUtils.getAddress();
         }
         if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
-            return await contract.getProfilefromAddress(address);
+            const profileFromAddress = await contract.getProfilefromAddress(address)
+            return profileFromAddress;
         }
         return undefined;
     } catch (err) {

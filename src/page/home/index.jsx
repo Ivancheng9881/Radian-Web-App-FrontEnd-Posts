@@ -1,34 +1,38 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { createProfileRoute, startRoute } from "../../commons/route";
+// import { useContext } from 'react';
+
+import { startRoute } from "../../commons/route";
 import RoundedButton from "../../components/Button/Rounded.components";
 import Layout from "../../components/Layout";
 import ERCUtils from "../../utils/web3/context/erc.utils";
 import { getProfileErc, getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
 // import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
+// import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
+// import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';
+
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
-
-
 
 function ProfileFrame(props) {
 
-
     let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
-    const [ profile, setProfile ] = useState(null)
+    const [profile, setProfile] = useState(null)
 
     useEffect(() => {
         fetchProfile();
     }, [props.pid]);
 
     const fetchProfile = async () => {
+        // console.log('fetchProfile', props.pid)
+
         let p = await ipfsUtils.getContentJson(props.pid);
         if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
             p.profilePictureCid = defaultProfilePictureId;
-            console.log(p.profilePictureCid)
         }
         setProfile(p)
     };
 
+   
     return (
         <div className=''>
             {
@@ -56,30 +60,28 @@ function ProfileFrame(props) {
     )
 }
 
-function PersonalProfile({
-    pid
-}) {
-
+function PersonalProfile(props) {
     const history = useHistory();
-    const [ profile, setProfile ] = useState(null)
+    const { pid } = props;
+    const [ updatedProfile, setUpdatedProfile ] = useState(null)
 
     useEffect(() => {
-        if (pid != undefined) {
+        if (pid !== undefined) {
             fetchProfile()
         }
     }, [pid]);
 
     const fetchProfile = async () => {
-        console.log("fetch profile pid");
-        console.log(pid)
-        let p = await ipfsUtils.getContentJson(pid[0]);
-        setProfile(p);
+        console.log("Fetching profile pid", pid)
+        if (pid) {
+            let p = await ipfsUtils.getContentJson(pid[0]);
+            setUpdatedProfile(p);
+        }
     };
 
     const createProfile = () => {
         history.push(startRoute)
     }
-
     return (
         <div className='p-2 pl-4 pr-4' style={{ height: '60vh', minWidth: '400px', minHeight: '480px'}}
         >
@@ -87,26 +89,26 @@ function PersonalProfile({
                 <div
                     className={`w-full h-full relative`}
                     style={{
-                        backgroundImage: `url(${ipfsUtils.getContentUrl(profile?.profilePictureCid)})`,
+                        backgroundImage: `url(${updatedProfile && ipfsUtils.getContentUrl(updatedProfile?.profilePictureCid)})`,
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover'
                     }}
                 >
                     { 
-                        profile ? 
+                        updatedProfile ? 
                         <span className={`absolute w-fit text-theme-white 
                             pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}>
                             <div className='font-semibold text-3xl'>
-                                {`${profile?.firstName} ${profile?.lastName}`}
+                                {`${updatedProfile?.firstName} ${updatedProfile?.lastName}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Height: ${profile?.height} ${profile?.heightUnit}`}
+                                {`Height: ${updatedProfile?.height} ${updatedProfile?.heightUnit}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Nationality: ${profile?.nationality}`}
+                                {`Nationality: ${updatedProfile?.nationality}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Current Location: ${profile?.location}`}
+                                {`Current Location: ${updatedProfile?.location}`}
                             </div>
                         </span>
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
@@ -150,7 +152,7 @@ export default function HomePage() {
     const getProfileListCount = async () => {
         let count = await getProfileListCountErc();
         setPagination({...pagination, count: count})
-        console.log(count.toString())
+     
     }
 
     const getProfiles = async () => {
@@ -164,10 +166,9 @@ export default function HomePage() {
             pageSize = count;
         }
 
-        console.log(skip, pageSize);
         let profiles = await getProfileListErc(skip, pageSize);
-        
         setProfileList(profiles);
+
         setPagination({
             ...pagination,
             skip: skip + pageSize   
@@ -176,10 +177,11 @@ export default function HomePage() {
 
     const fetchPersonalProfile = async () => {
         let walletAddress = await ERCUtils.getAddress();
+     
         if (walletAddress) {
+              
             let resp = await getProfileErc(walletAddress);
-            console.log("profile");
-            console.log(resp);
+            console.log('RESP', resp)
             setProfile(resp)
         }
     };
@@ -188,7 +190,7 @@ export default function HomePage() {
         <Layout>
             <div className='pt-32'>
                 <div className='inline-flex  w-full'>
-                    <div className='w-1/3 max-w-sm'>
+                    <div className='w-2/3 max-w-sm'>
                         <PersonalProfile  pid={profile} />
                     </div>
                     <div className='w-2/3 inline-flex flex-wrap content-start'>

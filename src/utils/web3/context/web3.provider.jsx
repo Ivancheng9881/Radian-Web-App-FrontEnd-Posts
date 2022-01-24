@@ -22,6 +22,12 @@ const Web3Provider = ({children}) => {
     //     }
     // }, [])
 
+    useEffect(()=> {
+        //Show wallet detail on refresh
+        connectERCProvider()
+    }, [])
+    
+
     const handleConnectEvent = () => {
         console.log('connected')
     }
@@ -63,13 +69,13 @@ const Web3Provider = ({children}) => {
     };
 
 
+    //TODO: check network for both 
     // useEffect(() => {
     //     window.solana?.on('connect', handleConnectEvent)
     // }, []);
 
 
     // useEffect(() => {
-
     // }, [])
 
     return (

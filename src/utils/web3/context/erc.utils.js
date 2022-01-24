@@ -35,7 +35,7 @@ async function getAddress() {
  */
 async function connectWallet() {
     try {
-        if (window.ethereum !== undefined) {
+        if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
             let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
             return resp;
         }
