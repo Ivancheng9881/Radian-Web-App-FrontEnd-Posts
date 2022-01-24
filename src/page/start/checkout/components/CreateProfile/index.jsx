@@ -48,7 +48,7 @@ const CheckoutCreateProfile = () => {
         return cid;
     };
 
-    const createProfilePolygon = async () => {
+    const createProfilePolygon = async (useGasStation) => {
         let txn; 
         let publicKey = await ERCUtils.connectWallet();
         // check if the wallet is connected
@@ -61,7 +61,7 @@ const CheckoutCreateProfile = () => {
             setError({state: false, msg: ''})
             console.log('is connected')
             let cid = await createProfileCid();
-            txn = await createProfileErc(cid.toString());
+            txn = await createProfileErc(cid.toString(), useGasStation);
         }
     }
 
@@ -134,10 +134,31 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div 
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={createProfilePolygon}
+                                    onClick={()=>createProfilePolygon(false)}
                                 > 
                                     <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">
                                         Polygon
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-4 w-1/2 ">
+                                <div className="text-center">
+                                    <img 
+                                        className="m-auto"
+                                        src='/logos/polygonRounded.png'
+                                        width={logoWidth}
+                                        height={'auto'}
+                                    />
+                                    <div className="pt-4">
+                                        Metamask
+                                    </div>
+                                </div>
+                                <div 
+                                    className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
+                                    onClick={()=>createProfilePolygon(true)}
+                                > 
+                                    <div className="pt-2 pb-2 pl-10 pr-10 text-2xl">
+                                        Polygon (Free)
                                     </div>
                                 </div>
                             </div>

@@ -64,12 +64,13 @@ function PersonalProfile({
     const [ profile, setProfile ] = useState(null)
 
     useEffect(() => {
-        if (pid.length > 0) {
+        if (pid != undefined) {
             fetchProfile()
         }
     }, [pid]);
 
     const fetchProfile = async () => {
+        console.log("fetch profile pid");
         console.log(pid)
         let p = await ipfsUtils.getContentJson(pid[0]);
         setProfile(p);
@@ -177,6 +178,8 @@ export default function HomePage() {
         let walletAddress = await ERCUtils.getAddress();
         if (walletAddress) {
             let resp = await getProfileErc(walletAddress);
+            console.log("profile");
+            console.log(resp);
             setProfile(resp)
         }
     };

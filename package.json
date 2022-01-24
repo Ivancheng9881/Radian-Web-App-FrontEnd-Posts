@@ -10,6 +10,7 @@
     "@solana/wallet-adapter-react-ui": "^0.9.3",
     "@solana/wallet-adapter-wallets": "^0.14.2",
     "@solana/web3.js": "^1.31.0",
+    "@opengsn/provider": "^2.2.5",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
