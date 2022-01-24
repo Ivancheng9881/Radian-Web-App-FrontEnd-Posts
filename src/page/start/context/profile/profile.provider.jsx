@@ -174,6 +174,16 @@ function CreateProfileProvider({ children }) {
 
         console.log('validatorResult', validatorResult);
 
+    //Country Code Selection
+    const updateProfileByDropdownSelect = (key, val) => {
+        setProfile({
+            ...profile,
+            [key]: val,
+        })
+    };
+
+    const updateProfile = (e) => {
+
         setProfile({
             ...profile,
             error: validatorResult,
@@ -200,21 +210,20 @@ function CreateProfileProvider({ children }) {
     };
 
     return (
-        <CreateProfileContext.Provider
-            value={{
-                profile,
-                updateProfile,
-                updateProfileByKey,
-                step,
-                updateStep,
-                stepList,
-                scrollDirection,
-                setScrollDirection,
-                checkoutStep,
-                checkoutStepList,
-                updateCheckoutStep
-            }}
-        >
+        <CreateProfileContext.Provider value={{
+            profile,
+            updateProfile,
+            updateProfileByKey,
+            updateProfileByDropdownSelect,
+            step, 
+            updateStep, 
+            stepList, 
+            scrollDirection, 
+            setScrollDirection,
+            checkoutStep,
+            checkoutStepList,
+            updateCheckoutStep
+        }}>
             {children}
         </CreateProfileContext.Provider>
     );
