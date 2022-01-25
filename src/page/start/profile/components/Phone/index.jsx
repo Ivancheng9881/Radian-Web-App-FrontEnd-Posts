@@ -3,7 +3,7 @@ import Dropdown from 'react-dropdown';
 import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 
-import CreateProfileContext from '../../../context/profile.context';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
 import 'react-dropdown/style.css';
 import './selectCountryCode.styles.css';

@@ -159,9 +159,16 @@ function CreateProfileProvider({ children }) {
         window.localStorage.setItem('tempProfile', JSON.stringify(profile));
     };
 
+    //Country Code Selection
+    const updateProfileByDropdownSelect = (key, val) => {
+        setProfile({
+            ...profile,
+            [key]: val,
+        })
+    };
+
     const updateProfile = (e, type = 'text') => {
         let validatorResult = Validator.validateInput(e.target.value, type);
-
         switch (type) {
             case 'text':
             case 'number':
@@ -171,19 +178,6 @@ function CreateProfileProvider({ children }) {
                 validatorResult = '';
                 break;
         }
-
-        console.log('validatorResult', validatorResult);
-
-    //Country Code Selection
-    const updateProfileByDropdownSelect = (key, val) => {
-        setProfile({
-            ...profile,
-            [key]: val,
-        })
-    };
-
-    const updateProfile = (e) => {
-
         setProfile({
             ...profile,
             error: validatorResult,

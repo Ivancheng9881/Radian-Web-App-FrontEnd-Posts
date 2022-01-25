@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import CreateProfileContext from "../../../context/profile.context";
+import CreateProfileContext from "../../../context/profile/profile.context";
 import ProfileBirth from "../Birth";
 import ProfileName from "../Name";
 import ProfilePhone from "../Phone";
