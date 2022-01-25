@@ -10,14 +10,13 @@ const ProfileWeight = (props) => {
     const unitOpts = [ { value: 'lbs', label: 'lbs' }, { value: 'kg', label: 'kg' } ];
 
     const toggleUnit = (val) => {
-        console.log('toggleUnit', val);
         let update = {
             target: {
                 name: 'weightUnit',
                 value: val
             }
         };
-        updateProfile(update);
+        updateProfile(update, 'number');
     };
 
     return (
@@ -33,13 +32,14 @@ const ProfileWeight = (props) => {
                         name="weight"
                         placeholder={profile.weightUnit.toUpperCase()}
                         value={profile.weight}
-                        onChange={updateProfile}
+                        onChange={(e) => updateProfile(e, 'number')}
                     />
                 </div>
                 <div className="max-w-sm mr-5 z-10">
                     <Toggler value={profile.weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>
+            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
         </div>
     );
 };

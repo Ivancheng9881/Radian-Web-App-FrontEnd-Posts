@@ -56,7 +56,7 @@ const DatingInterest = (props) => {
                             value={profile.interest}
                             options={options}
                             handleSelect={handleSelect}
-                            arrangment="flex"
+                            arrangement="flex"
                         />
                     </div>
                 </div>

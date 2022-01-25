@@ -15,7 +15,7 @@ const CheckoutDescriptionInformation = () => {
             </div>
             <div className="inline-flex">
                 <div className="w-2/3 ">
-                    <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold">Identity Information</div>
+                    <div className="pl-6 pr-6 text-2xl mb-2 text-theme-white font-semibold">Identity Information</div>
                     <div className="inline-flex flex-wrap">
                         <InfoDisplayGroup label={`Weight`} value={profile.weight} stepName={`weight`} />
                         <InfoDisplayGroup label={`Height`} value={profile.height} stepName={`height`} />

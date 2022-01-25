@@ -41,11 +41,10 @@ const CheckoutWrapper = ({ children }) => {
         <div id='RD-createProfileRoot' className="relative">
             <div
                 id='RD-createProfileBody'
-                className="h-100 w-full pt-40 pl-10 pr-10 bg-theme-bg-dark"
+                className="h-full w-full pt-40 pl-10 pr-10 bg-theme-bg-dark"
             >
                 <div className="relative m-auto w-4/5">
                     {children}
-
                 </div>
             </div>
             <div

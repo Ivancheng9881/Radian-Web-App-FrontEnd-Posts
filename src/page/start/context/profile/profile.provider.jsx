@@ -159,13 +159,15 @@ function CreateProfileProvider({ children }) {
         window.localStorage.setItem('tempProfile', JSON.stringify(profile));
     };
 
-    const updateProfile = (e, type = 'text') => {
+    const updateProfile = (e, type = 'text', pass) => {
         let validatorResult = Validator.validateInput(e.target.value, type);
-
         switch (type) {
             case 'text':
             case 'number':
                 validatorResult = validatorResult;
+                break;
+            case 'day':
+                if (!pass) validatorResult = `invalid input`;
                 break;
             default:
                 validatorResult = '';
@@ -173,21 +175,18 @@ function CreateProfileProvider({ children }) {
         }
 
         console.log('validatorResult', validatorResult);
+        setProfile({
+            ...profile,
+            error: validatorResult,
+            [e.target.name]: e.target.value
+        });
+    };
 
     //Country Code Selection
     const updateProfileByDropdownSelect = (key, val) => {
         setProfile({
             ...profile,
-            [key]: val,
-        })
-    };
-
-    const updateProfile = (e) => {
-
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [e.target.name]: e.target.value
+            [key]: val
         });
     };
 
@@ -210,20 +209,22 @@ function CreateProfileProvider({ children }) {
     };
 
     return (
-        <CreateProfileContext.Provider value={{
-            profile,
-            updateProfile,
-            updateProfileByKey,
-            updateProfileByDropdownSelect,
-            step, 
-            updateStep, 
-            stepList, 
-            scrollDirection, 
-            setScrollDirection,
-            checkoutStep,
-            checkoutStepList,
-            updateCheckoutStep
-        }}>
+        <CreateProfileContext.Provider
+            value={{
+                profile,
+                updateProfile,
+                updateProfileByKey,
+                updateProfileByDropdownSelect,
+                step,
+                updateStep,
+                stepList,
+                scrollDirection,
+                setScrollDirection,
+                checkoutStep,
+                checkoutStepList,
+                updateCheckoutStep
+            }}
+        >
             {children}
         </CreateProfileContext.Provider>
     );

@@ -26,7 +26,7 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
 
     const handleClick = () => {
         let target;
-        console.log('stepName', stepName);
+        console.log('clicked step name:', stepName);
         for (let i = 0; i < stepList.length; i++) {
             if (stepList[i].id === stepName) {
                 target = i;
@@ -39,7 +39,7 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
     const handleToggleVisible = () => {};
 
     return (
-        <div className="text-theme-white text-xl uppercase pl-6 pr-6 pt-6">
+        <div className="text-theme-white text-xl uppercase pl-6 pr-6 pt-3">
             <div className="border-b-2 inline-flex justify-between w-96 pb-2">
                 <div className="">
                     <div>{label}</div>

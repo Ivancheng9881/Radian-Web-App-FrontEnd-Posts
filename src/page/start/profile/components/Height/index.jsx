@@ -16,7 +16,7 @@ const ProfileHeight = (props) => {
                 value: val
             }
         };
-        updateProfile(update);
+        updateProfile(update, 'number');
     };
 
     return (
@@ -32,13 +32,14 @@ const ProfileHeight = (props) => {
                         name="height"
                         placeholder={profile.heightUnit.toUpperCase()}
                         value={profile.height}
-                        onChange={updateProfile}
+                        onChange={(e) => updateProfile(e, 'number')}
                     />
                 </div>
                 <div className="max-w-sm mr-5 z-10">
                     <Toggler value={profile.heightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>
+            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
         </div>
     );
 };

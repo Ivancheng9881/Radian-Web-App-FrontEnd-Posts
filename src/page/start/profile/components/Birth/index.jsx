@@ -10,17 +10,20 @@ const ProfileBirth = (props) => {
     // console.log('ProfileBirth', profile);
     const handleDayUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 31, true);
-        if (isValid) updateProfile(e);
+        console.log('DD', isValid);
+        updateProfile(e, 'day', isValid);
     };
 
     const handleMonthUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 12, true);
-        if (isValid) updateProfile(e);
+        console.log('MM', isValid);
+        updateProfile(e, 'day', isValid);
     };
 
     const handleYearUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 2100, true);
-        if (isValid) updateProfile(e);
+        console.log('YYYY', isValid);
+        updateProfile(e, 'day', isValid);
     };
 
     return (
@@ -32,7 +35,7 @@ const ProfileBirth = (props) => {
             <div className="mt-10 inline-flex">
                 <div className="w-48 mr-5">
                     <TextField.Outlined
-                        type="number"
+                        type="day"
                         name="day"
                         placeholder="DD"
                         value={profile.day}
@@ -58,6 +61,7 @@ const ProfileBirth = (props) => {
                     />
                 </div>
             </div>
+            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
         </div>
     );
 };
