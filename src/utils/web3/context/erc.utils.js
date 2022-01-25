@@ -1,3 +1,4 @@
+import React from 'react';
 import { ethers } from "ethers";
 // import Web3 from "web3";
 const { RelayProvider } = require('@opengsn/provider');
