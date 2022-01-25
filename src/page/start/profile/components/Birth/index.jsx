@@ -57,7 +57,9 @@ const ProfileBirth = (props) => {
                         onChange={handleYearUpdate}
                     />
                 </div>
+                
             </div>
+            <p className='mt-5 font-semi text-theme-lightGray'>e.g. If your birthday is 1 October 2000, the input format will be 01/10/2000 (DD MM YYYY).</p>
         </div>
     );
 };

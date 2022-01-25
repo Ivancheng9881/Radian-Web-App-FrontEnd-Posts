@@ -32,7 +32,7 @@ const ProfilePhone = (props) => {
             <div className="mt-10 inline-flex">
                 <div className="max-w-none w-60 mr-5" id="RD-SelectCountryCode">
                     <Dropdown
-                        options={countryCodeOptions}
+                        options={countryCodeOptions.sort()}
                         value={selectedCountryCode}
                         // value={`+${String(profile.countryCode)}`}
                         onChange={handleChange}
