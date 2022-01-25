@@ -86,8 +86,7 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
                         <EditIcon />
                     </div>
                 </div>
-
-                <div style={hoverStyle}>I am childen</div>
+                <div style={hoverStyle}>I am children</div>
             </div>
         </div>
     );
