@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
-import SolanaWalletProvider from "./solanaWallet.provider";
+// import SolanaWalletProvider from "./solanaWallet.provider";
 
-const Web3Provider = ({children}) => {
-
+const Web3Provider = ({ children }) => {
     const [ provider, setProvider ] = useState('phantom@solana');
-    const [ wallet, setWallet ] = useState(null);
+    const [ networkId, setNetworkId ] = useState(undefined)
+    const [ wallet, setWallet] = useState(null);
 
     // useEffect(() => {
     //     // handle solana wallet eager connection
@@ -22,11 +22,32 @@ const Web3Provider = ({children}) => {
     //     }
     // }, [])
 
-    useEffect(()=> {
+
+    useEffect(() => {
+        window.ethereum.on("chainChanged", async (_chainId) => {
+            console.log('listening to chainChanged event', _chainId);
+            setNetworkId(_chainId)
+        })
+        return () => {
+            window.ethereum.removeAllListeners();
+        }
+    }, [])
+
+    useEffect(() => {
         //Show wallet detail on refresh
         connectERCProvider()
     }, [])
-    
+
+    useEffect(() => {
+        getCurrentChainId()
+    }, [])
+
+    const getCurrentChainId = async () => {
+        const chainInfo = await ERCUtils.getChainId();
+        const { name, chainId } = chainInfo;
+        console.log('Web3 Provider', { name, chainId })
+        setNetworkId(chainId)
+    }
 
     const handleConnectEvent = () => {
         console.log('connected')
@@ -40,7 +61,7 @@ const Web3Provider = ({children}) => {
                 setWallet(resp.publicKey);
                 return resp.publicKey
             }
-        }   
+        }
     }
 
     const connectERCProvider = async () => {
@@ -51,7 +72,7 @@ const Web3Provider = ({children}) => {
                 setWallet(isConnected[0]);
             }
             return isConnected
-        } 
+        }
     }
 
     const connectProvider = async (network) => {
@@ -65,22 +86,22 @@ const Web3Provider = ({children}) => {
     const providerValue = {
         connect: connectProvider,
         provider: provider,
+        network: networkId,
         wallet: wallet,
     };
-
 
     //TODO: check network for both 
     // useEffect(() => {
     //     window.solana?.on('connect', handleConnectEvent)
     // }, []);
 
-
+    //TODO: check metamask is installed
     // useEffect(() => {
-    // }, [])
-
+    // }, []);
+    
     return (
         <Web3Context.Provider value={providerValue}>
-                {children}
+            {children}
         </Web3Context.Provider>
     )
 };
