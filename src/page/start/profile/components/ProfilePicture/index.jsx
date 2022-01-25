@@ -14,12 +14,12 @@ const ProfilePicture = (props) => {
     const handleUpload = async (file) => {
         console.log('Upload image...', file);
         // only accept JPG or PNG file & Image smaller than 2MB
-        const isJpgOrPng = file['type'] === 'image/jpeg' || file['type'] === 'image/png';
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
             setSnackBar({ open: true, message: 'You can only upload JPG or PNG file!', severity: 'danger' });
             return;
         }
-        const isLt2M = file['size'] / 1024 / 1024 < 2;
+        const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
             setSnackBar({ open: true, message: 'Image must smaller than 2MB!', severity: 'danger' });
             return;
@@ -34,7 +34,6 @@ const ProfilePicture = (props) => {
 
     useEffect(
         () => {
-            console.log('useEffect', profile.profilePictureCid);
             if (profile.profilePictureCid) {
                 setCid(profile.profilePictureCid);
             }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useContext } from 'react';
 import CreateProfileContext from '../../../context/profile/profile.context';
 import ProfileBirth from '../Birth';
@@ -18,6 +19,28 @@ import DatingEthnicity from '../Ethnicity';
 import DatingReligion from '../Religion';
 import ProfileNFT from '../UploadNFT';
 import ProfilePicture from '../ProfilePicture';
+=======
+import { useContext } from "react";
+import CreateProfileContext from "../../../context/profile/profile.context";
+import ProfileBirth from "../Birth";
+import ProfileName from "../Name";
+import ProfilePhone from "../Phone";
+import ProfileWrapper from "../Wrapper";
+import ProfileWeight from "../Weight";
+import ProfileHeight from "../Height";
+import ProfileNationality from "../Nationality";
+import ProfileLocation from "../Location";
+import FadeInOut from "../../../../../components/Transaction/FadeInout.components";
+import DatingSexualOrientation from "../Orientation";
+import DatingLookingFor from "../LookingFor";
+import DatingInterest from "../Interest";
+import DatingAgeRange from "../AgeRange";
+import DatingDistance from "../Distance";
+import DatingEthnicity from "../Ethnicity";
+import DatingReligion from "../Religion";
+import ProfileNFT from "../UploadNFT";
+import ProfilePicture from "../ProfilePicture";
+>>>>>>> f98dbb0ad3d7a0b02d8011cd6380ac3941fca76d
 
 const CreateProfileController = () => {
     const { step, stepList, scrollDirection } = useContext(CreateProfileContext);

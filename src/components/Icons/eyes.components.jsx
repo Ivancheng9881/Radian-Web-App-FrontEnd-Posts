@@ -12,3 +12,18 @@ const EyesIcon = ({height=0, width=0}) => {
 };
 
 export default EyesIcon;
+
+
+// const ShowEyesIcon = ({height=0, width=0}) => {
+//     return (
+//         <img 
+//             className="m-auto"
+//             src='/icons/hideEyes.png'
+//             width={20}
+//             height={20}
+//             alt="edit icon"
+//         />
+//     )
+// };
+
+// export default ShowEyesIcon;

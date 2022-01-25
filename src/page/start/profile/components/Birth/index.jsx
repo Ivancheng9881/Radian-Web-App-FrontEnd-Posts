@@ -62,6 +62,9 @@ const ProfileBirth = (props) => {
                 </div>
             </div>
             {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            <p className="mt-2 font-semi text-theme-lightGray">
+                e.g. If your birthday is 1 October 2000, the input format will be 01/10/2000 (DD MM YYYY).
+            </p>
         </div>
     );
 };
