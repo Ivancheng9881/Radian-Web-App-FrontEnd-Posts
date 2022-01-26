@@ -1,7 +1,7 @@
 import React from 'react';
 import { ethers } from "ethers";
 // import Web3 from "web3";
-// import detectEthereumProvider from '@metamask/detect-provider';
+import { maticHttpProvider } from "../../../commons/web3";
 const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider() {
@@ -104,8 +104,15 @@ function isConnected() {
 }
 
 
-async function initContract(address, abi) {
-    let signer = await getSigner()
+async function initContract(address, abi, readOnly=false) {
+    let signer;
+    if (!readOnly) {
+        signer = await getSigner()
+    } else {
+        // signer = new Web3.providers.HttpProvider(maticHttpProvider)
+        signer = ethers.getDefaultProvider(maticHttpProvider)
+    }
+    console.log(signer);
     const contract = new ethers.Contract(address, abi, signer);
     return contract;
 }

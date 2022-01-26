@@ -7,10 +7,11 @@ export const profileContract__evm__abi = abi;
 export const profileContract__evm__address = '0x1EFC4aBA053A793933df06f16B11a69bbAAdB38F';
 const paymasterAddress = "0xDeB767A9F567FfC6cbcCB8E48940b4ADB7A2aD88";
 
-async function initProfileContract() {
+async function initProfileContract(readOnly=false) {
     return await ERCUtils.initContract(
         profileContract__evm__address,
         profileContract__evm__abi,
+        readOnly
     );
 }
 
@@ -29,7 +30,7 @@ async function initGaslessProfileContract() {
 }
 
 async function getProfileFromID(id) {
-    let contract = await initProfileContract();
+    let contract = await initProfileContract(true);
     return await contract.getProfilefromID(id);
 }
 
@@ -51,8 +52,9 @@ export async function createProfileErc(identityId, useGasStation) {
 };
 
 export async function getProfileListCountErc() {
-    let contract = await initProfileContract();
+    let contract = await initProfileContract(true);
     let count = await contract.getProfilesCount();
+    console.log(count)
     return count
 }
 
