@@ -1,6 +1,7 @@
 import React from 'react';
 import { ethers } from "ethers";
 // import Web3 from "web3";
+// import detectEthereumProvider from '@metamask/detect-provider';
 const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider() {
@@ -30,9 +31,9 @@ async function getAddress() {
 }
 
 async function getChainId() {
-    // let currentNetworkId = window.ethereum.networkVersion
     const eth = await initEtherProvider();
     let currentNetworkId = await eth.getNetwork();;
+    console.log('ERC_CHAINID_UTILS', currentNetworkId)
     return currentNetworkId;
 }
 
@@ -73,6 +74,12 @@ async function switchNetwork(chainId) {
                 console.log('Error in adding ethereum chain', err)
             }
         }
+        // if(switchError.code === 4001){
+        //     return switchError.message;
+        // }
+        // if(switchError.code === -32002){
+        //     return switchError.message;
+        // }           
     }
 };
 

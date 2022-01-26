@@ -34,7 +34,7 @@ const ProfilePhone = (props) => {
                     <Dropdown
                         options={countryCodeOptions.sort()}
                         value={selectedCountryCode}
-                        // value={`+${String(profile.countryCode)}`}
+                        // value={(profile.countryCode)}
                         onChange={handleChange}
                         placeholder={selectedCountryCode}
                     />

@@ -74,7 +74,6 @@ export async function getProfileListErc(skip, limit) {
             profileList.push(p[0])
         }
     })
-
     console.log('updated profileList:', profileList)
 
     return profileList
@@ -86,8 +85,10 @@ export async function getProfileErc(address = undefined) {
         if (!address) {
             address = await ERCUtils.getAddress();
         }
+        console.log('getProfileErc Address:',address)
         if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
             const profileFromAddress = await contract.getProfilefromAddress(address)
+            console.log('get profile result:',profileFromAddress)
             return profileFromAddress;
         }
         return undefined;
@@ -96,3 +97,12 @@ export async function getProfileErc(address = undefined) {
         return { identityID: null }
     }
 }
+
+export async function getPersonalProfile () {
+    let walletAddress = await ERCUtils.getAddress();
+    if (walletAddress) {
+        let profileResp = await getProfileErc(walletAddress);
+        console.log('profileResp',profileResp)
+        return profileResp;
+    }
+};

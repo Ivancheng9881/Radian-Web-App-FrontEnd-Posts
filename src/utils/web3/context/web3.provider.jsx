@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
 // import SolanaWalletProvider from "./solanaWallet.provider";
+// import { getProfileErc } from '../contract/profileContract/erc';
 
 const Web3Provider = ({ children }) => {
     const [ provider, setProvider ] = useState('phantom@solana');
@@ -24,13 +25,14 @@ const Web3Provider = ({ children }) => {
 
 
     useEffect(() => {
+        // change network chain lister
         window.ethereum.on("chainChanged", async (_chainId) => {
             console.log('listening to chainChanged event', _chainId);
-            setNetworkId(_chainId)
         })
-        return () => {
-            window.ethereum.removeAllListeners();
-        }
+        window.ethereum.on('accountsChanged', (acc) => {
+            console.log('listening to accountsChanged event', acc)
+        })
+        return () => window.ethereum.removeAllListeners();
     }, [])
 
     useEffect(() => {
@@ -45,7 +47,7 @@ const Web3Provider = ({ children }) => {
     const getCurrentChainId = async () => {
         const chainInfo = await ERCUtils.getChainId();
         const { name, chainId } = chainInfo;
-        console.log('Web3 Provider', { name, chainId })
+        console.log('web3_provider_info', { name, chainId })
         setNetworkId(chainId)
     }
 
@@ -82,23 +84,13 @@ const Web3Provider = ({ children }) => {
             return await connectERCProvider();
         }
     };
-
     const providerValue = {
         connect: connectProvider,
         provider: provider,
         network: networkId,
-        wallet: wallet,
+        wallet: wallet
     };
-
-    //TODO: check network for both 
-    // useEffect(() => {
-    //     window.solana?.on('connect', handleConnectEvent)
-    // }, []);
-
-    //TODO: check metamask is installed
-    // useEffect(() => {
-    // }, []);
-    
+ 
     return (
         <Web3Context.Provider value={providerValue}>
             {children}

@@ -4,12 +4,11 @@ import { startRoute } from "../../commons/route";
 import RoundedButton from "../../components/Button/Rounded.components";
 import Layout from "../../components/Layout";
 import ERCUtils from "../../utils/web3/context/erc.utils";
-import { getProfileErc, getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
+import { getProfileErc, getProfileListCountErc, getProfileListErc, getPersonalProfile } from "../../utils/web3/contract/profileContract/erc";
 // import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 // import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
 import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';
-// import CreateProfileContext from '../start/context/profile/profile.context';
-
+import Web3Context from '../../utils/web3/context/web3.context';
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
 function ProfileFrame(props) {
@@ -126,62 +125,70 @@ function PersonalProfile(props) {
 
 
 export default function HomePage() {
-    const [ profileList, setProfileList ] = useState([]) 
+    const Web3 = useContext(Web3Context);
+    const { setSnackBar } = useContext(CreateSnackbarContext);
+    
+    const [ network, setNetwork ] = useState(-1);
+    const [ profileList, setProfileList ] = useState([]);
     const [ profile, setProfile ] = useState([]);
     const [ pagination, setPagination ] = useState({
         count: 0,
         skip: 0,
         limit: 10,
     });
-    // const value = useContext(CreateProfileContext);
-    // console.log('CreateProfileContext', value)//null
-    const { setSnackBar } = useContext(CreateSnackbarContext);
 
     useEffect(() => {
-        getProfileListCount();
-    }, [])
+        network == 137 && getProfileListCount();
+    }, [network])
 
     useEffect(() => {
-        if (pagination.count > 0) getProfiles();
-    }, [pagination]);
-
-    useEffect(() => {
-        fetchPersonalProfile();
-        return () => setProfile([]);
-    }, [])
-
-
-    
-    //ether case
-    // useEffect(() => {
-    //chainId === 137 >> fetch profile
-    //chainId !== 137 >> switch network
-    // getCurrentChainId()
-    // }, [window])
-
-    useEffect(async() => {
-        if (window.ethereum.networkVersion !== '137') {
-            setSnackBar({ open: true, message: 'Invalid network, polygon mainnet required', severity: 'danger' })
-            await ERCUtils.switchNetwork('0x89') //request for network switching
-            console.log('switched network')
-            fetchPersonalProfile();
-            console.log('fetched profile')
-            return () => setProfile([]);
+        if(network == 137 && pagination.count > 0){
+        getProfiles();
         }
-    },[window.ethereum.networkVersion])
+    }, [network, pagination]);
+
+    useEffect(() => {
+        network == 137 && fetchUserProfile();
+        return () => setProfile([]);
+    }, [network])
+
+    useEffect(() => {//update chain changed 
+        window.ethereum.on("chainChanged", async (_chainId) => {
+            console.log('listening to chainChanged event', _chainId);
+            setNetwork(_chainId)
+            // fetchUserProfile() && getProfiles
+        })
+        return () => window.ethereum.removeAllListeners();
+    }, [network])
+
+    useEffect(()=>{
+        getCurrentChainId()        
+    },[network])
+
+
+    const getCurrentChainId = async () => {
+    const chainInfo = await ERCUtils.getChainId();
+    const { name, chainId } = chainInfo;
+    console.log('getCurrentChainId', chainId)
     
-    // const getCurrentChainId = async () => {
-    // const chainInfo = await ERCUtils.getChainId();
-    // const { name, chainId } = chainInfo;
-    // console.log('getCurrentChainId', await chainId)
-    // if (window.ethereum.networkVersion == '137') {
-    //     fetchPersonalProfile()
-    // }
-    //   }
+    //update network 
+    setNetwork(chainId)
+
+    if (Number(window.ethereum.networkVersion) !== 137 || chainId !== 137 || network !== 137) {//chainId
+        console.log(`NOT 137`)
+        setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+        //request for switching network
+        const requestToSwitch = await ERCUtils.switchNetwork('0x89')
+        console.log('requestToSwitch', requestToSwitch)     
+        //if(requestToSwitch == null && network == 137) fetchUserProfile() && getProfiles()
+    }
+    }
 
     const getProfileListCount = async () => {
-        let count = await getProfileListCountErc();
-        setPagination({...pagination, count: count})
+        if(Number(window.ethereum?.networkVersion) == 137){
+            let count = await getProfileListCountErc();
+            setPagination({...pagination, count: count})
+        }
     }
 
     const getProfiles = async () => {
@@ -195,6 +202,7 @@ export default function HomePage() {
             pageSize = count;
         }
 
+        console.log('getting profiles', {skip, pageSize})
         let profiles = await getProfileListErc(skip, pageSize);
         setProfileList(profiles);
 
@@ -204,16 +212,15 @@ export default function HomePage() {
         })
     };
 
-    const fetchPersonalProfile = async () => {
-        let walletAddress = await ERCUtils.getAddress();
-        if (walletAddress) {
-            let resp = await getProfileErc(walletAddress);
-            console.log('RESP', resp)
-            setProfile(resp)
+    const fetchUserProfile = async () =>{
+        if(Number(window.ethereum?.networkVersion) == 137){
+        const userProfile  = await getPersonalProfile()
+        console.log('HomePage: User profile updated', userProfile)
+        setProfile(userProfile)
         }
-    };
+    }
 
-
+    
     return (
         <Layout>
             <div className='pt-32'>

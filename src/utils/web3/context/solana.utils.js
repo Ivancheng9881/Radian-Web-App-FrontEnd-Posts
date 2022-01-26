@@ -30,7 +30,7 @@ const numberToBytes = (number) => {
 
 const publicKeyToString = (bn) => {
     const publicKey = new PublicKey(bn);
-    console.log(publicKey)
+    // console.log(publicKey)
     return publicKey
 };
 
@@ -39,9 +39,9 @@ const connectWallet = async (wallet) => {
     let { publicKey } = await window.solana.connect();
     wallet.select(PhantomWalletName);
     if (publicKey) {
-        console.log(publicKey, wallet)
+        console.log('connected wallet:',publicKey, wallet)
 
-        await wallet.connect().then(res => console.log(wallet))
+        await wallet.connect().then(res => console.log('Wallet:',wallet))
         return publicKey;
     } else {
         return undefined
@@ -92,18 +92,21 @@ const disconnectWallet = async (wallet) => {
 const getConnection = () => {
     let network = WalletAdapterNetwork.Devnet;
     const connection = new Connection(clusterApiUrl(network), opts.preflightCommitment);
+    console.log('connection status:', connection)
     return connection;
 }
 
 const getProvider = async (wallet) => {
     let connection = getConnection();
     let provider = new Provider(connection, wallet, opts.preflightCommitment);
+    console.log('getting solana provider:', provider)
     return provider;
 }
 
 const getProgram = async (idl, programId, wallet) => {
     let provider = await getProvider(wallet)
     let program = new Program(idl, programId, provider);
+    console.log('geting program', program)
     return { program, provider }
 }
 

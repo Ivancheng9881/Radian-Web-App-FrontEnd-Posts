@@ -1,5 +1,3 @@
-import {useEffect} from 'react';
-
 const OutlinedTextfield = (props) => {
     const { type, placeholder, name, value, onChange = undefined } = props;    
     return (
