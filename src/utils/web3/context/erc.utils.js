@@ -104,7 +104,7 @@ function isConnected() {
 }
 
 
-async function initContract(address, abi, readOnly=false) {
+async function initContract(address, abi, readOnly = false) {
     let signer;
     if (!readOnly) {
         signer = await getSigner()
@@ -112,7 +112,7 @@ async function initContract(address, abi, readOnly=false) {
         // signer = new Web3.providers.HttpProvider(maticHttpProvider)
         signer = ethers.getDefaultProvider(maticHttpProvider)
     }
-    console.log(signer);
+    // console.log('initContract signer', signer);
     const contract = new ethers.Contract(address, abi, signer);
     return contract;
 }

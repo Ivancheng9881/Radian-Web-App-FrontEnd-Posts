@@ -8,38 +8,37 @@ import { getProfileErc, getProfileListCountErc, getProfileListErc, getPersonalPr
 // import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 // import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
 import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';
-import Web3Context from '../../utils/web3/context/web3.context';
+
+// import Web3Context from '../../utils/web3/context/web3.context';
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
 function ProfileFrame(props) {
 
     let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
-    const [profile, setProfile] = useState(null)
+    const [fullProfile, setFullProfile] = useState(null)
 
     useEffect(() => {
         fetchProfile();
     }, [props.pid]);
 
     const fetchProfile = async () => {
-        // console.log('fetchProfile', props.pid)
-
         let p = await ipfsUtils.getContentJson(props.pid);
         if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
             p.profilePictureCid = defaultProfilePictureId;
         }
-        setProfile(p)
+        setFullProfile(p)
     };
 
    
     return (
         <div className=''>
             {
-                profile && 
+                fullProfile && 
                 <div className='p-2'>
                     <div
                         className={`h-40 w-80 rounded-lg relative`}
                         style={{
-                            backgroundImage: `url(${ipfsUtils.getContentUrl(profile.profilePictureCid)})`,
+                            backgroundImage: `url(${ipfsUtils.getContentUrl(fullProfile.profilePictureCid)})`,
                             backgroundPosition: 'center center',
                             backgroundSize: 'cover'
                         }}
@@ -47,7 +46,7 @@ function ProfileFrame(props) {
                         <span className={`absolute bg-theme-bg-dark w-fit text-theme-white 
                         pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}>
                             <span className=''>
-                                {`${profile.firstName} ${profile.lastName}`}
+                                {`${fullProfile.firstName} ${fullProfile.lastName}`}
                             </span>
                         </span>
                     </div>
@@ -125,10 +124,8 @@ function PersonalProfile(props) {
 
 
 export default function HomePage() {
-    const Web3 = useContext(Web3Context);
     const { setSnackBar } = useContext(CreateSnackbarContext);
-    
-    const [ network, setNetwork ] = useState(-1);
+    const [ network, setNetwork ] = useState(undefined);
     const [ profileList, setProfileList ] = useState([]);
     const [ profile, setProfile ] = useState([]);
     const [ pagination, setPagination ] = useState({
@@ -155,16 +152,25 @@ export default function HomePage() {
     useEffect(() => {//update chain changed 
         window.ethereum.on("chainChanged", async (_chainId) => {
             console.log('listening to chainChanged event', _chainId);
-            setNetwork(_chainId)
-            // fetchUserProfile() && getProfiles
+            let currentNetwork = undefined;
+            switch (_chainId) {
+                case '0x89':
+                    currentNetwork = 137
+                    break;
+                case '0x1':
+                    currentNetwork = 1
+                    break;
+                default:
+            }
+            console.log('UPDATE CURRENT NETWORK:',currentNetwork)
+            setNetwork(currentNetwork)
         })
         return () => window.ethereum.removeAllListeners();
     }, [network])
 
-    useEffect(()=>{
-        getCurrentChainId()        
-    },[network])
-
+    useEffect(() => {
+        getCurrentChainId() 
+    }, [window.ethereum.networkVersion, network])
 
     const getCurrentChainId = async () => {
     const chainInfo = await ERCUtils.getChainId();
@@ -174,19 +180,26 @@ export default function HomePage() {
     //update network 
     setNetwork(chainId)
 
-    if (Number(window.ethereum.networkVersion) !== 137 || chainId !== 137 || network !== 137) {//chainId
-        console.log(`NOT 137`)
-        setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
-        //request for switching network
-        const requestToSwitch = await ERCUtils.switchNetwork('0x89')
-        console.log('requestToSwitch', requestToSwitch)     
+    if (Number(window.ethereum.networkVersion) === 137 || network === 137) fetchUserProfile() && getProfiles()
+        
+    if (window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && network !== 137) {//Number(window.ethereum.networkVersion) !== 137 ||
+    console.log(`INCORRECT NETWORK`)
+    setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+            
+    //request for switching network
+    setTimeout(async () => {
+    const requestToSwitch = await ERCUtils.switchNetwork('0x89')
+        console.log('requestToSwitch', requestToSwitch)
         //if(requestToSwitch == null && network == 137) fetchUserProfile() && getProfiles()
-    }
+    }, 1000)
+    
+    }         
     }
 
     const getProfileListCount = async () => {
         if(Number(window.ethereum?.networkVersion) == 137){
             let count = await getProfileListCountErc();
+            console.log('Pagination COUNT:', count)
             setPagination({...pagination, count: count})
         }
     }
@@ -223,20 +236,20 @@ export default function HomePage() {
     
     return (
         <Layout>
-            <div className='pt-32'>
-                <div className='inline-flex  w-full'>
-                    <div className='w-2/3 max-w-sm'>
-                        <PersonalProfile  pid={profile} />
-                    </div>
-                    <div className='w-2/3 inline-flex flex-wrap content-start'>
-                    {
-                        profileList?.map((p) => {
-                            return <ProfileFrame key={p} pid={p} />
-                        })
-                    }
+                <div className='pt-32'>
+                    <div className='inline-flex  w-full'>
+                        <div className='w-2/3 max-w-sm'>
+                            <PersonalProfile pid={profile} />
+                        </div>
+                        <div className='w-2/3 inline-flex flex-wrap content-start'>
+                            {
+                                profileList?.map((p) => {
+                                    return <ProfileFrame key={p} pid={p} />
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
         </Layout>
     )
 }

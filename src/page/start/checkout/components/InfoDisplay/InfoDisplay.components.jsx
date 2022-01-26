@@ -6,12 +6,13 @@ import { buildQueryString, getQuery } from '../../../../../utils/query';
 import CreateProfileContext from '../../../context/profile/profile.context';
 
 import EditIcon from '../../../../../components/Icons/edit.components';
-import EyesIcon from '../../../../../components/Icons/eyes.components';
-// import HideEyesIcon from '../../../../../components/Icons/hideEyes.components';
+import ShowEyesIcon from '../../../../../components/Icons/eyes.components';
+import HideEyesIcon from '../../../../../components/Icons/hideEyes.components';
 
 const InfoDisplayGroup = ({ label, value, stepName }) => {
     const history = useHistory();
     const [ hoverStyle, setHoverStyle ] = useState({ display: 'none' });
+    const [ IconText, setIconText ] = useState('show');
     const { stepList } = useContext(CreateProfileContext);
 
     const constructQuery = (target) => {
@@ -40,53 +41,64 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
         constructQuery(target);
     };
 
-    const handleToggleVisible = (e) => {
-        console.log('eyeIcon click', e);
-
-        //show HideEyesIcon once is clicked
-
-        //else default open eyes icon
+    const handleToggleVisible = (e, action) => {
+        e.preventDefault();
+        return setIconText(action);
     };
 
     const handleMouseEvent = (e) => {
-        console.log('handleMouseEvent', e);
-        setHoverStyle({ display: 'block' });
+        setHoverStyle({
+            fontSize: 14,
+            width: 140,
+            position: 'relative',
+            zIndex: 99,
+            top: -30,
+            left: 105
+        });
     };
-    const handleMouseLeaveEvent = (e) => {
-        console.log('handleMouseLeaveEvent', e);
-        setHoverStyle({ display: 'none' });
-    };
-    // handleMouseHoverEvent(()=> {
-    //     let infoDisplayId = document.getElementById("RD-infoDisplay");
-    //     console.log(infoDisplayId)
-    //     textarea.type = 'text';
-    //     textarea.removeAttribute('autocomplete');
-    // },[]);
+    const handleMouseLeaveEvent = (e) => setHoverStyle({ display: 'none' });
 
-    // EnterMouseEnterEvent show box
-    // EnterMouseOutEvent show box
     return (
         <div className="text-theme-white text-xl uppercase pl-6 pr-6 pt-3">
-            <div className="border-b-2 inline-flex justify-between w-96 pb-2">
+            <div className="border-b-2 inline-flex justify-between items-center align-center w-96 pb-2">
                 <div className="">
                     <div>{label}</div>
                     <div>{value}</div>
                 </div>
+
+                <span
+                    style={hoverStyle}
+                    className="text-center bg-theme-dark-blue text-theme- font-semi cursor-pointe rounded-xl transition-all 2s"
+                >
+                    {IconText === 'show' ? 'Enable upload' : 'Disable upload'}
+                </span>
                 <div className="inline-flex">
+                    {IconText === 'show' ? (
+                        <div
+                            className="flex cursor-pointer"
+                            onMouseEnter={handleMouseEvent}
+                            onMouseLeave={handleMouseLeaveEvent}
+                            onClick={(e) => handleToggleVisible(e, 'hide')}
+                        >
+                            <ShowEyesIcon />
+                        </div>
+                    ) : (
+                        <div
+                            className="flex cursor-pointer"
+                            onMouseEnter={handleMouseEvent}
+                            onMouseLeave={handleMouseLeaveEvent}
+                            onClick={(e) => handleToggleVisible(e, 'show')}
+                        >
+                            <HideEyesIcon />
+                        </div>
+                    )}
                     <div
-                        className="flex cursor-pointer"
-                        onMouseEnter={handleMouseEvent}
-                        onMouseLeave={handleMouseLeaveEvent}
-                        onClick={handleToggleVisible}
+                        className="flex justify-center items-center align-center cursor-pointer pl-3"
+                        onClick={handleClick}
                     >
-                        <EyesIcon />
-                        {/* <HideEyesIcon/> */}
-                    </div>
-                    <div className="flex cursor-pointer pl-5" onClick={handleClick}>
                         <EditIcon />
                     </div>
                 </div>
-                <div style={hoverStyle}>I am children</div>
             </div>
         </div>
     );
