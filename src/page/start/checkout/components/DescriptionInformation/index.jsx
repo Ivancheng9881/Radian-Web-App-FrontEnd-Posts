@@ -9,12 +9,12 @@ const CheckoutDescriptionInformation = () => {
     const { profile } = useContext(CreateProfileContext);
 
     return (
-        <div>
+        <div className="h-full overflow-scroll" style={{ maxHeight: 560 }}>
             <div className="pl-6 pr-6">
                 <Typography.Featured>RADIAN Passport Summary</Typography.Featured>
             </div>
             <div className="inline-flex">
-                <div className="w-2/3 ">
+                <div className="w-2/3">
                     <div className="pl-6 pr-6 text-2xl mb-2 text-theme-white font-semibold">Identity Information</div>
                     <div className="inline-flex flex-wrap">
                         <InfoDisplayGroup label={`Weight`} value={profile.weight} stepName={`weight`} />
