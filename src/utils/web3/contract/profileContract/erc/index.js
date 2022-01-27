@@ -1,6 +1,6 @@
 import ERCUtils from "../../../context/erc.utils";
 import { abi } from './abi.json';
-
+const { createApolloFetch } = require('apollo-fetch')
 
 export const profileContract__evm__abi = abi;
 
@@ -18,8 +18,8 @@ async function initProfileContract(readOnly=false) {
 async function initGaslessProfileContract() {
     const config = {
         preferredRelays: ["https://relay.server.polygon.radian.community/gsn1"],
-        relayLookupWindowBlocks: 500,
-        relayRegistrationLookupBlocks: 500,
+        relayLookupWindowBlocks: 750, // don't set too low, if too low, our relay server will be omitted
+        relayRegistrationLookupBlocks: 750,
         paymasterAddress,
     }
     return await ERCUtils.initContractGasless(
@@ -45,9 +45,9 @@ export async function createProfileErc(identityId, useGasStation) {
     let txn;
     if (currentProfile) {
         // perform update
-        txn = await contract.updateProfileEVM(identityId)
+        txn = await contract.updateProfile(identityId)
     } else {
-        txn = await contract.createProfileEVM(identityId)
+        txn = await contract.createProfile(identityId)
     }
     return txn
 };
@@ -83,6 +83,30 @@ export async function getProfileListErc(skip, limit) {
 };
 
 export async function getProfileErc(address = undefined) {
+    
+    // const fetchSubgraph = createApolloFetch({
+    //     uri: 'https://api.thegraph.com/subgraphs/name/radian-dev/radian-profile-subgraph',
+    //   })
+
+    // let result = await fetchSubgraph({query: 
+    //     `query {
+    //         profiles(skip: 0, first: 2) {
+    //             id
+    //             profileID
+    //             identityID
+    //             verifyID
+    //             addresses {
+    //                 address
+    //             }
+    //             externalAddresses {
+    //                 externalAddress
+    //             }
+    //         }
+    //     }`
+    // });
+    // console.log("The Graph");
+    // console.log(result);
+    
     try {
         let contract = await initProfileContract();
         if (!address) {
