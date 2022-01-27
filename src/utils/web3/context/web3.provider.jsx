@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState , useContext} from "react";
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
 // import SolanaWalletProvider from "./solanaWallet.provider";
 // import { getProfileErc } from '../contract/profileContract/erc';
+import CreateSnackbarContext from '../../../page/start/context/snackbar/snackbar.context';
 
 const Web3Provider = ({ children }) => {
+    const SnackbarContext = useContext(CreateSnackbarContext);
+    const { setSnackBar } = SnackbarContext;
     const [ provider, setProvider ] = useState('phantom@solana');
     const [ networkId, setNetworkId ] = useState(undefined)
     const [ wallet, setWallet] = useState(null);
@@ -23,16 +26,24 @@ const Web3Provider = ({ children }) => {
     //     }
     // }, [])
 
-
     useEffect(() => {
-        // change network chain lister
-        window.ethereum.on("chainChanged", async (_chainId) => {
-            console.log('listening to chainChanged event', _chainId);
-        })
-        window.ethereum.on('accountsChanged', (acc) => {
+            //Listening to chainId changes
+            window.ethereum.on("chainChanged", async (_chainId) => {
+                if (!_chainId.includes('0x89')) {
+                    setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+                    
+                    //Request for switching network if not on the Polygon mainnet
+                    setTimeout(async () => {
+                    await ERCUtils.switchNetwork('0x89')
+                    console.log('UPDATED NETWORK TO 137')
+                    }, 1000)
+                }
+            })
+        
+            window.ethereum.on('accountsChanged', (acc) => {
             console.log('listening to accountsChanged event', acc)
-        })
-        return () => window.ethereum.removeAllListeners();
+            })
+            return () => window.ethereum.removeAllListeners();
     }, [])
 
     useEffect(() => {
@@ -41,13 +52,21 @@ const Web3Provider = ({ children }) => {
     }, [])
 
     useEffect(() => {
+        //Check current network globally
         getCurrentChainId()
-    }, [])
+        if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
+            setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+            setTimeout( async () => {
+                await ERCUtils.switchNetwork('0x89')
+                console.log('UPDATED NETWORK TO 137')
+            }, 1000)
+        }
+    }, [window.ethereum.networkVersion, networkId])
 
     const getCurrentChainId = async () => {
         const chainInfo = await ERCUtils.getChainId();
         const { name, chainId } = chainInfo;
-        console.log('web3_provider_info', { name, chainId })
+        console.log('Web3Provider', { name, chainId })
         setNetworkId(chainId)
     }
 

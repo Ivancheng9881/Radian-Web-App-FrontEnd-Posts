@@ -33,7 +33,7 @@ async function getAddress() {
 async function getChainId() {
     const eth = await initEtherProvider();
     let currentNetworkId = await eth.getNetwork();;
-    console.log('ERC_CHAINID_UTILS', currentNetworkId)
+    // console.log('ERC_CHAINID_UTILS', currentNetworkId)
     return currentNetworkId;
 }
 
@@ -73,7 +73,7 @@ async function switchNetwork(chainId) {
             } catch (err) {
                 console.log('Error in adding ethereum chain', err)
             }
-        }          
+        }
     }
 };
 
