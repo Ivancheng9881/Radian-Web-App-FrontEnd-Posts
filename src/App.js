@@ -5,14 +5,13 @@ import GlobalSnackBarProvider from './page/start/context/snackbar/snackbar.provi
 
 function App() {
     return (
-        <SolanaWalletProvider>
-            <Web3Provider>
-                <GlobalSnackBarProvider>
-                    <Router />
-                </GlobalSnackBarProvider>
-            </Web3Provider>
+        <GlobalSnackBarProvider>
+            <SolanaWalletProvider>
+                <Web3Provider>
+                    <Router/>
+                </Web3Provider>
         </SolanaWalletProvider>
-
+    </GlobalSnackBarProvider>
     );
 }
 

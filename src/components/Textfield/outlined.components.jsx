@@ -11,7 +11,7 @@ const OutlinedTextfield = (props) => {
                     type={type}
                     name={name}
                     onChange={onChange}
-                    autocomplete="off"
+                    autoComplete="off"
                 />
             </div>
         </div>

@@ -22,7 +22,7 @@ const DownloadWallet = (props) => {
     };
 
     return (
-        connectWallet && (
+        connectWallet !== 'Select Wallet' && (
             <div id="RD-DownloadWallet" className="text-center text-theme-white mt-">
                 <ComponentWrapper>
                     <div className="flex justify-center items-center" onClick={handleClick}>

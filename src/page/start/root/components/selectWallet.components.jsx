@@ -29,16 +29,18 @@ const SelectWallet = (props) => {
         let prevState = selectedWallet;
 
         setSelectedWallet(e.value);
-        setConnectedWallet(true);
 
         if (e.value === 'phantom') {
             pubKey = await web3Context.connect('solana');
+            setConnectedWallet(true);
             console.log('window connect solana', pubKey);
-        } else if (e.value === 'metamask') {
+        } 
+        else if (e.value === 'metamask') {
+            setConnectedWallet(true);
             pubKey = await web3Context.connect('erc');
             console.log('window connect Metamask', pubKey);
         }
-        // const pubKey = await web3Context.connect();
+        // const pubKey = await web3Cbontext.connect();
         if (pubKey) {
             history.push(createProfileRoute);
         } else {

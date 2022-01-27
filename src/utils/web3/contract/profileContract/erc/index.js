@@ -31,6 +31,7 @@ async function initGaslessProfileContract() {
 
 async function getProfileFromID(id) {
     let contract = await initProfileContract(true);
+    // console.log('getProfileFromID', contract)
     return await contract.getProfilefromID(id);
 }
 
@@ -104,7 +105,7 @@ export async function getPersonalProfile () {
     let walletAddress = await ERCUtils.getAddress();
     if (walletAddress) {
         let profileResp = await getProfileErc(walletAddress);
-        console.log('profileResp',profileResp)
+        console.log('getPersonalProfile()', walletAddress, profileResp)
         return profileResp;
     }
 };

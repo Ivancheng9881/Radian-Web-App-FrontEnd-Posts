@@ -44,8 +44,8 @@ async function switchNetwork(chainId) {
             method: 'wallet_switchEthereumChain',
             params: data,
         });
-        console.log('switchedNetwork', switchedNetwork)
-        if (switchedNetwork) return null
+        console.log('Switched network status', switchedNetwork)
+        return switchedNetwork;
     } catch (switchError) {
         console.log('Error in switching polygon', switchError)
         // This error code indicates that the chain has not been added to MetaMask.
@@ -73,13 +73,7 @@ async function switchNetwork(chainId) {
             } catch (err) {
                 console.log('Error in adding ethereum chain', err)
             }
-        }
-        // if(switchError.code === 4001){
-        //     return switchError.message;
-        // }
-        // if(switchError.code === -32002){
-        //     return switchError.message;
-        // }           
+        }          
     }
 };
 
