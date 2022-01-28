@@ -190,9 +190,11 @@ function CreateProfileProvider({ children }) {
         });
     };
 
-    const updateProfileByKey = (key, val) => {
+    const updateProfileByKey = (key, val, type = 'text') => {
+        let validatorResult = Validator.validateInput(val, type);
         setProfile({
             ...profile,
+            error: validatorResult,
             [key]: val
         });
     };

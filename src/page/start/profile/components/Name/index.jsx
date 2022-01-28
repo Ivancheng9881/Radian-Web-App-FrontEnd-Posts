@@ -4,7 +4,20 @@ import { useContext, useState } from 'react';
 import CreateProfileContext from '../../../context/profile/profile.context';
 
 const ProfileName = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+
+    const handleChange = (e) => {
+        let key;
+        switch (e.target.name) {
+            case 'radianFirstName':
+                key = 'firstName';
+                break;
+            case 'radianLastName':
+                key = 'lastName';
+                break;
+        }
+        updateProfileByKey(key, e.target.value, 'text');
+    };
 
     return (
         <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
@@ -16,20 +29,20 @@ const ProfileName = (props) => {
             <div className="mt-10 inline-flex">
                 <div className="max-w-sm mr-5">
                     <TextField.Outlined
-                        name="firstName"
+                        name="radianFirstName"
                         type="text"
                         placeholder="First Name"
                         value={profile.firstName}
-                        onChange={updateProfile}
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="max-w-sm mr-5">
                     <TextField.Outlined
-                        name="lastName"
+                        name="radianLastName"
                         type="text"
                         placeholder="Last Name"
                         value={profile.lastName}
-                        onChange={updateProfile}
+                        onChange={handleChange}
                     />
                 </div>
             </div>

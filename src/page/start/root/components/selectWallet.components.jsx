@@ -15,14 +15,12 @@ import Web3Context from '../../../../utils/web3/context/web3.context';
 const SelectWallet = (props) => {
     const history = useHistory();
     const web3Context = useContext(Web3Context);
-    const { setConnectedWallet } = props;
+    const {selectedWallet, setSelectedWallet } = props;
 
     const walletOptions = [
         { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
         { value: 'metamask', label: <MetamaskIcon height={40} width={160} /> }
     ];
-
-    const [ selectedWallet, setSelectedWallet ] = useState(`Choose Wallet`);
 
     const handleChange = async (e) => {
         let pubKey;
@@ -32,11 +30,9 @@ const SelectWallet = (props) => {
 
         if (e.value === 'phantom') {
             pubKey = await web3Context.connect('solana');
-            setConnectedWallet(true);
             console.log('window connect solana', pubKey);
         } 
         else if (e.value === 'metamask') {
-            setConnectedWallet(true);
             pubKey = await web3Context.connect('erc');
             console.log('window connect Metamask', pubKey);
         }
@@ -45,7 +41,6 @@ const SelectWallet = (props) => {
             history.push(createProfileRoute);
         } else {
             setSelectedWallet(prevState);
-            setConnectedWallet(false);
         }
     };
 

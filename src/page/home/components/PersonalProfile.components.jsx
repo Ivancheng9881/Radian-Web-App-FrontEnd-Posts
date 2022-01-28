@@ -18,7 +18,7 @@ function PersonalProfile(props) {
     const fetchProfile = async () => {
         console.log("Fetching profile pid", pid)
         if (pid) {
-            let p = await ipfsUtils.getContentJson(pid[0]);
+            let p = await ipfsUtils.getContentJson(pid.identityID);
             setUpdatedProfile(p);
         }
     };

@@ -5,7 +5,7 @@ import { tickIcon } from '../../../../components/Icons/tickIconSvg';
 import { exclamationMarkIcon } from '../../../../components/Icons/exclamationMarkIconSvg';
 
 const GlobalSnackBarProvider = ({ children }) => {
-    const [ snackbar, setSnackBar ] = useState('');
+    const [ snackbar, setSnackBar ] = useState({ open: false, message: '' });
 
     const autoHideTime = useRef(null);
 
@@ -24,7 +24,7 @@ const GlobalSnackBarProvider = ({ children }) => {
         [ snackbar ]
     );
 
-    const handleSnackbarClose = (props) => {
+    const handleSnackbarClose = () => {
         setSnackBar({ open: false, message: '' });
     };
 

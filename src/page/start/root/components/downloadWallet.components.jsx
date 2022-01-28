@@ -3,8 +3,9 @@ import ComponentWrapper from '../../../../components/ComponentWrapper';
 import UAParser from 'ua-parser-js';
 
 const DownloadWallet = (props) => {
-    const { connectWallet } = props;
-    const handleClick = () => {
+    const { selectedWallet } = props;
+    
+    const handleClick = (e) => {
         const userAgent = new UAParser();
         const { name } = userAgent.getBrowser();
         let downloadLink;
@@ -20,9 +21,8 @@ const DownloadWallet = (props) => {
         }
         window.open(downloadLink, '_blank').focus();
     };
-
     return (
-        connectWallet !== 'Select Wallet' && (
+        selectedWallet !== 'Choose Wallet' && (
             <div id="RD-DownloadWallet" className="text-center text-theme-white mt-">
                 <ComponentWrapper>
                     <div className="flex justify-center items-center" onClick={handleClick}>

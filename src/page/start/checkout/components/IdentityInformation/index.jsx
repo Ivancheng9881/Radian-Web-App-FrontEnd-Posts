@@ -17,20 +17,31 @@ const CheckoutIdentityInformation = () => {
                 <div className="w-2/3 ">
                     <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold">Identity Information</div>
                     <div className="inline-flex flex-wrap">
-                        <InfoDisplayGroup label={`First Name`} value={profile.firstName} stepName={`name`} />
-                        <InfoDisplayGroup label={`Last Name`} value={profile.lastName} stepName={`name`} />
                         <InfoDisplayGroup
+                            profileKey="firstName"
+                            label={`First Name`}
+                            value={profile.firstName}
+                            stepName={`name`} />
+                        <InfoDisplayGroup
+                            profileKey="lastName"
+                            label={`Last Name`}
+                            value={profile.lastName}
+                            stepName={`name`} />
+                        <InfoDisplayGroup
+                            profileKey={["day","month","year"]}
                             label={`Birthday`}
                             value={`${profile.day}/${profile.month}/${profile.year}`}
                             stepName={`dob`}
                         />`
-                        <InfoDisplayGroup label={`Gender`} value={profile.gender} stepName={`orientation`} />
+                        <InfoDisplayGroup profileKey="gender" label={`Gender`} value={profile.gender} stepName={`orientation`} />
                         <InfoDisplayGroup
+                            profileKey={["countryCode","number"]}
                             label={`Phone`}
                             value={`${profile.countryCode} ${profile.number}`}
                             stepName={`phone`}
                         />
                         <InfoDisplayGroup
+                            profileKey="nationality"
                             label={`Nationality`}
                             value={`${profile.nationality}`}
                             stepName={`nationality`}
@@ -40,7 +51,9 @@ const CheckoutIdentityInformation = () => {
                 <div className="w-1/3">
                     <div className="text-2xl mb-4 text-theme-white font-semibold">Identity Information</div>
                     <div>
-                        <ProfilePictureFrame src={ipfsUtils.getContentUrl(profile.profilePictureCid)} />
+                        <ProfilePictureFrame
+                            profileKey="profilePictureCid"
+                            src={ipfsUtils.getContentUrl(profile.profilePictureCid)} />
                     </div>
                 </div>
             </div>

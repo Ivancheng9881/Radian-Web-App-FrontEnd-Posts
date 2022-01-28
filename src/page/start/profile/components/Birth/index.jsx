@@ -33,8 +33,9 @@ const ProfileBirth = (props) => {
                 <Typography.H2 alignment="left">Birthday is on the</Typography.H2>
             </div>
             <div className="mt-10 inline-flex">
-                <div className="w-48 mr-5">
+                <div className="w-48 mr-5 overflow-hidden">
                     <TextField.Outlined
+                        className="RD-dob"
                         type="day"
                         name="day"
                         placeholder="DD"
@@ -42,8 +43,9 @@ const ProfileBirth = (props) => {
                         onChange={handleDayUpdate}
                     />
                 </div>
-                <div className="w-48 mr-5">
+                <div className="w-48 mr-5 overflow-hidden">
                     <TextField.Outlined
+                        className="RD-dob"
                         type="number"
                         name="month"
                         placeholder="MM"
@@ -51,8 +53,9 @@ const ProfileBirth = (props) => {
                         onChange={handleMonthUpdate}
                     />
                 </div>
-                <div className="w-48 mr-5">
+                <div className="w-48 mr-5 overflow-hidden">
                     <TextField.Outlined
+                        className="RD-dob"
                         type="number"
                         name="year"
                         placeholder="YYYY"
