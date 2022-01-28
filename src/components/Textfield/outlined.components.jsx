@@ -1,6 +1,5 @@
 const OutlinedTextfield = (props) => {
     const { className='', type, placeholder, name, value, onChange = undefined } = props;    
-    
     return (
         <div id="RD-Textfield" className="mr-5">
             <div className="border-b border-theme-gray pb-2 pl-1 pr-1">
