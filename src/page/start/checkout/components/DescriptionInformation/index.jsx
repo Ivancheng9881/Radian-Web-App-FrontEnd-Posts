@@ -7,9 +7,9 @@ import InfoDisplayGroup from '../InfoDisplay/InfoDisplay.components';
 
 const CheckoutDescriptionInformation = () => {
     const { profile } = useContext(CreateProfileContext);
-
+    
     return (
-        <div className="h-full overflow-scroll" style={{ maxHeight: 560 }}>
+        <div className="RD-CheckoutPage-scrollbar h-full overflow-scroll" style={{ maxHeight: 560 }}>
             <div className="pl-6 pr-6">
                 <Typography.Featured>RADIAN Passport Summary</Typography.Featured>
             </div>

@@ -18,7 +18,7 @@ function validatePattern(val, pattern, nullable = true) {
  * @returns 
  */
 function isNull(val) {
-    return val == '' || val == undefined || val == null
+    return val === '' || val === undefined || val === null
 }
 
 

@@ -4,19 +4,14 @@ import SelectWallet from './components/selectWallet.components';
 import DownloadWallet from './components/downloadWallet.components';
 
 const CreateUserPage = (props) => {
-    const [ connectWallet, setConnectedWallet ] = useState(false);
-
-    useEffect(() => {
-        //TODO: check whether userWallet is connected (only for MetaMask case)
-        // If connected, push to next page
-    }, []);
+    const [ selectedWallet, setSelectedWallet ] = useState(`Choose Wallet`);
 
     return (
         <div className="relative">
             <div className="absolute w-full top-60">
                 <PageTitle />
-                <SelectWallet setConnectedWallet={setConnectedWallet} />
-                <DownloadWallet connectWallet={connectWallet} />
+                <SelectWallet selectedWallet={selectedWallet} setSelectedWallet={setSelectedWallet} />
+                <DownloadWallet selectedWallet={selectedWallet} />
             </div>
         </div>
     );

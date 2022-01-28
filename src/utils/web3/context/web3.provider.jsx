@@ -6,6 +6,7 @@ import ERCUtils from "./erc.utils";
 import CreateSnackbarContext from '../../../page/start/context/snackbar/snackbar.context';
 
 const Web3Provider = ({ children }) => {
+    const windowNetworkVersion = window.ethereum?.networkVersion
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
     const [ provider, setProvider ] = useState('phantom@solana');
@@ -26,33 +27,35 @@ const Web3Provider = ({ children }) => {
     //     }
     // }, [])
 
-    // useEffect(() => {
-    //     //Show wallet detail on refresh
-    //     connectERCProvider()
-    // }, [])
-
-
     useEffect(() => {
             //Listening to chainId changes
-            if (provider == "metamask@erc") {
+            if(window.ethereum !== undefined){           
                 window.ethereum.on("chainChanged", async (_chainId) => {
-                    if (!_chainId.includes('0x89')) {
-                        setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
-                        
-                        //Request for switching network if not on the Polygon mainnet
-                        setTimeout(async () => {
-                        await ERCUtils.switchNetwork('0x89')
-                        console.log('UPDATED NETWORK TO 137')
-                        }, 1000)
-                    }
-                })
-            
-                window.ethereum.on('accountsChanged', (acc) => {
-                console.log('listening to accountsChanged event', acc)
-                })
-                return () => window.ethereum.removeAllListeners();
+                if (!_chainId.includes('0x89')) {
+                    setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+                    
+                    //Request for switching network if not on the Polygon mainnet
+                    setTimeout(async () => {
+                    await ERCUtils.switchNetwork('0x89')
+                    console.log('UPDATED NETWORK TO 137')
+                    }, 1000)
+                }
+            })
+        
+            window.ethereum.on('accountsChanged', (acc) => {
+            console.log('listening to accountsChanged event', acc)
+            })
+            return () => window.ethereum.removeAllListeners();
             }
     }, [])
+
+    // useEffect(() => {
+    //     //Show wallet detail on refresh
+    //     if(window.ethereum !== undefined){
+    //         connectERCProvider()
+    //     }
+      
+    // }, [])
 
     useEffect(() => {
         //Check current network globally
@@ -66,7 +69,7 @@ const Web3Provider = ({ children }) => {
                 }, 1000)
             }
         }
-    }, [window.ethereum.networkVersion, networkId])
+    }, [windowNetworkVersion, networkId]);
 
     const getCurrentChainId = async () => {
         const chainInfo = await ERCUtils.getChainId();
@@ -92,7 +95,7 @@ const Web3Provider = ({ children }) => {
     }
 
     const connectERCProvider = async () => {
-        if (window.ethereum?.isMetaMask) {
+        if (window.ethereum !== undefined && window.ethereum?.isMetaMask) {
             let isConnected = await ERCUtils.connectWallet();
             if (isConnected.length > 0) {
                 setProvider('metamask@erc');
