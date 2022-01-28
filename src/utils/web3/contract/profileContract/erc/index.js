@@ -1,6 +1,6 @@
 import ERCUtils from "../../../context/erc.utils";
 import { abi } from './abi.json';
-const { createApolloFetch } = require('apollo-fetch')
+// const { createApolloFetch } = require('apollo-fetch')
 
 export const profileContract__evm__abi = abi;
 
@@ -76,6 +76,7 @@ export async function getProfileListErc(skip, limit) {
         if (!profileList.includes(p[0])) {
             profileList.push(p[0])
         }
+        return profileList
     })
     console.log('updated profileList:', profileList)
 

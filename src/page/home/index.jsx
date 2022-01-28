@@ -10,7 +10,7 @@ import ProfileFrame from './components/ProfileFrame.component';
 import Web3Context from '../../utils/web3/context/web3.context';
 
 export default function HomePage() {
-     const Web3ContextProvider = useContext(Web3Context);
+    const Web3ContextProvider = useContext(Web3Context);
     const [ network, setNetwork ] = useState(undefined);
     const [ profileList, setProfileList ] = useState([]);
     const [ profile, setProfile ] = useState([]);
@@ -19,25 +19,35 @@ export default function HomePage() {
         skip: 0,
         limit: 10,
     });
-    
-    useEffect(() => {
-    getCurrentChainId()
-    },[window.ethereum.networkVersion, network])
+
+    const windowNetworkVersion = window.ethereum?.networkVersion
 
     useEffect(() => {
-        Number(window.ethereum.networkVersion) === 137 && getProfileListCount();
-    }, [window.ethereum.networkVersion])
+    if(window.ethereum !== undefined){
+        getCurrentChainId()
+    }
+    },[windowNetworkVersion, network])
 
     useEffect(() => {
-        if(Number(window.ethereum.networkVersion) === 137 && pagination.count > 0){
+        if(window.ethereum !== undefined){
+        Number(windowNetworkVersion) === 137 && getProfileListCount();
+        }
+    }, [windowNetworkVersion])
+
+    useEffect(() => {
+        if(window.ethereum !== undefined){
+        if(Number(windowNetworkVersion) === 137 && pagination.count > 0){
+        }
         getProfiles();
         }
-    }, [window.ethereum.networkVersion, pagination]);
+    }, [windowNetworkVersion, pagination]);
 
     useEffect(() => {
+        if(window.ethereum !== undefined){
         Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
         return () => setProfile([]);
-    }, [window.ethereum.networkVersion])
+        }
+    }, [windowNetworkVersion])
     
     const getCurrentChainId = async () => {
     const currentNetwork = await Web3ContextProvider.network

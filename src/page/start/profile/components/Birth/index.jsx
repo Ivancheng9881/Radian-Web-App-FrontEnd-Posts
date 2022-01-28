@@ -35,6 +35,7 @@ const ProfileBirth = (props) => {
             <div className="mt-10 inline-flex">
                 <div className="w-48 mr-5">
                     <TextField.Outlined
+                        className="RD-dob"
                         type="day"
                         name="day"
                         placeholder="DD"
@@ -44,6 +45,7 @@ const ProfileBirth = (props) => {
                 </div>
                 <div className="w-48 mr-5">
                     <TextField.Outlined
+                        className="RD-dob"
                         type="number"
                         name="month"
                         placeholder="MM"
@@ -53,6 +55,7 @@ const ProfileBirth = (props) => {
                 </div>
                 <div className="w-48 mr-5">
                     <TextField.Outlined
+                        className="RD-dob"
                         type="number"
                         name="year"
                         placeholder="YYYY"

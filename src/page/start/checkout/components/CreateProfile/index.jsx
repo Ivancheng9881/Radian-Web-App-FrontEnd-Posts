@@ -112,7 +112,7 @@ const CheckoutCreateProfile = () => {
 
     return (
         <div id="RD-CheckoutProfileRoot">
-            <div className="m-auto bg-theme-bg-light w-full max-w-screen-lg rounded text-theme-white">
+            <div style={{ width:'fit-content'}} className="m-auto bg-theme-bg-light w-full max-w-screen-lg rounded text-theme-white">
                 <div className="p-16 text-center">
                     <div>
                         <Typography.H2>Create profile on</Typography.H2>
