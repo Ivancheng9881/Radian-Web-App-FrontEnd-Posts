@@ -11,19 +11,19 @@ const ProfileBirth = (props) => {
     const handleDayUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 31, true);
         console.log('DD', isValid);
-        updateProfile(e, 'day', isValid);
+        updateProfile(e, 'date', isValid);
     };
 
     const handleMonthUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 12, true);
         console.log('MM', isValid);
-        updateProfile(e, 'day', isValid);
+        updateProfile(e, 'date', isValid);
     };
 
     const handleYearUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 2100, true);
         console.log('YYYY', isValid);
-        updateProfile(e, 'day', isValid);
+        updateProfile(e, 'date', isValid);
     };
 
     return (

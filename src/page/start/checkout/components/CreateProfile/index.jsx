@@ -51,6 +51,7 @@ const CheckoutCreateProfile = () => {
 
     const createProfileCid = async () => {
         let profileString = JSON.stringify(profile);
+        console.log('before uploading', profile);
         console.log('createProfileCid', profileString);
         const cid = await ipfsUtils.uploadContent(profileString);
         return cid;

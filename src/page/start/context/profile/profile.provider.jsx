@@ -159,22 +159,22 @@ function CreateProfileProvider({ children }) {
         window.localStorage.setItem('tempProfile', JSON.stringify(profile));
     };
 
-    const updateProfile = (e, type = 'text', pass) => {
+    const updateProfile = (e, type = 'text', valid) => {
         let validatorResult = Validator.validateInput(e.target.value, type);
         switch (type) {
             case 'text':
             case 'number':
                 validatorResult = validatorResult;
                 break;
-            case 'day':
-                if (!pass) validatorResult = `invalid input`;
+            case 'date':
+                if (!valid) validatorResult = `invalid input`;
                 break;
             default:
                 validatorResult = '';
                 break;
         }
 
-        console.log('validatorResult', validatorResult);
+        // console.log('validatorResult', validatorResult);
         setProfile({
             ...profile,
             error: validatorResult,
@@ -212,6 +212,7 @@ function CreateProfileProvider({ children }) {
         <CreateProfileContext.Provider
             value={{
                 profile,
+                setProfile,
                 updateProfile,
                 updateProfileByKey,
                 updateProfileByDropdownSelect,
