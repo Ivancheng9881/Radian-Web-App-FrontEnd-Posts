@@ -1,6 +1,6 @@
 import ERCUtils from "../../../context/erc.utils";
 import { abi } from './abi.json';
-// const { createApolloFetch } = require('apollo-fetch')
+const { createApolloFetch } = require('apollo-fetch')
 
 export const profileContract__evm__abi = abi;
 

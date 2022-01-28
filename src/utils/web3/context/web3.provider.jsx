@@ -27,6 +27,14 @@ const Web3Provider = ({ children }) => {
     //     }
     // }, [])
 
+    // useEffect(() => {
+    //     //Show wallet detail on refresh
+    //     if(window.ethereum !== undefined){
+    //         connectERCProvider()
+    //     }
+      
+    // }, [])
+
     useEffect(() => {
             //Listening to chainId changes
             if(window.ethereum !== undefined){           
@@ -49,17 +57,10 @@ const Web3Provider = ({ children }) => {
             }
     }, [])
 
-    // useEffect(() => {
-    //     //Show wallet detail on refresh
-    //     if(window.ethereum !== undefined){
-    //         connectERCProvider()
-    //     }
-      
-    // }, [])
 
     useEffect(() => {
         //Check current network globally
-        if (provider == "metamask@erc") {
+        if (window.ethereum !== undefined) {
             getCurrentChainId();
             if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
                 setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
