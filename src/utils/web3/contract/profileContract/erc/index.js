@@ -85,27 +85,38 @@ export async function getProfileListErc(skip, limit) {
 
 export async function getProfileErc(address = undefined) {
     
+    // let query1 = `query {
+    //             profiles(skip: 0, first: 2) {
+    //                 id
+    //                 profileID
+    //                 identityID
+    //                 verifyID
+    //                 addresses {
+    //                     address
+    //                 }
+    //                 externalAddresses {
+    //                     externalAddress
+    //                 }
+    //             }
+    //         }`;
+
+    // let query2 = `query {
+    //                 addresses(first: 5, where: {address: "0xf20C214c69D0f0aFF77E63B56833BF68da635cb2"}) {
+    //                 id
+    //                 address
+    //                 profile {
+    //                     id
+    //                 }
+    //             }
+    //         }`;
+
     // const fetchSubgraph = createApolloFetch({
     //     uri: 'https://api.thegraph.com/subgraphs/name/radian-dev/radian-profile-subgraph',
     //   })
 
-    // let result = await fetchSubgraph({query: 
-    //     `query {
-    //         profiles(skip: 0, first: 2) {
-    //             id
-    //             profileID
-    //             identityID
-    //             verifyID
-    //             addresses {
-    //                 address
-    //             }
-    //             externalAddresses {
-    //                 externalAddress
-    //             }
-    //         }
-    //     }`
-    // });
+    // let result = await fetchSubgraph({query: query2});
     // console.log("The Graph");
+    // console.log(query2);
     // console.log(result);
     
     try {
