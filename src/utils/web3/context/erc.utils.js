@@ -2,9 +2,11 @@ import React from 'react';
 import { ethers } from "ethers";
 // import Web3 from "web3";
 import { maticHttpProvider } from "../../../commons/web3";
+import { exit } from 'process';
 const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider() {
+    console.log("init provider");
     let resp = await connectWallet();
     if (!resp) return false;
     return new ethers.providers.Web3Provider(window.ethereum, "any");
@@ -31,8 +33,10 @@ async function getAddress() {
 }
 
 async function getChainId() {
+    console.log("Get chain ID");
     const eth = await initEtherProvider();
-    let currentNetworkId = await eth.getNetwork();;
+    if (!eth) return null;
+    let currentNetworkId = await eth.getNetwork();
     // console.log('ERC_CHAINID_UTILS', currentNetworkId)
     return currentNetworkId;
 }
@@ -82,6 +86,7 @@ async function switchNetwork(chainId) {
  * @returns {[string]} array of wallet address
  */
 async function connectWallet() {
+    console.log("connecting wallet");
     try {
         if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
             let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })

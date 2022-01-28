@@ -29,6 +29,23 @@ async function initGaslessProfileContract() {
     );
 }
 
+async function getProfilesFromSubgraph(skip, limit) {
+    let query = `query Profile($skip: Int!, $limit: Int!) {
+                profiles(skip: $skip, first: $limit) {
+                    identityID
+                    verifyID
+                }
+            }`;
+
+    const fetchSubgraph = createApolloFetch({
+        uri: 'https://api.thegraph.com/subgraphs/name/radian-dev/radian-profile-subgraph',
+    })
+
+    let result = await fetchSubgraph({query: query, variables: {skip: skip, limit: limit}});
+    console.log(result.data.profiles);
+    return result.data.profiles;
+}
+
 async function getProfileFromID(id) {
     let contract = await initProfileContract(true);
     // console.log('getProfileFromID', contract)
@@ -53,83 +70,96 @@ export async function createProfileErc(identityId, useGasStation) {
 };
 
 export async function getProfileListCountErc() {
-    let contract = await initProfileContract(true);
-    let count = await contract.getProfilesCount();
-    console.log(count)
+    // let contract = await initProfileContract(true);
+    // let count = await contract.getProfilesCount();
+
+    // TODO set up a graph for metadata, reduce data fetched from api
+    let query = `query {
+        profiles {
+            id
+        }
+    }`;
+    const fetchSubgraph = createApolloFetch({
+        uri: 'https://api.thegraph.com/subgraphs/name/radian-dev/radian-profile-subgraph',
+    })
+    console.log("sending request");
+    let result = await fetchSubgraph({query: query});
+    let count = result.data.profiles.length;
     return count
 }
 
 export async function getProfileListErc(skip, limit) {
-    let arr = [];
-    for (let i = skip + 1; i < limit + skip + 1; i++) {
-        arr.push(i);
-    }
+    
+    // let arr = [];
+    // for (let i = skip + 1; i < limit + skip + 1; i++) {
+    //     arr.push(i);
+    // }
 
-    let profiles = await Promise.all(
-        arr.map(async (id) => { return await getProfileFromID(id) })
-    )
-        .then(resp => resp)
-        .catch(err => console.log('Error in getting profile list', err))
+    // let profiles = await Promise.all(
+    //     arr.map(async (id) => { return await getProfileFromID(id) })
+    // )
+    //     .then(resp => resp)
+    //     .catch(err => console.log('Error in getting profile list', err))
 
+    // let profileList = [];
+    // profiles.map((p) => {
+    //     if (!profileList.includes(p[0])) {
+    //         profileList.push(p[0])
+    //     }
+    // })
+    // console.log('updated profileList:', profileList)
+
+    let profiles = await getProfilesFromSubgraph(skip, limit);
     let profileList = [];
     profiles.map((p) => {
-        if (!profileList.includes(p[0])) {
-            profileList.push(p[0])
-        }
+        profileList.push(p.identityID);
     })
-    console.log('updated profileList:', profileList)
 
     return profileList
 };
 
+async function getProfileFromAddressSubgraph(address) {
+    
+    let query = `query Addresses($address: String!) {
+            addresses(first: 5, where: {address: $address}) {
+            profile {
+                identityID
+                verifyID
+            }
+        }
+    }`;
+
+    const fetchSubgraph = createApolloFetch({
+        uri: 'https://api.thegraph.com/subgraphs/name/radian-dev/radian-profile-subgraph',
+    })
+
+    let result = await fetchSubgraph({query: query, variables: {address: address}});
+    console.log(result.data.addresses[0].profile.identityID);
+    let profile = result.data.addresses[0].profile;
+
+    return profile;
+}
+
 export async function getProfileErc(address = undefined) {
-    
-    // let query1 = `query {
-    //             profiles(skip: 0, first: 2) {
-    //                 id
-    //                 profileID
-    //                 identityID
-    //                 verifyID
-    //                 addresses {
-    //                     address
-    //                 }
-    //                 externalAddresses {
-    //                     externalAddress
-    //                 }
-    //             }
-    //         }`;
-
-    // let query2 = `query {
-    //                 addresses(first: 5, where: {address: "0xf20C214c69D0f0aFF77E63B56833BF68da635cb2"}) {
-    //                 id
-    //                 address
-    //                 profile {
-    //                     id
-    //                 }
-    //             }
-    //         }`;
-
-    // const fetchSubgraph = createApolloFetch({
-    //     uri: 'https://api.thegraph.com/subgraphs/name/radian-dev/radian-profile-subgraph',
-    //   })
-
-    // let result = await fetchSubgraph({query: query2});
-    // console.log("The Graph");
-    // console.log(query2);
-    // console.log(result);
-    
+        
     try {
-        let contract = await initProfileContract();
         if (!address) {
             address = await ERCUtils.getAddress();
         }
         console.log('getProfileErc Address:',address)
-        if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
-            const profileFromAddress = await contract.getProfilefromAddress(address)
-            console.log('get profile result:',profileFromAddress)
-            return profileFromAddress;
-        }
-        return undefined;
+
+        // let contract = await initProfileContract();
+        // if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
+        //     const profileFromAddress = await contract.getProfilefromAddress(address)
+        //     console.log('get profile result:',profileFromAddress)
+        //     return profileFromAddress;
+        // }
+        // return undefined;
+        
+        let profileFromAddress = await getProfileFromAddressSubgraph(address);
+        console.log(profileFromAddress.identityID);
+        return profileFromAddress
+
     } catch (err) {
         console.log('Error in getProfileErc', err)
         return { identityID: null }
