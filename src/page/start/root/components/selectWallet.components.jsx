@@ -38,6 +38,7 @@ const SelectWallet = (props) => {
         }
         // const pubKey = await web3Cbontext.connect();
         if (pubKey) {
+            // if has profile, go back, else create profile
             history.push(createProfileRoute);
         } else {
             setSelectedWallet(prevState);

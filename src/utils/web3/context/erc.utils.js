@@ -118,8 +118,6 @@ async function initContract(address, abi, readOnly = false) {
 
 async function initContractGasless(address, abi, config) {
     let provider = await initEtherProvider();
-    // console.log(provider);
-    // console.log(window.ethereum);
     provider = await RelayProvider.newProvider({ provider: window.ethereum, config }).init();
     const provider2 = new ethers.providers.Web3Provider(provider, "any");
     const signer = provider2.getSigner();

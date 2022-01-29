@@ -26,6 +26,7 @@ function PersonalProfile(props) {
     const createProfile = () => {
         history.push(startRoute)
     }
+    
     return (
         <div className='p-2 pl-4 pr-4' style={{ height: '60vh', minWidth: '400px', minHeight: '480px'}}
         >
@@ -57,9 +58,14 @@ function PersonalProfile(props) {
                         </span>
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
                         bottom-24 opacity-80 text-center`}>
+                            {window.ethereum.selectedAddress == null ?
+                            <RoundedButton  onClick={createProfile}>
+                                <span className='m-auto'>Connect Wallet</span>
+                            </RoundedButton>
+                            :
                             <RoundedButton  onClick={createProfile}>
                                 <span className='m-auto'>Create Profile Now</span>
-                            </RoundedButton>
+                            </RoundedButton>}
                         </span>
 
                     }

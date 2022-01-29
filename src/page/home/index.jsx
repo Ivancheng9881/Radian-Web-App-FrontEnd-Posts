@@ -8,6 +8,7 @@ import { getProfileErc, getProfileListCountErc, getProfileListErc, getPersonalPr
 import PersonalProfile from './components/PersonalProfile.components';
 import ProfileFrame from './components/ProfileFrame.component';
 import Web3Context from '../../utils/web3/context/web3.context';
+import ERCUtils from "../../utils/web3/context/erc.utils";
 
 export default function HomePage() {
     const Web3ContextProvider = useContext(Web3Context);
@@ -24,11 +25,6 @@ export default function HomePage() {
     //     getCurrentChainId();
     // },[window.ethereum.networkVersion, network])
 
-    // const getCurrentChainId = async () => {
-    //     const currentNetwork = await Web3ContextProvider.network
-    //     setNetwork(currentNetwork) 
-    // }
-
     // useEffect(() => {
     //     Number(window.ethereum.networkVersion) === 137 && getProfileListCount();
     // }, [window.ethereum.networkVersion])
@@ -43,6 +39,25 @@ export default function HomePage() {
     //     Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
     //     return () => setProfile([]);
     // }, [window.ethereum.networkVersion])
+
+    // fetch profile only if there is address selected and the chainID is correct
+    useEffect(() => {
+        if (window.ethereum.selectedAddress != null){
+            getCurrentChainId();
+        }
+    },[window.ethereum.networkVersion, network])
+
+    const getCurrentChainId = async () => {
+        const currentNetwork = await Web3ContextProvider.network
+        setNetwork(currentNetwork) 
+    }
+
+    useEffect(() => {
+        if (window.ethereum.selectedAddress != null){
+            Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
+            return () => setProfile([]);
+        }
+    }, [window.ethereum.networkVersion])
 
     useEffect(()=>{
         getProfileListCount();
