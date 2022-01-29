@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState , useContext} from "react";
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
-import SolanaWalletProvider from "./solanaWallet.provider";
+// import SolanaWalletProvider from "./solanaWallet.provider";
+// import { getProfileErc } from '../contract/profileContract/erc';
+import CreateSnackbarContext from '../../../page/start/context/snackbar/snackbar.context';
 
-const Web3Provider = ({children}) => {
-
+const Web3Provider = ({ children }) => {
+    const windowNetworkVersion = window.ethereum?.networkVersion
+    const SnackbarContext = useContext(CreateSnackbarContext);
+    const { setSnackBar } = SnackbarContext;
     const [ provider, setProvider ] = useState('phantom@solana');
-    const [ wallet, setWallet ] = useState(null);
+    const [ networkId, setNetworkId ] = useState(undefined)
+    const [ wallet, setWallet] = useState(null);
 
     // useEffect(() => {
     //     // handle solana wallet eager connection
@@ -22,6 +27,59 @@ const Web3Provider = ({children}) => {
     //     }
     // }, [])
 
+    // useEffect(() => {
+    //     //Show wallet detail on refresh
+    //     if(window.ethereum !== undefined){
+    //         connectERCProvider()
+    //     }
+      
+    // }, [])
+
+    useEffect(() => {
+            //Listening to chainId changes
+            if(window.ethereum !== undefined){           
+                window.ethereum.on("chainChanged", async (_chainId) => {
+                if (!_chainId.includes('0x89')) {
+                    setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+                    
+                    //Request for switching network if not on the Polygon mainnet
+                    setTimeout(async () => {
+                    await ERCUtils.switchNetwork('0x89')
+                    console.log('UPDATED NETWORK TO 137')
+                    }, 1000)
+                }
+            })
+        
+            window.ethereum.on('accountsChanged', (acc) => {
+            console.log('listening to accountsChanged event', acc)
+            })
+            return () => window.ethereum.removeAllListeners();
+            }
+    }, [])
+
+
+    useEffect(() => {
+        //Check current network globally
+        if (window.ethereum !== undefined) {
+            getCurrentChainId();
+            if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
+                setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+                setTimeout( async () => {
+                    await ERCUtils.switchNetwork('0x89')
+                    console.log('UPDATED NETWORK TO 137')
+                }, 1000)
+            }
+        }
+    }, [windowNetworkVersion, networkId]);
+
+    const getCurrentChainId = async () => {
+        const chainInfo = await ERCUtils.getChainId();
+        if (!chainInfo) return; // do not update chainID if metamask is not connected
+        const { name, chainId } = chainInfo;
+        console.log('Web3Provider', { name, chainId })
+        setNetworkId(chainId)
+    }
+
     const handleConnectEvent = () => {
         console.log('connected')
     }
@@ -34,18 +92,18 @@ const Web3Provider = ({children}) => {
                 setWallet(resp.publicKey);
                 return resp.publicKey
             }
-        }   
+        }
     }
 
     const connectERCProvider = async () => {
-        if (window.ethereum?.isMetaMask) {
+        if (window.ethereum !== undefined && window.ethereum?.isMetaMask) {
             let isConnected = await ERCUtils.connectWallet();
             if (isConnected.length > 0) {
                 setProvider('metamask@erc');
                 setWallet(isConnected[0]);
             }
             return isConnected
-        } 
+        }
     }
 
     const connectProvider = async (network) => {
@@ -55,26 +113,16 @@ const Web3Provider = ({children}) => {
             return await connectERCProvider();
         }
     };
-
     const providerValue = {
         connect: connectProvider,
         provider: provider,
-        wallet: wallet,
+        network: networkId,
+        wallet: wallet
     };
-
-
-    // useEffect(() => {
-    //     window.solana?.on('connect', handleConnectEvent)
-    // }, []);
-
-
-    // useEffect(() => {
-
-    // }, [])
-
+ 
     return (
         <Web3Context.Provider value={providerValue}>
-                {children}
+            {children}
         </Web3Context.Provider>
     )
 };

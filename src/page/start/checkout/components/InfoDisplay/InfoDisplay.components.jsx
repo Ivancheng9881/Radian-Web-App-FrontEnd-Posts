@@ -1,71 +1,107 @@
-import { useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { createProfileRoute } from "../../../../../commons/route";
-import EditIcon from "../../../../../components/Icons/edit.components";
-import EyesIcon from "../../../../../components/Icons/eyes.components";
-import { buildQueryString, getQuery } from "../../../../../utils/query";
-import CreateProfileContext from "../../../context/profile.context";
+import { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { createProfileRoute } from '../../../../../commons/route';
 
+import { buildQueryString, getQuery } from '../../../../../utils/query';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
-const InfoDisplayGroup = ({
-    label,
-    value,
-    stepName
-}) => {
+import EditIcon from '../../../../../components/Icons/edit.components';
+import ShowEyesIcon from '../../../../../components/Icons/eyes.components';
+import HideEyesIcon from '../../../../../components/Icons/hideEyes.components';
 
+const InfoDisplayGroup = ({ label, value, stepName }) => {
     const history = useHistory();
+    const [ hoverStyle, setHoverStyle ] = useState({ display: 'none' });
+    const [ IconText, setIconText ] = useState('show');
     const { stepList } = useContext(CreateProfileContext);
 
     const constructQuery = (target) => {
-        console.log(target)
         let currentStep = getQuery(history.location.search).step;
         let query = {
             returnStep: currentStep,
             isEdit: true,
-            step: target,
+            step: target
         };
         let qs = buildQueryString(query);
-        console.log(qs);
         history.push({
             pathname: createProfileRoute,
             search: `?${qs}`
-        })
-    }
+        });
+    };
 
     const handleClick = () => {
         let target;
-        console.log(stepName)
-        for(let i = 0; i < stepList.length; i++) {
+        console.log('clicked step name:', stepName);
+        for (let i = 0; i < stepList.length; i++) {
             if (stepList[i].id === stepName) {
                 target = i;
-                break
+                break;
             }
         }
-
         constructQuery(target);
     };
 
-    const handleToggleVisible = () => {};
+    const handleToggleVisible = (e, action) => {
+        e.preventDefault();
+        return setIconText(action);
+    };
+
+    const handleMouseEvent = (e) => {
+        setHoverStyle({
+            fontSize: 14,
+            width: 140,
+            position: 'relative',
+            zIndex: 99,
+            top: -30,
+            left: 105
+        });
+    };
+    const handleMouseLeaveEvent = (e) => setHoverStyle({ display: 'none' });
 
     return (
-        <div className="text-theme-white text-xl uppercase pl-6 pr-6 pt-6">
-            <div className="border-b-2 inline-flex justify-between w-96 pb-2">
+        <div className="text-theme-white text-xl uppercase pl-6 pr-6 pt-3">
+            <div className="border-b-2 inline-flex justify-between items-center align-center w-96 pb-2">
                 <div className="">
                     <div>{label}</div>
                     <div>{value}</div>
                 </div>
+
+                <span
+                    style={hoverStyle}
+                    className="text-center bg-theme-dark-blue text-theme- font-semi cursor-pointe rounded-xl transition-all 2s"
+                >
+                    {IconText === 'show' ? 'Enable upload' : 'Disable upload'}
+                </span>
                 <div className="inline-flex">
-                    <div className="flex cursor-pointer" onClick={handleToggleVisible}>
-                        <EyesIcon />
-                    </div>
-                    <div className="flex cursor-pointer pl-5" onClick={handleClick}>
+                    {IconText === 'show' ? (
+                        <div
+                            className="flex cursor-pointer"
+                            onMouseEnter={handleMouseEvent}
+                            onMouseLeave={handleMouseLeaveEvent}
+                            onClick={(e) => handleToggleVisible(e, 'hide')}
+                        >
+                            <ShowEyesIcon />
+                        </div>
+                    ) : (
+                        <div
+                            className="flex cursor-pointer"
+                            onMouseEnter={handleMouseEvent}
+                            onMouseLeave={handleMouseLeaveEvent}
+                            onClick={(e) => handleToggleVisible(e, 'show')}
+                        >
+                            <HideEyesIcon />
+                        </div>
+                    )}
+                    <div
+                        className="flex justify-center items-center align-center cursor-pointer pl-3"
+                        onClick={handleClick}
+                    >
                         <EditIcon />
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 };
-
 
 export default InfoDisplayGroup;

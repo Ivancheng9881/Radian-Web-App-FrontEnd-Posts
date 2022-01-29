@@ -5,7 +5,7 @@
  * @param {*} nullable 
  * @returns 
  */
-function validatePattern(val, pattern, nullable=true) {
+function validatePattern(val, pattern, nullable = true) {
     if (nullable && isNull(val)) return true
     return pattern.test(val);
 }
@@ -18,7 +18,7 @@ function validatePattern(val, pattern, nullable=true) {
  * @returns 
  */
 function isNull(val) {
-    return val == '' || val == undefined || val == null
+    return val === '' || val === undefined || val === null
 }
 
 
@@ -30,9 +30,8 @@ function isNull(val) {
  */
 function isNumberOnly(val, nullable) {
     let pattern = /^\d+$/;
-    return validatePattern(val, pattern, nullable=true);
+    return validatePattern(val, pattern, nullable = true);
 }
-
 
 /**
  * validate if the value is a number within the range
@@ -42,16 +41,34 @@ function isNumberOnly(val, nullable) {
  * @param {boolean} nullable 
  * @returns 
  */
-function isNumberInRange(val, min, max, nullable=true) {
+function isNumberInRange(val, min, max, nullable = true) {
     if (!isNumberOnly(val, nullable)) return false
     return val >= min && val <= max;
-
 }
 
+export const validateInput = (value, type) => {
+    let reZeroToNine = new RegExp('^(?=.*[0-9])');
+    let reSpecialCharacter = new RegExp('^(?=.*[!@#$%^&*])');
+
+    if (!value) return `input field required`;
+    if (reSpecialCharacter.test(value)) return `value must not contain special character`;
+
+    switch (type) {
+        case 'text':
+            if (reZeroToNine.test(value)) return `value must not contain number`;
+            break;
+        case 'number':
+            break;
+        default:
+            break;
+    }
+    return true;
+};
 
 const Validator = {
     isNumberOnly,
     isNumberInRange,
+    validateInput
 };
 
 export default Validator

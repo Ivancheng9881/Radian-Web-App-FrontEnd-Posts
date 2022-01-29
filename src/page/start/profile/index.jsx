@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { getQuery } from "../../../utils/query";
-import CreateProfileContext from "../context/profile.context";
+import CreateProfileContext from "../context/profile/profile.context";
 import CreateProfileController from "./components/StepController";
 
 const CreateProfilePage = (props) => {
@@ -9,6 +9,7 @@ const CreateProfilePage = (props) => {
 
     useEffect(() => {
         let query = getQuery(props.history.location.search);
+        console.log('CreateProfilePage-steps:', query)
         if (query?.step) {
             updateStep(query.step)
         }

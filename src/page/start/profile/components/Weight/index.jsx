@@ -1,61 +1,47 @@
-import Typography from "../../../../../components/Typography";
-import TextField from "../../../../../components/Textfield";
-import { useContext } from "react";
-import Toggler from "../../../../../components/Toggler";
-import CreateProfileContext from "../../../context/profile.context";
+import Typography from '../../../../../components/Typography';
+import TextField from '../../../../../components/Textfield';
+import { useContext } from 'react';
+import Toggler from '../../../../../components/Toggler';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
 const ProfileWeight = (props) => {
-
     const { profile, updateProfile } = useContext(CreateProfileContext);
 
-    const unitOpts = [
-        { value: 'lbs', label: 'lbs' },
-        { value: 'kg', label: 'kg' }
-    ]
+    const unitOpts = [ { value: 'lbs', label: 'lbs' }, { value: 'kg', label: 'kg' } ];
 
     const toggleUnit = (val) => {
-        console.log(val);
-        let update = { target: {
-            name: 'weightUnit',
-            value: val
-        }}
-        updateProfile(update);
-    }
+        let update = {
+            target: {
+                name: 'weightUnit',
+                value: val
+            }
+        };
+        updateProfile(update, 'number');
+    };
 
     return (
         <div id="RD-CreateProfile-weight" className="RD-CreateProfileComponents">
-            <Typography.Featured
-                alignment='left'
-            >
-                Basic Info
-            </Typography.Featured>
+            <Typography.Featured alignment="left">Basic Info</Typography.Featured>
             <div className="pt-4 pb-2">
-                <Typography.H2
-                    alignment="left"
-                >
-                    Weight
-                </Typography.H2>
+                <Typography.H2 alignment="left">Weight</Typography.H2>
             </div>
             <div className="mt-10 inline-flex items-end">
                 <div className="w-1/3 mr-5">
                     <TextField.Outlined
-                        name='weight'
+                        type="number"
+                        name="weight"
                         placeholder={profile.weightUnit.toUpperCase()}
                         value={profile.weight}
-                        onChange={updateProfile}
+                        onChange={(e) => updateProfile(e, 'number')}
                     />
                 </div>
-                <div className="max-w-sm mr-5 z-10" >
-                    <Toggler 
-                        value={profile.weightUnit}
-                        opts={unitOpts}
-                        handleToggle={toggleUnit}
-                    />
+                <div className="max-w-sm mr-5 z-10">
+                    <Toggler value={profile.weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>
+            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
         </div>
-    )
+    );
 };
-
 
 export default ProfileWeight;
