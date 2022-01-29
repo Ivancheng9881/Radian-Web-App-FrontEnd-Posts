@@ -19,7 +19,7 @@ const CheckoutDescriptionInformation = () => {
                     <div className="inline-flex flex-wrap">
                         <InfoDisplayGroup profileKey="weight" label={`Weight`} value={profile.weight} stepName={`weight`} />
                         <InfoDisplayGroup profileKey="height" label={`Height`} value={profile.height} stepName={`height`} />
-                        <InfoDisplayGroup profileKey="location" label={`location`} value={profile.location} stepName={`location`} />`
+                        <InfoDisplayGroup profileKey="location" label={`location`} value={profile.location} stepName={`location`} />
                         <InfoDisplayGroup
                             profileKey="orientation"
                             label={`Interested in`}
