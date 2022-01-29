@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
-import { startRoute } from "../../../commons/route";
+import { startRoute, createProfileRoute } from "../../../commons/route";
 import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 
@@ -23,8 +23,12 @@ function PersonalProfile(props) {
         }
     };
 
+    const connectWallet = () => {
+        history.push(startRoute);
+    }
+
     const createProfile = () => {
-        history.push(startRoute)
+        history.push(createProfileRoute);
     }
     
     return (
@@ -41,7 +45,7 @@ function PersonalProfile(props) {
                 >
                     { 
                         updatedProfile ? 
-                        <span className={`absolute w-fit text-theme-white 
+                        <span className={`absolute w-fit text-theme-white bg-theme-bg-dark
                             pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}>
                             <div className='font-semibold text-3xl'>
                                 {`${updatedProfile?.firstName} ${updatedProfile?.lastName}`}
@@ -59,7 +63,7 @@ function PersonalProfile(props) {
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
                         bottom-24 opacity-80 text-center`}>
                             {window.ethereum.selectedAddress == null ?
-                            <RoundedButton  onClick={createProfile}>
+                            <RoundedButton  onClick={connectWallet}>
                                 <span className='m-auto'>Connect Wallet</span>
                             </RoundedButton>
                             :

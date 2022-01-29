@@ -86,7 +86,7 @@ export default function HomePage() {
         let profiles = await getProfileListErc(skip, pageSize);
         console.log(profiles);
         setProfileList(profiles);
-
+        
         setPagination({
             ...pagination,
             skip: skip + pageSize   
@@ -96,7 +96,7 @@ export default function HomePage() {
     const fetchUserProfile = async () => {
         const userProfile  = await getPersonalProfile()
         console.log('HomePage: User profile updated', userProfile)
-        if(userProfile) setProfile(userProfile)
+        if(userProfile != null || undefined ) setProfile(userProfile)
     }
     
     return (

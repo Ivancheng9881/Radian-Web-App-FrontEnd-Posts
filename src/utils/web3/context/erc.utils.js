@@ -1,8 +1,7 @@
 import React from 'react';
 import { ethers } from "ethers";
 // import Web3 from "web3";
-import { maticHttpProvider } from "../../../commons/web3";
-import { exit } from 'process';
+// import { maticHttpProvider } from "../../../commons/web3";\
 const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider() {
@@ -104,13 +103,8 @@ function isConnected() {
 
 
 async function initContract(address, abi, readOnly = false) {
-    let signer;
-    if (!readOnly) {
-        signer = await getSigner()
-    } else {
-        // signer = new Web3.providers.HttpProvider(maticHttpProvider)
-        signer = ethers.getDefaultProvider(maticHttpProvider)
-    }
+    let signer = await getSigner();
+    // signer = ethers.getDefaultProvider(maticHttpProvider)
     // console.log('initContract signer', signer);
     const contract = new ethers.Contract(address, abi, signer);
     return contract;

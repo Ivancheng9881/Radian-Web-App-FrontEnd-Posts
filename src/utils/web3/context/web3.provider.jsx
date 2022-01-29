@@ -37,7 +37,7 @@ const Web3Provider = ({ children }) => {
 
     useEffect(() => {
             //Listening to chainId changes
-            if(window.ethereum !== undefined){           
+            if(window.ethereum.selectedAddress != null){           
                 window.ethereum.on("chainChanged", async (_chainId) => {
                 if (!_chainId.includes('0x89')) {
                     setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
@@ -60,7 +60,7 @@ const Web3Provider = ({ children }) => {
 
     useEffect(() => {
         //Check current network globally
-        if (window.ethereum !== undefined) {
+        if (window.ethereum.selectedAddress != null) {
             getCurrentChainId();
             if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
                 setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })

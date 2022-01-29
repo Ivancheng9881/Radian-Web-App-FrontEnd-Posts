@@ -11,6 +11,7 @@ import MetamaskIcon from '../../../../components/Icons/metamask.components';
 import PhantomIcon from '../../../../components/Icons/phantom.components';
 import { createProfileRoute } from '../../../../commons/route';
 import Web3Context from '../../../../utils/web3/context/web3.context';
+import { hasPersonalProfileErc } from '../../../../utils/web3/contract/profileContract/erc';
 
 const SelectWallet = (props) => {
     const history = useHistory();
@@ -24,22 +25,30 @@ const SelectWallet = (props) => {
 
     const handleChange = async (e) => {
         let pubKey;
+        let profile;
         let prevState = selectedWallet;
 
         setSelectedWallet(e.value);
 
         if (e.value === 'phantom') {
             pubKey = await web3Context.connect('solana');
+            // profile = await hasPersonalProfileSolana(pubKey);
+            profile = null;
+            // TODO edit here
             console.log('window connect solana', pubKey);
         } 
         else if (e.value === 'metamask') {
             pubKey = await web3Context.connect('erc');
+            profile = await hasPersonalProfileErc(pubKey[0]);
             console.log('window connect Metamask', pubKey);
         }
         // const pubKey = await web3Cbontext.connect();
         if (pubKey) {
-            // if has profile, go back, else create profile
-            history.push(createProfileRoute);
+            if (profile) {
+                history.goBack();                
+            } else {
+                history.push(createProfileRoute);
+            }
         } else {
             setSelectedWallet(prevState);
         }
