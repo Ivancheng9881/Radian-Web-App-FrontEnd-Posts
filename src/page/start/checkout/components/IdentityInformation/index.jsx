@@ -32,7 +32,7 @@ const CheckoutIdentityInformation = () => {
                             label={`Birthday`}
                             value={`${profile.day}/${profile.month}/${profile.year}`}
                             stepName={`dob`}
-                        />`
+                        />
                         <InfoDisplayGroup profileKey="gender" label={`Gender`} value={profile.gender} stepName={`orientation`} />
                         <InfoDisplayGroup
                             profileKey={["countryCode","number"]}
@@ -45,7 +45,7 @@ const CheckoutIdentityInformation = () => {
                             label={`Nationality`}
                             value={`${profile.nationality}`}
                             stepName={`nationality`}
-                        />`
+                        />
                     </div>
                 </div>
                 <div className="w-1/3">
