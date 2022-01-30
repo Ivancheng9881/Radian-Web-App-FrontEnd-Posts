@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState} from 'react';
+import Popup from 'reactjs-popup';
 import Dropdown from 'react-dropdown';
 import { useHistory } from 'react-router-dom';
 
@@ -12,42 +13,50 @@ import PhantomIcon from '../../../../components/Icons/phantom.components';
 import { createProfileRoute } from '../../../../commons/route';
 import Web3Context from '../../../../utils/web3/context/web3.context';
 import { hasPersonalProfileErc } from '../../../../utils/web3/contract/profileContract/erc';
+import RoundedButton from '../../../../components/Button/Rounded.components';
 
 const SelectWallet = (props) => {
     const history = useHistory();
     const web3Context = useContext(Web3Context);
     const {selectedWallet, setSelectedWallet } = props;
-    const [ dropDownState, setDropDownState ] = useState([]);
 
-    useEffect(()=>{
-        setDropDownState(
-            [
-                { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
-                { value: 'metamask', label: <MetamaskIcon height={40} width={160} /> }
-            ]
-        );
-    }, []);
+    const buttons = {
+        "connect":  <RoundedButton disabled={true}>
+                        <div className='text-2xl'>
+                            Connect Wallet
+                        </div>
+                    </RoundedButton>,
+        'phantom':  <RoundedButton onClick={()=>{handleChange("phantom")}}>
+                        <PhantomIcon height={50} width={160}/>
+                    </RoundedButton>,
+        'metamask': <RoundedButton onClick={()=>{handleChange("metamask")}}>
+                        <MetamaskIcon height={50} width={160}/>
+                    </RoundedButton>            
+    };
 
-    // const walletOptions = [
-    //     { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
-    //     { value: 'metamask', label: <MetamaskIcon height={40} width={160} /> }
-    // ];
+    const [itemState, setItemState] = useState([
+        buttons["connect"],
+        buttons['phantom'],
+        buttons['metamask']
+    ]);
 
-    const handleChange = async (e) => {
+    const handleChange = async (value) => {
         let pubKey;
         let profile;
         let prevState = selectedWallet;
 
-        setSelectedWallet(e.value);
+        setItemState(value == 'phantom' ? [buttons['phantom'], buttons['metamask']] : [buttons['metamask'], buttons['phantom']]);
 
-        if (e.value === 'phantom') {
+        setSelectedWallet(value);
+
+        if (value === 'phantom') {
             pubKey = await web3Context.connect('solana');
             // profile = await hasPersonalProfileSolana(pubKey);
             profile = null;
             // TODO edit here
             console.log('window connect solana', pubKey);
         } 
-        else if (e.value === 'metamask') {
+        else if (value === 'metamask') {
             pubKey = await web3Context.connect('erc');
             profile = await hasPersonalProfileErc(pubKey[0]);
             console.log('window connect Metamask', pubKey);
@@ -65,13 +74,24 @@ const SelectWallet = (props) => {
     };
 
     return (
-        <div className="w-80 ml-auto mr-auto mt-10" id="RD-SelectWallet">
-            <Dropdown
-                options={dropDownState}
-                onChange={handleChange}
-                value={selectedWallet}
-                placeholder={selectedWallet}
-            />
+        <div className=" mt-10 text-center pl-2">
+            <Popup
+                trigger={<button> 
+                            {itemState[0]}
+                        </button>} 
+                position="bottom center"
+                arrow={false}
+                >
+                <div className="pt-1 pl-4">
+                    {itemState[1]}
+                    <div className='pt-1'></div>
+                    {
+                        itemState.length==3 ?
+                        itemState[2] :
+                        <div></div>
+                    }
+                </div>
+            </Popup>
         </div>
     );
 };

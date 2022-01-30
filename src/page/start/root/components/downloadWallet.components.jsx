@@ -23,7 +23,7 @@ const DownloadWallet = (props) => {
     };
     return (
         selectedWallet !== 'Choose Wallet' && (
-            <div id="RD-DownloadWallet" className="text-center text-theme-white mt-">
+            <div id="RD-DownloadWallet" className="text-center text-theme-white">
                 <ComponentWrapper>
                     <div className="flex justify-center items-center" onClick={handleClick}>
                         <div className="flex cursor-pointer">

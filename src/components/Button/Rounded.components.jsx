@@ -1,4 +1,4 @@
-const RoundedButton = ({ children, onClick, disabled = false }) => {
+const RoundedButton = ({ children, onClick, disabled = false}) => {
     const handleClick = async (e) => {
         if (disabled) return;
         onClick();
