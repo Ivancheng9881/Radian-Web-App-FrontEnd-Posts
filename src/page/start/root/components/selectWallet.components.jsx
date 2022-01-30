@@ -1,4 +1,4 @@
-import { useContext, useState, useRef} from 'react';
+import { useContext, useState, useRef, useEffect} from 'react';
 import Popup from 'reactjs-popup';
 import Dropdown from 'react-dropdown';
 import { useHistory } from 'react-router-dom';
@@ -89,7 +89,7 @@ const SelectWallet = (props) => {
                 arrow={false}
                 ref={ref}
                 >
-                <div className="pt-1 pl-4">
+                <div className="pt-1 pl-3">
                     {itemState[1]}
                     <div className='pt-1'></div>
                     {
