@@ -9,9 +9,9 @@ const Web3Provider = ({ children }) => {
     const windowNetworkVersion = window.ethereum?.networkVersion
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
-    const [ provider, setProvider ] = useState('phantom@solana');
+    const [ provider, setProvider ] = useState({'phantom@solana': null, 'metamask@erc': null, 'selected': 'metamask@erc'});
     const [ networkId, setNetworkId ] = useState(undefined)
-    const [ wallet, setWallet] = useState(null);
+    // const [ wallet, setWallet] = useState([]);
 
     // useEffect(() => {
     //     // handle solana wallet eager connection
@@ -27,49 +27,51 @@ const Web3Provider = ({ children }) => {
     //     }
     // }, [])
 
-    // useEffect(() => {
-    //     //Show wallet detail on refresh
-    //     if(window.ethereum !== undefined){
-    //         connectERCProvider()
-    //     }
-      
-    // }, [])
-
     useEffect(() => {
-            //Listening to chainId changes
-            if(window.ethereum.selectedAddress != null){           
-                window.ethereum.on("chainChanged", async (_chainId) => {
+
+            window.ethereum.request({ method: 'eth_accounts' }).then((result)=> {
+                if (result.length != 0) {     
+                    connectERCProvider();
+                }
+            });
+
+            window.ethereum.on("chainChanged", async (_chainId) => {
                 if (!_chainId.includes('0x89')) {
                     setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
                     
                     //Request for switching network if not on the Polygon mainnet
                     setTimeout(async () => {
-                    await ERCUtils.switchNetwork('0x89')
-                    console.log('UPDATED NETWORK TO 137')
+                        await ERCUtils.switchNetwork('0x89')
+                        console.log('UPDATED NETWORK TO 137')
                     }, 1000)
                 }
-            })
-        
+            });
+
             window.ethereum.on('accountsChanged', (acc) => {
-            console.log('listening to accountsChanged event', acc)
-            })
+                console.log('listening to accountsChanged event', acc)
+                // setWallet(); // TODO check both solana and metamask
+                setProvider((prevState) => ({'metamask@erc': null, 'phantom@solana': prevState['phantom@solana'], 'selected': prevState['selected']}));
+            });
+
             return () => window.ethereum.removeAllListeners();
-            }
     }, [])
 
-
+    // TODO later extend to more supported networks
     useEffect(() => {
         //Check current network globally
-        if (window.ethereum.selectedAddress != null) {
-            getCurrentChainId();
-            if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
-                setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
-                setTimeout( async () => {
-                    await ERCUtils.switchNetwork('0x89')
-                    console.log('UPDATED NETWORK TO 137')
-                }, 1000)
+        window.ethereum.request({ method: 'eth_accounts' }).then((result)=> {
+            if (result.length != 0) {     
+                getCurrentChainId();
+                if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
+                    setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
+                    setTimeout( async () => {
+                        await ERCUtils.switchNetwork('0x89')
+                        console.log('UPDATED NETWORK TO 137')
+                    }, 1000)
+                }
             }
-        }
+        });
+
     }, [windowNetworkVersion, networkId]);
 
     const getCurrentChainId = async () => {
@@ -88,8 +90,9 @@ const Web3Provider = ({ children }) => {
         if (window.solana?.isPhantom) {
             const resp = await window.solana.connect();
             if (resp) {
-                setProvider('phantom@solana');
-                setWallet(resp.publicKey);
+                setProvider((prevState) => ({'selected': 'phantom@solana', 'phantom@solana': resp.publicKey, 'metamask@erc': prevState['metamask@erc']}));
+                // setProvider('phantom@solana');
+                // setWallet(resp.publicKey);
                 return resp.publicKey
             }
         }
@@ -99,8 +102,11 @@ const Web3Provider = ({ children }) => {
         if (window.ethereum !== undefined && window.ethereum?.isMetaMask) {
             let isConnected = await ERCUtils.connectWallet();
             if (isConnected.length > 0) {
-                setProvider('metamask@erc');
-                setWallet(isConnected[0]);
+                console.log("setting provider to:");
+                console.log(isConnected[0]);
+                setProvider((prevState) => ({'selected': 'metamask@erc', 'metamask@erc': isConnected[0], 'phantom@solana': prevState['phantom@solana']}));
+                // setProvider('metamask@erc');
+                // setWallet(isConnected[0]);
             }
             return isConnected
         }
@@ -113,11 +119,11 @@ const Web3Provider = ({ children }) => {
             return await connectERCProvider();
         }
     };
+
     const providerValue = {
         connect: connectProvider,
         provider: provider,
-        network: networkId,
-        wallet: wallet
+        network: networkId
     };
  
     return (

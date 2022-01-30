@@ -35,12 +35,11 @@ export default function HomePage() {
     //     }
     // }, [window.ethereum.networkVersion, pagination]);
 
-    // useEffect(() => {
-    //     Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
-    //     return () => setProfile([]);
-    // }, [window.ethereum.networkVersion])
-
     // fetch profile only if there is address selected and the chainID is correct
+
+    console.log("web3context");
+    console.log(Web3ContextProvider);
+
     useEffect(() => {
         if (window.ethereum.selectedAddress != null){
             getCurrentChainId();

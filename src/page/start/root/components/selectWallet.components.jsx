@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Dropdown from 'react-dropdown';
 import { useHistory } from 'react-router-dom';
 
@@ -17,11 +17,21 @@ const SelectWallet = (props) => {
     const history = useHistory();
     const web3Context = useContext(Web3Context);
     const {selectedWallet, setSelectedWallet } = props;
+    const [ dropDownState, setDropDownState ] = useState([]);
 
-    const walletOptions = [
-        { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
-        { value: 'metamask', label: <MetamaskIcon height={40} width={160} /> }
-    ];
+    useEffect(()=>{
+        setDropDownState(
+            [
+                { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
+                { value: 'metamask', label: <MetamaskIcon height={40} width={160} /> }
+            ]
+        );
+    }, []);
+
+    // const walletOptions = [
+    //     { value: 'phantom', label: <PhantomIcon height={40} width={160} /> },
+    //     { value: 'metamask', label: <MetamaskIcon height={40} width={160} /> }
+    // ];
 
     const handleChange = async (e) => {
         let pubKey;
@@ -57,7 +67,7 @@ const SelectWallet = (props) => {
     return (
         <div className="w-80 ml-auto mr-auto mt-10" id="RD-SelectWallet">
             <Dropdown
-                options={walletOptions}
+                options={dropDownState}
                 onChange={handleChange}
                 value={selectedWallet}
                 placeholder={selectedWallet}

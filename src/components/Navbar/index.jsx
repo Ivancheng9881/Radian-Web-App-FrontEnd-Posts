@@ -11,6 +11,9 @@ const Navbar = (props) => {
     const web3Context = useContext(Web3Context);
     const history = useHistory();
 
+    console.log("connected");
+    console.log(web3Context.provider);
+
     return (
         <div id="RD-navbar" className="fixed w-full top-0 z-50">
             <div className="p-4 h-20 bg-theme-bg-light RD-shadow flex justify-between">
@@ -20,9 +23,9 @@ const Navbar = (props) => {
 
                 {/* Wallet address on Navbar */}
                 <div>
-                    {web3Context.wallet && (
+                    {web3Context.provider[web3Context.provider.selected] && (
                         <RoundedButton onClick={() => {}}>
-                            {truncateAddress(web3Context.wallet.toString())}
+                            {truncateAddress(web3Context.provider[web3Context.provider.selected])}
                         </RoundedButton>
                     )}
                 </div>
