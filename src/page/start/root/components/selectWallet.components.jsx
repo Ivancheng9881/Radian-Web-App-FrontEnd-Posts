@@ -1,4 +1,4 @@
-import { useContext, useState} from 'react';
+import { useContext, useState, useRef} from 'react';
 import Popup from 'reactjs-popup';
 import Dropdown from 'react-dropdown';
 import { useHistory } from 'react-router-dom';
@@ -20,8 +20,12 @@ const SelectWallet = (props) => {
     const web3Context = useContext(Web3Context);
     const {selectedWallet, setSelectedWallet } = props;
 
+    const ref = useRef();
+    const close = () => ref.current.close();
+    const dummy = ()=>{console.log("Triggered")};
+
     const buttons = {
-        "connect":  <RoundedButton disabled={true}>
+        "connect":  <RoundedButton onClick={dummy}>
                         <div className='text-2xl'>
                             Connect Wallet
                         </div>
@@ -45,6 +49,7 @@ const SelectWallet = (props) => {
         let profile;
         let prevState = selectedWallet;
 
+        close();
         setItemState(value == 'phantom' ? [buttons['phantom'], buttons['metamask']] : [buttons['metamask'], buttons['phantom']]);
 
         setSelectedWallet(value);
@@ -80,7 +85,9 @@ const SelectWallet = (props) => {
                             {itemState[0]}
                         </button>} 
                 position="bottom center"
+                closeOnDocumentClick
                 arrow={false}
+                ref={ref}
                 >
                 <div className="pt-1 pl-4">
                     {itemState[1]}
