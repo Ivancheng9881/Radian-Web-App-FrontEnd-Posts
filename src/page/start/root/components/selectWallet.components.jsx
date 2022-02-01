@@ -88,7 +88,7 @@ const SelectWallet = (props) => {
                 arrow={false}
                 ref={ref}
                 >
-                <div className="pt-1 pl-3">
+                <div className="pt-1 pl-4">
                     {itemState.slice(1,itemState.length).map(
                         (b,i)=>{
                             return  <div key={i}>

@@ -17,6 +17,9 @@ const Navbar = (props) => {
     const history = useHistory();
     const [ itemState, setItemState ] = useState([]);
     const [ change, setChange ] = useState(false);
+    
+    const ref = useRef();
+    const close = () => ref.current.close();    
 
     const getElement = (providerType, click=true)=>{
 
@@ -28,7 +31,7 @@ const Navbar = (props) => {
                 <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <MetamaskIcon height={60} width={120}/>
                 </RoundedButton>
-        } else {
+        } else if  (providerType === "phantom@solana") {
             return web3Context.provider[providerType]?
                 <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
                     {"Solana: " + truncateAddress(web3Context.provider[providerType].toBase58())}
@@ -36,6 +39,12 @@ const Navbar = (props) => {
                 <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <PhantomIcon height={60} width={120}/>
                 </RoundedButton>
+        } else {
+            return  <RoundedButton onClick={()=>{}}>
+                        <div className='text-xl'>
+                            Connect Wallet
+                        </div>
+                    </RoundedButton>
         }
     }
 
@@ -47,7 +56,6 @@ const Navbar = (props) => {
     
 
     useEffect(()=>{
-        console.log(web3Context.provider);
         const newItemState = [ getElement(web3Context.provider.selected, false) ];
         const keys = Object.keys(web3Context.provider);
         for ( let k = 0 ; k < keys.length ; k++ ) {
@@ -55,12 +63,8 @@ const Navbar = (props) => {
                 newItemState.push(getElement(keys[k]));
             }
         }
-        console.log("set state triggered");
         setItemState(newItemState);
     },[web3Context.provider, change]);
-
-    const ref = useRef();
-    const close = () => ref.current.close();
 
     const switchWalletPriority = async (walletType) => {
         
@@ -89,17 +93,23 @@ const Navbar = (props) => {
                 {/* Wallet address on Navbar */}
                 <div>
                     <Popup
-                        trigger={<button> 
+                        trigger={<button>
                                     {itemState[0]}                                     
                                 </button>} 
                         position="bottom center"
                         closeOnDocumentClick
                         arrow={false}
                         ref={ref}
-                        open={web3Context.provider[web3Context.provider.selected]}
                         >
                         <div className="pt-1 pl-7">
-                            {itemState[1]}
+                            {itemState.slice(1,itemState.length).map(
+                                (b,i)=>{
+                                    return  <div key={i}>
+                                                {b}
+                                                <div className='pt-1'></div>
+                                            </div>
+                                }
+                            )} 
                         </div>
                     </Popup>
                 </div>

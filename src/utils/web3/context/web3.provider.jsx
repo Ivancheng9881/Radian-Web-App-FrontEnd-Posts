@@ -9,7 +9,7 @@ const Web3Provider = ({ children }) => {
     const windowNetworkVersion = window.ethereum?.networkVersion
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
-    const [ provider, setProvider ] = useState({'phantom@solana': null, 'metamask@erc': null, 'selected': 'metamask@erc'});
+    const [ provider, setProvider ] = useState({'phantom@solana': null, 'metamask@erc': null, 'selected': null});
     const [ networkId, setNetworkId ] = useState(undefined)
 
     // useEffect(() => {
