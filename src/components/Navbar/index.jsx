@@ -10,6 +10,7 @@ import './styles.css';
 import MetamaskIcon from '../Icons/metamask.components';
 import PhantomIcon from '../Icons/phantom.components';
 import Popup from 'reactjs-popup';
+import { preloadWalletIcon } from '../../utils/preload';
 
 const Navbar = (props) => {
     const web3Context = useContext(Web3Context);
@@ -37,6 +38,12 @@ const Navbar = (props) => {
                 </RoundedButton>
         }
     }
+
+    useEffect(() => {
+        preloadWalletIcon()
+            .then(console.log)
+            .catch(console.error)
+    }, [])
     
 
     useEffect(()=>{
@@ -81,22 +88,20 @@ const Navbar = (props) => {
 
                 {/* Wallet address on Navbar */}
                 <div>
-                    {web3Context.provider[web3Context.provider.selected] && (
-                        <Popup
-                            trigger={<button> 
-                                        {itemState[0]}                                     
-                                    </button>} 
-                            position="bottom center"
-                            closeOnDocumentClick
-                            arrow={false}
-                            ref={ref}
-                            >
-                            <div className="pt-1 pl-7">
-                                {itemState[1]}
-                            </div>
-                        </Popup>
-                        
-                    )}
+                    <Popup
+                        trigger={<button> 
+                                    {itemState[0]}                                     
+                                </button>} 
+                        position="bottom center"
+                        closeOnDocumentClick
+                        arrow={false}
+                        ref={ref}
+                        open={web3Context.provider[web3Context.provider.selected]}
+                        >
+                        <div className="pt-1 pl-7">
+                            {itemState[1]}
+                        </div>
+                    </Popup>
                 </div>
             </div>
         </div>
