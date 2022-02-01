@@ -29,7 +29,7 @@ const ProfilePassport = (props) => {
         () => {
             // console.log(provider)
             // console.log(solanaWallet)
-            // if (provider.split('@')[1] === 'solana') {
+            // if (provider["selected"].split('@')[1] === 'solana') {
             //     if (!solanaWallet.connected) {
             //         initSolanaWallet();
             //     }
@@ -48,7 +48,7 @@ const ProfilePassport = (props) => {
 
     useEffect(
         () => {
-            if (provider.split('@')[1] === 'solana') {
+            if (provider["selected"].split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
@@ -61,7 +61,7 @@ const ProfilePassport = (props) => {
         let profileString = JSON.stringify(profile);
         const cid = await ipfsUtils.uploadContent(profileString);
 
-        if (provider.split('@')[1] === 'solana') {
+        if (provider["selected"].split('@')[1] === 'solana') {
             txn = await createProfileOnSolana(cid.toString());
         } else {
             txn = await createProfileErc(cid.toString());
@@ -78,7 +78,7 @@ const ProfilePassport = (props) => {
 
         if (!provider) {
             //
-        } else if (provider.split('@')[1] === 'solana') {
+        } else if (provider["selected"].split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
             console.log('identityID', identityID);
         } else {

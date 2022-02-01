@@ -42,7 +42,8 @@ const CheckoutCreateProfile = () => {
 
     useEffect(
         () => {
-            if (provider.split('@')[1] === 'solana') {
+            console.log(provider);
+            if (provider["selected"].split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
@@ -79,7 +80,7 @@ const CheckoutCreateProfile = () => {
         console.log('getProfile provider', provider);
 
         if (!provider) {
-        } else if (provider.split('@')[1] === 'solana') {
+        } else if (provider["selected"].split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
             console.log('identityID', identityID);
         } else {
