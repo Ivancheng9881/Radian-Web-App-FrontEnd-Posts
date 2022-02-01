@@ -1,6 +1,4 @@
 import { useContext, useState, useRef, useEffect} from 'react';
-import Popup from 'reactjs-popup';
-import Dropdown from 'react-dropdown';
 import { useHistory } from 'react-router-dom';
 
 // stylesheet
@@ -14,6 +12,7 @@ import { createProfileRoute } from '../../../../commons/route';
 import Web3Context from '../../../../utils/web3/context/web3.context';
 import { hasPersonalProfileErc } from '../../../../utils/web3/contract/profileContract/erc';
 import RoundedButton from '../../../../components/Button/Rounded.components';
+import Popup from 'reactjs-popup';
 
 const SelectWallet = (props) => {
     const history = useHistory();
@@ -90,15 +89,17 @@ const SelectWallet = (props) => {
                 ref={ref}
                 >
                 <div className="pt-1 pl-3">
-                    {itemState[1]}
-                    <div className='pt-1'></div>
-                    {
-                        itemState.length==3 ?
-                        itemState[2] :
-                        <div></div>
-                    }
+                    {itemState.slice(1,itemState.length).map(
+                        (b,i)=>{
+                            return  <div key={i}>
+                                        {b}
+                                        <div className='pt-1'></div>
+                                    </div>
+                        }
+                    )}                    
                 </div>
             </Popup>
+
         </div>
     );
 };

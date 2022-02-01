@@ -11,7 +11,6 @@ const Web3Provider = ({ children }) => {
     const { setSnackBar } = SnackbarContext;
     const [ provider, setProvider ] = useState({'phantom@solana': null, 'metamask@erc': null, 'selected': 'metamask@erc'});
     const [ networkId, setNetworkId ] = useState(undefined)
-    // const [ wallet, setWallet] = useState([]);
 
     // useEffect(() => {
     //     // handle solana wallet eager connection
@@ -49,8 +48,9 @@ const Web3Provider = ({ children }) => {
 
             window.ethereum.on('accountsChanged', (acc) => {
                 console.log('listening to accountsChanged event', acc)
-                // setWallet(); // TODO check both solana and metamask
-                setProvider((prevState) => ({'metamask@erc': null, 'phantom@solana': prevState['phantom@solana'], 'selected': prevState['selected']}));
+                if (acc.length == 0) {
+                    setProvider((prevState) => ({'metamask@erc': null, 'phantom@solana': prevState['phantom@solana'], 'selected': prevState['phantom@solana']? 'phantom@solana' : null}));
+                }
             });
 
             return () => window.ethereum.removeAllListeners();
@@ -91,8 +91,6 @@ const Web3Provider = ({ children }) => {
             const resp = await window.solana.connect();
             if (resp) {
                 setProvider((prevState) => ({'selected': 'phantom@solana', 'phantom@solana': resp.publicKey, 'metamask@erc': prevState['metamask@erc']}));
-                // setProvider('phantom@solana');
-                // setWallet(resp.publicKey);
                 return resp.publicKey
             }
         }
@@ -105,8 +103,6 @@ const Web3Provider = ({ children }) => {
                 console.log("setting provider to:");
                 console.log(isConnected[0]);
                 setProvider((prevState) => ({'selected': 'metamask@erc', 'metamask@erc': isConnected[0], 'phantom@solana': prevState['phantom@solana']}));
-                // setProvider('metamask@erc');
-                // setWallet(isConnected[0]);
             }
             return isConnected
         }
