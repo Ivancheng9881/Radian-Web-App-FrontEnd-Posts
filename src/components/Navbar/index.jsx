@@ -24,7 +24,7 @@ const Navbar = (props) => {
                 <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
                             {"ERC: " + truncateAddress(web3Context.provider[providerType])}
                 </RoundedButton> :
-                <RoundedButton pl={7} pr={8} onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
+                <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <MetamaskIcon height={60} width={120}/>
                 </RoundedButton>
         } else {
@@ -32,7 +32,7 @@ const Navbar = (props) => {
                 <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
                     {"Solana: " + truncateAddress(web3Context.provider[providerType].toBase58())}
                 </RoundedButton> :
-                <RoundedButton pl={7} pr={7} onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
+                <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <PhantomIcon height={60} width={120}/>
                 </RoundedButton>
         }
