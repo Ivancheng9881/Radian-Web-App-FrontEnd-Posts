@@ -168,15 +168,6 @@ export async function createProfileErc(identityId, useGasStation) {
     return txn
 };
 
-export async function getPersonalProfile () {
-    let walletAddress = await ERCUtils.getAddress();
-    if (walletAddress) {
-        let profileResp = await getProfileErc(walletAddress);
-        console.log('getPersonalProfile()', walletAddress, profileResp)
-        return profileResp;
-    }
-};
-
 export async function hasPersonalProfileErc (walletAddress) {
     if ( subgraphEnabled ) {
         if ( (await getProfileFromAddressSubgraph(walletAddress) != undefined ) ) {

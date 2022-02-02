@@ -16,7 +16,6 @@ const Navbar = (props) => {
     const web3Context = useContext(Web3Context);
     const history = useHistory();
     const [ itemState, setItemState ] = useState([]);
-    const [ change, setChange ] = useState(false);
     
     const ref = useRef();
     const close = () => ref.current.close();    
@@ -24,17 +23,17 @@ const Navbar = (props) => {
     const getElement = (providerType, click=true)=>{
 
         if (providerType === "metamask@erc"){
-            return web3Context.provider[providerType]?
+            return web3Context.providers[providerType]?
                 <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
-                            {"ERC: " + truncateAddress(web3Context.provider[providerType])}
+                            {"ERC: " + truncateAddress(web3Context.providers[providerType])}
                 </RoundedButton> :
                 <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <MetamaskIcon height={60} width={120}/>
                 </RoundedButton>
         } else if  (providerType === "phantom@solana") {
-            return web3Context.provider[providerType]?
+            return web3Context.providers[providerType]?
                 <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
-                    {"Solana: " + truncateAddress(web3Context.provider[providerType].toBase58())}
+                    {"Solana: " + truncateAddress(web3Context.providers[providerType].toBase58())}
                 </RoundedButton> :
                 <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <PhantomIcon height={60} width={120}/>
@@ -56,27 +55,26 @@ const Navbar = (props) => {
     
 
     useEffect(()=>{
-        const newItemState = [ getElement(web3Context.provider.selected, false) ];
-        const keys = Object.keys(web3Context.provider);
+        const newItemState = [ getElement(web3Context.selectedProvider, false) ];
+        const keys = Object.keys(web3Context.providers);
         for ( let k = 0 ; k < keys.length ; k++ ) {
-            if (keys[k] !== "selected" && keys[k] !== web3Context.provider.selected ) {
+            if (keys[k] !== web3Context.selectedProvider ) {
                 newItemState.push(getElement(keys[k]));
             }
         }
         setItemState(newItemState);
-    },[web3Context.provider, change]);
+    },[web3Context.selectedProvider]);
 
     const switchWalletPriority = async (walletType) => {
         
         // attempt to connect to wallet if not connected
-        if ( !web3Context.provider[walletType] ) {
+        if ( !web3Context.providers[walletType] ) {
             await web3Context.connect(walletType.split("@")[1]);
         }
 
         // switch new wallet to selected if successfully connected        
-        if ( web3Context.provider[walletType] ) {
-            web3Context.provider.selected = walletType;
-            setChange((o) => !o); // notify useEffect of the change
+        if ( web3Context.providers[walletType] ) {
+            web3Context.switchProvider(walletType);
         }
 
         // switch off the pop up

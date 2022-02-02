@@ -213,6 +213,7 @@ export async function getProfileSolana(wallet) {
 
     let profile = await fetchProfileSolana(program, provider);
     if (profile.length > 0) {
+        if (profile[1] == null) return undefined;
         let contentIdArray = profile[1].identityId
         let contentId = decodeContentID(contentIdArray);
         return contentId;

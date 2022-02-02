@@ -9,7 +9,8 @@ const Web3Provider = ({ children }) => {
     const windowNetworkVersion = window.ethereum?.networkVersion
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
-    const [ provider, setProvider ] = useState({'phantom@solana': null, 'metamask@erc': null, 'selected': null});
+    const [ providers, setProviders ] = useState({'phantom@solana': null, 'metamask@erc': null});
+    const [ selectedProvider, setSelectedProvider] = useState(null);
     const [ networkId, setNetworkId ] = useState(undefined)
 
     // useEffect(() => {
@@ -49,7 +50,18 @@ const Web3Provider = ({ children }) => {
             window.ethereum.on('accountsChanged', (acc) => {
                 console.log('listening to accountsChanged event', acc)
                 if (acc.length == 0) {
-                    setProvider((prevState) => ({'metamask@erc': null, 'phantom@solana': prevState['phantom@solana'], 'selected': prevState['phantom@solana']? 'phantom@solana' : null}));
+                    setProviders((prevState) => ({'metamask@erc': null, 'phantom@solana': prevState['phantom@solana']}));
+                    // get available providers
+                    let providerLists = [];
+                    for (let p in Object.keys(providers)) {
+                        if ( p != 'metamask@erc' && providers[p]) {
+                            providerLists.push(p);
+                        }
+                    }
+                    if (providerLists.length == 0) {
+                        providerLists.push(null);
+                    }
+                    setSelectedProvider((prevState) => (prevState == "metamask@erc" ? providerLists[0] : prevState ));
                 }
             });
 
@@ -90,7 +102,8 @@ const Web3Provider = ({ children }) => {
         if (window.solana?.isPhantom) {
             const resp = await window.solana.connect();
             if (resp) {
-                setProvider((prevState) => ({'selected': 'phantom@solana', 'phantom@solana': resp.publicKey, 'metamask@erc': prevState['metamask@erc']}));
+                setProviders((prevState) => ({'phantom@solana': resp.publicKey, 'metamask@erc': prevState['metamask@erc']}));
+                setSelectedProvider('phantom@solana');
                 return resp.publicKey
             }
         }
@@ -102,10 +115,15 @@ const Web3Provider = ({ children }) => {
             if (isConnected.length > 0) {
                 console.log("setting provider to:");
                 console.log(isConnected[0]);
-                setProvider((prevState) => ({'selected': 'metamask@erc', 'metamask@erc': isConnected[0], 'phantom@solana': prevState['phantom@solana']}));
+                setProviders((prevState) => ({'metamask@erc': isConnected[0], 'phantom@solana': prevState['phantom@solana']}));
+                setSelectedProvider('metamask@erc');
             }
             return isConnected
         }
+    }
+
+    const switchProvider = async (newProvider) =>{
+        setSelectedProvider(newProvider);
     }
 
     const connectProvider = async (network) => {
@@ -118,7 +136,9 @@ const Web3Provider = ({ children }) => {
 
     const providerValue = {
         connect: connectProvider,
-        provider: provider,
+        switchProvider: switchProvider,
+        providers: providers,
+        selectedProvider: selectedProvider,
         network: networkId
     };
  

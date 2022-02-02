@@ -1,27 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router";
 import { startRoute, createProfileRoute } from "../../../commons/route";
 import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
+import ProfileContext from "../../../utils/profile/context/profile.context";
 
-function PersonalProfile(props) {
+function PersonalProfile() {
     const history = useHistory();
-    const { pid } = props;
-    const [ updatedProfile, setUpdatedProfile ] = useState(null)
+    const profile = useContext(ProfileContext).profile; // load profile info from provider
 
-    useEffect(() => {
-        if (pid !== undefined) {
-            fetchProfile()
-        }
-    }, [pid]);
-
-    const fetchProfile = async () => {
-        console.log("Fetching profile pid", pid)
-        if (pid) {
-            let p = await ipfsUtils.getContentJson(pid.identityID);
-            setUpdatedProfile(p);
-        }
-    };
+    console.log("profile");
+    console.log(profile);
 
     const connectWallet = () => {
         history.push(startRoute);
@@ -38,26 +27,29 @@ function PersonalProfile(props) {
                 <div
                     className={`w-full h-full relative`}
                     style={{
-                        backgroundImage: `url(${updatedProfile && ipfsUtils.getContentUrl(updatedProfile?.profilePictureCid)})`,
+                        backgroundImage: `url(${profile && ipfsUtils.getContentUrl(profile.identity?.profilePictureCid)})`,
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover'
                     }}
                 >
+                    {
+                        profile ? <span></span> : <span></span> // icon for update profile
+                    }
                     { 
-                        updatedProfile ? 
+                        profile ?
                         <span className={`absolute w-fit text-theme-white bg-theme-bg-dark
                             pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}>
                             <div className='font-semibold text-3xl'>
-                                {`${updatedProfile?.firstName} ${updatedProfile?.lastName}`}
+                                {`${profile.identity?.firstName} ${profile.identity?.lastName}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Height: ${updatedProfile?.height} ${updatedProfile?.heightUnit}`}
+                                {`Gender: ${profile.identity?.gender}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Nationality: ${updatedProfile?.nationality}`}
+                                {`Nationality: ${profile.identity?.nationality}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Current Location: ${updatedProfile?.location}`}
+                                {`Interest: ${profile.identity?.interest}`}
                             </div>
                         </span>
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
@@ -67,9 +59,15 @@ function PersonalProfile(props) {
                                 <span className='m-auto'>Connect Wallet</span>
                             </RoundedButton>
                             :
-                            <RoundedButton  onClick={createProfile}>
-                                <span className='m-auto'>Create Profile Now</span>
-                            </RoundedButton>}
+                            <div>
+                                <RoundedButton  onClick={createProfile}>
+                                    <span className='m-auto'>Create Profile Now</span>
+                                </RoundedButton>
+                                <div className='pt-2'></div>
+                                <RoundedButton disabled={true}>
+                                    <span className='m-auto'>Attach to Existing Profile</span>
+                                </RoundedButton>
+                            </div>}
                         </span>
 
                     }

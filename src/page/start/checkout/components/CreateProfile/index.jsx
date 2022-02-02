@@ -16,7 +16,7 @@ import { PhantomWalletName } from '@solana/wallet-adapter-phantom';
 import ERCUtils from '../../../../../utils/web3/context/erc.utils';
 
 const CheckoutCreateProfile = () => {
-    const { provider, wallet } = useContext(Web3Context);
+    const { web3Context } = useContext(Web3Context);
     const { profile } = useContext(CreateProfileContext);
     const [ id, setId ] = useState(null);
     const [ solTxn, setSolTxn ] = useState(false);
@@ -42,12 +42,12 @@ const CheckoutCreateProfile = () => {
 
     useEffect(
         () => {
-            console.log(provider);
-            if (provider["selected"].split('@')[1] === 'solana') {
+            console.log(web3Context.providers);
+            if (web3Context.selectedProvider.split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
-        [ provider ]
+        [ web3Context.selectedProvider ]
     );
 
     const createProfileCid = async () => {
@@ -77,10 +77,10 @@ const CheckoutCreateProfile = () => {
 
     const getProfile = async () => {
         let identityID;
-        console.log('getProfile provider', provider);
+        console.log('getProfile provider', web3Context.selectedProvider);
 
-        if (!provider) {
-        } else if (provider["selected"].split('@')[1] === 'solana') {
+        if (!web3Context.selectedProvider) {
+        } else if (web3Context.selectedProvider.split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
             console.log('identityID', identityID);
         } else {
