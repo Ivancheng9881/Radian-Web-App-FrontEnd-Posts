@@ -55,15 +55,17 @@ const Navbar = (props) => {
     
 
     useEffect(()=>{
-        const newItemState = [ getElement(web3Context.selectedProvider, false) ];
+
+        console.log("Navbar provider", web3Context.providers);
+        const newItemState = [ getElement(web3Context.providers.selected, false) ];
         const keys = Object.keys(web3Context.providers);
         for ( let k = 0 ; k < keys.length ; k++ ) {
-            if (keys[k] !== web3Context.selectedProvider ) {
+            if (keys[k] !== web3Context.providers.selected && keys[k] !== "selected" ) {
                 newItemState.push(getElement(keys[k]));
             }
         }
         setItemState(newItemState);
-    },[web3Context.selectedProvider]);
+    },[web3Context.providers]);
 
     const switchWalletPriority = async (walletType) => {
         

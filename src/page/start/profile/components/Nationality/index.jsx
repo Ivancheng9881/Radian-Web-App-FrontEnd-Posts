@@ -1,22 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext, useState } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 
 const ProfileNationality = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
 
-    const [ data, setData ] = useState({
-        selected: ''
-    });
+    const { getLatestField, updatedProfile, updateProfile } = useContext(ProfileContext);
 
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({
-            ...data,
-            [e.target.name]: e.target.value
-        });
-    };
+    let nationality = getLatestField('nationality');
 
     return (
         <div id="RD-CreateProfile-nationality" className="RD-CreateProfileComponents">
@@ -30,12 +21,12 @@ const ProfileNationality = (props) => {
                         type="text"
                         name="nationality"
                         placeholder="Nationality"
-                        value={profile.nationality}
+                        value={nationality}
                         onChange={updateProfile}
                     />
                 </div>
             </div>
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {updatedProfile?.error ? <p className="text-theme-danger">{updatedProfile?.error}</p> : ''}
         </div>
     );
 };

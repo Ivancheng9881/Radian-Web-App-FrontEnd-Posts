@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
-import { getProfileErc, getProfileListCountErc, getProfileListErc, getPersonalProfile } from "../../utils/web3/contract/profileContract/erc";
+import { getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
 // import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 // import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
 // import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';

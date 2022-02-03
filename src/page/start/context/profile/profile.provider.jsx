@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import ProfileContext from '../../../../utils/profile/context/profile.context';
 import CreateProfileContext from './profile.context';
 import { getQuery, setQuery } from '../../../../utils/query';
 import { checkoutProfileRoute, startRoute } from '../../../../commons/route';
-
 import Validator from '../../../../utils/validation';
 
 function CreateProfileProvider({ children }) {
     const history = useHistory();
+
+    const profileContext = useContext(ProfileContext);
 
     let basicInfo = 'basicInfo';
     let datingPreference = 'datingPreference';
@@ -17,19 +19,19 @@ function CreateProfileProvider({ children }) {
         { id: 'name', stage: basicInfo },
         { id: 'phone', stage: basicInfo },
         { id: 'dob', stage: basicInfo },
-        { id: 'weight', stage: basicInfo },
-        { id: 'height', stage: basicInfo },
         { id: 'nationality', stage: basicInfo },
         { id: 'location', stage: basicInfo },
         { id: 'profilePicture', stage: basicInfo },
+        { id: 'interest', stage: basicInfo },
+        { id: 'nft', stage: basicInfo },
+        { id: 'weight', stage: datingPreference },
+        { id: 'height', stage: datingPreference },
         { id: 'orientation', stage: datingPreference },
         { id: 'lookingFor', stage: datingPreference },
-        { id: 'interest', stage: datingPreference },
         { id: 'ageRange', stage: datingPreference },
         { id: 'distanceMax', stage: datingPreference },
         { id: 'datingEthnicity', stage: datingPreference },
         { id: 'datingReligion', stage: datingPreference },
-        { id: 'nft', stage: asset }
     ];
 
     const checkoutStepList = [
@@ -101,6 +103,26 @@ function CreateProfileProvider({ children }) {
         nft: []
     };
 
+
+    const profileObj = profileContext.profile;
+
+    const datingInformation = {
+        location: '',
+        weight: '',
+        weightUnit: '',
+        height: '',
+        heightUnit: '',
+        orientation: '',
+        lookingFor: '',
+        ageRangeMin: 1,
+        ageRangeMax: 100,
+        ageRangeIsDealBreaker: 1,
+        distanceMax: 1,
+        distanceIsDealBreaker: 0,
+        datingEthnicity: [],
+        datingReligion: [],
+    };
+
     const [ profile, setProfile ] = useState(initProfile);
     const [ step, setStep ] = useState(0);
     const [ checkoutStep, setCheckoutStep ] = useState(0);
@@ -114,6 +136,8 @@ function CreateProfileProvider({ children }) {
         setInitialStep();
         return () => {};
     }, []);
+
+
 
     /**
      * @method

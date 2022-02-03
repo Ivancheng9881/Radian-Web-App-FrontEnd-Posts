@@ -48,11 +48,11 @@ const ProfilePassport = (props) => {
 
     useEffect(
         () => {
-            if (web3Context.selectedProvider.split('@')[1] === 'solana') {
+            if (web3Context.providers.selected.split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
-        [ web3Context.selectedProvider ]
+        [ web3Context.providers.selected ]
     );
 
     const createProfileCid = async () => {
@@ -61,7 +61,7 @@ const ProfilePassport = (props) => {
         let profileString = JSON.stringify(profile);
         const cid = await ipfsUtils.uploadContent(profileString);
 
-        if (web3Context.selectedProvider.split('@')[1] === 'solana') {
+        if (web3Context.providers.selected.split('@')[1] === 'solana') {
             txn = await createProfileOnSolana(cid.toString());
         } else {
             txn = await createProfileErc(cid.toString());
@@ -74,11 +74,11 @@ const ProfilePassport = (props) => {
 
     const getProfile = async () => {
         let identityID;
-        console.log('getProfile', web3Context.selectedProvider);
+        console.log('getProfile', web3Context.providers.selected);
 
-        if (!web3Context.selectedProvider) {
+        if (!web3Context.providers.selected) {
             //
-        } else if (web3Context.selectedProvider.split('@')[1] === 'solana') {
+        } else if (web3Context.providers.selected.split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
             console.log('identityID', identityID);
         } else {

@@ -126,7 +126,7 @@ export async function getProfileListErc(skip, limit) {
 
 
 export async function getProfileErc(address = undefined) {
-        
+        console.log("Calling Get Profile ERC");
     try {
         if (!address) {
             address = await ERCUtils.getAddress();

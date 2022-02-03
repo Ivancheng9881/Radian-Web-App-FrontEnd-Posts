@@ -91,7 +91,7 @@ async function getSearchAccountPDA(programId, profileId) {
 
 async function fetchProfileMappingSolana(program, provider) {
     try {
-        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet.publicKey);
+        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
         let profileMapping = await program.account.profileMapping.fetch(profileMappingPDA);
         return profileMapping;
     } catch (err) {

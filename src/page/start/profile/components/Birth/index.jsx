@@ -4,26 +4,38 @@ import { useContext } from 'react';
 import CreateProfileContext from '../../../context/profile/profile.context';
 import Validator from '../../../../../utils/validation';
 
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
+
 const ProfileBirth = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+    const { getLatestField, updatedProfile, updateProfile } = useContext(ProfileContext);
+
+    let day = getLatestField('day');
+    let month = getLatestField('month');
+    let year = getLatestField('year');
 
     // console.log('ProfileBirth', profile);
     const handleDayUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 31, true);
         console.log('DD', isValid);
-        updateProfile(e, 'date', isValid);
+        if (isValid){
+            updateProfile(e, 'date', isValid);
+        }
     };
 
     const handleMonthUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 12, true);
         console.log('MM', isValid);
-        updateProfile(e, 'date', isValid);
+        if (isValid) {
+            updateProfile(e, 'date', isValid);
+        }
     };
 
     const handleYearUpdate = (e) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 2100, true);
         console.log('YYYY', isValid);
-        updateProfile(e, 'date', isValid);
+        if (isValid) {
+            updateProfile(e, 'date', isValid);
+        }
     };
 
     return (
@@ -39,7 +51,7 @@ const ProfileBirth = (props) => {
                         type="day"
                         name="day"
                         placeholder="DD"
-                        value={profile.day}
+                        value={day}
                         onChange={handleDayUpdate}
                     />
                 </div>
@@ -49,7 +61,7 @@ const ProfileBirth = (props) => {
                         type="number"
                         name="month"
                         placeholder="MM"
-                        value={profile.month}
+                        value={month}
                         onChange={handleMonthUpdate}
                     />
                 </div>
@@ -59,12 +71,12 @@ const ProfileBirth = (props) => {
                         type="number"
                         name="year"
                         placeholder="YYYY"
-                        value={profile.year}
+                        value={year}
                         onChange={handleYearUpdate}
                     />
                 </div>
             </div>
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {updatedProfile?.error ? <p className="text-theme-danger">{updatedProfile?.error}</p> : ''}
             <p className="mt-2 font-semi text-theme-lightGray">
                 e.g. If your birthday is 1 October 2000, the input format will be 01/10/2000 (DD MM YYYY).
             </p>

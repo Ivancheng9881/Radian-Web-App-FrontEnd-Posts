@@ -13,70 +13,74 @@ function ProfileProvider({ children }) {
     // only the top level identity field is populated
     const profileObj = {
         identity: {
-            firstName: '',
-            lastName: '',
-            day: '',
-            month: '',
-            year: '',
-            countryCode: '',
-            number: '',
+            firstName: null,
+            lastName: null,
+            day: null,
+            month: null,
+            year: null,
+            countryCode: null,
+            number: null,
             profilePictureCid: [],
-            nationality: '',
-            gender: '',
+            nationality: null,
+            gender: null,
             interest: [],
             nft: []
         },
-        applications: {},
-        identityJson: {},
+        dataJson: {},
+        identityID: null,
         verificationJson: {}
     };
 
     const [ profile, setProfile ] = useState(null);
+    const [ updatedProfile, setUpdatedProfile ] = useState(profileObj);
 
+    useEffect(()=>{
+        // load the cached updated content of the identity
+        loadUpdatingIdentity();
+    }, []);
+
+    // TODO websocket for fetching data from graph or node
 
     useEffect(() => {
-        if (web3Context.selectedProvider != null){
-            setProfile(null);
+        if (web3Context.providers.selected != null){
             fetchUserProfile();
-            return () => setProfile([]);
+            return () => setProfile(null);
         }
-    }, [web3Context.selectedProvider])
+    }, [web3Context.providers.selected, web3Context.providers]);
 
     const fetchUserProfile = async () => {
+        // only reset profile if the address from the provider is connected to a different profile
         const userProfile  = await getPersonalProfile(web3Context);
         console.log('HomePage: User profile updated', userProfile);
-        if(userProfile != null || undefined ) {
+        if(userProfile != null || undefined) {
+            if (userProfile.identityID === profile?.identityID) return;
+            setProfile(null);
             let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
             if ( profileJson ) {
-                parseProfileJson(profileJson);
+                let newProfile = Object.assign({}, profileObj);
+                parseProfileJson(newProfile, profileJson);
+                newProfile.identityID = userProfile.identityID; // set cid for versioning
+                setProfile(newProfile);
             }
         }
     }
 
-    const parseProfileJson = (profileJson) => {
+    const parseProfileJson = (newProfile, profileJson) => {
         if ( profileJson.identity ) {
-            profileObj.identity = matchFields(profileJson.identity, profileObj.identity);
+            newProfile.identity = matchFields(profileJson.identity, newProfile.identity);
         } else {
-            profileObj.identity = matchFields(profileJson, profileObj.identity)
+            newProfile.identity = matchFields(profileJson, newProfile.identity)
         }
-        profileObj.identityJson = profileJson;
-        setProfile(profileObj);
+        newProfile.dataJson = profileJson;
     }
 
     const matchFields = (objSource, objTarget) => {
         const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
-        console.log(overlapKeys);
         for ( let k in overlapKeys ) {
             objTarget[overlapKeys[k]] = objSource[overlapKeys[k]];
         }
         return objTarget;
     }
-
-    const [ scrollDirection, setScrollDirection ] = useState(true);
-
-    const storeTempProfile = () => {
-        window.localStorage.setItem('tempProfile', JSON.stringify(profile));
-    };
 
     const updateProfile = (e, type = 'text', valid) => {
         let validatorResult = Validator.validateInput(e.target.value, type);
@@ -93,44 +97,66 @@ function ProfileProvider({ children }) {
                 break;
         }
 
-        // console.log('validatorResult', validatorResult);
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [e.target.name]: e.target.value
+        setUpdatedProfile((prevState) => {
+            let newState = {...prevState};
+            newState.identity[e.target.name] = e.target.value;
+            storeUpdatingIdentity(newState);
+            return newState;
         });
     };
 
     //Country Code Selection
     const updateProfileByDropdownSelect = (key, val) => {
-        setProfile({
-            ...profile,
-            [key]: val
-        });
+        setUpdatedProfile((prevState => {
+            let newState = {...prevState};
+            newState.identity[key] = val;
+            storeUpdatingIdentity(newState);
+            return newState;
+        }));
     };
 
     const updateProfileByKey = (key, val, type = '') => {
         let validatorResult = Validator.validateInput(val, type);
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [key]: val
-        });
+        setUpdatedProfile((prevState) => {
+            let newState = {...prevState};
+            newState.identity[key] = val;
+            newState.error = validatorResult;
+            storeUpdatingIdentity(newState);
+            return newState;
+        })
     };
 
+    const getLatestField = (key) => {
+        return updatedProfile.identity[key] != null
+        ? updatedProfile.identity[key]
+        : profile ? profile.identity[key] : profileObj.identity[key];
+    }
+
+    const storeUpdatingIdentity = (profileToStore) => {
+        window.localStorage.setItem('tempUpdatingIdentity', JSON.stringify(profileToStore));
+    };
+
+    const loadUpdatingIdentity = ()=> {
+        const temp = JSON.parse(window.localStorage.getItem('tempUpdatingIdentity'));
+        console.log("loaded identity", temp);
+        if (temp){
+            setUpdatedProfile(temp);
+        }
+    }
+
     return (
-        <ProfileContext.Provider
+        // update should only be done via the update functions
+        <ProfileContext.Provider 
             value={{
                 profile,
-                setProfile,
+                updatedProfile,
+                getLatestField,
                 updateProfile,
                 updateProfileByKey,
-                updateProfileByDropdownSelect,
-                scrollDirection,
-                setScrollDirection,
+                updateProfileByDropdownSelect
             }}
         >
-            {children}
+            {children} 
         </ProfileContext.Provider>
     );
 }

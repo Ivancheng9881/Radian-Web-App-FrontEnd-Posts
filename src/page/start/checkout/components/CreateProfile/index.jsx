@@ -43,11 +43,11 @@ const CheckoutCreateProfile = () => {
     useEffect(
         () => {
             console.log(web3Context.providers);
-            if (web3Context.selectedProvider.split('@')[1] === 'solana') {
+            if (web3Context.providers.selected.split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
-        [ web3Context.selectedProvider ]
+        [ web3Context.providers.selected ]
     );
 
     const createProfileCid = async () => {
@@ -77,10 +77,10 @@ const CheckoutCreateProfile = () => {
 
     const getProfile = async () => {
         let identityID;
-        console.log('getProfile provider', web3Context.selectedProvider);
+        console.log('getProfile provider', web3Context.providers.selected);
 
-        if (!web3Context.selectedProvider) {
-        } else if (web3Context.selectedProvider.split('@')[1] === 'solana') {
+        if (!web3Context.providers.selected) {
+        } else if (web3Context.providers.selected.split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
             console.log('identityID', identityID);
         } else {

@@ -1,15 +1,16 @@
 import Typography from '../../../../../components/Typography';
 import { useContext, useEffect, useState } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 import UploadButton from '../../../../../components/Button/UploadButton.components';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
 
 const ProfilePicture = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+    
+    const { getLatestField, updatedProfile, updateProfileByKey } = useContext(ProfileContext);
+
     const { setSnackBar } = useContext(CreateSnackbarContext);
-    const [ cid, setCid ] = useState(null);
 
     const handleUpload = async (file) => {
         console.log('Upload image...', file);
@@ -32,25 +33,18 @@ const ProfilePicture = (props) => {
         setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
     };
 
-    useEffect(
-        () => {
-            if (profile.profilePictureCid) {
-                setCid(profile.profilePictureCid);
-            }
-        },
-        [ profile.profilePictureCid, setCid ]
-    );
-
+    let profileCid = getLatestField('profilePictureCid');
+    
     return (
         <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
             <Typography.Featured alignment="left">Picture Upload</Typography.Featured>
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">Upload pictures for your profile</Typography.H2>
             </div>
-            <div>{cid && <ProfilePictureFrame src={cid && ipfsUtils.getContentUrl(cid)} />}</div>
+            <div>{profileCid != "" && <ProfilePictureFrame src={profileCid != "" && ipfsUtils.getContentUrl(profileCid)} />}</div>
             <div className="mt-10 inline-flex">
                 <div className="max-w-sm mr-5">
-                    <UploadButton value={profile.lastName} placeholder={'Browse From'} handleUpload={handleUpload} />
+                    <UploadButton value={updatedProfile?.lastName} placeholder={'Browse From'} handleUpload={handleUpload} />
                 </div>
             </div>
         </div>

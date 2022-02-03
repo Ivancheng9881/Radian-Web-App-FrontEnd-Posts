@@ -1,10 +1,14 @@
 import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
-import { useContext, useState } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import { useContext} from 'react';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 
 const ProfileName = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+
+    const { getLatestField, updatedProfile, updateProfileByKey } = useContext(ProfileContext);
+
+    const firstName = getLatestField('firstName');
+    const lastNameDefault = getLatestField('lastName');
 
     const handleChange = (e) => {
         let key;
@@ -32,7 +36,7 @@ const ProfileName = (props) => {
                         name="radianFirstName"
                         type="text"
                         placeholder="First Name"
-                        value={profile.firstName}
+                        value={firstName}
                         onChange={handleChange}
                     />
                 </div>
@@ -41,13 +45,13 @@ const ProfileName = (props) => {
                         name="radianLastName"
                         type="text"
                         placeholder="Last Name"
-                        value={profile.lastName}
+                        value={lastNameDefault}
                         onChange={handleChange}
                     />
                 </div>
             </div>
 
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {updatedProfile.error ? <p className="text-theme-danger">{updatedProfile.error}</p> : ''}
         </div>
     );
 };
