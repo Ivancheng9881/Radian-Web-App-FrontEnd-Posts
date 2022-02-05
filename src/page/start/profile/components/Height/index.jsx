@@ -5,7 +5,7 @@ import Toggler from '../../../../../components/Toggler';
 import CreateProfileContext from '../../../context/profile/profile.context';
 
 const ProfileHeight = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+    const { profile, updateData } = useContext(CreateProfileContext);
 
     const unitOpts = [ { value: 'cm', label: 'cm' }, { value: 'inch', label: 'inch' } ];
 
@@ -16,7 +16,7 @@ const ProfileHeight = (props) => {
                 value: val
             }
         };
-        updateProfile(update, 'number');
+        updateData(update, 'number');
     };
 
     return (
@@ -32,7 +32,7 @@ const ProfileHeight = (props) => {
                         name="height"
                         placeholder={profile.heightUnit.toUpperCase()}
                         value={profile.height}
-                        onChange={(e) => updateProfile(e, 'number')}
+                        onChange={(e) => updateData(e, 'number')}
                     />
                 </div>
                 <div className="max-w-sm mr-5 z-10">

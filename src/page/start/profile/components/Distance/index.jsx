@@ -5,13 +5,13 @@ import Toggler from '../../../../../components/Toggler';
 import SingleSlider from '../../../../../components/SingleSlider';
 
 const DatingDistance = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+    const { profile, updateDataByKey } = useContext(CreateProfileContext);
 
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
-    const handleToggle = (val) => updateProfileByKey('distanceIsDealBreaker', val);
+    const handleToggle = (val) => updateDataByKey('distanceIsDealBreaker', val);
 
-    const handleMaxChange = (val) => updateProfileByKey('distanceMax', val);
+    const handleMaxChange = (val) => updateDataByKey('distanceMax', val);
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">

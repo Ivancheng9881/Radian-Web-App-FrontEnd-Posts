@@ -7,7 +7,7 @@ import Validator from '../../../../../utils/validation';
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
 
 const ProfileBirth = (props) => {
-    const { getLatestField, updatedProfile, updateProfile } = useContext(ProfileContext);
+    const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
 
     let day = getLatestField('day');
     let month = getLatestField('month');
@@ -18,7 +18,7 @@ const ProfileBirth = (props) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 31, true);
         console.log('DD', isValid);
         if (isValid){
-            updateProfile(e, 'date', isValid);
+            updateData(e, 'date', isValid);
         }
     };
 
@@ -26,7 +26,7 @@ const ProfileBirth = (props) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 12, true);
         console.log('MM', isValid);
         if (isValid) {
-            updateProfile(e, 'date', isValid);
+            updateData(e, 'date', isValid);
         }
     };
 
@@ -34,7 +34,7 @@ const ProfileBirth = (props) => {
         let isValid = Validator.isNumberInRange(e.target.value, 0, 2100, true);
         console.log('YYYY', isValid);
         if (isValid) {
-            updateProfile(e, 'date', isValid);
+            updateData(e, 'date', isValid);
         }
     };
 
@@ -76,7 +76,7 @@ const ProfileBirth = (props) => {
                     />
                 </div>
             </div>
-            {updatedProfile?.error ? <p className="text-theme-danger">{updatedProfile?.error}</p> : ''}
+            {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''}
             <p className="mt-2 font-semi text-theme-lightGray">
                 e.g. If your birthday is 1 October 2000, the input format will be 01/10/2000 (DD MM YYYY).
             </p>

@@ -8,7 +8,7 @@ import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
 
 const ProfilePicture = (props) => {
     
-    const { getLatestField, updatedProfile, updateProfileByKey } = useContext(ProfileContext);
+    const { getLatestField, updateDataByKey } = useContext(ProfileContext);
 
     const { setSnackBar } = useContext(CreateSnackbarContext);
 
@@ -16,27 +16,6 @@ const ProfilePicture = (props) => {
     if (typeof profileCidList === 'string') {
         profileCidList = [profileCidList];
     }
-
-    // const handleUpload = async (file) => {
-    //     console.log('Upload image...', file);
-    //     // only accept JPG or PNG file & Image smaller than 2MB
-    //     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    //     if (!isJpgOrPng) {
-    //         setSnackBar({ open: true, message: 'You can only upload JPG or PNG file!', severity: 'danger' });
-    //         return;
-    //     }
-    //     const isLt2M = file.size / 1024 / 1024 < 2;
-    //     if (!isLt2M) {
-    //         setSnackBar({ open: true, message: 'Image must smaller than 2MB!', severity: 'danger' });
-    //         return;
-    //     }
-
-    //     // upload content to ipfs only if image file type correct
-    //     const uploadCidResp = await ipfsUtils.uploadContent(file);
-    //     // console.log('handleUploadCid', uploadCidResp);
-    //     updateProfileByKey('profilePictureCid', uploadCidResp.toString());
-    //     setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
-    // };
 
     const handleUpload = async (file) => {
         console.log("runnning");
@@ -63,7 +42,7 @@ const ProfilePicture = (props) => {
                 return;
             }
             let cidArr = [ ...profileCidList, newCid.toString() ];
-            updateProfileByKey('profilePictureCid', cidArr);
+            updateDataByKey('profilePictureCid', cidArr);
             setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
         }
     };
@@ -79,7 +58,7 @@ const ProfilePicture = (props) => {
         setSnackBar({ open: true, message: 'delete success!', severity: 'success' });
 
         console.log("updating", profileCidList);
-        updateProfileByKey('nft', profileCidList);
+        updateDataByKey('nft', profileCidList);
 
         return;
     };

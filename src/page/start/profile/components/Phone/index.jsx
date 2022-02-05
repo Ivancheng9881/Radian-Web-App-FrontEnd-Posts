@@ -11,7 +11,7 @@ import './selectCountryCode.styles.css';
 import { country_code_list as countryCodeOptions } from './countryCode.json';
 
 const ProfilePhone = (props) => {
-    const { getLatestField, updatedProfile, updateProfile, updateProfileByDropdownSelect } = useContext(ProfileContext);
+    const { getLatestField, updatedData, updateData, updateDataByDropdownSelect } = useContext(ProfileContext);
 
     const [ selectedCountryCode, setSelectedCountryCode ] = useState(`Select Code`);
 
@@ -28,7 +28,7 @@ const ProfilePhone = (props) => {
         setSelectedCountryCode(e.value);
 
         //update profile state
-        updateProfileByDropdownSelect('countryCode', eValue);
+        updateDataByDropdownSelect('countryCode', eValue);
     };
 
     return (
@@ -52,11 +52,11 @@ const ProfilePhone = (props) => {
                         type="number"
                         placeholder="000000000"
                         value={number}
-                        onChange={(e) => updateProfile(e, 'number')}
+                        onChange={(e) => updateData(e, 'number')}
                     />
                 </div>
             </div>
-            {updatedProfile?.error ? <p className="text-theme-danger">{updatedProfile?.error}</p> : ''}
+            {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''}
         </div>
     );
 };

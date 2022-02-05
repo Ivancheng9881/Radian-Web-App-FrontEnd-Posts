@@ -1,18 +1,11 @@
 import { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import ProfileContext from '../../../../utils/profile/context/profile.context';
 import DatingContext from './dating.context';
-import { getQuery, setQuery } from '../../../../utils/query';
-import { checkoutProfileRoute, startRoute } from '../../../../commons/route';
-import Validator from '../../../../utils/validation';
+import DataManager from '../../../../utils/profile/data.manager';
 
 function DatingProvider({ children }) {
-    const history = useHistory();
 
-    const profileContext = useContext(ProfileContext);
-    const datingContext = useContext(DatingContext);
-
-    const datingAppObj = profileContext.profile;
+    const {profile, updateDataByPath } = useContext(ProfileContext);
 
     const datingInfoObj = {
         location: null,
@@ -32,29 +25,13 @@ function DatingProvider({ children }) {
     };
 
     const [ datingInfo, setDatingInfo ] = useState(null);
-    const [ updatedDatingInfo, setUpdatedDatingInfo ] = useState(datingInfoObj);
-
-    useEffect(()=>{
-        loadUpdatingIdentity();
-    })
 
     useEffect(() => {
-        if ( profileJson ) {
-            const dataJson = profileContext.dataJson;
-            let datingInfo = dataJson?.application?.radianDating;
-            let newProfile = Object.assign({}, profileObj);
-        }
-        parseDatingInfoJson()
-    }, [profileContext.profile.dataJson]);
-
-    const parseDatingInfoJson = (newProfile, profileJson) => {
-        if ( profileJson.identity ) {
-            newProfile.identity = matchFields(profileJson.identity, newProfile.identity);
-        } else {
-            newProfile.identity = matchFields(profileJson, newProfile.identity)
-        }
-        newProfile.dataJson = profileJson;
-    }
+        const datingInfo = profile?.dataJson?.application?.radianDating;
+        let newDatingInfo = Object.assign({}, datingInfoObj);
+        newDatingInfo = datingInfo ? matchFields(datingInfo, newDatingInfo) : newDatingInfo;
+        setDatingInfo(newDatingInfo);
+    }, [profile?.dataJson]);
 
     const matchFields = (objSource, objTarget) => {
         const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
@@ -64,89 +41,21 @@ function DatingProvider({ children }) {
         return objTarget;
     }
 
-    const updateProfile = (e, type = 'text', valid) => {
-        let validatorResult = Validator.validateInput(e.target.value, type);
-        switch (type) {
-            case 'text':
-            case 'number':
-                validatorResult = validatorResult;
-                break;
-            case 'date':
-                if (!valid) validatorResult = `invalid input`;
-                break;
-            default:
-                validatorResult = '';
-                break;
-        }
-
-        setUpdatedProfile((prevState) => {
-            let newState = {...prevState};
-            newState.identity[e.target.name] = e.target.value;
-            storeUpdatingIdentity(newState);
-            return newState;
-        });
-    };
-
-    //Country Code Selection
-    const updateProfileByDropdownSelect = (key, val) => {
-        setUpdatedProfile((prevState => {
-            let newState = {...prevState};
-            newState.identity[key] = val;
-            storeUpdatingIdentity(newState);
-            return newState;
-        }));
-    };
-
-    const updateProfileByKey = (key, val, type = '') => {
-        let validatorResult = Validator.validateInput(val, type);
-        setUpdatedProfile((prevState) => {
-            let newState = {...prevState};
-            newState.identity[key] = val;
-            newState.error = validatorResult;
-            storeUpdatingIdentity(newState);
-            return newState;
-        })
-    };
-
-    const getLatestField = (key) => {
-        return updatedProfile.identity[key] != null
-        ? updatedProfile.identity[key]
-        : profile ? profile.identity[key] : profileObj.identity[key];
-    }
-
-    const storeUpdatingIdentity = (profileToStore) => {
-        window.localStorage.setItem('tempUpdatingIdentity', JSON.stringify(profileToStore));
-    };
-
-    const loadUpdatingIdentity = ()=> {
-        const temp = JSON.parse(window.localStorage.getItem('tempUpdatingIdentity'));
-        console.log("loaded identity", temp);
-        if (temp){
-            setUpdatedProfile(temp);
-        }
-    }
+    // propagate up to profile update on change
+    const dataChangeHandle = (d) => { updateDataByPath(['application', 'radianDating'], d); }
 
     return (
-        <CreateProfileContext.Provider
-            value={{
-                profile,
-                setProfile,
-                updateProfile,
-                updateProfileByKey,
-                updateProfileByDropdownSelect,
-                step,
-                updateStep,
-                stepList,
-                scrollDirection,
-                setScrollDirection,
-                checkoutStep,
-                checkoutStepList,
-                updateCheckoutStep
-            }}
+        <DataManager
+            dataContext={DatingContext} 
+            dataObj={datingInfoObj}
+            data={profile?.application?.radianDating}
+            dataStorageName={"tempDatingInfo"}
+            datachangehandler={dataChangeHandle}
+            children={children}
+            extraArgs={{datingInfo}}
         >
-            {children}
-        </CreateProfileContext.Provider>
+        </DataManager>
     );
 }
 
-export default CreateProfileProvider;
+export default DatingProvider;

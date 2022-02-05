@@ -4,7 +4,7 @@ import ProfileContext from '../../../../../utils/profile/context/profile.context
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingInterest = (props) => {
-    const { getLatestField, updateProfile } = useContext(ProfileContext);
+    const { getLatestField, updateData } = useContext(ProfileContext);
 
     let interest = getLatestField('interest');
     if (interest == ""){ interest = []}; 
@@ -38,7 +38,7 @@ const DatingInterest = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateProfile({
+        updateData({
             target: {
                 name: 'interest',
                 value: arr

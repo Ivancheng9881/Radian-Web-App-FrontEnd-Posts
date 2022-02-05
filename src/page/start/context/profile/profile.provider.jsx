@@ -35,6 +35,7 @@ function CreateProfileProvider({ children }) {
     ];
 
     const checkoutStepList = [
+        // { id: 'checkoutConsole', stage: 'checkoutConsole' },
         { id: 'identityInformation', stage: 'identityInformation' },
         { id: 'descriptionInformation', stage: 'descriptionInformation' },
         { id: 'nft', stage: 'nft' },
@@ -48,7 +49,7 @@ function CreateProfileProvider({ children }) {
         month: '01',
         year: '1995',
         countryCode: '+852',
-        profilePictureCid: 'QmTDg4VWmgysNRKpUp5CwESnhE9Srkgz8KWyFYr3mfcV8M',
+        profilePictureCid: ['QmTDg4VWmgysNRKpUp5CwESnhE9Srkgz8KWyFYr3mfcV8M'],
         number: '12345678',
         location: 'Hong Kong',
         weight: '80',

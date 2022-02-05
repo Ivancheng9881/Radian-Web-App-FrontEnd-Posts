@@ -5,15 +5,15 @@ import Toggler from '../../../../../components/Toggler';
 import DoubleSlider from '../../../../../components/DoubleSlider';
 
 const DatingAgeRange = (props) => {
-    const { profile, updateProfile, updateProfileByKey } = useContext(CreateProfileContext);
+    const { profile, updateDataByKey } = useContext(CreateProfileContext);
 
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
-    const handleToggle = (val) => updateProfileByKey('ageRangeIsDealBreaker', val);
+    const handleToggle = (val) => updateDataByKey('ageRangeIsDealBreaker', val);
 
-    const handleMinChange = (val) => updateProfileByKey('ageRangeMin', val);
+    const handleMinChange = (val) => updateDataByKey('ageRangeMin', val);
 
-    const handleMaxChange = (val) => updateProfileByKey('ageRangeMax', val);
+    const handleMaxChange = (val) => updateDataByKey('ageRangeMax', val);
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">

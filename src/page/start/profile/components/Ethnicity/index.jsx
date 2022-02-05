@@ -4,7 +4,7 @@ import CreateProfileContext from '../../../context/profile/profile.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingEthnicity = (props) => {
-    const { profile, updateProfile, updateProfileByKey } = useContext(CreateProfileContext);
+    const { profile, updateDataByKey } = useContext(CreateProfileContext);
 
     const options = [
         { value: 'american-indian', label: 'American Indian' },
@@ -35,7 +35,7 @@ const DatingEthnicity = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateProfileByKey('datingEthnicity', arr);
+        updateDataByKey('datingEthnicity', arr);
     };
 
     return (

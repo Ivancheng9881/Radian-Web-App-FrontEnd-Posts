@@ -5,7 +5,7 @@ import ProfileContext from '../../../../../utils/profile/context/profile.context
 
 const ProfileLocation = (props) => {
 
-    const { getLatestField, updatedProfile, updateProfile } = useContext(ProfileContext);
+    const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
     
     let location = getLatestField('location');
 
@@ -22,11 +22,11 @@ const ProfileLocation = (props) => {
                         name="location"
                         placeholder="location"
                         value={location}
-                        onChange={updateProfile}
+                        onChange={updateData}
                     />
                 </div>
             </div>
-            {updatedProfile?.error ? <p className="text-theme-danger">{updatedProfile?.error}</p> : ''}
+            {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''}
         </div>
     );
 };

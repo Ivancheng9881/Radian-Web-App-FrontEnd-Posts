@@ -5,7 +5,7 @@ import ProfileContext from '../../../../../utils/profile/context/profile.context
 
 const ProfileName = (props) => {
 
-    const { getLatestField, updatedProfile, updateProfileByKey } = useContext(ProfileContext);
+    const { getLatestField, updatedData, updateDataByKey } = useContext(ProfileContext);
 
     const firstName = getLatestField('firstName');
     const lastNameDefault = getLatestField('lastName');
@@ -20,7 +20,7 @@ const ProfileName = (props) => {
                 key = 'lastName';
                 break;
         }
-        updateProfileByKey(key, e.target.value, 'text');
+        updateDataByKey(key, e.target.value, 'text');
     };
 
     return (
@@ -51,7 +51,7 @@ const ProfileName = (props) => {
                 </div>
             </div>
 
-            {updatedProfile.error ? <p className="text-theme-danger">{updatedProfile.error}</p> : ''}
+            {updatedData.error ? <p className="text-theme-danger">{updatedData.error}</p> : ''}
         </div>
     );
 };
