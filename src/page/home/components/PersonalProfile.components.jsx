@@ -67,7 +67,7 @@ function PersonalProfile() {
                                 </RoundedButton>
                                 <div className='pt-2'></div>
                                 <RoundedButton disabled={true}>
-                                    <span className='m-auto'>Attach to Existing Profile</span>
+                                    <span className='m-auto'>Attach to Existing Profile (Coming Soon)</span>
                                 </RoundedButton>
                             </div>}
                         </span>
