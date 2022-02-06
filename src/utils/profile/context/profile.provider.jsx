@@ -13,32 +13,37 @@ function ProfileProvider({ children }) {
     // then, fetch ipfs data by cid, populate the profile object and storage in local storage for fast retrieval
     // only the top level identity field is populated
     const profileObj = {
-        identity: {
-            firstName: null,
-            lastName: null,
-            day: null,
-            month: null,
-            year: null,
-            countryCode: null,
-            number: null,
-            profilePictureCid: [],
-            nationality: null,
-            gender: null,
-            interest: [],
-            nft: []
-        },
+        firstName: "",
+        lastName: "",
+        day: "",
+        month: "",
+        year: "",
+        countryCode: "",
+        number: "",
+        profilePictureCid: [],
+        nationality: "",
+        gender: "",
+        interest: [],
+        nft: [],
         application: {},
+        identityID: "",
         dataJson: {},
-        identityID: null,
-        verificationJson: {}
+        verificationJson: {},
+        temp: {
+            identityID: true,
+            verificationJson: true,
+            visible: true,
+            dataJson: true,
+            error: true
+        }
     };
 
-    const [ profile, setProfile ] = useState(null);
+    const [ profile, setProfile ] = useState(profileObj);
 
     useEffect(() => {
         if (web3Context.providers.selected != null){
             fetchUserProfile();
-            return () => setProfile(null);
+            return () => setProfile(profileObj);
         }
     }, [web3Context.providers.selected, web3Context.providers]);
 
@@ -48,24 +53,16 @@ function ProfileProvider({ children }) {
         console.log('HomePage: User profile updated', userProfile);
         if(userProfile != null || undefined) {
             if (userProfile.identityID === profile?.identityID) return;
-            setProfile(null);
             let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
             if ( profileJson ) {
                 let newProfile = Object.assign({}, profileObj);
-                parseProfileJson(newProfile, profileJson);
-                newProfile.identityID = userProfile.identityID; // set cid for versioning
+                delete newProfile["undefined"];
+                newProfile = matchFields(profileJson, newProfile);
+                newProfile['identityID'] = userProfile.identityID; // set cid for versioning
+                newProfile['dataJson'] = profileJson;
                 setProfile(newProfile);
             }
         }
-    }
-
-    const parseProfileJson = (newProfile, profileJson) => {
-        if ( profileJson.identity ) {
-            newProfile.identity = matchFields(profileJson.identity, newProfile.identity);
-        } else {
-            newProfile.identity = matchFields(profileJson, newProfile.identity)
-        }
-        newProfile.dataJson = profileJson;
     }
 
     const matchFields = (objSource, objTarget) => {
@@ -77,9 +74,9 @@ function ProfileProvider({ children }) {
     }
 
     return <DataManager
-                dataContext={ProfileContext} 
+                dataContext={ProfileContext}
+                data={profile}
                 dataObj={profileObj}
-                data={profile?.identity}
                 dataStorageName={"tempIdentity"}
                 children={children}
                 extraArgs={{profile}} >

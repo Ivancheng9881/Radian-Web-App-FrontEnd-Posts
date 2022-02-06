@@ -13,9 +13,14 @@ const ProfilePicture = (props) => {
     const { setSnackBar } = useContext(CreateSnackbarContext);
 
     let profileCidList = getLatestField('profilePictureCid');
+    if (! profileCidList) {
+        profileCidList = [];
+    }
     if (typeof profileCidList === 'string') {
         profileCidList = [profileCidList];
     }
+
+    console.log(profileCidList);
 
     const handleUpload = async (file) => {
         console.log("runnning");
@@ -58,7 +63,7 @@ const ProfilePicture = (props) => {
         setSnackBar({ open: true, message: 'delete success!', severity: 'success' });
 
         console.log("updating", profileCidList);
-        updateDataByKey('nft', profileCidList);
+        updateDataByKey('profilePictureCid', profileCidList);
 
         return;
     };

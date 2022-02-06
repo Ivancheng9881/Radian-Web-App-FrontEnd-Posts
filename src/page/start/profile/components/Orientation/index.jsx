@@ -1,10 +1,14 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
 import Toggler from '../../../../../components/Toggler';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 
 const DatingSexualOrientation = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+
+    const { getLatestField, datingInfo, updateData } = useContext(DatingContext);
+
+    const gender = getLatestField('gender');
+    let orientation = getLatestField('orientation');
 
     const genderOpts = [ { value: 'male', label: 'Male' }, { value: 'female', label: 'Female' } ];
 
@@ -21,7 +25,7 @@ const DatingSexualOrientation = (props) => {
                 value: val
             }
         };
-        updateProfile(update);
+        updateData(update);
     };
 
     const toggleOrientation = (val) => {
@@ -31,7 +35,7 @@ const DatingSexualOrientation = (props) => {
                 value: val
             }
         };
-        updateProfile(update);
+        updateData(update);
     };
 
     return (
@@ -44,7 +48,7 @@ const DatingSexualOrientation = (props) => {
                     </div>
                     <div className="mt-10 inline-flex items-end">
                         <div className="mr-5">
-                            <Toggler value={profile.gender} opts={genderOpts} handleToggle={toggleGender} />
+                            <Toggler value={gender} opts={genderOpts} handleToggle={toggleGender} />
                         </div>
                     </div>
                 </div>
@@ -55,7 +59,7 @@ const DatingSexualOrientation = (props) => {
                     <div className="mt-10 inline-flex items-end">
                         <div className="mr-5">
                             <Toggler
-                                value={profile.orientation}
+                                value={orientation}
                                 opts={orientationOpts}
                                 handleToggle={toggleOrientation}
                             />

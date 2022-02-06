@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
 import Validator from '../validation';
 
-function DataManager({ dataContext, dataObj, data, dataStorageName, children, datachangehandler=null, extraArgs={} }) {
+function DataManager({ dataContext, data, dataObj, dataStorageName, children, datachangehandler=null, extraArgs={} }) {
 
-    const [ updatedData, setUpdatedData ] = useState(dataObj);
+    console.log("data",data);
+    const [ updatedData, setUpdatedData ] = useState({});
 
     useEffect(()=>{
         loadUpdatingData();
     }, []);
 
-    useEffect(()=>{
-        // propagate upwards
-        if (datachangehandler){
-            console.log(dataStorageName, "running");
-            datachangehandler(updatedData);
-        }
-    },[updatedData])
+    // useEffect(()=>{
+    //     // propagate upwards
+    //     if (datachangehandler){
+    //         console.log(dataStorageName, "running");
+    //         datachangehandler(updatedData);
+    //     }
+    // },[updatedData])
 
     const updateData = (e, type = 'text', valid) => {
         let validatorResult = Validator.validateInput(e.target.value, type);
@@ -54,7 +55,7 @@ function DataManager({ dataContext, dataObj, data, dataStorageName, children, da
         setUpdatedData((prevState) => {
             let newState = {...prevState};
             newState[key] = val;
-            newState.error = validatorResult;
+            // newState.error = validatorResult;
             storeUpdatingData(newState);
             return newState;
         })
@@ -68,22 +69,70 @@ function DataManager({ dataContext, dataObj, data, dataStorageName, children, da
         console.log("updating", dataStorageName, updatedData, val);
         setUpdatedData((prevState) => {
             let newState = {...prevState};
-            let lastKey = path[-1];
-            let data = newState;
-            path.forEach(e => (data[e] = data[e] || {}) && (data = data[e]));
-            data[lastKey] = val;
-            newState.error = validatorResult;
+            let lastKey = path[path.length - 1];
+            let tempState = newState;
+            for ( let k = 0 ; k < path.length - 1 ; k++ ) {
+                if ( !tempState[path[k]] ) {
+                    tempState[path[k]] = {};
+                }
+                tempState = tempState[path[k]];
+            }
+            tempState[lastKey] = val;
+            // newState.error = validatorResult;
             storeUpdatingData(newState);
             return newState;
         })
     }
 
     const getLatestField = (key) => {
-        return updatedData[key] != null
-        ? updatedData[key]
-        : data ? data[key] : dataObj[key];
+        return updatedData[key] != null ? updatedData[key] : data[key];
     }
 
+    const getLatestObject = () => {
+        let {...dataClone} = data;
+        let latestObj = matchFields(updatedData, dataClone);
+        latestObj.visible = updatedData.visible;
+        return latestObj;
+    }
+
+    const getUploadReadyObject = () => {
+        let {...dataClone} = data;
+        let uploadData =  matchFields(updatedData, dataClone);
+        // remove fields to hide
+        let visible = updatedData.visible;
+        console.log("updated data", updatedData)
+        console.log("Visible", visible);
+        if (visible){
+            Object.entries(visible).map((k, v)=>{
+                let key = k[0].split(",");
+                console.log(key);
+                for (let i = 0 ; i < key.length ; i++){
+                    uploadData[key[i]] = k[1] ? uploadData[key[i]] : dataObj[key[i]];
+                }
+            })    
+        }
+        // remove uncessary fields
+        if (dataObj.temp){
+            Object.entries(dataObj.temp).map((k, v)=>{
+                if (k[1]){
+                    delete uploadData[k[0]];
+                }
+            })    
+        }
+        if (Object.keys(uploadData).includes('temp')) delete uploadData['temp'];
+        if (Object.keys(uploadData).includes('undefined')) delete uploadData['undefined'];
+        return uploadData
+    }
+
+    const matchFields = (objSource, objTarget) => {
+        const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
+        for ( let k in overlapKeys ) {
+            objTarget[overlapKeys[k]] = objSource[overlapKeys[k]];
+        }
+        return objTarget;
+    }
+
+    // TODO store by the wallet address or profile ID
     const storeUpdatingData = (dataToStore) => {
         console.log("DataStore", JSON.stringify(dataToStore));
         window.localStorage.setItem(dataStorageName, JSON.stringify(dataToStore));
@@ -97,6 +146,10 @@ function DataManager({ dataContext, dataObj, data, dataStorageName, children, da
         }
     }
 
+    const deleteUpdatingData = () => {
+        window.localStorage.removeItem(dataStorageName);
+    }
+
     return (
         // update should only be done via the update functions
         <dataContext.Provider 
@@ -105,10 +158,13 @@ function DataManager({ dataContext, dataObj, data, dataStorageName, children, da
                 data,
                 updatedData,
                 getLatestField,
+                getLatestObject,
+                getUploadReadyObject,
                 updateData,
                 updateDataByKey,
                 updateDataByDropdownSelect,
-                updateDataByPath
+                updateDataByPath,
+                deleteUpdatingData
             }}
         >
             {children} 

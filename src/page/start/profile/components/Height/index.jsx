@@ -2,10 +2,17 @@ import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext, useState } from 'react';
 import Toggler from '../../../../../components/Toggler';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 
 const ProfileHeight = (props) => {
-    const { profile, updateData } = useContext(CreateProfileContext);
+    
+    const { getLatestField, datingInfo, updateData } = useContext(DatingContext);
+
+    const height = getLatestField('height');
+    let heightUnit = getLatestField('heightUnit');
+    if (heightUnit == null || heightUnit == ""){
+        heightUnit = "cm";
+    }
 
     const unitOpts = [ { value: 'cm', label: 'cm' }, { value: 'inch', label: 'inch' } ];
 
@@ -30,16 +37,16 @@ const ProfileHeight = (props) => {
                     <TextField.Outlined
                         type="number"
                         name="height"
-                        placeholder={profile.heightUnit.toUpperCase()}
-                        value={profile.height}
+                        placeholder={heightUnit.toUpperCase()}
+                        value={height}
                         onChange={(e) => updateData(e, 'number')}
                     />
                 </div>
                 <div className="max-w-sm mr-5 z-10">
-                    <Toggler value={profile.heightUnit} opts={unitOpts} handleToggle={toggleUnit} />
+                    <Toggler value={heightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {/* {datingInfo.error ? <p className="text-theme-danger">{datingInfo.error}</p> : ''} */}
         </div>
     );
 };

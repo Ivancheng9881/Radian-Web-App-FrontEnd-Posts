@@ -19,7 +19,9 @@ const ProfilePhone = (props) => {
     const countryCode = getLatestField('countryCode');
     
     useEffect(()=>{
-        setSelectedCountryCode(countryCode);
+        if ( countryCode != "" && countryCode != null) {
+            setSelectedCountryCode(countryCode);
+        }
     })
 
     const handleChange = async (e) => {
@@ -56,7 +58,7 @@ const ProfilePhone = (props) => {
                     />
                 </div>
             </div>
-            {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''}
+            {/* {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''} */}
         </div>
     );
 };

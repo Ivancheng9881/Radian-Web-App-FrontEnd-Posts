@@ -14,7 +14,7 @@ const CreateProfileCheckoutController = () => {
             <CheckoutWrapper>
                 {checkoutStepList[checkoutStep].id === 'identityInformation' && <CheckoutIdentityInformation />}
                 {checkoutStepList[checkoutStep].id === 'descriptionInformation' && <CheckoutDescriptionInformation />}
-                {checkoutStepList[checkoutStep].id === 'nft' && <CheckoutNFTInformation />}
+                {/* {checkoutStepList[checkoutStep].id === 'nft' && <CheckoutNFTInformation />} */}
                 {checkoutStepList[checkoutStep].id === 'profileCreated' && <CheckoutCreateProfile />}
             </CheckoutWrapper>
         </div>

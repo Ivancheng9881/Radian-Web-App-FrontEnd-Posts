@@ -29,29 +29,29 @@ function PersonalProfile() {
                 <div
                     className={`w-full h-full relative`}
                     style={{
-                        backgroundImage: `url(${profile && ipfsUtils.getContentUrl(profile.identity?.profilePictureCid)})`,
+                        backgroundImage: `url(${profile.identityID && ipfsUtils.getContentUrl(profile?.profilePictureCid)})`,
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover'
                     }}
                 >
                     {
-                        profile ? <span></span> : <span></span> // icon for update profile
+                        profile.identityID ? <span></span> : <span></span> // icon for update profile
                     }
                     { 
-                        profile ?
+                        profile.identityID ?
                         <span className={`absolute w-fit text-theme-white bg-theme-bg-dark
                             pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}>
                             <div className='font-semibold text-3xl'>
-                                {`${profile.identity?.firstName} ${profile.identity?.lastName}`}
+                                {`${profile?.firstName} ${profile?.lastName}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Gender: ${profile.identity?.gender}`}
+                                {`Gender: ${profile?.gender}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Nationality: ${profile.identity?.nationality}`}
+                                {`Nationality: ${profile?.nationality}`}
                             </div>
                             <div className='font-normal text-sm'>
-                                {`Interest: ${profile.identity?.interest}`}
+                                {`Interest: ${profile?.interest}`}
                             </div>
                         </span>
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 

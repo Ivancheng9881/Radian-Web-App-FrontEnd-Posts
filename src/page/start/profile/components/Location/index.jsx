@@ -26,7 +26,7 @@ const ProfileLocation = (props) => {
                     />
                 </div>
             </div>
-            {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''}
+            {/* {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''} */}
         </div>
     );
 };

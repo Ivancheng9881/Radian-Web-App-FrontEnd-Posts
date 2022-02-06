@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { createProfileRoute } from '../../../../../commons/route';
 
@@ -9,11 +9,18 @@ import EditIcon from '../../../../../components/Icons/edit.components';
 import ShowEyesIcon from '../../../../../components/Icons/eyes.components';
 import HideEyesIcon from '../../../../../components/Icons/hideEyes.components';
 
-const InfoDisplayGroup = ({ label, value, stepName }) => {
+const InfoDisplayGroup = ({ profileKey, label, value, visibleUpdate=null, visibilityData, stepName }) => {
     const history = useHistory();
     const [ hoverStyle, setHoverStyle ] = useState({ display: 'none' });
     const [ IconText, setIconText ] = useState('show');
     const { stepList } = useContext(CreateProfileContext);
+
+    useEffect(()=>{
+        let key = Array.isArray(profileKey) ? profileKey.join(",") : profileKey;
+        if (visibilityData && Object.keys(visibilityData).includes(key)){
+            setIconText(visibilityData[profileKey] ? 'show' : 'hide');
+        }
+    },[visibleUpdate])
 
     const constructQuery = (target) => {
         let currentStep = getQuery(history.location.search).step;
@@ -43,6 +50,8 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
 
     const handleToggleVisible = (e, action) => {
         e.preventDefault();
+        // update to make field blank when update
+        visibleUpdate && visibleUpdate(["visible", profileKey], action == "hide"? false : true);
         return setIconText(action);
     };
 
@@ -63,7 +72,7 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
             <div className="border-b-2 inline-flex justify-between items-center align-center w-96 pb-2">
                 <div className="">
                     <div>{label}</div>
-                    <div>{value}</div>
+                    <div className='text-lg'>{value}</div>
                 </div>
 
                 <span
@@ -73,7 +82,7 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
                     {IconText === 'show' ? 'Enable upload' : 'Disable upload'}
                 </span>
                 <div className="inline-flex">
-                    {IconText === 'show' ? (
+                    { visibleUpdate && (IconText === 'show' ? (
                         <div
                             className="flex cursor-pointer"
                             onMouseEnter={handleMouseEvent}
@@ -91,7 +100,8 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
                         >
                             <HideEyesIcon />
                         </div>
-                    )}
+                    ) )
+                    }
                     <div
                         className="flex justify-center items-center align-center cursor-pointer pl-3"
                         onClick={handleClick}

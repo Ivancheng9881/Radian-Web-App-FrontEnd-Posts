@@ -5,16 +5,17 @@ import DataManager from '../../../../utils/profile/data.manager';
 
 function DatingProvider({ children }) {
 
-    const {profile, updateDataByPath } = useContext(ProfileContext);
+    const {profile, updatedData, updateDataByPath } = useContext(ProfileContext);
+    console.log("Profile", profile);
 
     const datingInfoObj = {
-        location: null,
-        weight: null,
-        weightUnit: null,
-        height: null,
-        heightUnit: null,
-        orientation: null,
-        lookingFor: null,
+        location: "",
+        weight: "",
+        weightUnit: "",
+        height: "",
+        heightUnit: "",
+        orientation: "",
+        lookingFor: "",
         ageRangeMin: 1,
         ageRangeMax: 100,
         ageRangeIsDealBreaker: 1,
@@ -22,16 +23,25 @@ function DatingProvider({ children }) {
         distanceIsDealBreaker: 0,
         datingEthnicity: [],
         datingReligion: [],
+        temp: {
+            visible: true,
+            error: true
+        }
     };
 
-    const [ datingInfo, setDatingInfo ] = useState(null);
+    const [ datingInfo, setDatingInfo ] = useState(datingInfoObj);
 
     useEffect(() => {
-        const datingInfo = profile?.dataJson?.application?.radianDating;
+        let datingInfo = profile?.application?.radianDating;
+        if (! datingInfo){
+            datingInfo = profile?.dataJson;
+        }
+        console.log("dating info", datingInfo);
         let newDatingInfo = Object.assign({}, datingInfoObj);
+        delete newDatingInfo[undefined];
         newDatingInfo = datingInfo ? matchFields(datingInfo, newDatingInfo) : newDatingInfo;
         setDatingInfo(newDatingInfo);
-    }, [profile?.dataJson]);
+    }, [profile]);
 
     const matchFields = (objSource, objTarget) => {
         const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
@@ -41,16 +51,19 @@ function DatingProvider({ children }) {
         return objTarget;
     }
 
-    // propagate up to profile update on change
-    const dataChangeHandle = (d) => { updateDataByPath(['application', 'radianDating'], d); }
+    // // propagate up to profile update on change
+    // const dataChangeHandle = (d) => { 
+    //     if (updatedData != {}){
+    //         updateDataByPath(['application', 'radianDating'], d); 
+    //     }
+    // }
 
     return (
         <DataManager
-            dataContext={DatingContext} 
+            dataContext={DatingContext}
+            data={datingInfo}
             dataObj={datingInfoObj}
-            data={profile?.application?.radianDating}
             dataStorageName={"tempDatingInfo"}
-            datachangehandler={dataChangeHandle}
             children={children}
             extraArgs={{datingInfo}}
         >

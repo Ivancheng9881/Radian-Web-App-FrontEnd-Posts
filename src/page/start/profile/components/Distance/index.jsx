@@ -1,11 +1,16 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 import Toggler from '../../../../../components/Toggler';
 import SingleSlider from '../../../../../components/SingleSlider';
 
 const DatingDistance = (props) => {
-    const { profile, updateDataByKey } = useContext(CreateProfileContext);
+    const { getLatestField, updateDataByKey } = useContext(DatingContext);
+
+    let distanceIsDealBreaker = getLatestField("distanceIsDealBreaker");
+    let distanceMax = getLatestField("distanceMax");
+    if ( !distanceMax ) distanceMax = 100;
+    if ( ! distanceIsDealBreaker ) distanceIsDealBreaker = 0;
 
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
@@ -23,7 +28,7 @@ const DatingDistance = (props) => {
                     </div>
                     <div className="mt-10 w-full min-w-2/3vw">
                         <SingleSlider
-                            upper={profile.distanceMax}
+                            upper={distanceMax}
                             max={100}
                             min={0}
                             handleMaxChange={handleMaxChange}
@@ -37,7 +42,7 @@ const DatingDistance = (props) => {
                         <div className="mt-10 inline-flex items-end">
                             <div className="mr-5">
                                 <Toggler
-                                    value={profile.distanceIsDealBreaker}
+                                    value={distanceIsDealBreaker}
                                     opts={dealBreakerOpts}
                                     handleToggle={handleToggle}
                                     size="small"

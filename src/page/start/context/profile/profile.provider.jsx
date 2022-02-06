@@ -38,7 +38,7 @@ function CreateProfileProvider({ children }) {
         // { id: 'checkoutConsole', stage: 'checkoutConsole' },
         { id: 'identityInformation', stage: 'identityInformation' },
         { id: 'descriptionInformation', stage: 'descriptionInformation' },
-        { id: 'nft', stage: 'nft' },
+        // { id: 'nft', stage: 'nft' },
         { id: 'profileCreated', stage: 'profileCreated' }
     ];
 
@@ -75,56 +75,6 @@ function CreateProfileProvider({ children }) {
         ]
     };
 
-    const initProfile = {
-        firstName: '',
-        lastName: '',
-        day: '',
-        month: '',
-        year: '',
-        countryCode: '',
-        profilePictureCid: '',
-        number: '',
-        location: '',
-        weight: '',
-        weightUnit: '',
-        height: '',
-        heightUnit: '',
-        nationality: '',
-        gender: '',
-        orientation: '',
-        lookingFor: '',
-        interest: [],
-        ageRangeMin: 1,
-        ageRangeMax: 100,
-        ageRangeIsDealBreaker: 1,
-        distanceMax: 1,
-        distanceIsDealBreaker: 0,
-        datingEthnicity: [],
-        datingReligion: [],
-        nft: []
-    };
-
-
-    const profileObj = profileContext.profile;
-
-    const datingInformation = {
-        location: '',
-        weight: '',
-        weightUnit: '',
-        height: '',
-        heightUnit: '',
-        orientation: '',
-        lookingFor: '',
-        ageRangeMin: 1,
-        ageRangeMax: 100,
-        ageRangeIsDealBreaker: 1,
-        distanceMax: 1,
-        distanceIsDealBreaker: 0,
-        datingEthnicity: [],
-        datingReligion: [],
-    };
-
-    const [ profile, setProfile ] = useState(initProfile);
     const [ step, setStep ] = useState(0);
     const [ checkoutStep, setCheckoutStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
@@ -137,8 +87,6 @@ function CreateProfileProvider({ children }) {
         setInitialStep();
         return () => {};
     }, []);
-
-
 
     /**
      * @method
@@ -175,53 +123,9 @@ function CreateProfileProvider({ children }) {
             let query = getQuery(history.location.search);
             query.step = val;
             setQuery(history, query);
-            storeTempProfile();
+            // storeTempProfile();
             setStep(Number(val));
         }
-    };
-
-    const storeTempProfile = () => {
-        window.localStorage.setItem('tempProfile', JSON.stringify(profile));
-    };
-
-    const updateProfile = (e, type = 'text', valid) => {
-        let validatorResult = Validator.validateInput(e.target.value, type);
-        switch (type) {
-            case 'text':
-            case 'number':
-                validatorResult = validatorResult;
-                break;
-            case 'date':
-                if (!valid) validatorResult = `invalid input`;
-                break;
-            default:
-                validatorResult = '';
-                break;
-        }
-
-        // console.log('validatorResult', validatorResult);
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    //Country Code Selection
-    const updateProfileByDropdownSelect = (key, val) => {
-        setProfile({
-            ...profile,
-            [key]: val
-        });
-    };
-
-    const updateProfileByKey = (key, val, type = '') => {
-        let validatorResult = Validator.validateInput(val, type);
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [key]: val
-        });
     };
 
     const updateCheckoutStep = (val) => {
@@ -234,15 +138,10 @@ function CreateProfileProvider({ children }) {
         setQuery(history, query);
         setCheckoutStep(Number(val));
     };
-
+    
     return (
         <CreateProfileContext.Provider
             value={{
-                profile,
-                setProfile,
-                updateProfile,
-                updateProfileByKey,
-                updateProfileByDropdownSelect,
                 step,
                 updateStep,
                 stepList,

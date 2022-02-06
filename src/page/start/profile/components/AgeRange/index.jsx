@@ -1,17 +1,24 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 import Toggler from '../../../../../components/Toggler';
 import DoubleSlider from '../../../../../components/DoubleSlider';
 
 const DatingAgeRange = (props) => {
-    const { profile, updateDataByKey } = useContext(CreateProfileContext);
+    const { getLatestField, updateDataByKey } = useContext(DatingContext);
+
+    let ageRangeIsDealBreaker = getLatestField("ageRangeIsDealBreaker");
+    let ageRangeMin = getLatestField("ageRangeMin");
+    let ageRangeMax = getLatestField("ageRangeMax");
+    if ( !ageRangeMin ) ageRangeMin = 16;
+    if ( !ageRangeMin ) ageRangeMax = 100;
+    if ( ! ageRangeIsDealBreaker ) ageRangeIsDealBreaker = 0;
 
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
     const handleToggle = (val) => updateDataByKey('ageRangeIsDealBreaker', val);
 
-    const handleMinChange = (val) => updateDataByKey('ageRangeMin', val);
+    const handleMinChange = (val) => updateDataByKey('ageRangeMin', Math.max(val, 16));
 
     const handleMaxChange = (val) => updateDataByKey('ageRangeMax', val);
 
@@ -25,8 +32,8 @@ const DatingAgeRange = (props) => {
                     </div>
                     <div className="mt-10 w-full min-w-2/3vw">
                         <DoubleSlider
-                            upper={profile.ageRangeMax}
-                            lower={profile.ageRangeMin}
+                            upper={ageRangeMax}
+                            lower={ageRangeMin}
                             max={100}
                             min={0}
                             handleMinChange={handleMinChange}
@@ -40,7 +47,7 @@ const DatingAgeRange = (props) => {
                         <div className="mt-10 inline-flex items-end">
                             <div className="mr-5">
                                 <Toggler
-                                    value={profile.ageRangeIsDealBreaker}
+                                    value={ageRangeIsDealBreaker}
                                     opts={dealBreakerOpts}
                                     handleToggle={handleToggle}
                                     size="small"

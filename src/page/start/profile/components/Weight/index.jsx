@@ -10,8 +10,8 @@ const ProfileWeight = (props) => {
 
     const weight = getLatestField('weight');
     let weightUnit = getLatestField('weightUnit');
-    if (weightUnit == null){
-        weightUnit = "lbs";
+    if (weightUnit == null || weightUnit == ""){
+        weightUnit = "kg";
     }
 
     const unitOpts = [ { value: 'lbs', label: 'lbs' }, { value: 'kg', label: 'kg' } ];
@@ -43,10 +43,10 @@ const ProfileWeight = (props) => {
                     />
                 </div>
                 <div className="max-w-sm mr-5 z-10">
-                    <Toggler value={weightUnit.toUpperCase()} opts={unitOpts} handleToggle={toggleUnit} />
+                    <Toggler value={weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>
-            {datingInfo.error ? <p className="text-theme-danger">{datingInfo.error}</p> : ''}
+            {/* {datingInfo.error ? <p className="text-theme-danger">{datingInfo.error}</p> : ''} */}
         </div>
     );
 };
