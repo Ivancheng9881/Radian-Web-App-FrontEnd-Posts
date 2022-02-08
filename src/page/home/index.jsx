@@ -98,18 +98,16 @@ export default function HomePage() {
     return (
         <Layout>
                  <div className='pt-32'>
-                    <div className='inline-flex w-full'>
-                        <div className='w-2/3 max-w-sm'>
-                            <PersonalProfile/>
+                        <div className={`max-w-sm md:fixed h-full`}>
+                                <PersonalProfile/>
                         </div>
-                        <div className='w-2/3 inline-flex flex-wrap content-start'>
-                            {
-                                profileList?.map((p) => {
-                                    return <ProfileFrame key={p} pid={p} />
-                                })
-                            }
+                        <div className={`flex flex-wrap md:pt-0 pl-0 md:pl-96`}>
+                                {
+                                    profileList?.map((p) => {
+                                        return <ProfileFrame key={p} pid={p} />
+                                    })
+                                }
                         </div>
-                    </div>
                 </div>
         </Layout>
     )

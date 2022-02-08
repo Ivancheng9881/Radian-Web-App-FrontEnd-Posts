@@ -21,7 +21,7 @@ function ProfileFrame(props) {
     };
 
     return (
-        <div className="">
+        <div className="grow">
             {fullProfile && (
                 <div className="p-2">
                     <div
