@@ -72,8 +72,6 @@ const SelectWallet = (props) => {
             } else {
                 history.push(createProfileRoute);
             }
-        } else {
-            setSelectedWallet(prevState);
         }
     };
 

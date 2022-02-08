@@ -19,7 +19,7 @@ const Web3Provider = ({ children }) => {
         const prevProviders = loadProviderDetails();
 
         // load past connection details, can try to resume connection in the defined order
-        window.ethereum.request({ method: 'eth_accounts' }).then((result)=> {
+        window.ethereum?.request({ method: 'eth_accounts' }).then((result)=> {
             if (result.length != 0) {
                 console.log("resuming from", prevProviders);
                 connectERCProvider(true).then(
@@ -59,7 +59,7 @@ const Web3Provider = ({ children }) => {
 
     useEffect(() => {
 
-            window.ethereum.on("chainChanged", async (_chainId) => {
+            window.ethereum?.on("chainChanged", async (_chainId) => {
                 if (!_chainId.includes('0x89')) {
                     setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
                     
@@ -71,7 +71,7 @@ const Web3Provider = ({ children }) => {
                 }
             });
 
-            window.ethereum.on('accountsChanged', (acc) => {
+            window.ethereum?.on('accountsChanged', (acc) => {
                 // on accounts change, update the providers if no accounts exists for metamask (basically disconnected)
                 // else, if there is >1 accounts connected in metamask, stay connected
                 console.log('listening to accountsChanged event', acc)
@@ -105,7 +105,7 @@ const Web3Provider = ({ children }) => {
                 console.log(providers);
             });
 
-            return () => window.ethereum.removeAllListeners();
+            return () => window.ethereum?.removeAllListeners();
     }, [])
     // // TODO later extend to more supported networks
     // useEffect(() => {

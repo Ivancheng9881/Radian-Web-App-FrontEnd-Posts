@@ -91,6 +91,7 @@ const Navbar = (props) => {
                 </div>
 
                 {/* Wallet address on Navbar */}
+                {(window.ethereum || window.solana) &&
                 <div>
                     <Popup
                         trigger={<button>
@@ -113,6 +114,7 @@ const Navbar = (props) => {
                         </div>
                     </Popup>
                 </div>
+                }
             </div>
         </div>
     );

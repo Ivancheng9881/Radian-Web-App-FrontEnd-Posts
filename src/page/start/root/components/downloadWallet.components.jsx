@@ -7,7 +7,7 @@ const DownloadWallet = (props) => {
 
     if (selectedWallet === "phantom" && window.solana ) return <div/>;
     if (selectedWallet === "metamask" && window.ethereum ) return <div/>;
-    
+
     const handleClick = (e) => {
         const userAgent = new UAParser();
         const { name } = userAgent.getBrowser();
