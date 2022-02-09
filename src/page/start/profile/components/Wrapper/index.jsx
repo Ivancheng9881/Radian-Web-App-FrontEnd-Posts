@@ -61,7 +61,8 @@ const CreateProfileBodyWrapper = ({children}) => {
     return (
         <div id='RD-createProfileRoot'>
             <div className="pt-64 pb-72 px-10 bg-theme-bg-dark scroll">
-                <div className="m-auto w-4/5">
+                {/*  Select-none disable text selection, else will get randomly highlighted text */}
+                <div className="m-auto w-4/5 select-none"> 
                         {children}
                 </div>
             </div>
@@ -73,7 +74,7 @@ const CreateProfileBodyWrapper = ({children}) => {
                     id='RD-createProfileFooterBody'
                     className="relative m-auto w-4/5"
                 >
-                    <div className="absolute -top-36 -right-0">
+                    <div className="absolute -top-36 -right-0 select-none">
                         <div className='inline-flex'>
                             { !isEdit && <div className={`pr-2 pl-2`}>
                                 <ArrowUpButton 

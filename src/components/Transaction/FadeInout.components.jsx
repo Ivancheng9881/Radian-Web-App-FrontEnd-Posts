@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useTransition, animated } from "react-spring";
 import { useEffect } from "react";
 
@@ -23,7 +23,7 @@ const FadeInOut = ({children, visible, scrollUp=false, offset=100}) => {
     // )
 
     // disable animation
-    return visible && <div className="">{children}</div>
+    return visible && <div>{children}</div>
 };
 
 export default FadeInOut;
