@@ -1,33 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
-import { getProfileErc, getProfileListCountErc, getProfileListErc, getPersonalProfile } from "../../utils/web3/contract/profileContract/erc";
+import { getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
 // import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 // import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
 // import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';
 // import Web3Context from '../../utils/web3/context/web3.context';
 import PersonalProfile from './components/PersonalProfile.components';
 import ProfileFrame from './components/ProfileFrame.component';
-import Web3Context from '../../utils/web3/context/web3.context';
 
 export default function HomePage() {
-    const Web3ContextProvider = useContext(Web3Context);
-    const [ network, setNetwork ] = useState(undefined);
-    const [ profileList, setProfileList ] = useState([]);
-    const [ profile, setProfile ] = useState([]);
-    const [ pagination, setPagination ] = useState({
-        count: 0,
-        skip: 0,
-        limit: 10,
-    });
-    
+    // const Web3ContextProvider = useContext(Web3Context);
+    // const [ network, setNetwork ] = useState(undefined);
+
     // useEffect(() => {
     //     getCurrentChainId();
     // },[window.ethereum.networkVersion, network])
-
-    // const getCurrentChainId = async () => {
-    //     const currentNetwork = await Web3ContextProvider.network
-    //     setNetwork(currentNetwork) 
-    // }
 
     // useEffect(() => {
     //     Number(window.ethereum.networkVersion) === 137 && getProfileListCount();
@@ -39,10 +26,40 @@ export default function HomePage() {
     //     }
     // }, [window.ethereum.networkVersion, pagination]);
 
+    // fetch profile only if there is address selected and the chainID is correct
+
     // useEffect(() => {
-    //     Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
-    //     return () => setProfile([]);
-    // }, [window.ethereum.networkVersion])
+    //     if (window.ethereum.selectedAddress != null){
+    //         getCurrentChainId();
+    //     }
+    // },[window.ethereum.networkVersion, network])
+
+    // const getCurrentChainId = async () => {
+    //     const currentNetwork = await Web3ContextProvider.network
+    //     setNetwork(currentNetwork) 
+    // }
+
+    // const [ profile, setProfile ] = useState([]);
+    
+    // useEffect(() => {
+    //     if (window.ethereum.selectedAddress != null){
+    //         Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
+    //         return () => setProfile([]);
+    //     }
+    // }, [window.ethereum.selectedAddress])
+
+    // const fetchUserProfile = async () => {
+    //     const userProfile  = await getPersonalProfile();
+    //     console.log('HomePage: User profile updated', userProfile);
+    //     if(userProfile != null || undefined ) setProfile(userProfile);
+    // }
+
+    const [ profileList, setProfileList ] = useState([]);
+    const [ pagination, setPagination ] = useState({
+        count: 0,
+        skip: 0,
+        limit: 10,
+    });
 
     useEffect(()=>{
         getProfileListCount();
@@ -71,34 +88,26 @@ export default function HomePage() {
         let profiles = await getProfileListErc(skip, pageSize);
         console.log(profiles);
         setProfileList(profiles);
-
+        
         setPagination({
             ...pagination,
             skip: skip + pageSize   
         })
     };
-
-    const fetchUserProfile = async () => {
-        const userProfile  = await getPersonalProfile()
-        console.log('HomePage: User profile updated', userProfile)
-        if(userProfile) setProfile(userProfile)
-    }
     
     return (
         <Layout>
                  <div className='pt-32'>
-                    <div className='inline-flex w-full'>
-                        <div className='w-2/3 max-w-sm'>
-                            <PersonalProfile pid={profile} />
+                        <div className={`max-w-sm md:fixed h-full`}>
+                                <PersonalProfile/>
                         </div>
-                        <div className='w-2/3 inline-flex flex-wrap content-start'>
-                            {
-                                profileList?.map((p) => {
-                                    return <ProfileFrame key={p} pid={p} />
-                                })
-                            }
+                        <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
+                                {
+                                    profileList?.map((p) => {
+                                        return <ProfileFrame key={p} pid={p} />
+                                    })
+                                }
                         </div>
-                    </div>
                 </div>
         </Layout>
     )

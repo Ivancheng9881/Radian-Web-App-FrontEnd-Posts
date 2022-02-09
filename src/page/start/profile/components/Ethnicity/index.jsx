@@ -1,10 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingEthnicity = (props) => {
-    const { profile, updateProfile, updateProfileByKey } = useContext(CreateProfileContext);
+
+    const { getLatestField, updateDataByKey } = useContext(DatingContext);
+    let datingEthnicity = getLatestField("datingEthnicity");
+    if ( ! datingEthnicity ) datingEthnicity = [];
 
     const options = [
         { value: 'american-indian', label: 'American Indian' },
@@ -25,7 +28,7 @@ const DatingEthnicity = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...profile.datingEthnicity ];
+        let arr = [ ...datingEthnicity ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -35,7 +38,7 @@ const DatingEthnicity = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateProfileByKey('datingEthnicity', arr);
+        updateDataByKey('datingEthnicity', arr);
     };
 
     return (
@@ -48,7 +51,7 @@ const DatingEthnicity = (props) => {
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={profile.datingEthnicity}
+                            value={datingEthnicity}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

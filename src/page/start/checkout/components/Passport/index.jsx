@@ -16,7 +16,7 @@ import Web3Context from '../../../../../utils/web3/context/web3.context';
 import { PhantomWalletName } from '@solana/wallet-adapter-phantom';
 
 const ProfilePassport = (props) => {
-    const { provider, wallet } = useContext(Web3Context);
+    const { web3Context } = useContext(Web3Context);
     const { profile } = useContext(CreateProfileContext);
     const [ id, setId ] = useState(null);
     const solanaWallet = useWallet();
@@ -29,7 +29,7 @@ const ProfilePassport = (props) => {
         () => {
             // console.log(provider)
             // console.log(solanaWallet)
-            // if (provider.split('@')[1] === 'solana') {
+            // if (provider["selected"].split('@')[1] === 'solana') {
             //     if (!solanaWallet.connected) {
             //         initSolanaWallet();
             //     }
@@ -48,11 +48,11 @@ const ProfilePassport = (props) => {
 
     useEffect(
         () => {
-            if (provider.split('@')[1] === 'solana') {
+            if (web3Context.providers.selected.split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
-        [ provider ]
+        [ web3Context.providers.selected ]
     );
 
     const createProfileCid = async () => {
@@ -61,7 +61,7 @@ const ProfilePassport = (props) => {
         let profileString = JSON.stringify(profile);
         const cid = await ipfsUtils.uploadContent(profileString);
 
-        if (provider.split('@')[1] === 'solana') {
+        if (web3Context.providers.selected.split('@')[1] === 'solana') {
             txn = await createProfileOnSolana(cid.toString());
         } else {
             txn = await createProfileErc(cid.toString());
@@ -74,11 +74,11 @@ const ProfilePassport = (props) => {
 
     const getProfile = async () => {
         let identityID;
-        console.log('getProfile', provider);
+        console.log('getProfile', web3Context.providers.selected);
 
-        if (!provider) {
+        if (!web3Context.providers.selected) {
             //
-        } else if (provider.split('@')[1] === 'solana') {
+        } else if (web3Context.providers.selected.split('@')[1] === 'solana') {
             identityID = await getProfileSolana(solanaWallet);
             console.log('identityID', identityID);
         } else {

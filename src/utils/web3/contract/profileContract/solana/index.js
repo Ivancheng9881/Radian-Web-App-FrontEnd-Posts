@@ -91,7 +91,7 @@ async function getSearchAccountPDA(programId, profileId) {
 
 async function fetchProfileMappingSolana(program, provider) {
     try {
-        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet.publicKey);
+        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
         let profileMapping = await program.account.profileMapping.fetch(profileMappingPDA);
         return profileMapping;
     } catch (err) {
@@ -213,6 +213,7 @@ export async function getProfileSolana(wallet) {
 
     let profile = await fetchProfileSolana(program, provider);
     if (profile.length > 0) {
+        if (profile[1] == null) return undefined;
         let contentIdArray = profile[1].identityId
         let contentId = decodeContentID(contentIdArray);
         return contentId;

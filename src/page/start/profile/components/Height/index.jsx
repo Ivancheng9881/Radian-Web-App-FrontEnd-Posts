@@ -2,10 +2,17 @@ import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext, useState } from 'react';
 import Toggler from '../../../../../components/Toggler';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 
 const ProfileHeight = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+    
+    const { getLatestField, datingInfo, updateData } = useContext(DatingContext);
+
+    const height = getLatestField('height');
+    let heightUnit = getLatestField('heightUnit');
+    if (heightUnit == null || heightUnit == ""){
+        heightUnit = "cm";
+    }
 
     const unitOpts = [ { value: 'cm', label: 'cm' }, { value: 'inch', label: 'inch' } ];
 
@@ -16,7 +23,7 @@ const ProfileHeight = (props) => {
                 value: val
             }
         };
-        updateProfile(update, 'number');
+        updateData(update, 'number');
     };
 
     return (
@@ -25,21 +32,21 @@ const ProfileHeight = (props) => {
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">Height</Typography.H2>
             </div>
-            <div className="mt-10 inline-flex items-end">
-                <div className="w-1/3 mr-5">
+            <div className="mt-10 inline-flex flex-wrap items-end">
+                <div className="w-48 mr-5">
                     <TextField.Outlined
                         type="number"
                         name="height"
-                        placeholder={profile.heightUnit.toUpperCase()}
-                        value={profile.height}
-                        onChange={(e) => updateProfile(e, 'number')}
+                        placeholder={heightUnit.toUpperCase()}
+                        value={height}
+                        onChange={(e) => updateData(e, 'number')}
                     />
                 </div>
-                <div className="max-w-sm mr-5 z-10">
-                    <Toggler value={profile.heightUnit} opts={unitOpts} handleToggle={toggleUnit} />
+                <div className="mr-5 mt-3 z-10">
+                    <Toggler value={heightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {/* {datingInfo.error ? <p className="text-theme-danger">{datingInfo.error}</p> : ''} */}
         </div>
     );
 };

@@ -59,14 +59,10 @@ const CreateProfileBodyWrapper = ({children}) => {
     }
 
     return (
-        <div id='RD-createProfileRoot' className="relative">
-            <div 
-                id='RD-createProfileBody'  
-                className="h-100 w-full min-w-fit pt-64 pl-10 pr-10 bg-theme-bg-dark" 
-            >
-                <div className="relative m-auto w-4/5">
-                    {children}
-
+        <div id='RD-createProfileRoot'>
+            <div className="pt-64 pb-72 px-10 bg-theme-bg-dark scroll">
+                <div className="m-auto w-4/5">
+                        {children}
                 </div>
             </div>
             <div 

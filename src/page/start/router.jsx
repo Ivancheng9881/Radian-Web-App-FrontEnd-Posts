@@ -6,15 +6,18 @@ import ChooseWalletPage from './root';
 import CreateProfilePage from './profile';
 import CreateProfileCheckout from './checkout';
 import CreateProfileProvider from './context/profile/profile.provider';
+import DatingProvider from './context/datingApp/dating.provider';
 
 const HomeRouter = () => {
     return (
         <Layout>
-            <CreateProfileProvider>
-                <Route exact path={startRoute} component={ChooseWalletPage} />
-                <Route path={createProfileRoute} component={CreateProfilePage} />
-                <Route path={checkoutProfileRoute} component={CreateProfileCheckout} />
-            </CreateProfileProvider>
+            <DatingProvider>
+                <CreateProfileProvider>
+                    <Route exact path={startRoute} component={ChooseWalletPage} />
+                    <Route path={createProfileRoute} component={CreateProfilePage} />
+                    <Route path={checkoutProfileRoute} component={CreateProfileCheckout} />
+                </CreateProfileProvider>
+            </DatingProvider>
         </Layout>
     );
 };

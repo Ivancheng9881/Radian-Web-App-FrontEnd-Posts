@@ -6,6 +6,7 @@ const UploadButton = ({ children, placeholder, handleUpload, disabled = false })
     const handleChange = (e) => {
         e.preventDefault();
         handleUpload(e.target.files[0]);
+        fileInputRef.current.value = "";
     };
 
     return (

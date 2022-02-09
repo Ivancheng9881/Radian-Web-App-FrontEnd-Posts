@@ -1,10 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingReligion = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+
+    const { getLatestField, updateDataByKey } = useContext(DatingContext);
+    let datingReligion = getLatestField("datingReligion");
+    if ( ! datingReligion ) datingReligion = [];
 
     const options = [
         { value: 'buddhist', label: 'Buddhist' },
@@ -27,7 +30,7 @@ const DatingReligion = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...profile.datingReligion ];
+        let arr = [ ...datingReligion ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -37,7 +40,7 @@ const DatingReligion = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateProfileByKey('datingReligion', arr);
+        updateDataByKey('datingReligion', arr);
     };
 
     return (
@@ -50,7 +53,7 @@ const DatingReligion = (props) => {
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={profile.datingReligion}
+                            value={datingReligion}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

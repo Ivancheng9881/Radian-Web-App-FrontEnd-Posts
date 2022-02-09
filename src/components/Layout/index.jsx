@@ -5,8 +5,8 @@ const Layout = (props) => {
     <div
       className='bg-theme-bg-dark min-h-screen'
     >
-        <Navbar />
-        {props.children}
+          <Navbar />
+          {props.children}          
     </div>
   )
 }

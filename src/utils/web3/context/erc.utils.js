@@ -1,8 +1,7 @@
 import React from 'react';
 import { ethers } from "ethers";
 // import Web3 from "web3";
-import { maticHttpProvider } from "../../../commons/web3";
-import { exit } from 'process';
+// import { maticHttpProvider } from "../../../commons/web3";\
 const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider() {
@@ -16,17 +15,18 @@ function ercErrorHandler(code) {
     switch (code) {
         case 4001:
             return {}
-
     }
 }
 
 async function getSigner() {
+    console.log("getting signer");
     let provider = await initEtherProvider();
     if (!provider) return false
     return await provider.getSigner()
 };
 
 async function getAddress() {
+    console.log("getting address");
     let signer = await getSigner();
     if (!signer) return false
     return await signer.getAddress();
@@ -87,15 +87,19 @@ async function switchNetwork(chainId) {
  */
 async function connectWallet() {
     console.log("connecting wallet");
-    try {
-        if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
-            let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
-            return resp;
+        try {
+            if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+                let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
+                return resp;
+            }
+        } catch (err) {
+            if (err.code == -32002) {
+                console.log("Pending Request");
+                // TODO show snack bar to notify user here
+            }
+            console.log('Error in connecting wallet', err.message);
+            return false
         }
-    } catch (err) {
-        console.log('Error in connecting wallet', err.message);
-        return false
-    }
 }
 
 function isConnected() {
@@ -104,13 +108,9 @@ function isConnected() {
 
 
 async function initContract(address, abi, readOnly = false) {
-    let signer;
-    if (!readOnly) {
-        signer = await getSigner()
-    } else {
-        // signer = new Web3.providers.HttpProvider(maticHttpProvider)
-        signer = ethers.getDefaultProvider(maticHttpProvider)
-    }
+    console.log("Initialising contract");
+    let signer = await getSigner();
+    // signer = ethers.getDefaultProvider(maticHttpProvider)
     // console.log('initContract signer', signer);
     const contract = new ethers.Contract(address, abi, signer);
     return contract;
@@ -118,8 +118,6 @@ async function initContract(address, abi, readOnly = false) {
 
 async function initContractGasless(address, abi, config) {
     let provider = await initEtherProvider();
-    // console.log(provider);
-    // console.log(window.ethereum);
     provider = await RelayProvider.newProvider({ provider: window.ethereum, config }).init();
     const provider2 = new ethers.providers.Web3Provider(provider, "any");
     const signer = provider2.getSigner();

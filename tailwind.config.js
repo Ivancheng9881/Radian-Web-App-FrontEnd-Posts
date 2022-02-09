@@ -14,7 +14,8 @@ const customTheme = {
     danger: '#fc6058',
     purple: '#c743f5',
     lightPurple: '#8c9cf8',
-    lightGreen: '#7dddbe'
+    lightGreen: '#7dddbe',
+    red: "#FF0000"
 }
 
 
@@ -43,7 +44,7 @@ module.exports = {
             'theme-gray': customTheme.gray,
             'theme-lightGray': customTheme.lightGray,
             'theme-success': customTheme.success,
-            'theme-danger': customTheme.danger,
+            'theme-red': customTheme.red,
         },
         extend: {
             width: {
