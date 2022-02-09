@@ -101,7 +101,7 @@ export default function HomePage() {
                         <div className={`max-w-sm md:fixed h-full`}>
                                 <PersonalProfile/>
                         </div>
-                        <div className={`flex flex-wrap md:pt-0 pl-0 md:pl-96`}>
+                        <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
                                 {
                                     profileList?.map((p) => {
                                         return <ProfileFrame key={p} pid={p} />
