@@ -94,21 +94,14 @@ export default function HomePage() {
             skip: skip + pageSize   
         })
     };
-
-    const [windowWidth, setWindowWidth ] = useState(window.innerWidth);
-    const handleResize = ()=>{
-        setWindowWidth(window.innerWidth);         
-    }
-    window.addEventListener('resize', handleResize);
-
-
+    
     return (
         <Layout>
                  <div className='pt-32'>
-                        <div className={`max-w-sm ${windowWidth > 24 * 16 + 400 ? "fixed" : ""}`}>
+                        <div className={`max-w-sm md:fixed h-full`}>
                                 <PersonalProfile/>
                         </div>
-                        <div className={`flex flex-wrap ${windowWidth > 24 *16 + 400 ? "justify-start pt-0 pl-96 ml-0" : " pl-0 ml-8"}`}>
+                        <div className={`flex flex-wrap md:pt-0 pl-0 md:pl-96`}>
                                 {
                                     profileList?.map((p) => {
                                         return <ProfileFrame key={p} pid={p} />
