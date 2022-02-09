@@ -32,8 +32,8 @@ const ProfileWeight = (props) => {
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">Weight</Typography.H2>
             </div>
-            <div className="mt-10 inline-flex items-end">
-                <div className="w-1/3 mr-5">
+            <div className="mt-10 inline-flex items-end flex-wrap">
+                <div className="w-48 mr-5">
                     <TextField.Outlined
                         type="number"
                         name="weight"
@@ -42,7 +42,7 @@ const ProfileWeight = (props) => {
                         onChange={(e) => updateData(e, 'number')}
                     />
                 </div>
-                <div className="max-w-sm mr-5 z-10">
+                <div className="mr-5 mt-3 z-10">
                     <Toggler value={weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
                 </div>
             </div>

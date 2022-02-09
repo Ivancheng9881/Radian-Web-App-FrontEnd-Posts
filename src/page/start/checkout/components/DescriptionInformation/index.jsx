@@ -10,7 +10,7 @@ const CheckoutDescriptionInformation = () => {
     let latestDatingInfo = getLatestObject();
     
     return (
-        <div className="RD-CheckoutPage-scrollbar h-full overflow-scroll" style={{ maxHeight: 560 }}>
+        <div>
             <div className="pl-6 pr-6">
                 <Typography.Featured>RADIAN Passport Summary</Typography.Featured>
             </div>
@@ -38,7 +38,7 @@ const CheckoutDescriptionInformation = () => {
                             value={latestDatingInfo.location}
                             visibleUpdate={updateDataByPath} 
                             visibilityData={latestDatingInfo.visible}
-                            stepName={`location`} />`
+                            stepName={`location`} />
                         <InfoDisplayGroup
                             profileKey="orientation"
                             label={`Interested in`}

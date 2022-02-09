@@ -35,7 +35,7 @@ const DatingDistance = (props) => {
                             unit="mi"
                         />
                     </div>
-                    <div className="inline-flex items-end pt-16">
+                    <div className="inline-flex flex-wrap items-end pt-16">
                         <div className="pt-4 pb-2 pr-4 w-96">
                             <Typography.H4 alignment="left">Is this a deal breaker?</Typography.H4>
                         </div>

@@ -14,8 +14,8 @@ const CheckoutIdentityInformation = () => {
             <div className="pl-6 pr-6">
                 <Typography.Featured>RADIAN Passport Summary</Typography.Featured>
             </div>
-            <div className="inline-flex">
-                <div className="w-2/3 ">
+            <div className="inline-flex md:flex-nowrap md:flex-row flex-wrap flex-col-reverse">
+                <div className="w-auto md:w-2/3">
                     <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold">Identity Information</div>
                     <div className="inline-flex flex-wrap">
                         <InfoDisplayGroup
@@ -70,12 +70,21 @@ const CheckoutIdentityInformation = () => {
                         />
                     </div>
                 </div>
-                <div className="w-1/3">
-                    <div className="text-2xl mb-4 text-theme-white font-semibold">Identity Information</div>
-                    <div>
-                        <ProfilePictureFrame
+                <div className="w-auto md:w-1/3 mb-4">
+                    <div className="text-2xl mb-4 text-theme-white font-semibold pl-6 md:pl-0">Profile Images</div>
+                    <div className='flex flex-wrap gap-5'>
+                        { (typeof latestProfile.profilePictureCid === 'string') ? 
+                            <ProfilePictureFrame
                             profileKey="profilePictureCid"
                             src={ipfsUtils.getContentUrl(latestProfile.profilePictureCid)} />
+                            :
+                            latestProfile.profilePictureCid.map((k,v) => {
+                                return <ProfilePictureFrame
+                                        profileKey={`profilePictureCid_${v}`}
+                                        src={ipfsUtils.getContentUrl(k)} />    
+                            })
+                        }
+                        
                     </div>
                 </div>
             </div>

@@ -39,8 +39,8 @@ const ProfilePhone = (props) => {
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">You can reach me at</Typography.H2>
             </div>
-            <div className="mt-10 inline-flex">
-                <div className="max-w-none w-60 mr-5" id="RD-SelectCountryCode">
+            <div className="mt-10 inline-flex flex-wrap">
+                <div className="max-w-none w-60 mr-5 mb-10" id="RD-SelectCountryCode">
                     <Dropdown
                         options={countryCodeOptions.sort()}
                         value={`+${selectedCountryCode}`}

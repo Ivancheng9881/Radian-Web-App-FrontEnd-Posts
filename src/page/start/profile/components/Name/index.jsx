@@ -30,8 +30,8 @@ const ProfileName = (props) => {
                 <Typography.H2 alignment="left">My name is</Typography.H2>
             </div>
 
-            <div className="mt-10 inline-flex">
-                <div className="max-w-sm mr-5">
+            <div className="mt-10 flex flex-wrap">
+                <div className="max-w-sm mr-5 mb-10">
                     <TextField.Outlined
                         name="radianFirstName"
                         type="text"

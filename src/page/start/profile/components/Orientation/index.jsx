@@ -42,7 +42,7 @@ const DatingSexualOrientation = (props) => {
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">
             <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
             <div className="w-4/5">
-                <div className="inline-flex items-end">
+                <div className="inline-flex items-end flex-wrap mb-4">
                     <div className="pt-4 pb-2 pr-4 w-140">
                         <Typography.H2 alignment="left">You defined yourself as</Typography.H2>
                     </div>
@@ -52,7 +52,7 @@ const DatingSexualOrientation = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="inline-flex items-end">
+                <div className="inline-flex items-end flex-wrap">
                     <div className="pt-4 pb-2 pr-4 w-140">
                         <Typography.H2 alignment="left">You are interested in</Typography.H2>
                     </div>

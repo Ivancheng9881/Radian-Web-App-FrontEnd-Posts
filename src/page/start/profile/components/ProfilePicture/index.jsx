@@ -75,10 +75,10 @@ const ProfilePicture = (props) => {
                 <Typography.H2 alignment="left">Upload pictures for your profile</Typography.H2>
             </div>
             <div className="block">
-                <div className="inline-flex">
+                <div className="inline-flex flex-wrap">
                     {profileCidList.map((c, i) => {
                         return (
-                            <div className="" key={i}>
+                            <div className="ml-5" key={i}>
                                 <div
                                     style={{ width: 28, height: 28 }}
                                     className="text-center relative top-10 left-40 border-theme-danger bg-theme-danger text-theme-white rounded-full border-2 cursor-pointer"

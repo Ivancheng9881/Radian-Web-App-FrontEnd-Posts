@@ -150,8 +150,9 @@ const CheckoutCreateProfile = () => {
                         <div className="pt-6 pb-6">Add interactivity tools to keep your audience engaged.</div>
                     </div>
                     <div className="">
-                        <div className="inline-flex w-full">
-                            <div className="p-4 w-1/2 ">
+                        <div className="inline-flex flex-wrap w-full justify-center">
+                            
+                            <div className="p-4">
                                 <div className="text-center">
                                     <img
                                         className="m-auto"
@@ -165,10 +166,11 @@ const CheckoutCreateProfile = () => {
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
                                     onClick={() => createProfilePolygon(false)}
                                 >
-                                    <div className="pt-2 pb-2 pl-10 pr-10 text-xl">Polygon</div>
+                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon</div>
                                 </div>
                             </div>
-                            <div className="p-4 w-1/2 ">
+                            
+                            <div className="p-4">
                                 <div className="text-center">
                                     <img
                                         className="m-auto"
@@ -182,10 +184,11 @@ const CheckoutCreateProfile = () => {
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
                                     onClick={() => createProfilePolygon(true)}
                                 >
-                                    <div className="pt-2 pb-2 pl-10 pr-10 text-xl">Polygon (Free)</div>
+                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon (Free)</div>
                                 </div>
                             </div>
-                            <div className="p-4 w-1/2 ">
+                            
+                            <div className="p-4">
                                 <div className="text-center">
                                     <img
                                         className="m-auto"
@@ -199,12 +202,12 @@ const CheckoutCreateProfile = () => {
                                     className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
                                     onClick={createProfileOnSolana}
                                 >
-                                    <div className="pt-2 pb-2 pl-10 pr-10 text-xl"> Coming Soon</div>
+                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base"> Coming Soon</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div id="RD-CheckoutErrorMsg" className="h-2 font-semibold">
+                    <div id="RD-CheckoutErrorMsg" className="h-2 mt-5 font-semibold text-theme-danger">
                         <span>{error.state && error.msg}</span>
                     </div>
                 </div>
