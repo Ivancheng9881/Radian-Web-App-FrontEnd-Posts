@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import CreateProfileContext from '../context/profile/profile.context';
 import CheckoutCreateProfile from './components/CreateProfile';
 import CheckoutDescriptionInformation from './components/DescriptionInformation';

@@ -25,7 +25,7 @@ const CreateProfileController = () => {
     return (
         <ProfileWrapper>
             <FadeInOut visible={stepList[step].id === 'name'} scrollUp={scrollDirection}>
-                <ProfileName />
+                <ProfileName/>
             </FadeInOut>
             <FadeInOut visible={stepList[step].id === 'phone'} scrollUp={scrollDirection}>
                 <ProfilePhone />

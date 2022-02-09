@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import ArrowDownButton from "../../../../../components/Button/ArrowDownButton.components";
 import ArrowUpButton from "../../../../../components/Button/ArrowUpButton.components";
 import CreateProfileContext from "../../../context/profile/profile.context";
@@ -35,7 +35,6 @@ const CheckoutWrapper = ({ children }) => {
         { value: 'nft', label: 'NFT' },
         { value: 'profileCreated', label: 'Profile Created' },
     ];
-
 
     return (
         <div id='RD-createProfileRoot' className="relative">

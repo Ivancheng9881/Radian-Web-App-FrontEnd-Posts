@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
 import Typography from '../../../../../components/Typography';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
@@ -8,7 +8,12 @@ import InfoDisplayGroup from '../InfoDisplay/InfoDisplay.components';
 const CheckoutDescriptionInformation = () => {
     const { getLatestObject, updateDataByPath } = useContext(DatingContext);
     let latestDatingInfo = getLatestObject();
-    
+
+    useEffect(()=>{
+        window.scrollTo({ top: 40, behavior: 'smooth' });
+    },[])
+
+
     return (
         <div>
             <div className="pl-6 pr-6">

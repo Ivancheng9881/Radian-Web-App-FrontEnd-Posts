@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
 import Typography from '../../../../../components/Typography';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
@@ -8,6 +8,10 @@ import ProfileContext from '../../../../../utils/profile/context/profile.context
 const CheckoutIdentityInformation = () => {
     const { getLatestObject, updateDataByPath } = useContext(ProfileContext);
     let latestProfile = getLatestObject();
+
+    useEffect(()=>{
+        window.scrollTo({ top: 40, behavior: 'smooth' });
+    },[])
 
     return (
         <div>
