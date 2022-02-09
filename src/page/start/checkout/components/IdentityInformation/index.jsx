@@ -10,7 +10,7 @@ const CheckoutIdentityInformation = () => {
     let latestProfile = getLatestObject();
 
     useEffect(()=>{
-        window.scrollTo({ top: 40, behavior: 'smooth' });
+        window.scrollTo({ top: 40, behavior: 'instant' });
     },[])
 
     return (
