@@ -60,7 +60,7 @@ const CreateProfileBodyWrapper = ({children}) => {
 
     return (
         <div id='RD-createProfileRoot'>
-            <div className="pt-64 pb-72 px-10 bg-theme-bg-dark scroll">
+            <div className="pt-64 pb-72 px-10 w-full bg-theme-bg-dark scroll">
                 {/*  Select-none disable text selection, else will get randomly highlighted text */}
                 <div className="m-auto w-4/5 select-none"> 
                         {children}
