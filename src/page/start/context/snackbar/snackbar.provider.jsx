@@ -31,9 +31,9 @@ const GlobalSnackBarProvider = ({ children }) => {
     const GlobalSnackbarComponent = (props) => {
         return (
             props.snackbar.open && (
-                <div id="RD-snackbar" className="RD-snackbar absolute w-full z-40">
+                <div id="RD-snackbar" className="RD-snackbar fixed w-full">
                     <div
-                        className={`m-auto p-2 rounded shadow flex justify-center items-center h-full w-2/3 border-theme-primary
+                        className={`relative m-auto p-2 rounded shadow flex justify-center items-center h-full w-1/2 border-theme-primary
                 ${props.snackbar.severity === 'success' ? `bg-theme-success` : `bg-theme-danger`}`}
                     >
                         <span className="bg-theme-white font-theme-white color-white rounded-xl mr-2">

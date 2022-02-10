@@ -64,9 +64,9 @@ input:focus {
 }
 
 .RD-snackbar {
-    position: absolute;
+    /* position: absolute; */
     z-index: 99;
-    background-color: transparent;
+    /* background-color: transparent; */
 }
 
 body > iframe {
