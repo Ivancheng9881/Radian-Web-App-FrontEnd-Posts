@@ -23,7 +23,7 @@ const DatingDistance = (props) => {
             <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
             <div className="w-4/5">
                 <div className="inline items-end">
-                    <div className="pt-4 pb-2 pr-4 w-140">
+                    <div className="pt-4 pb-2 pr-4">
                         <Typography.H2 alignment="left">Maximum Distance</Typography.H2>
                     </div>
                     <div className="mt-10 w-full min-w-2/3vw">
@@ -36,7 +36,7 @@ const DatingDistance = (props) => {
                         />
                     </div>
                     <div className="inline-flex flex-wrap items-end pt-16">
-                        <div className="pt-4 pb-2 pr-4 w-96">
+                        <div className="pt-4 pb-2 pr-4">
                             <Typography.H4 alignment="left">Is this a deal breaker?</Typography.H4>
                         </div>
                         <div className="mt-10 inline-flex items-end">

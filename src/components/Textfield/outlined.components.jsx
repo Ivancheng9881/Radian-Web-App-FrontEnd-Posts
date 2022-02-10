@@ -4,7 +4,7 @@ const OutlinedTextfield = (props) => {
         <div id="RD-Textfield" className="mr-5">
             <div className="border-b border-theme-gray pb-2 pl-1 pr-1">
                 <input
-                    className={`RD-Autocomplete-disabler ${className} bg-theme-bg-dark text-4xl text-theme-gray border-0`}
+                    className={`RD-Autocomplete-disabler ${className} bg-theme-bg-dark text-2xl md:text-3xl lg:text-4xl text-theme-gray`}
                     placeholder={placeholder}
                     value={value}
                     type={type}

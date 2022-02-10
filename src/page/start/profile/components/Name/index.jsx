@@ -22,16 +22,18 @@ const ProfileName = (props) => {
         }
         updateDataByKey(key, e.target.value, 'text');
     };
-
+    
     return (
-        <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
-            <Typography.Featured alignment="left">Create your RADIAN passport</Typography.Featured>
-            <div className="pt-4 pb-2">
-                <Typography.H2 alignment="left">My name is</Typography.H2>
+        <div id="RD-CreateProfile-name">
+            <div className='w-full overflow-hidden break-words '>
+                <Typography.Featured alignment="left">Create your RADIAN passport</Typography.Featured>
+                <div className="pt-4 pb-2">
+                    <Typography.H2 alignment="left">My name is</Typography.H2>
+                </div>
             </div>
 
             <div className="mt-10 flex flex-wrap">
-                <div className="max-w-sm mr-5 mb-10">
+                <div className="max-w-sm w-2/3 mr-5 mb-10">
                     <TextField.Outlined
                         name="radianFirstName"
                         type="text"
@@ -40,7 +42,7 @@ const ProfileName = (props) => {
                         onChange={handleChange}
                     />
                 </div>
-                <div className="max-w-sm mr-5">
+                <div className="max-w-sm w-2/3 mr-5">
                     <TextField.Outlined
                         name="radianLastName"
                         type="text"

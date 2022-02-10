@@ -20,7 +20,7 @@ const CheckoutIdentityInformation = () => {
             </div>
             <div className="inline-flex md:flex-nowrap md:flex-row flex-wrap flex-col-reverse">
                 <div className="w-auto md:w-2/3">
-                    <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold">Identity Information</div>
+                    <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold text-center md:text-left">Identity Information</div>
                     <div className="inline-flex flex-wrap">
                         <InfoDisplayGroup
                             profileKey="firstName"
@@ -75,8 +75,8 @@ const CheckoutIdentityInformation = () => {
                     </div>
                 </div>
                 <div className="w-auto md:w-1/3 mb-4">
-                    <div className="text-2xl mb-4 text-theme-white font-semibold pl-6 md:pl-0">Profile Images</div>
-                    <div className='flex flex-wrap gap-5'>
+                    <div className="text-2xl mb-4 text-theme-white font-semibold text-center md:text-left">Profile Images</div>
+                    <div className='flex flex-wrap gap-5 justify-center md:justify-start'>
                         { (typeof latestProfile.profilePictureCid === 'string') ? 
                             <ProfilePictureFrame
                             profileKey="profilePictureCid"

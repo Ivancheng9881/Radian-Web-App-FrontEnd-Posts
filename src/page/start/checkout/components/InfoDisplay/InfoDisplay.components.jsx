@@ -68,13 +68,13 @@ const InfoDisplayGroup = ({ profileKey, label, value, visibleUpdate=null, visibi
     const handleMouseLeaveEvent = (e) => setHoverStyle({ display: 'none' });
 
     return (
-        <div className="text-theme-white text-xl pl-6 pr-6 pt-3">
-            <div className="relative border-b-2 inline-flex justify-between items-center align-center w-96 pb-2">
+        <div className="text-theme-white text-xl md:px-6 pt-3">
+            <div className="relative border-b-2 inline-flex justify-between items-center align-center w-auto pb-2">
                 
                 <div className="w-80 overflow-hidden">
                     <div className='uppercase'>{label}</div>
                     {value ?
-                        <div className={`text-lg truncate uppercase ${IconText === 'hide' && "line-through"}`}>{value}</div>
+                        <div className={`text-lg w-64 truncate uppercase ${IconText === 'hide' && "line-through"}`}>{value}</div>
                         :
                         <div className='text-sm text-theme-red'> Field Empty </div>
                     }

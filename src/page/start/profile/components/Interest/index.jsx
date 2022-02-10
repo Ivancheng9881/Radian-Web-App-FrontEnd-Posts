@@ -51,7 +51,7 @@ const DatingInterest = (props) => {
             <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
             <div className="w-4/5">
                 <div className="inline items-end">
-                    <div className="pt-4 pb-2 pr-4 w-140">
+                    <div className="pt-4 pb-2 pr-4">
                         <Typography.H2 alignment="left">Your Interest</Typography.H2>
                     </div>
                     <div className="mt-10 w-full">

@@ -66,6 +66,7 @@ const CreateProfileBodyWrapper = ({children}) => {
                         {children}
                 </div>
             </div>
+
             <div 
                 id='RD-createProfileFooterRoot'
                 className='fixed w-full bottom-0'

@@ -13,8 +13,8 @@ const Toggler = ({
     };
 
     return (
-        <div className="bg-theme-bg-light p-2 rounded-full">
-            <div className="inline-flex">
+        <div className={`bg-theme-bg-light p-2 ${opts.length > 2 ? 'rounded-2xl sm:rounded-full' : 'rounded-full'}`}>
+            <div className={`inline-flex ${opts.length > 2 && 'flex-col'} sm:flex-row`}>
                 {opts.map((o) => {
                     return <TogglerButton
                         key={`togglerButton-${o.value}`}
