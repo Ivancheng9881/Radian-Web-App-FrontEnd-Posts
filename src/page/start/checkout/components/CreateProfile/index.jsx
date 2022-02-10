@@ -91,7 +91,11 @@ const CheckoutCreateProfile = () => {
             setError({ state: false, msg: '' });
             console.log('is connected');
             let cid = await createProfileCid();
-            txn = await createProfileErc(cid.toString(), useGasStation);
+            try{
+                txn = await createProfileErc(cid.toString(), useGasStation);                
+            } catch (error) {
+                setSnackBar({ open: true, message: error?.data?.message , severity: 'danger' });
+            }
             // make this better
             if (txn) {
                 // clear cache and move back

@@ -13,7 +13,6 @@ const CheckoutDescriptionInformation = () => {
         window.scrollTo({ top: 40, behavior: 'instant' });
     },[])
 
-
     return (
         <div>
             <div className="pl-6 pr-6">
