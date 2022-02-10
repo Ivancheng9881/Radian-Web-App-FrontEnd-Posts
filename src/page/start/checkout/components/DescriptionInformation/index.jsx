@@ -36,13 +36,6 @@ const CheckoutDescriptionInformation = () => {
                             visibleUpdate={updateDataByPath}
                             visibilityData={latestDatingInfo.visible}
                             stepName={`height`} />
-                        <InfoDisplayGroup 
-                            profileKey="location" 
-                            label={`location`} 
-                            value={latestDatingInfo.location}
-                            visibleUpdate={updateDataByPath} 
-                            visibilityData={latestDatingInfo.visible}
-                            stepName={`location`} />
                         <InfoDisplayGroup
                             profileKey="orientation"
                             label={`Interested in`}

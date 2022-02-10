@@ -3,6 +3,7 @@ import CreateProfileContext from '../../../context/profile/profile.context';
 import ProfileBirth from '../Birth';
 import ProfileName from '../Name';
 import ProfilePhone from '../Phone';
+import ProfileGender from '../Gender';
 import ProfileWrapper from '../Wrapper';
 import ProfileWeight from '../Weight';
 import ProfileHeight from '../Height';
@@ -32,6 +33,9 @@ const CreateProfileController = () => {
             </FadeInOut>
             <FadeInOut visible={stepList[step].id === 'dob'} scrollUp={scrollDirection}>
                 <ProfileBirth />
+            </FadeInOut>
+            <FadeInOut visible={stepList[step].id === 'gender'} scrollUp={scrollDirection}>
+                <ProfileGender />
             </FadeInOut>
             <FadeInOut visible={stepList[step].id === 'weight'} scrollUp={scrollDirection}>
                 <ProfileWeight />

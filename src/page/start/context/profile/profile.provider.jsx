@@ -19,6 +19,7 @@ function CreateProfileProvider({ children }) {
         { id: 'name', stage: basicInfo },
         { id: 'phone', stage: basicInfo },
         { id: 'dob', stage: basicInfo },
+        { id: 'gender', stage: basicInfo },
         { id: 'nationality', stage: basicInfo },
         { id: 'location', stage: basicInfo },
         { id: 'profilePicture', stage: basicInfo },

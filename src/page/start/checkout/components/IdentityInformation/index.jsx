@@ -46,7 +46,7 @@ const CheckoutIdentityInformation = () => {
                             value={latestProfile.gender} 
                             visibleUpdate={updateDataByPath}
                             visibilityData={latestProfile.visible}
-                            stepName={`orientation`} 
+                            stepName={`gender`} 
                         />
                         <InfoDisplayGroup
                             profileKey={["countryCode","number"]}
