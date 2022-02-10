@@ -24,16 +24,20 @@ const Navbar = (props) => {
 
         if (providerType === "metamask@erc"){
             return web3Context.providers[providerType]?
-                <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
-                            {"ERC: " + truncateAddress(web3Context.providers[providerType])}
+                <RoundedButton
+                    style='text-xs md:text-sm lg:text-base'
+                    onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
+                    {"ERC: " + truncateAddress(web3Context.providers[providerType])}
                 </RoundedButton> :
                 <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <MetamaskIcon height={60} width={120}/>
                 </RoundedButton>
         } else if  (providerType === "phantom@solana") {
             return web3Context.providers[providerType]?
-                <RoundedButton onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
-                    {"Solana: " + truncateAddress(web3Context.providers[providerType].toBase58())}
+                <RoundedButton 
+                    style='text-xs md:text-sm lg:text-base'
+                    onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
+                    {"SOL: " + truncateAddress(web3Context.providers[providerType].toBase58(), 8)}
                 </RoundedButton> :
                 <RoundedButton onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
                         <PhantomIcon height={60} width={120}/>
@@ -85,24 +89,25 @@ const Navbar = (props) => {
 
     return (
         <div id="RD-navbar" className="fixed w-full top-0 z-50">
-            <div className="p-4 h-20 bg-theme-bg-light RD-shadow flex justify-between">
+            <div className="relative p-4 h-20 bg-theme-bg-light RD-shadow flex justify-between">
+                
                 <div className="cursor-pointer" onClick={() => history.push(mainRoute)}>
                     <img src="/logos/radian.png" width="149px" height="41px" alt="radian logo" />
                 </div>
 
                 {/* Wallet address on Navbar */}
                 {(window.ethereum || window.solana) &&
-                <div>
+                <div className='absolute top-5 right-5'>
                     <Popup
                         trigger={<button>
                                     {itemState[0]}                                     
                                 </button>} 
-                        position="bottom center"
+                        position="bottom right"
                         closeOnDocumentClick
                         arrow={false}
                         ref={ref}
                         >
-                        <div className="pt-1 pl-7">
+                        <div className="pt-1">
                             {itemState.slice(1,itemState.length).map(
                                 (b,i)=>{
                                     return  <div key={i}>

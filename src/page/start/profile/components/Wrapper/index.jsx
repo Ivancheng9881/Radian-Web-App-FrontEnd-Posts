@@ -29,7 +29,7 @@ const CreateProfileBodyWrapper = ({children}) => {
         {value: 'asset', label: 'Asset'},
         {value: 'completeRegistration', label: 'Complete Registration'},
     ];
-   
+
     const nextStep = (e) => {
         e.preventDefault();
         setScrollDirection(true);

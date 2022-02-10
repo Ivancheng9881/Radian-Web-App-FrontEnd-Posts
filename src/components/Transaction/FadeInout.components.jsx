@@ -1,12 +1,6 @@
-import { Fragment, useState } from "react";
 import { useTransition, animated } from "react-spring";
-import { useEffect } from "react";
 
 const FadeInOut = ({children, visible, scrollUp=false, offset=100}) => {
-
-    useEffect(()=>{
-        window.scrollTo({ top: 80, behavior: 'instant' });
-    })
 
     const transition = useTransition(visible, {
         from:   { y: scrollUp ? offset : -offset, opacity: 0, },
