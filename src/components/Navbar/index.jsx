@@ -59,8 +59,6 @@ const Navbar = (props) => {
     
 
     useEffect(()=>{
-
-        console.log("Navbar provider", web3Context.providers);
         const newItemState = [ getElement(web3Context.providers.selected, false) ];
         const keys = Object.keys(web3Context.providers);
         for ( let k = 0 ; k < keys.length ; k++ ) {

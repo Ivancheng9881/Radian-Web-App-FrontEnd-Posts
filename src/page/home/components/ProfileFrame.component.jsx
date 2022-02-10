@@ -9,11 +9,12 @@ function ProfileFrame(props) {
         () => {
             fetchProfile();
         },
-        [ props.pid ]
+        [ props.profile ]
     );
 
     const fetchProfile = async () => {
-        let p = await ipfsUtils.getContentJson(props.pid);
+        let p = await ipfsUtils.getContentJson(props.profile.identityID);
+        console.log(p);
         if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
             p.profilePictureCid = defaultProfilePictureId;
         }
@@ -37,6 +38,27 @@ function ProfileFrame(props) {
                         pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}
                         >
                             <span className="">{`${fullProfile.firstName} ${fullProfile.lastName}`}</span>
+
+                        </span>
+                        <span
+                            className={`absolute w-fit text-theme-white 
+                        pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg right-0 top-0 opacity-80`}
+                        >
+                            {props.profile.network =="erc" ? 
+                                <img
+                                className="m-auto"
+                                src="/logos/polygonRounded.png"
+                                width={30}
+                                height={'auto'}
+                                />
+                                : 
+                                <img
+                                className="m-auto"
+                                src="/logos/solanaRounded.png"
+                                width={30}
+                                height={'auto'}
+                                />
+                            }
                         </span>
                     </div>
                 </div>

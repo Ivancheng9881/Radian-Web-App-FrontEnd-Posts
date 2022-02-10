@@ -54,6 +54,7 @@ function ProfileProvider({ children }) {
         if(userProfile != null || undefined) {
             if (userProfile.identityID === profile?.identityID) return;
             let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
+            console.log(profileJson);
             if ( profileJson ) {
                 let newProfile = Object.assign({}, profileObj);
                 delete newProfile["undefined"];
@@ -84,91 +85,3 @@ function ProfileProvider({ children }) {
 }
 
 export default ProfileProvider;
-
-    // const [ updatedProfile, setUpdatedProfile ] = useState(profileObj);
-
-    // useEffect(()=>{
-    //     // load the cached updated content of the identity
-    //     loadUpdatingIdentity();
-    // }, []);
-
-    // TODO websocket for fetching data from graph or node
-
-
-    // const updateProfile = (e, type = 'text', valid) => {
-    //     let validatorResult = Validator.validateInput(e.target.value, type);
-    //     switch (type) {
-    //         case 'text':
-    //         case 'number':
-    //             validatorResult = validatorResult;
-    //             break;
-    //         case 'date':
-    //             if (!valid) validatorResult = `invalid input`;
-    //             break;
-    //         default:
-    //             validatorResult = '';
-    //             break;
-    //     }
-
-    //     setUpdatedProfile((prevState) => {
-    //         let newState = {...prevState};
-    //         newState.identity[e.target.name] = e.target.value;
-    //         storeUpdatingIdentity(newState);
-    //         return newState;
-    //     });
-    // };
-
-    // //Country Code Selection
-    // const updateProfileByDropdownSelect = (key, val) => {
-    //     setUpdatedProfile((prevState => {
-    //         let newState = {...prevState};
-    //         newState.identity[key] = val;
-    //         storeUpdatingIdentity(newState);
-    //         return newState;
-    //     }));
-    // };
-
-    // const updateProfileByKey = (key, val, type = '') => {
-    //     let validatorResult = Validator.validateInput(val, type);
-    //     setUpdatedProfile((prevState) => {
-    //         let newState = {...prevState};
-    //         newState.identity[key] = val;
-    //         newState.error = validatorResult;
-    //         storeUpdatingIdentity(newState);
-    //         return newState;
-    //     })
-    // };
-
-    // const getLatestField = (key) => {
-    //     return updatedProfile.identity[key] != null
-    //     ? updatedProfile.identity[key]
-    //     : profile ? profile.identity[key] : profileObj.identity[key];
-    // }
-
-    // const storeUpdatingIdentity = (profileToStore) => {
-    //     window.localStorage.setItem('tempUpdatingIdentity', JSON.stringify(profileToStore));
-    // };
-
-    // const loadUpdatingIdentity = ()=> {
-    //     const temp = JSON.parse(window.localStorage.getItem('tempUpdatingIdentity'));
-    //     console.log("loaded identity", temp);
-    //     if (temp){
-    //         setUpdatedProfile(temp);
-    //     }
-    // }
-
-    // return (
-    //     // update should only be done via the update functions
-    //     <ProfileContext.Provider 
-    //         value={{
-    //             profile,
-    //             updatedProfile,
-    //             getLatestField,
-    //             updateProfile,
-    //             updateProfileByKey,
-    //             updateProfileByDropdownSelect
-    //         }}
-    //     >
-    //         {children} 
-    //     </ProfileContext.Provider>
-    // );

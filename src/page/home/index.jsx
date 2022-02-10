@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
+import { getProfileListCountSolana, getProfileListSolana } from "../../utils/web3/contract/profileContract/solana";
 // import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
 // import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
 // import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';
@@ -8,52 +9,17 @@ import { getProfileListCountErc, getProfileListErc } from "../../utils/web3/cont
 import PersonalProfile from './components/PersonalProfile.components';
 import ProfileFrame from './components/ProfileFrame.component';
 
+
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Connection } from '@solana/web3.js';
+import { Provider } from '@project-serum/anchor';
+
 export default function HomePage() {
-    // const Web3ContextProvider = useContext(Web3Context);
-    // const [ network, setNetwork ] = useState(undefined);
 
-    // useEffect(() => {
-    //     getCurrentChainId();
-    // },[window.ethereum.networkVersion, network])
-
-    // useEffect(() => {
-    //     Number(window.ethereum.networkVersion) === 137 && getProfileListCount();
-    // }, [window.ethereum.networkVersion])
-
-    // useEffect(() => {
-    //     if(Number(window.ethereum.networkVersion) === 137 && pagination.count > 0){
-    //     getProfiles();
-    //     }
-    // }, [window.ethereum.networkVersion, pagination]);
-
-    // fetch profile only if there is address selected and the chainID is correct
-
-    // useEffect(() => {
-    //     if (window.ethereum.selectedAddress != null){
-    //         getCurrentChainId();
-    //     }
-    // },[window.ethereum.networkVersion, network])
-
-    // const getCurrentChainId = async () => {
-    //     const currentNetwork = await Web3ContextProvider.network
-    //     setNetwork(currentNetwork) 
-    // }
-
-    // const [ profile, setProfile ] = useState([]);
+    // for fetching data on chain
+    const solana_rpc_api = "https://api.devnet.solana.com";
+    const wallet = useWallet();
     
-    // useEffect(() => {
-    //     if (window.ethereum.selectedAddress != null){
-    //         Number(window.ethereum.networkVersion) === 137 && fetchUserProfile();
-    //         return () => setProfile([]);
-    //     }
-    // }, [window.ethereum.selectedAddress])
-
-    // const fetchUserProfile = async () => {
-    //     const userProfile  = await getPersonalProfile();
-    //     console.log('HomePage: User profile updated', userProfile);
-    //     if(userProfile != null || undefined ) setProfile(userProfile);
-    // }
-
     const [ profileList, setProfileList ] = useState([]);
     const [ pagination, setPagination ] = useState({
         count: 0,
@@ -62,6 +28,8 @@ export default function HomePage() {
     });
 
     useEffect(()=>{
+        setProfileList([]);
+        getProfilesSolana();
         getProfileListCount();
     }, []);
 
@@ -71,8 +39,27 @@ export default function HomePage() {
 
     const getProfileListCount = async () => {
         let count = await getProfileListCountErc();
-        console.log('Pagination COUNT:', count)
+        console.log('Pagination COUNT:', count);
         setPagination({...pagination, count: count})
+    }
+
+    const getProfilesSolana = async () => {
+        // crearte connection for getting data from rpc api
+        const connection = new Connection(solana_rpc_api, "processed");
+        const provider = new Provider(connection, wallet, "processed");
+        let countSolana = await getProfileListCountSolana(provider);
+        let profiles = await getProfileListSolana(countSolana, provider);
+        let profileListSol = [];
+        console.log('Solana COUNT:', countSolana);
+        console.log("Solana Data", profiles);
+        profiles.map((k,v)=>{
+            let idObj ={network: "Solana"};
+            idObj.identityID = k.identityId;
+            idObj.verifyID = k.verifyId;
+            profileListSol.push(idObj);
+        })
+        console.log('solana profiles', profileListSol);
+        setProfileList((prevState) => prevState.concat(profileListSol));
     }
 
     const getProfiles = async () => {
@@ -86,12 +73,12 @@ export default function HomePage() {
             pageSize = count;
         }
         let profiles = await getProfileListErc(skip, pageSize);
-        console.log(profiles);
-        setProfileList(profiles);
+        console.log("ERC profiles", profiles);
+        setProfileList((prevState) => profiles.concat(prevState));
         
         setPagination({
             ...pagination,
-            skip: skip + pageSize   
+            skip: skip + pageSize
         })
     };
     
@@ -103,8 +90,8 @@ export default function HomePage() {
                         </div>
                         <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
                                 {
-                                    profileList?.map((p) => {
-                                        return <ProfileFrame key={p} pid={p} />
+                                    profileList?.map((p, v) => {
+                                        return <ProfileFrame key={v} profile={p} />
                                     })
                                 }
                         </div>

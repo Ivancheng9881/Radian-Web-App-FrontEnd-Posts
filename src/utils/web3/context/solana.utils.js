@@ -105,6 +105,10 @@ const getProvider = async (wallet) => {
 }
 
 const getProgram = async (idl, programId, wallet) => {
+    if (! wallet ) {
+        let program = new Program(idl, programId);
+        return {program, };
+    }
     let provider = await getProvider(wallet)
     let program = new Program(idl, programId, provider);
     return { program, provider }

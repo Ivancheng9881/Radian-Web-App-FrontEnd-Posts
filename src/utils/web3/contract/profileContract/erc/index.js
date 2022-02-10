@@ -97,8 +97,9 @@ export async function getProfileListErc(skip, limit) {
     if ( subgraphEnabled ){ // run if subgraph is available
         let profiles = await getProfilesFromSubgraph(skip, limit);
         profiles.map((p) => {
-            profileList.push(p.identityID);
-        })    
+            p['network'] = "erc";
+            profileList.push(p);
+        })
     } else { // directly read from contract
  
         let arr = [];
@@ -114,7 +115,8 @@ export async function getProfileListErc(skip, limit) {
 
         profiles.map((p) => {
             if (!profileList.includes(p[0])) {
-                profileList.push(p[0])
+                p['network'] = "erc";
+                profileList.push(p)
             }
         })
 

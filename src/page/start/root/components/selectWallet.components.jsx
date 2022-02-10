@@ -11,6 +11,7 @@ import PhantomIcon from '../../../../components/Icons/phantom.components';
 import { createProfileRoute } from '../../../../commons/route';
 import Web3Context from '../../../../utils/web3/context/web3.context';
 import { hasPersonalProfileErc } from '../../../../utils/web3/contract/profileContract/erc';
+import { getProfileSolana } from '../../../../utils/web3/contract/profileContract/solana';
 import RoundedButton from '../../../../components/Button/Rounded.components';
 import Popup from 'reactjs-popup';
 
@@ -55,8 +56,7 @@ const SelectWallet = (props) => {
 
         if (value === 'phantom') {
             pubKey = await web3Context.connect('solana');
-            // profile = await hasPersonalProfileSolana(pubKey);
-            profile = null;
+            profile = await getProfileSolana(pubKey);
             // TODO edit here
             console.log('window connect solana', pubKey);
         } 

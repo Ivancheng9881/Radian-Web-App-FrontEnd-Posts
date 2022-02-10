@@ -105,7 +105,6 @@ function DataManager({ dataContext, data, dataObj, dataStorageName, children, da
         if (visible){
             Object.entries(visible).map((k, v)=>{
                 let key = k[0].split(",");
-                console.log(key);
                 for (let i = 0 ; i < key.length ; i++){
                     uploadData[key[i]] = k[1] ? uploadData[key[i]] : dataObj[key[i]];
                 }

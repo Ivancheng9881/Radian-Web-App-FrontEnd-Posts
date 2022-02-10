@@ -21,8 +21,9 @@ import { mainRoute } from '../../../../../commons/route';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
 
 const CheckoutCreateProfile = () => {
+
     const history = useHistory();
-    const { web3Context } = useContext(Web3Context);
+    const web3Context = useContext(Web3Context);
     console.log("web3", web3Context);
     const { setSnackBar } = useContext(CreateSnackbarContext);
     // form data for upload
@@ -79,6 +80,13 @@ const CheckoutCreateProfile = () => {
     };
 
     const createProfilePolygon = async (useGasStation) => {
+
+        // disable if metamask is not the selected provider
+        if (web3Context?.providers?.seletected?.split("@")[1] != 'metamask@erc'){
+            setSnackBar({ open: true, message: "Please select an ethereum compatible wallet", severity: 'danger' });
+            return;
+        }
+
         let txn;
         let publicKey = await ERCUtils.connectWallet();
         // check if the wallet is connected
@@ -124,11 +132,16 @@ const CheckoutCreateProfile = () => {
         }
     };
 
-    const createProfileOnSolana = async (cid) => {
-        setSnackBar({ open: true, message: 'Phantom Support Coming Soon!', severity: 'danger' });
-        return;
+    const createProfileOnSolana = async () => {
+
+        // disable if metamask is not the selected provider
+        if (web3Context?.providers?.selected?.split("@")[1] != 'solana'){
+            setSnackBar({ open: true, message: "Please select a phantom compatible wallet", severity: 'danger' });
+            return;
+        }
+
         setSolTxn(true);
-        console.log(solanaWallet);
+        console.log("solana wallet", solanaWallet);
         if (!solanaWallet.connected) {
             console.log('solana wallet not connected');
             console.log('trying to connect now');
@@ -136,7 +149,12 @@ const CheckoutCreateProfile = () => {
         } else {
             let cid = await createProfileCid();
             let txn = await createProfilePipelineSolana(solanaWallet, cid);
-            console.log(txn);
+            if (txn) {
+                // clear cache and move back
+                profileContext.deleteUpdatingData();
+                datingContext.deleteUpdatingData();
+                history.push(mainRoute);
+            }
         }
     };
 
@@ -206,7 +224,7 @@ const CheckoutCreateProfile = () => {
                                     className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
                                     onClick={createProfileOnSolana}
                                 >
-                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base"> Coming Soon</div>
+                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base"> Solana </div>
                                 </div>
                             </div>
                         </div>
