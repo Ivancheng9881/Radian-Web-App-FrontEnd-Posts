@@ -94,7 +94,7 @@ const CheckoutCreateProfile = () => {
             try{
                 txn = await createProfileErc(cid.toString(), useGasStation);                
             } catch (error) {
-                setSnackBar({ open: true, message: error?.data?.message , severity: 'danger' });
+                setSnackBar({ open: true, message: error?.data?.message ? error?.data?.message : error.message, severity: 'danger' });
             }
             // make this better
             if (txn) {
