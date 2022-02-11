@@ -57,12 +57,14 @@ function PersonalProfile() {
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
                         bottom-24 opacity-80 text-center`}>
                             { ! web3Context.providers[web3Context.providers.selected] ?
-                            <RoundedButton  onClick={connectWallet}>
+                            <RoundedButton
+                                onClick={connectWallet}>
                                 <span className='m-auto'>Connect Wallet</span>
                             </RoundedButton>
                             :
                             <div>
-                                <RoundedButton  onClick={createProfile}>
+                                <RoundedButton 
+                                    onClick={createProfile}>
                                     <span className='m-auto'>Create Profile Now</span>
                                 </RoundedButton>
                                 <div className='pt-2'></div>
