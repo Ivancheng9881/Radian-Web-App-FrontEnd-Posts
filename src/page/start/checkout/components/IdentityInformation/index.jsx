@@ -35,7 +35,7 @@ const CheckoutIdentityInformation = () => {
                         <InfoDisplayGroup
                             profileKey={["day","month","year"]}
                             label={`Birthday`}
-                            value={`${latestProfile.day}/${latestProfile.month}/${latestProfile.year}`}
+                            value={latestProfile.day || latestProfile.month || latestProfile.year && `${latestProfile.day}/${latestProfile.month}/${latestProfile.year}`}
                             visibleUpdate={updateDataByPath}
                             visibilityData={latestProfile.visible}
                             stepName={`dob`}
@@ -51,7 +51,7 @@ const CheckoutIdentityInformation = () => {
                         <InfoDisplayGroup
                             profileKey={["countryCode","number"]}
                             label={`Phone`}
-                            value={`${latestProfile.countryCode} ${latestProfile.number}`}
+                            value={(latestProfile.countryCode || latestProfile.number) && `${latestProfile.countryCode} ${latestProfile.number}`}
                             visibleUpdate={updateDataByPath}
                             visibilityData={latestProfile.visible}
                             stepName={`phone`}

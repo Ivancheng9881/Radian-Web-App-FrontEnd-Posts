@@ -84,7 +84,7 @@ export default function HomePage() {
     
     return (
         <Layout>
-                 <div className='pt-32'>
+                <div className='pt-32'>
                         <div className={`max-w-sm md:fixed h-full`}>
                                 <PersonalProfile/>
                         </div>
