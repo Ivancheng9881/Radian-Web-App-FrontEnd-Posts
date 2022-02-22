@@ -22,14 +22,6 @@ const CheckoutDescriptionInformation = () => {
                 <div className="w-2/3">
                     <div className="pl-6 pr-6 text-2xl mb-2 text-theme-white font-semibold">Dating Information</div>
                     <div className="inline-flex flex-wrap">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-                        <InfoDisplayGroup profileKey="weight" label={`Weight`} value={profile.weight} stepName={`weight`} />
-                        <InfoDisplayGroup profileKey="height" label={`Height`} value={profile.height} stepName={`height`} />
-                        <InfoDisplayGroup profileKey="location" label={`location`} value={profile.location} stepName={`location`} />
-=======
->>>>>>> d868c4b43c288fc809d84ef4ae6924a0ca42a407
                         <InfoDisplayGroup 
                             profileKey="weight" 
                             label={`Weight`} 
@@ -44,17 +36,6 @@ const CheckoutDescriptionInformation = () => {
                             visibleUpdate={updateDataByPath}
                             visibilityData={latestDatingInfo.visible}
                             stepName={`height`} />
-<<<<<<< HEAD
-=======
-                        <InfoDisplayGroup 
-                            profileKey="location" 
-                            label={`location`} 
-                            value={latestDatingInfo.location}
-                            visibleUpdate={updateDataByPath} 
-                            visibilityData={latestDatingInfo.visible}
-                            stepName={`location`} />
->>>>>>> validation
->>>>>>> d868c4b43c288fc809d84ef4ae6924a0ca42a407
                         <InfoDisplayGroup
                             profileKey="orientation"
                             label={`Interested in`}

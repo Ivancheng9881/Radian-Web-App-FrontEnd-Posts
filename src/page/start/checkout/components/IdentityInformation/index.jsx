@@ -40,12 +40,6 @@ const CheckoutIdentityInformation = () => {
                             visibilityData={latestProfile.visible}
                             stepName={`dob`}
                         />
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-                        <InfoDisplayGroup profileKey="gender" label={`Gender`} value={profile.gender} stepName={`orientation`} />
-=======
->>>>>>> d868c4b43c288fc809d84ef4ae6924a0ca42a407
                         <InfoDisplayGroup 
                             profileKey="gender" 
                             label={`Gender`} 
@@ -54,10 +48,6 @@ const CheckoutIdentityInformation = () => {
                             visibilityData={latestProfile.visible}
                             stepName={`gender`} 
                         />
-<<<<<<< HEAD
-=======
->>>>>>> validation
->>>>>>> d868c4b43c288fc809d84ef4ae6924a0ca42a407
                         <InfoDisplayGroup
                             profileKey={["countryCode","number"]}
                             label={`Phone`}
@@ -74,11 +64,6 @@ const CheckoutIdentityInformation = () => {
                             visibilityData={latestProfile.visible}
                             stepName={`nationality`}
                         />
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> d868c4b43c288fc809d84ef4ae6924a0ca42a407
                         <InfoDisplayGroup
                             profileKey="interest"
                             label={`Interests`}
@@ -87,10 +72,6 @@ const CheckoutIdentityInformation = () => {
                             visibilityData={latestProfile.visible}
                             stepName={`interest`}
                         />
-<<<<<<< HEAD
-=======
->>>>>>> validation
->>>>>>> d868c4b43c288fc809d84ef4ae6924a0ca42a407
                     </div>
                 </div>
                 <div className="w-auto md:w-1/3 mb-4">
