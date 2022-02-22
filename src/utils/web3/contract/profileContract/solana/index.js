@@ -1,8 +1,9 @@
 import idl from './idl.json';
-import { web3 } from "@project-serum/anchor";
+import { web3, Program } from "@project-serum/anchor";
 import SolanaUtils from '../../../context/solana.utils';
 // import { TextDecoder } from "web-encoding";
 import { PhantomWalletAdapter, PhantomWalletName } from '@solana/wallet-adapter-wallets';
+
 
 export const profileContract__sol__abi = idl;
 export const profileContract__sol__address = 'BPnV7ofoFnpkaDPUX97gJw5zjQGjPRnvaviUEkjgthij';
@@ -12,6 +13,39 @@ const PROFILE_MAPPING_ACCOUNT_SEED = "profile_mapping_account_2";
 const PROFILE_ACCOUNT_SEED = "profile*";
 const SEARCH_ACCOUNT_SEED = "search__";
 
+// create a fake user for getting data using the rpc api, so that user does not need to connect to provider
+// function createFakeUser() {
+//     let user = web3.Keypair.generate();
+//     let wallet = new anchor.Wallet(user);
+//     return wallet;
+// }
+
+export async function getProfileListCountSolana(provider) {
+    const program = new Program(idl, profileContract__sol__address, provider);
+    const [dao_account, dao_bump] = await web3.PublicKey.findProgramAddress([
+        DAO_ACCOUNT_SEED
+      ], program.programId);
+    
+    const daoAccount = await program.account.daoAccount.fetch(dao_account);
+    const profileCount = daoAccount.profileCount.toNumber();
+    return profileCount;
+}
+
+// get the most recent x profiles from solana
+export async function getProfileListSolana(limit, provider) {
+    let profiles = [];
+    const program = new Program(idl, profileContract__sol__address, provider);
+    for ( let i = limit ; i > 3 ; i-- ) {
+        let [profilePDA, profileBump] = await getProfilePDA(program.programId, i);
+        try {
+            let profile = await program.account.profile.fetch(profilePDA);
+            profiles.push(decodeProfileData(profile));
+        } catch {
+            profiles.push(undefined);
+        }
+    }
+    return profiles;
+}
 
 function encodeProfileID(profileID) {
     const input = new Uint8Array(8);
@@ -42,8 +76,20 @@ function decodeContentID(cidArray) {
     return cid
 }
 
+function decodeProfileData(profileData) {
+    profileData.addressNumber = profileData.addressNumber.toNumber();
+    profileData.identityId = decodeContentID(profileData.identityId);
+    profileData.verifyId = decodeContentID(profileData.verifyId);
+    return profileData;
+}
 
 async function initProfileProgram(wallet, bypassWallet = false) {
+    if (bypassWallet){
+        return await SolanaUtils.getProgram(
+            profileContract__sol__abi,
+            profileContract__sol__address
+        );
+    }
     let isConnected = await SolanaUtils.isConnected(wallet)
     if (!isConnected) {
         return { undefined, undefined }
@@ -59,8 +105,8 @@ async function getProgramAddress(programId, args) {
     return await web3.PublicKey.findProgramAddress(args, programId);
 }
 
-async function getProfileMappingPDA(programId, userPublicKey) {
-    userPublicKey = userPublicKey.toBytes()
+async function getProfileMappingPDA(programId, wallet) {
+    let userPublicKey = wallet.publicKey ? wallet.publicKey.toBytes() : wallet.toBytes();
     return await web3.PublicKey.findProgramAddress([
         PROFILE_MAPPING_ACCOUNT_SEED,
         userPublicKey,
@@ -90,8 +136,9 @@ async function getSearchAccountPDA(programId, profileId) {
 }
 
 async function fetchProfileMappingSolana(program, provider) {
+    console.log("fetch profile provider", provider);
     try {
-        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet.publicKey);
+        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
         let profileMapping = await program.account.profileMapping.fetch(profileMappingPDA);
         return profileMapping;
     } catch (err) {
@@ -101,6 +148,7 @@ async function fetchProfileMappingSolana(program, provider) {
 
 async function fetchProfileSolana(program, provider) {
     let profileMapping = await fetchProfileMappingSolana(program, provider);
+    console.log("Profile Mapping", profileMapping);
     if (profileMapping?.profileId) {
         try {
             // only fetch profile when profileMapping exists
@@ -117,6 +165,7 @@ async function fetchProfileSolana(program, provider) {
         return [null, null]
     }
 }
+
 
 async function createProfileMappingSolana(program, provider) {
     let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet.publicKey);
@@ -209,10 +258,12 @@ function toHexString(byteArray) {
 
 export async function getProfileSolana(wallet) {
     let { program, provider } = await initProfileProgram(wallet);
+    console.log(provider);
     if (!program) return false;
 
     let profile = await fetchProfileSolana(program, provider);
     if (profile.length > 0) {
+        if (profile[1] == null) return undefined;
         let contentIdArray = profile[1].identityId
         let contentId = decodeContentID(contentIdArray);
         return contentId;
@@ -236,6 +287,7 @@ export async function createProfilePipelineSolana(wallet, cid) {
     // validate if the user has a profile mapping
     // let profileMapping = await fetchProfileMappingSolana(program, provider);
     let [existingProfileMapping, existingProfile] = await fetchProfileSolana(program, provider);
+    console.log("Solana Profile Status: ", existingProfile, existingProfileMapping);
 
     if (existingProfile) {
         /**
@@ -243,6 +295,7 @@ export async function createProfilePipelineSolana(wallet, cid) {
          */
         return
     } else if (existingProfileMapping) {
+        console.log("creating Profile");
         let profile = await createProfileSolana(program, provider, existingProfileMapping.profileId, cid);
         console.log('P', profile);
         return profile

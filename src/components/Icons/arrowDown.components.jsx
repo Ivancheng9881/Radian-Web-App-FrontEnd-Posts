@@ -2,7 +2,7 @@
 const ArrowDownIcon = ({height=0, width=0}) => {
     return (
         <img 
-            className="m-auto"
+            className="m-auto select-none"
             src='/icons/arrowDown.png'
             width={20}
             height={20}

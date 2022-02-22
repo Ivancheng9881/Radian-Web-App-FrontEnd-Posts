@@ -1,18 +1,30 @@
 import Typography from '../../../../../components/Typography';
 import { useContext, useEffect, useState } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 import UploadButton from '../../../../../components/Button/UploadButton.components';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
 
 const ProfilePicture = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+    
+    const { getLatestField, updateDataByKey } = useContext(ProfileContext);
+
     const { setSnackBar } = useContext(CreateSnackbarContext);
-    const [ cid, setCid ] = useState(null);
+
+    let profileCidList = getLatestField('profilePictureCid');
+    if (! profileCidList) {
+        profileCidList = [];
+    }
+    if (typeof profileCidList === 'string') {
+        profileCidList = [profileCidList];
+    }
+
+    console.log(profileCidList);
 
     const handleUpload = async (file) => {
-        console.log('Upload image...', file);
+        console.log("runnning");
+        // console.log('file is updating', file);
         // only accept JPG or PNG file & Image smaller than 2MB
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
@@ -25,21 +37,36 @@ const ProfilePicture = (props) => {
             return;
         }
 
-        // upload content to ipfs only if image file type correct
-        const uploadCidResp = await ipfsUtils.uploadContent(file);
-        // console.log('handleUploadCid', uploadCidResp);
-        updateProfileByKey('profilePictureCid', uploadCidResp.toString());
-        setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
+        console.log('file is updating', { isJpgOrPng: isJpgOrPng, isLt2M: isLt2M });
+        // To check wether key already exists
+        if (isJpgOrPng || isLt2M) {
+            let newCid = await ipfsUtils.uploadContent(file);
+            console.log("upload cid", newCid);
+            if (profileCidList.includes(newCid.toString())) {
+                setSnackBar({ open: true, message: 'Image Already Exists!', severity: 'danger' });
+                return;
+            }
+            let cidArr = [ ...profileCidList, newCid.toString() ];
+            updateDataByKey('profilePictureCid', cidArr);
+            setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
+        }
     };
 
-    useEffect(
-        () => {
-            if (profile.profilePictureCid) {
-                setCid(profile.profilePictureCid);
-            }
-        },
-        [ profile.profilePictureCid, setCid ]
-    );
+    const onCidDelete = (cidString) => {
+        let cidToString = cidString;
+        cidToString = cidToString.toString();
+
+        let cidIndex = profileCidList.indexOf(cidToString);
+        console.log('deleting index', cidIndex);
+
+        profileCidList.splice(cidIndex, 1);
+        setSnackBar({ open: true, message: 'delete success!', severity: 'success' });
+
+        console.log("updating", profileCidList);
+        updateDataByKey('profilePictureCid', profileCidList);
+
+        return;
+    };
 
     return (
         <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
@@ -47,14 +74,32 @@ const ProfilePicture = (props) => {
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">Upload pictures for your profile</Typography.H2>
             </div>
-            <div>{cid && <ProfilePictureFrame src={cid && ipfsUtils.getContentUrl(cid)} />}</div>
+            <div className="block">
+                <div className="inline-flex flex-wrap">
+                    {profileCidList.map((c, i) => {
+                        return (
+                            <div className="ml-5" key={i}>
+                                <div
+                                    style={{ width: 28, height: 28 }}
+                                    className="text-center relative top-10 left-40 border-theme-danger bg-theme-danger text-theme-white rounded-full border-2 cursor-pointer"
+                                    onClick={() => onCidDelete(c)}
+                                >
+                                    X
+                                </div>
+                                <ProfilePictureFrame src={ipfsUtils.getContentUrl(c)} />
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
             <div className="mt-10 inline-flex">
                 <div className="max-w-sm mr-5">
-                    <UploadButton value={profile.lastName} placeholder={'Browse From'} handleUpload={handleUpload} />
+                    <UploadButton placeholder={'Browse From'} handleUpload={handleUpload} />
                 </div>
             </div>
         </div>
     );
+
 };
 
 export default ProfilePicture;

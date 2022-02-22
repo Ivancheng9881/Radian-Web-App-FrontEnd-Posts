@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import ArrowDownButton from "../../../../../components/Button/ArrowDownButton.components";
 import ArrowUpButton from "../../../../../components/Button/ArrowUpButton.components";
 import CreateProfileContext from "../../../context/profile/profile.context";
@@ -36,14 +36,13 @@ const CheckoutWrapper = ({ children }) => {
         { value: 'profileCreated', label: 'Profile Created' },
     ];
 
-
     return (
         <div id='RD-createProfileRoot' className="relative">
             <div
                 id='RD-createProfileBody'
-                className="h-full w-full pt-40 pl-10 pr-10 bg-theme-bg-dark"
+                className="h-full w-full pt-40 pb-72 pl-10 pr-10 bg-theme-bg-dark"
             >
-                <div className="relative m-auto w-4/5">
+                <div className="relative m-auto w-4/5 select-none">
                     {children}
                 </div>
             </div>
@@ -55,7 +54,7 @@ const CheckoutWrapper = ({ children }) => {
                     id='RD-createProfileFooterBody'
                     className="relative m-auto w-4/5"
                 >
-                    <div className="absolute -top-32 -right-0">
+                    <div className="absolute -top-36 -right-0 select-none">
                         <div className='inline-flex'>
                             <div className={`pr-2 pl-2`}>
                                 <ArrowUpButton

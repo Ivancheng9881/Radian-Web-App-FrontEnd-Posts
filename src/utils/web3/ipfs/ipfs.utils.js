@@ -33,7 +33,7 @@ async function getContentJson(cid) {
         if (cid !== undefined) {
             let resp = await axios.get(getContentUrl(cid));
             console.log('axios-get-contentUrl', resp)
-            return resp.data
+            return resp.data;
         }
 
     } catch (err) {

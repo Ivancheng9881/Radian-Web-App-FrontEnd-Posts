@@ -1,10 +1,14 @@
 import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
-import { useContext, useState } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import { useContext} from 'react';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 
 const ProfileName = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+
+    const { getLatestField, updatedData, updateDataByKey } = useContext(ProfileContext);
+
+    const firstName = getLatestField('firstName');
+    const lastNameDefault = getLatestField('lastName');
 
     const handleChange = (e) => {
         let key;
@@ -16,38 +20,40 @@ const ProfileName = (props) => {
                 key = 'lastName';
                 break;
         }
-        updateProfileByKey(key, e.target.value, 'text');
+        updateDataByKey(key, e.target.value, 'text');
     };
-
+    
     return (
-        <div id="RD-CreateProfile-name" className="RD-CreateProfileComponents">
-            <Typography.Featured alignment="left">Create your RADIAN passport</Typography.Featured>
-            <div className="pt-4 pb-2">
-                <Typography.H2 alignment="left">My name is</Typography.H2>
+        <div id="RD-CreateProfile-name">
+            <div className='w-full overflow-hidden break-words '>
+                <Typography.Featured alignment="left">Create your RADIAN passport</Typography.Featured>
+                <div className="pt-4 pb-2">
+                    <Typography.H2 alignment="left">My name is</Typography.H2>
+                </div>
             </div>
 
-            <div className="mt-10 inline-flex">
-                <div className="max-w-sm mr-5">
+            <div className="mt-10 flex flex-wrap">
+                <div className="max-w-sm w-2/3 mr-5 mb-10">
                     <TextField.Outlined
                         name="radianFirstName"
                         type="text"
                         placeholder="First Name"
-                        value={profile.firstName}
+                        value={firstName}
                         onChange={handleChange}
                     />
                 </div>
-                <div className="max-w-sm mr-5">
+                <div className="max-w-sm w-2/3 mr-5">
                     <TextField.Outlined
                         name="radianLastName"
                         type="text"
                         placeholder="Last Name"
-                        value={profile.lastName}
+                        value={lastNameDefault}
                         onChange={handleChange}
                     />
                 </div>
             </div>
 
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {/* {updatedData.error ? <p className="text-theme-danger">{updatedData.error}</p> : ''} */}
         </div>
     );
 };

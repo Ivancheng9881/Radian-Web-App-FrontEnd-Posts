@@ -1,10 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingLookingFor = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+
+    const { getLatestField, updateData } = useContext(DatingContext);
+
+    const lookingFor = getLatestField('lookingFor');
 
     const options = [
         { value: 'serious-relationship', label: 'Serious Relationship' },
@@ -20,7 +23,7 @@ const DatingLookingFor = (props) => {
                 value: val
             }
         };
-        updateProfile(update);
+        updateData(update);
     };
 
     return (
@@ -28,13 +31,13 @@ const DatingLookingFor = (props) => {
             <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
             <div className="w-4/5">
                 <div className="inline items-end">
-                    <div className="pt-4 pb-2 pr-4 w-140">
+                    <div className="pt-4 pb-2 pr-4">
                         <Typography.H2 alignment="left">I am looking for</Typography.H2>
                     </div>
                     <div className="mt-10 inline-flex items-end">
                         <div className="mr-5">
                             <ItemOptionList
-                                value={[ profile.lookingFor ]}
+                                value={[ lookingFor ]}
                                 options={options}
                                 handleSelect={handleSelect}
                                 arrangment="inline"

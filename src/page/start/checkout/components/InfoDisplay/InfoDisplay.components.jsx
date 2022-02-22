@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { createProfileRoute } from '../../../../../commons/route';
 
@@ -9,11 +9,18 @@ import EditIcon from '../../../../../components/Icons/edit.components';
 import ShowEyesIcon from '../../../../../components/Icons/eyes.components';
 import HideEyesIcon from '../../../../../components/Icons/hideEyes.components';
 
-const InfoDisplayGroup = ({ label, value, stepName }) => {
+const InfoDisplayGroup = ({ profileKey, label, value, visibleUpdate=null, visibilityData, stepName }) => {
     const history = useHistory();
     const [ hoverStyle, setHoverStyle ] = useState({ display: 'none' });
     const [ IconText, setIconText ] = useState('show');
     const { stepList } = useContext(CreateProfileContext);
+
+    useEffect(()=>{
+        let key = Array.isArray(profileKey) ? profileKey.join(",") : profileKey;
+        if (visibilityData && Object.keys(visibilityData).includes(key)){
+            setIconText(visibilityData[profileKey] ? 'show' : 'hide');
+        }
+    },[visibleUpdate])
 
     const constructQuery = (target) => {
         let currentStep = getQuery(history.location.search).step;
@@ -43,6 +50,8 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
 
     const handleToggleVisible = (e, action) => {
         e.preventDefault();
+        // update to make field blank when update
+        visibleUpdate && visibleUpdate(["visible", profileKey], action == "hide"? false : true);
         return setIconText(action);
     };
 
@@ -59,44 +68,56 @@ const InfoDisplayGroup = ({ label, value, stepName }) => {
     const handleMouseLeaveEvent = (e) => setHoverStyle({ display: 'none' });
 
     return (
-        <div className="text-theme-white text-xl uppercase pl-6 pr-6 pt-3">
-            <div className="border-b-2 inline-flex justify-between items-center align-center w-96 pb-2">
-                <div className="">
-                    <div>{label}</div>
-                    <div>{value}</div>
+        <div className="text-theme-white text-xl md:px-6 pt-3">
+            <div className="relative border-b-2 inline-flex justify-between items-center align-center w-auto pb-2">
+                
+                <div className="w-80 overflow-hidden">
+                    <div className='uppercase'>{label}</div>
+                    {value ?
+                        <div className={`text-lg w-64 truncate uppercase ${IconText === 'hide' && "line-through"}`}>{value}</div>
+                        :
+                        <div className='text-sm text-theme-red'> Field Empty </div>
+                    }
+                    
                 </div>
 
+                <div className='absolute right-20 top-2'>
                 <span
                     style={hoverStyle}
-                    className="text-center bg-theme-dark-blue text-theme- font-semi cursor-pointe rounded-xl transition-all 2s"
-                >
-                    {IconText === 'show' ? 'Enable upload' : 'Disable upload'}
-                </span>
-                <div className="inline-flex">
-                    {IconText === 'show' ? (
-                        <div
-                            className="flex cursor-pointer"
-                            onMouseEnter={handleMouseEvent}
-                            onMouseLeave={handleMouseLeaveEvent}
-                            onClick={(e) => handleToggleVisible(e, 'hide')}
-                        >
-                            <ShowEyesIcon />
-                        </div>
-                    ) : (
-                        <div
-                            className="flex cursor-pointer"
-                            onMouseEnter={handleMouseEvent}
-                            onMouseLeave={handleMouseLeaveEvent}
-                            onClick={(e) => handleToggleVisible(e, 'show')}
-                        >
-                            <HideEyesIcon />
-                        </div>
-                    )}
-                    <div
-                        className="flex justify-center items-center align-center cursor-pointer pl-3"
-                        onClick={handleClick}
+                    className="p-2 text-center bg-theme-dark-blue text-theme-white font-semi cursor-pointer rounded-xl transition-all 2s"
                     >
-                        <EditIcon />
+                        {IconText === 'show' ? 'Enable upload' : 'Disable upload'}
+                </span>
+                </div>
+
+                <div className='absolute right-0'>
+                    <div className="inline-flex">
+                        { visibleUpdate && (IconText === 'show' ? (
+                            <div
+                                className="flex cursor-pointer"
+                                onMouseEnter={handleMouseEvent}
+                                onMouseLeave={handleMouseLeaveEvent}
+                                onClick={(e) => handleToggleVisible(e, 'hide')}
+                            >
+                                <ShowEyesIcon />
+                            </div>
+                        ) : (
+                            <div
+                                className="flex cursor-pointer"
+                                onMouseEnter={handleMouseEvent}
+                                onMouseLeave={handleMouseLeaveEvent}
+                                onClick={(e) => handleToggleVisible(e, 'show')}
+                            >
+                                <HideEyesIcon />
+                            </div>
+                        ) )
+                        }
+                        <div
+                            className="flex justify-center items-center align-center cursor-pointer pl-3"
+                            onClick={handleClick}
+                        >
+                            <EditIcon />
+                        </div>
                     </div>
                 </div>
             </div>

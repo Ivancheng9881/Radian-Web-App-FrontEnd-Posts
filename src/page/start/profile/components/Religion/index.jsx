@@ -1,10 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import DatingContext from '../../../context/datingApp/dating.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingReligion = (props) => {
-    const { profile, updateProfileByKey } = useContext(CreateProfileContext);
+
+    const { getLatestField, updateDataByKey } = useContext(DatingContext);
+    let datingReligion = getLatestField("datingReligion");
+    if ( ! datingReligion ) datingReligion = [];
 
     const options = [
         { value: 'buddhist', label: 'Buddhist' },
@@ -27,7 +30,7 @@ const DatingReligion = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...profile.datingReligion ];
+        let arr = [ ...datingReligion ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -37,7 +40,7 @@ const DatingReligion = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateProfileByKey('datingReligion', arr);
+        updateDataByKey('datingReligion', arr);
     };
 
     return (
@@ -45,12 +48,12 @@ const DatingReligion = (props) => {
             <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
             <div className="w-4/5">
                 <div className="inline items-end">
-                    <div className="pt-4 pb-2 pr-4 w-140">
+                    <div className="pt-4 pb-2 pr-">
                         <Typography.H2 alignment="left">Religion</Typography.H2>
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={profile.datingReligion}
+                            value={datingReligion}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

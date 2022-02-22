@@ -15,7 +15,7 @@ const ArrowUpButton = ({
     return (
         <div 
             className={`h-16 w-16 bg-theme-dark-blue rounded-full flex transition-all
-            ${disabled ? 'cursor-not-allowed opacity-40' : 'cursor-pointer opacity-100'}`
+            ${disabled ? 'opacity-40' : 'cursor-pointer opacity-100'}`
         }
             style={{transform: 'rotate(180deg)'}}
             onClick={handleClick}

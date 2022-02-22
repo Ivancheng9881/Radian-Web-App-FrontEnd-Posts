@@ -54,7 +54,7 @@ input:focus {
 
 .RD-featuredText {
     font-weight: 700;
-    width: max-content;
+    /* width: max-content; */
     background-image: linear-gradient(90.32deg, #c743f5 0%, #8c9cf8 18.62%, #7dddbe 36.23%);
     background-size: 100%;
     -webkit-background-clip: text;
@@ -64,9 +64,9 @@ input:focus {
 }
 
 .RD-snackbar {
-    position: absolute;
+    /* position: absolute; */
     z-index: 99;
-    background-color: transparent;
+    /* background-color: transparent; */
 }
 
 body > iframe {

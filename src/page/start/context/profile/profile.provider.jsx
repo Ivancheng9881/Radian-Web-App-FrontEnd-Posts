@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import ProfileContext from '../../../../utils/profile/context/profile.context';
 import CreateProfileContext from './profile.context';
 import { getQuery, setQuery } from '../../../../utils/query';
 import { checkoutProfileRoute, startRoute } from '../../../../commons/route';
-
 import Validator from '../../../../utils/validation';
 
 function CreateProfileProvider({ children }) {
     const history = useHistory();
+
+    const profileContext = useContext(ProfileContext);
 
     let basicInfo = 'basicInfo';
     let datingPreference = 'datingPreference';
@@ -17,25 +19,27 @@ function CreateProfileProvider({ children }) {
         { id: 'name', stage: basicInfo },
         { id: 'phone', stage: basicInfo },
         { id: 'dob', stage: basicInfo },
-        { id: 'weight', stage: basicInfo },
-        { id: 'height', stage: basicInfo },
+        { id: 'gender', stage: basicInfo },
         { id: 'nationality', stage: basicInfo },
         { id: 'location', stage: basicInfo },
         { id: 'profilePicture', stage: basicInfo },
+        { id: 'interest', stage: basicInfo },
+        { id: 'nft', stage: basicInfo },
+        { id: 'weight', stage: datingPreference },
+        { id: 'height', stage: datingPreference },
         { id: 'orientation', stage: datingPreference },
         { id: 'lookingFor', stage: datingPreference },
-        { id: 'interest', stage: datingPreference },
         { id: 'ageRange', stage: datingPreference },
         { id: 'distanceMax', stage: datingPreference },
         { id: 'datingEthnicity', stage: datingPreference },
         { id: 'datingReligion', stage: datingPreference },
-        { id: 'nft', stage: asset }
     ];
 
     const checkoutStepList = [
+        // { id: 'checkoutConsole', stage: 'checkoutConsole' },
         { id: 'identityInformation', stage: 'identityInformation' },
         { id: 'descriptionInformation', stage: 'descriptionInformation' },
-        { id: 'nft', stage: 'nft' },
+        // { id: 'nft', stage: 'nft' },
         { id: 'profileCreated', stage: 'profileCreated' }
     ];
 
@@ -46,7 +50,7 @@ function CreateProfileProvider({ children }) {
         month: '01',
         year: '1995',
         countryCode: '+852',
-        profilePictureCid: 'QmTDg4VWmgysNRKpUp5CwESnhE9Srkgz8KWyFYr3mfcV8M',
+        profilePictureCid: ['QmTDg4VWmgysNRKpUp5CwESnhE9Srkgz8KWyFYr3mfcV8M'],
         number: '12345678',
         location: 'Hong Kong',
         weight: '80',
@@ -72,36 +76,6 @@ function CreateProfileProvider({ children }) {
         ]
     };
 
-    const initProfile = {
-        firstName: '',
-        lastName: '',
-        day: '',
-        month: '',
-        year: '',
-        countryCode: '',
-        profilePictureCid: '',
-        number: '',
-        location: '',
-        weight: '',
-        weightUnit: '',
-        height: '',
-        heightUnit: '',
-        nationality: '',
-        gender: '',
-        orientation: '',
-        lookingFor: '',
-        interest: [],
-        ageRangeMin: 1,
-        ageRangeMax: 100,
-        ageRangeIsDealBreaker: 1,
-        distanceMax: 1,
-        distanceIsDealBreaker: 0,
-        datingEthnicity: [],
-        datingReligion: [],
-        nft: []
-    };
-
-    const [ profile, setProfile ] = useState(initProfile);
     const [ step, setStep ] = useState(0);
     const [ checkoutStep, setCheckoutStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
@@ -150,53 +124,9 @@ function CreateProfileProvider({ children }) {
             let query = getQuery(history.location.search);
             query.step = val;
             setQuery(history, query);
-            storeTempProfile();
+            // storeTempProfile();
             setStep(Number(val));
         }
-    };
-
-    const storeTempProfile = () => {
-        window.localStorage.setItem('tempProfile', JSON.stringify(profile));
-    };
-
-    const updateProfile = (e, type = 'text', valid) => {
-        let validatorResult = Validator.validateInput(e.target.value, type);
-        switch (type) {
-            case 'text':
-            case 'number':
-                validatorResult = validatorResult;
-                break;
-            case 'date':
-                if (!valid) validatorResult = `invalid input`;
-                break;
-            default:
-                validatorResult = '';
-                break;
-        }
-
-        // console.log('validatorResult', validatorResult);
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [e.target.name]: e.target.value
-        });
-    };
-
-    //Country Code Selection
-    const updateProfileByDropdownSelect = (key, val) => {
-        setProfile({
-            ...profile,
-            [key]: val
-        });
-    };
-
-    const updateProfileByKey = (key, val, type = '') => {
-        let validatorResult = Validator.validateInput(val, type);
-        setProfile({
-            ...profile,
-            error: validatorResult,
-            [key]: val
-        });
     };
 
     const updateCheckoutStep = (val) => {
@@ -209,15 +139,10 @@ function CreateProfileProvider({ children }) {
         setQuery(history, query);
         setCheckoutStep(Number(val));
     };
-
+    
     return (
         <CreateProfileContext.Provider
             value={{
-                profile,
-                setProfile,
-                updateProfile,
-                updateProfileByKey,
-                updateProfileByDropdownSelect,
                 step,
                 updateStep,
                 stepList,

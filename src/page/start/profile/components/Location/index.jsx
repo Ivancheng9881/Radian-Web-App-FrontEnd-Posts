@@ -1,23 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext, useState } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 
 const ProfileLocation = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
 
-    const [ data, setData ] = useState({
-        firstName: '',
-        lastName: ''
-    });
-
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({
-            ...data,
-            [e.target.name]: e.target.value
-        });
-    };
+    const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
+    
+    let location = getLatestField('location');
 
     return (
         <div id="RD-CreateProfile-location" className="RD-CreateProfileComponents">
@@ -31,12 +21,12 @@ const ProfileLocation = (props) => {
                         type="text"
                         name="location"
                         placeholder="location"
-                        value={profile.location}
-                        onChange={updateProfile}
+                        value={location}
+                        onChange={updateData}
                     />
                 </div>
             </div>
-            {profile.error ? <p className="text-theme-danger">{profile.error}</p> : ''}
+            {/* {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''} */}
         </div>
     );
 };

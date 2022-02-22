@@ -1,10 +1,13 @@
 import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../../../utils/profile/context/profile.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
 const DatingInterest = (props) => {
-    const { profile, updateProfile } = useContext(CreateProfileContext);
+    const { getLatestField, updateData } = useContext(ProfileContext);
+
+    let interest = getLatestField('interest');
+    if (interest == ""){ interest = []}; 
 
     const options = [
         { value: 'foodie', label: 'Foodie' },
@@ -25,7 +28,7 @@ const DatingInterest = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...profile.interest ];
+        let arr = [ ...interest ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -35,7 +38,7 @@ const DatingInterest = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateProfile({
+        updateData({
             target: {
                 name: 'interest',
                 value: arr
@@ -48,12 +51,12 @@ const DatingInterest = (props) => {
             <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
             <div className="w-4/5">
                 <div className="inline items-end">
-                    <div className="pt-4 pb-2 pr-4 w-140">
+                    <div className="pt-4 pb-2 pr-4">
                         <Typography.H2 alignment="left">Your Interest</Typography.H2>
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={profile.interest}
+                            value={interest}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

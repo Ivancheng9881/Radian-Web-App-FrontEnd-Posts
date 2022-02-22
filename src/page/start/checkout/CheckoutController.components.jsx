@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import CreateProfileContext from '../context/profile/profile.context';
 import CheckoutCreateProfile from './components/CreateProfile';
 import CheckoutDescriptionInformation from './components/DescriptionInformation';
@@ -14,7 +14,7 @@ const CreateProfileCheckoutController = () => {
             <CheckoutWrapper>
                 {checkoutStepList[checkoutStep].id === 'identityInformation' && <CheckoutIdentityInformation />}
                 {checkoutStepList[checkoutStep].id === 'descriptionInformation' && <CheckoutDescriptionInformation />}
-                {checkoutStepList[checkoutStep].id === 'nft' && <CheckoutNFTInformation />}
+                {/* {checkoutStepList[checkoutStep].id === 'nft' && <CheckoutNFTInformation />} */}
                 {checkoutStepList[checkoutStep].id === 'profileCreated' && <CheckoutCreateProfile />}
             </CheckoutWrapper>
         </div>

@@ -29,7 +29,7 @@ const CreateProfileBodyWrapper = ({children}) => {
         {value: 'asset', label: 'Asset'},
         {value: 'completeRegistration', label: 'Complete Registration'},
     ];
-   
+
     const nextStep = (e) => {
         e.preventDefault();
         setScrollDirection(true);
@@ -59,16 +59,14 @@ const CreateProfileBodyWrapper = ({children}) => {
     }
 
     return (
-        <div id='RD-createProfileRoot' className="relative">
-            <div 
-                id='RD-createProfileBody'  
-                className="h-100 w-full min-w-fit pt-64 pl-10 pr-10 bg-theme-bg-dark" 
-            >
-                <div className="relative m-auto w-4/5">
-                    {children}
-
+        <div id='RD-createProfileRoot'>
+            <div className="pt-64 pb-72 px-10 w-full overflow-hidden bg-theme-bg-dark scroll">
+                {/*  Select-none disable text selection, else will get randomly highlighted text */}
+                <div className="m-auto w-4/5 select-none"> 
+                        {children}
                 </div>
             </div>
+
             <div 
                 id='RD-createProfileFooterRoot'
                 className='fixed w-full bottom-0'
@@ -77,7 +75,7 @@ const CreateProfileBodyWrapper = ({children}) => {
                     id='RD-createProfileFooterBody'
                     className="relative m-auto w-4/5"
                 >
-                    <div className="absolute -top-36 -right-0">
+                    <div className="absolute -top-36 -right-0 select-none">
                         <div className='inline-flex'>
                             { !isEdit && <div className={`pr-2 pl-2`}>
                                 <ArrowUpButton 
