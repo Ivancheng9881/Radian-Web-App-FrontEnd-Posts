@@ -45,7 +45,7 @@ const DatingDistance = (props) => {
                                     value={distanceIsDealBreaker}
                                     opts={dealBreakerOpts}
                                     handleToggle={handleToggle}
-                                    size="small"
+                                    size="large"
                                 />
                             </div>
                         </div>

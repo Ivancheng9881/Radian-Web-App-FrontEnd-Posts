@@ -161,8 +161,8 @@ const CheckoutCreateProfile = () => {
             await solanaWallet.connect();
         } else {
             let cid = await createProfileCid();
-            let txn = await createProfilePipelineSolana(solanaWallet, cid);
-            if (txn) {
+            let result = await createProfilePipelineSolana(solanaWallet, cid);
+            if (result) {
                 // clear cache and move back
                 profileContext.deleteUpdatingData();
                 datingContext.deleteUpdatingData();

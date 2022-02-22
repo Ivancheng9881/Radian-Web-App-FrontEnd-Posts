@@ -16,7 +16,7 @@ function DatingProvider({ children }) {
         heightUnit: "",
         orientation: "",
         lookingFor: "",
-        ageRangeMin: 1,
+        ageRangeMin: 18,
         ageRangeMax: 100,
         ageRangeIsDealBreaker: 1,
         distanceMax: 1,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router";
-import { startRoute, createProfileRoute } from "../../../commons/route";
+import { startRoute, createProfileRoute, profileRoute, myProfileRoute } from "../../../commons/route";
 import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import ProfileContext from "../../../utils/profile/context/profile.context";
@@ -21,6 +21,11 @@ function PersonalProfile() {
     const createProfile = () => {
         history.push(createProfileRoute);
     }
+
+    // to update profile
+    const updateProfile = ()=>{
+        history.push({pathname: myProfileRoute});
+    }
     
     return (
         <div className='p-2 pl-4 pr-4' style={{ height: '60vh', minWidth: '400px', minHeight: '480px'}}
@@ -35,7 +40,10 @@ function PersonalProfile() {
                     }}
                 >
                     {
-                        profile.identityID ? <span></span> : <span></span> // icon for update profile
+                        profile.identityID && 
+                            <div className="absolute right-5 bottom-5" onClick={updateProfile}>
+                                <img src="/icons/right_arrow.svg" width="50px" height="50px" alt="menu" />
+                            </div> // icon for update profile
                     }
                     { 
                         profile.identityID ?

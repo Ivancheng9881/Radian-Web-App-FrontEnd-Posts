@@ -53,9 +53,9 @@ export default function HomePage() {
         console.log('Solana COUNT:', countSolana);
         console.log("Solana Data", profiles);
         profiles.map((k,v)=>{
+            if ( k === undefined ) return;
             let idObj ={network: "Solana"};
             idObj.identityID = k.identityId;
-            idObj.verifyID = k.verifyId;
             profileListSol.push(idObj);
         })
         console.log('solana profiles', profileListSol);

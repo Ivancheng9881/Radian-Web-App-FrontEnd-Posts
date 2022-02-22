@@ -12,7 +12,7 @@ const DoubleSlider = (props) => {
     const [ lower, setLower ] = useState(props.lower);
     const [ upper, setUpper ] = useState(props.upper);
     const [ boundary, setBoundary ] = useState([0, 0]) // represent [w, x1, x2]
-    let total = max - min;
+    let total = 100;
 
     useEffect(() => {
         calcBoundary();

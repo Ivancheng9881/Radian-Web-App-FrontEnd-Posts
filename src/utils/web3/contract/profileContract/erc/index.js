@@ -53,6 +53,31 @@ async function getProfileListCountFromSubgraph() {
     return count
 }
 
+export async function getProfileFromIDSubgraph(pid) {
+    
+    let query = `query Profile($profileID: BigInt!) {
+                profiles(first: 1, where: {profileID: $profileID}) {
+                    identityID
+                    addresses {
+                        address
+                    }
+                    externalAddresses {
+                        externalAddress
+                    }
+            }
+        }`;
+    let params = {profileID: pid};
+    let result;
+    try {
+        result = await fetchDataFromSubgraph(subgraphUrl, query, params);
+        let profile = result.data.profiles[0];
+        return profile;
+    } catch (e) {
+        console.log(e);
+        return undefined;
+    }
+}
+
 async function getProfileFromAddressSubgraph(address) {
     
     let query = `query Addresses($address: String!) {

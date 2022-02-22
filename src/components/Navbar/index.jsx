@@ -127,7 +127,7 @@ const Navbar = (props) => {
                 }
 
                 {profileContext.profile?.identityID &&
-                <div className="absolute top-4 right-14 w-10 h-10 cursor-pointer rounded-full"
+                <div className="absolute top-4 right-4 w-10 h-10 cursor-pointer rounded-full"
                     style={{
                         backgroundImage: `url(${ipfsUtils.getContentUrl(profileContext.profile?.profilePictureCid)})`,
                         backgroundPosition: 'center center',
@@ -137,7 +137,7 @@ const Navbar = (props) => {
                     onClick={() => {}}>
                 </div>}
 
-                <div className="absolute top-6 right-4 cursor-pointer" onClick={() => {}}>
+                <div className="absolute top-5 right-16 cursor-pointer" onClick={() => {}}>
                     <img src="/icons/menu.svg" width="30px" height="22px" alt="menu" />
                 </div>
             </div>

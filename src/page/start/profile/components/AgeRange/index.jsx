@@ -10,7 +10,7 @@ const DatingAgeRange = (props) => {
     let ageRangeIsDealBreaker = getLatestField("ageRangeIsDealBreaker");
     let ageRangeMin = getLatestField("ageRangeMin");
     let ageRangeMax = getLatestField("ageRangeMax");
-    if ( !ageRangeMin ) ageRangeMin = 16;
+    if ( !ageRangeMin ) ageRangeMin = 18;
     if ( !ageRangeMin ) ageRangeMax = 100;
     if ( ! ageRangeIsDealBreaker ) ageRangeIsDealBreaker = 0;
 
@@ -18,7 +18,7 @@ const DatingAgeRange = (props) => {
 
     const handleToggle = (val) => updateDataByKey('ageRangeIsDealBreaker', val);
 
-    const handleMinChange = (val) => updateDataByKey('ageRangeMin', Math.max(val, 16));
+    const handleMinChange = (val) => updateDataByKey('ageRangeMin', Math.max(val, 18));
 
     const handleMaxChange = (val) => updateDataByKey('ageRangeMax', val);
 
@@ -35,7 +35,7 @@ const DatingAgeRange = (props) => {
                             upper={ageRangeMax}
                             lower={ageRangeMin}
                             max={100}
-                            min={0}
+                            min={17}
                             handleMinChange={handleMinChange}
                             handleMaxChange={handleMaxChange}
                         />

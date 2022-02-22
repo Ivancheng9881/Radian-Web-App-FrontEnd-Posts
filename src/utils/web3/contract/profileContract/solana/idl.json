@@ -121,6 +121,90 @@
       ]
     },
     {
+      "name": "addExternalNetwork",
+      "accounts": [
+        {
+          "name": "daoAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "network",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "networkInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "daoAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "networkBump",
+          "type": "u8"
+        },
+        {
+          "name": "networkInfoBump",
+          "type": "u8"
+        },
+        {
+          "name": "networkName",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "setExternalNetworkState",
+      "accounts": [
+        {
+          "name": "daoAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "network",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "daoAuthority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "networkId",
+          "type": "u8"
+        },
+        {
+          "name": "enabled",
+          "type": "bool"
+        }
+      ]
+    },
+    {
       "name": "createProfileMapping",
       "accounts": [
         {
@@ -147,6 +231,14 @@
       "args": [
         {
           "name": "profileMappingBump",
+          "type": "u8"
+        },
+        {
+          "name": "profileId",
+          "type": "u64"
+        },
+        {
+          "name": "profileNetworkId",
           "type": "u8"
         }
       ]
@@ -237,46 +329,6 @@
       ]
     },
     {
-      "name": "verifyIdentity",
-      "accounts": [
-        {
-          "name": "daoRole",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
-          "name": "profile",
-          "isMut": true,
-          "isSigner": false
-        },
-        {
-          "name": "address",
-          "isMut": false,
-          "isSigner": true
-        },
-        {
-          "name": "systemProgram",
-          "isMut": false,
-          "isSigner": false
-        }
-      ],
-      "args": [
-        {
-          "name": "profileId",
-          "type": "u64"
-        },
-        {
-          "name": "verifyId",
-          "type": {
-            "array": [
-              "u8",
-              64
-            ]
-          }
-        }
-      ]
-    },
-    {
       "name": "addNewAddress",
       "accounts": [
         {
@@ -350,6 +402,68 @@
           "type": "u8"
         }
       ]
+    },
+    {
+      "name": "addExternalAddress",
+      "accounts": [
+        {
+          "name": "profileMapping",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "externalProfileMapping",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "profile",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "searchMapping",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "address",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "externalProfileMappingBump",
+          "type": "u8"
+        },
+        {
+          "name": "searchBump",
+          "type": "u8"
+        },
+        {
+          "name": "profileId",
+          "type": "u64"
+        },
+        {
+          "name": "externalAddress",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "networkId",
+          "type": "u8"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -365,6 +479,10 @@
           {
             "name": "profileCount",
             "type": "u64"
+          },
+          {
+            "name": "networkCount",
+            "type": "u8"
           },
           {
             "name": "bump",
@@ -390,6 +508,47 @@
       }
     },
     {
+      "name": "Network",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "networkId",
+            "type": "u8"
+          },
+          {
+            "name": "networkName",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "enabled",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NetworkInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
       "name": "ProfileMapping",
       "type": {
         "kind": "struct",
@@ -397,6 +556,43 @@
           {
             "name": "address",
             "type": "publicKey"
+          },
+          {
+            "name": "profileId",
+            "type": "u64"
+          },
+          {
+            "name": "profileNetworkId",
+            "type": "u8"
+          },
+          {
+            "name": "verified",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ExternalProfileMapping",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "addressNetworkId",
+            "type": "u8"
           },
           {
             "name": "profileId",
@@ -420,7 +616,16 @@
         "fields": [
           {
             "name": "address",
-            "type": "publicKey"
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "networkId",
+            "type": "u8"
           },
           {
             "name": "bump",
@@ -444,15 +649,6 @@
             }
           },
           {
-            "name": "verifyId",
-            "type": {
-              "array": [
-                "u8",
-                64
-              ]
-            }
-          },
-          {
             "name": "addressNumber",
             "type": "u64"
           },
@@ -465,6 +661,6 @@
     }
   ],
   "metadata": {
-    "address": "BPnV7ofoFnpkaDPUX97gJw5zjQGjPRnvaviUEkjgthij"
+    "address": "DeG9noWu97Qi4u1vjwgpVU2tiZMuSLapCboQhQzaVgDj"
   }
 }
