@@ -19,6 +19,17 @@ import ERCUtils from '../../../../../utils/web3/context/erc.utils';
 
 import { mainRoute } from '../../../../../commons/route';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
+import { Bars } from 'react-loader-spinner'; 
+
+const barLoader = {
+    Component: Bars,
+    props: {
+      color: '#5359F6',
+      height: 100,
+      width: 110,
+    },
+    name: 'Ball Triangle',
+  };
 
 const CheckoutCreateProfile = () => {
 
@@ -36,6 +47,7 @@ const CheckoutCreateProfile = () => {
         state: false,
         msg: ''
     });
+    const [ isLoading, setIsLoading] = useState(false);
     const solanaWallet = useWallet();
 
     let logoWidth = 130;
@@ -54,7 +66,7 @@ const CheckoutCreateProfile = () => {
 
     useEffect(
         () => {
-            if (web3Context?.providers.selected.split('@')[1] === 'solana') {
+            if (web3Context?.providers?.selected?.split('@')[1] === 'solana') {
                 solanaWallet.select(PhantomWalletName);
             }
         },
@@ -69,8 +81,6 @@ const CheckoutCreateProfile = () => {
         return profile;    
     }
 
-    getCompletedProfile();
-
     const createProfileCid = async () => {
         let profile = getCompletedProfile();
         let profileString = JSON.stringify(profile);
@@ -80,13 +90,13 @@ const CheckoutCreateProfile = () => {
     };
 
     const createProfilePolygon = async (useGasStation) => {
-
         // disable if metamask is not the selected provider
-        if (web3Context?.providers?.seletected?.split("@")[1] != 'metamask@erc'){
+        if (web3Context?.providers?.selected.split("@")[1] != 'erc'){
             setSnackBar({ open: true, message: "Please select an ethereum compatible wallet", severity: 'danger' });
             return;
         }
 
+        setIsLoading(true);
         let txn;
         let publicKey = await ERCUtils.connectWallet();
         // check if the wallet is connected
@@ -94,6 +104,7 @@ const CheckoutCreateProfile = () => {
             console.log(window.ethereum.networkVersion == 137);
             if (window.ethereum.networkVersion != 137) {
                 setError({ state: true, msg: 'Please switch to polygon network' });
+                setIsLoading(false);
                 return;
             }
             setError({ state: false, msg: '' });
@@ -112,6 +123,7 @@ const CheckoutCreateProfile = () => {
                 history.push(mainRoute);
             }
         }
+        setIsLoading(false);
     };
 
     const getProfile = async () => {
@@ -140,6 +152,7 @@ const CheckoutCreateProfile = () => {
             return;
         }
 
+        setIsLoading(true);
         setSolTxn(true);
         console.log("solana wallet", solanaWallet);
         if (!solanaWallet.connected) {
@@ -156,6 +169,7 @@ const CheckoutCreateProfile = () => {
                 history.push(mainRoute);
             }
         }
+        setIsLoading(false);
     };
 
     // const fetchProfileMappingSolana = async () => {
@@ -164,7 +178,16 @@ const CheckoutCreateProfile = () => {
     // };
 
     return (
-        <div id="RD-CheckoutProfileRoot">
+        <div id="RD-CheckoutProfileRoot" className={isLoading && 'opacity-40'}>
+            {isLoading &&
+            <div className='fixed left-1/2 top-1/2 transform -translate-x-24 -translate-y-24 
+                            bg-theme-lightGray p-5 bg-opacity-80 rounded-3xl'>
+                    <Bars
+                        { ...
+                        {color: '#5359F6',
+                        height: 120,
+                        width: 160}}/>
+            </div>}
             <div style={{ width:'fit-content'}} className="m-auto bg-theme-bg-light w-full max-w-screen-lg rounded text-theme-white">
                 <div className="p-16 text-center">
                     <div>
@@ -186,7 +209,7 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={() => createProfilePolygon(false)}
+                                    onClick={() => ! isLoading && createProfilePolygon(false)}
                                 >
                                     <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon</div>
                                 </div>
@@ -204,7 +227,7 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={() => createProfilePolygon(true)}
+                                    onClick={() => ! isLoading && createProfilePolygon(true)}
                                 >
                                     <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon (Free)</div>
                                 </div>
@@ -222,7 +245,7 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div
                                     className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
-                                    onClick={createProfileOnSolana}
+                                    onClick={()=> ! isLoading && createProfileOnSolana()}
                                 >
                                     <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base"> Solana </div>
                                 </div>

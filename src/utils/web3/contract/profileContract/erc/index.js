@@ -22,6 +22,7 @@ async function initGaslessProfileContract() {
         preferredRelays: [gasStationNetworkUrl],
         relayLookupWindowBlocks: 750, // don't set too low, if too low, our relay server will be omitted
         relayRegistrationLookupBlocks: 750,
+        auditorsCount: 0,
         paymasterAddress,
     }
     return await ERCUtils.initContractGasless(
