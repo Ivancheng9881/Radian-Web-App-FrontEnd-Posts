@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router";
-import { startRoute, createProfileRoute, profileRoute, myProfileRoute } from "../../../commons/route";
+import { startRoute, createProfileRoute, profileRoute } from "../../../commons/route";
 import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import ProfileContext from "../../../utils/profile/context/profile.context";
@@ -24,7 +24,7 @@ function PersonalProfile() {
 
     // to update profile
     const updateProfile = ()=>{
-        history.push({pathname: myProfileRoute});
+        history.push({pathname: profileRoute});
     }
     
     return (

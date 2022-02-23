@@ -102,7 +102,7 @@ const Navbar = (props) => {
 
                 {/* Wallet address on Navbar */}
                 {(window.ethereum || window.solana) &&
-                <div className={`absolute top-4 pr-2 ${ profileContext.profile?.identityID === "" ? 'right-14' : 'right-24'}`}>
+                <div className={`absolute top-4 pr-2 right-24`}>
                     <Popup
                         trigger={<button>
                                     {itemState[0]}                                     

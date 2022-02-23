@@ -1,12 +1,17 @@
-import { useContext, useEffect } from 'react';
-import Typography from '../../components/Typography';
-import ipfsUtils from '../../utils/web3/ipfs/ipfs.utils';
-import InfoDisplayGroup from '../start/checkout/components/InfoDisplay/InfoDisplay.components';
-import ProfilePictureFrame from '../../components/ProfilePictureFrame';
-import RoundedButton from '../../components/Button/Rounded.components';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import Typography from '../../../components/Typography';
+import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
+import InfoDisplayGroup from '../../start/checkout/components/InfoDisplay/InfoDisplay.components';
+import ProfilePictureFrame from '../../../components/ProfilePictureFrame';
+import RoundedButton from '../../../components/Button/Rounded.components';
+import { addAddressRoute } from '../../../commons/route';
 
 const ViewIdentityInformation = (props) => {
 
+    const history = useHistory();
+    
     const latestProfile = props.profile;
     const isSelf = props.isSelf;
 
@@ -15,6 +20,9 @@ const ViewIdentityInformation = (props) => {
     },[])
 
     // go to add wallet page
+    const buttonHandler = ()=>{
+        history.push(addAddressRoute);
+    }
 
     return (
         <div>
@@ -43,7 +51,7 @@ const ViewIdentityInformation = (props) => {
                     <div className="text-theme-white text-lg md:px-28 pt-10">
                         <div className="relative inline-flex align-center w-auto pb-2">
                             <RoundedButton
-                                onClick={()=>{}}>
+                                onClick={buttonHandler}>
                                 Add Wallet
                             </RoundedButton>
                         </div>
