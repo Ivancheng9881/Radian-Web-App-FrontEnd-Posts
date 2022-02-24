@@ -9,6 +9,7 @@ import 'react-dropdown/style.css';
 import './selectCountryCode.styles.css';
 
 import { country_code_list as countryCodeOptions } from './countryCode.json';
+import { Input, Select } from 'antd';
 
 const ProfilePhone = (props) => {
     const { getLatestField, updatedData, updateData, updateDataByDropdownSelect } = useContext(ProfileContext);
@@ -41,15 +42,27 @@ const ProfilePhone = (props) => {
             </div>
             <div className="mt-10 inline-flex flex-wrap">
                 <div className="max-w-none w-60 mr-5 mb-10" id="RD-SelectCountryCode">
-                    <Dropdown
-                        options={countryCodeOptions.sort()}
+                    <Select
+                        // options={countryCodeOptions.sort()}
                         value={`+${selectedCountryCode}`}
                         onChange={handleChange}
-                        placeholder={selectedCountryCode}
-                    />
+                        // placeholder={selectedCountryCode}
+                    >
+                        {countryCodeOptions.sort().map((val) => {
+                            return (
+                                <Select.Option 
+                                    key={`countryCode:${val}`} 
+                                    value={val} 
+                                >
+                                    {val}
+                                </Select.Option>
+                            )
+                        })}
+                    </Select>
                 </div>
                 <div className="max-w-sm mr-5">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         name="number"
                         type="number"
                         placeholder="000000000"

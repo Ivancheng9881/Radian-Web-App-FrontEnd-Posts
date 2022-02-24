@@ -2,6 +2,7 @@ import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext, useEffect, useState } from 'react';
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import { Input } from 'antd';
 
 const ProfileNationality = (props) => {
 
@@ -15,9 +16,10 @@ const ProfileNationality = (props) => {
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">Nationality</Typography.H2>
             </div>
-            <div className="mt-10 inline-flex">
+            <div className="mt-10">
                 <div className="w-1/2 mr-5">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         type="text"
                         name="nationality"
                         placeholder="Nationality"

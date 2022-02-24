@@ -5,6 +5,7 @@ import CreateProfileContext from '../../../context/profile/profile.context';
 import Validator from '../../../../../utils/validation';
 
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import { Input } from 'antd';
 
 const ProfileBirth = (props) => {
     const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
@@ -46,7 +47,8 @@ const ProfileBirth = (props) => {
             </div>
             <div className="mt-10 mb-2 inline-flex flex-wrap gap-4">
                 <div className="w-48 mr-5 overflow-hidden">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         className="RD-dob"
                         type="day"
                         name="day"
@@ -56,7 +58,8 @@ const ProfileBirth = (props) => {
                     />
                 </div>
                 <div className="w-48 mr-5 overflow-hidden">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         className="RD-dob"
                         type="number"
                         name="month"
@@ -66,7 +69,8 @@ const ProfileBirth = (props) => {
                     />
                 </div>
                 <div className="w-48 mr-5 overflow-hidden">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         className="RD-dob"
                         type="number"
                         name="year"

@@ -2,6 +2,7 @@ import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext} from 'react';
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import { Input } from 'antd';
 
 const ProfileName = (props) => {
 
@@ -34,7 +35,8 @@ const ProfileName = (props) => {
 
             <div className="mt-10 flex flex-wrap">
                 <div className="max-w-sm w-2/3 mr-5 mb-10">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         name="radianFirstName"
                         type="text"
                         placeholder="First Name"
@@ -43,7 +45,8 @@ const ProfileName = (props) => {
                     />
                 </div>
                 <div className="max-w-sm w-2/3 mr-5">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         name="radianLastName"
                         type="text"
                         placeholder="Last Name"

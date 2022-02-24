@@ -3,6 +3,7 @@ import TextField from '../../../../../components/Textfield';
 import { useContext } from 'react';
 import Toggler from '../../../../../components/Toggler';
 import DatingContext from '../../../context/datingApp/dating.context';
+import { Input } from 'antd';
 
 const ProfileWeight = (props) => {
 
@@ -34,7 +35,8 @@ const ProfileWeight = (props) => {
             </div>
             <div className="mt-10 inline-flex items-end flex-wrap">
                 <div className="w-48 mr-5">
-                    <TextField.Outlined
+                    <Input
+                        size='large'
                         type="number"
                         name="weight"
                         placeholder={weightUnit.toUpperCase()}

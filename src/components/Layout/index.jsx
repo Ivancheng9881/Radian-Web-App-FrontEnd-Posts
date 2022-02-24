@@ -1,14 +1,19 @@
+import { Layout } from 'antd'
 import Navbar from '../Navbar'
 
-const Layout = (props) => {
+const DefaultLayout = (props) => {
   return (
     <div
       className='bg-theme-bg-dark min-h-screen w-full'
     >
-          <Navbar />
+      <Layout>
+        <Navbar />
+        <Layout.Content>
           {props.children}          
+        </Layout.Content>
+      </Layout>
     </div>
   )
 }
 
-export default Layout
+export default DefaultLayout

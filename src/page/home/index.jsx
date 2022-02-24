@@ -84,18 +84,18 @@ export default function HomePage() {
     
     return (
         <Layout>
-                <div className='pt-32'>
-                        <div className={`max-w-sm md:fixed h-full`}>
-                                <PersonalProfile/>
-                        </div>
-                        <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
-                                {
-                                    profileList?.map((p, v) => {
-                                        return <ProfileFrame key={v} profile={p} />
-                                    })
-                                }
-                        </div>
-                </div>
+            <div className='pt-32'>
+                    <div className={`max-w-sm md:fixed h-full`}>
+                            <PersonalProfile/>
+                    </div>
+                    <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
+                            {
+                                profileList?.map((p, v) => {
+                                    return <ProfileFrame key={v} profile={p} />
+                                })
+                            }
+                    </div>
+            </div>
         </Layout>
     )
 }

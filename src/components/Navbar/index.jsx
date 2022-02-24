@@ -13,6 +13,7 @@ import Popup from 'reactjs-popup';
 import { preloadWalletIcon } from '../../utils/preload';
 import ProfileContext from "../../utils/profile/context/profile.context";
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
+import { Layout, Select } from 'antd';
 
 const Navbar = (props) => {
     const web3Context = useContext(Web3Context);
@@ -91,14 +92,16 @@ const Navbar = (props) => {
     }
 
     return (
-        <div id="RD-navbar" className="fixed w-full top-0 z-50">
-            <div className="relative p-4 h-20 bg-theme-bg-light RD-shadow flex justify-between">
-                
-                <div className="cursor-pointer" onClick={() => history.push(mainRoute)}>
+        <Layout.Header
+            style={{ position: 'fixed', zIndex: 1, width: '100%' }}
+        >
+
+        <div id="RD-navbar">
+                <a onClick={() => history.push(mainRoute)}>
                     {/* use small icon when on mobile */}
                     <img className='absolute top-4 left-4 invisible sm:visible' src="/logos/radian.png" width="149px" height="41px" alt="radian logo" />
                     <img className='absolute top-4 left-5 visible sm:invisible' src="/logo192.png" width="41px" height="41px" alt="radian logo small" />
-                </div>
+                </a>
 
                 {/* Wallet address on Navbar */}
                 {(window.ethereum || window.solana) &&
@@ -140,8 +143,8 @@ const Navbar = (props) => {
                 <div className="absolute top-6 right-4 cursor-pointer" onClick={() => {}}>
                     <img src="/icons/menu.svg" width="30px" height="22px" alt="menu" />
                 </div>
-            </div>
         </div>
+        </Layout.Header>
     );
 };
 

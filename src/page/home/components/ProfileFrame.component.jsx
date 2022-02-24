@@ -1,3 +1,4 @@
+import { Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
 
@@ -25,12 +26,18 @@ function ProfileFrame(props) {
         <div className="">
             {fullProfile && (
                 <div className="p-2">
-                    <div
-                        className={`h-40 w-80 rounded-lg relative`}
+                    <Card
+                        hoverable
+                        cover={
+                            <img 
+                                src={ipfsUtils.getContentUrl(fullProfile.profilePictureCid)}
+                                alt={fullProfile.firstName}
+                            />
+                        }
                         style={{
-                            backgroundImage: `url(${ipfsUtils.getContentUrl(fullProfile.profilePictureCid)})`,
-                            backgroundPosition: 'center center',
-                            backgroundSize: 'cover'
+                            width: 300,
+                            height: 200,
+                            overflow: 'hidden',
                         }}
                     >
                         <span
@@ -44,23 +51,18 @@ function ProfileFrame(props) {
                             className={`absolute w-fit text-theme-white 
                         pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg right-0 top-0 opacity-80`}
                         >
-                            {props.profile.network =="erc" ? 
-                                <img
+                            <img
                                 className="m-auto"
-                                src="/logos/polygonRounded.png"
+                                src={
+                                    props.profile.network == 'erc'
+                                    ? "/logos/polygonRounded.png"
+                                    : "/logos/solanaRounded.png"
+                                    }
                                 width={30}
                                 height={'auto'}
-                                />
-                                : 
-                                <img
-                                className="m-auto"
-                                src="/logos/solanaRounded.png"
-                                width={30}
-                                height={'auto'}
-                                />
-                            }
+                            />
                         </span>
-                    </div>
+                    </Card>
                 </div>
             )}
         </div>

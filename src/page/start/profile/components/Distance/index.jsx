@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import DatingContext from '../../../context/datingApp/dating.context';
 import Toggler from '../../../../../components/Toggler';
 import SingleSlider from '../../../../../components/SingleSlider';
+import { Slider } from 'antd';
 
 const DatingDistance = (props) => {
     const { getLatestField, updateDataByKey } = useContext(DatingContext);
@@ -16,7 +17,7 @@ const DatingDistance = (props) => {
 
     const handleToggle = (val) => updateDataByKey('distanceIsDealBreaker', val);
 
-    const handleMaxChange = (val) => updateDataByKey('distanceMax', val);
+    const handleMaxChange = (val) => updateDataByKey('distanceMax', val)
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">
@@ -24,15 +25,15 @@ const DatingDistance = (props) => {
             <div className="w-4/5">
                 <div className="inline items-end">
                     <div className="pt-4 pb-2 pr-4">
-                        <Typography.H2 alignment="left">Maximum Distance</Typography.H2>
+                        <Typography.H2 alignment="left">Maximum Distance (mi)</Typography.H2>
                     </div>
                     <div className="mt-10 w-full min-w-2/3vw">
-                        <SingleSlider
-                            upper={distanceMax}
+                        <Slider
+                            defaultValue={distanceMax}
                             max={100}
                             min={0}
-                            handleMaxChange={handleMaxChange}
-                            unit="mi"
+                            onAfterChange={handleMaxChange}
+                            tooltipVisible
                         />
                     </div>
                     <div className="inline-flex flex-wrap items-end pt-16">

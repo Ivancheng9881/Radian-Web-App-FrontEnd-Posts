@@ -5,6 +5,7 @@ import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import ProfileContext from "../../../utils/profile/context/profile.context";
 import Web3Context from "../../../utils/web3/context/web3.context";
+import { Button } from "antd";
 
 function PersonalProfile() {
     const history = useHistory();
@@ -57,20 +58,25 @@ function PersonalProfile() {
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
                         bottom-24 opacity-80 text-center`}>
                             { ! web3Context.providers[web3Context.providers.selected] ?
-                            <RoundedButton
+                            <Button
+                                type='primary'
                                 onClick={connectWallet}>
                                 <span className='m-auto'>Connect Wallet</span>
-                            </RoundedButton>
+                            </Button>
                             :
                             <div>
-                                <RoundedButton 
+                                <Button 
+                                    type='primary'
                                     onClick={createProfile}>
                                     <span className='m-auto'>Create Profile Now</span>
-                                </RoundedButton>
+                                </Button>
                                 <div className='pt-2'></div>
-                                <RoundedButton disabled={true}>
+                                <Button
+                                    type='primary' 
+                                    disabled={true}
+                                >
                                     <span className='m-auto'>Attach to Existing Profile (Coming Soon)</span>
-                                </RoundedButton>
+                                </Button>
                             </div>}
                         </span>
 

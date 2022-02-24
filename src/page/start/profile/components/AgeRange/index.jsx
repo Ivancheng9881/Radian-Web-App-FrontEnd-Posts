@@ -2,7 +2,7 @@ import Typography from '../../../../../components/Typography';
 import { useContext } from 'react';
 import DatingContext from '../../../context/datingApp/dating.context';
 import Toggler from '../../../../../components/Toggler';
-import DoubleSlider from '../../../../../components/DoubleSlider';
+import { Slider } from 'antd';
 
 const DatingAgeRange = (props) => {
     const { getLatestField, updateDataByKey } = useContext(DatingContext);
@@ -17,10 +17,10 @@ const DatingAgeRange = (props) => {
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
     const handleToggle = (val) => updateDataByKey('ageRangeIsDealBreaker', val);
-
-    const handleMinChange = (val) => updateDataByKey('ageRangeMin', Math.max(val, 16));
-
-    const handleMaxChange = (val) => updateDataByKey('ageRangeMax', val);
+    const handleAfterChange = (e) => {
+        updateDataByKey('ageRangeMax', e[1]);
+        updateDataByKey('ageRangeMin', e[0])
+    }
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">
@@ -31,13 +31,14 @@ const DatingAgeRange = (props) => {
                         <Typography.H2 alignment="left">Age Range</Typography.H2>
                     </div>
                     <div className="mt-10 w-full min-w-2/3vw">
-                        <DoubleSlider
-                            upper={ageRangeMax}
-                            lower={ageRangeMin}
+                        <Slider 
+                            min={18}
                             max={100}
-                            min={0}
-                            handleMinChange={handleMinChange}
-                            handleMaxChange={handleMaxChange}
+                            defaultValue={[ageRangeMin,ageRangeMax]}
+                            onAfterChange={handleAfterChange}
+                            step={1}
+                            range
+                            tooltipVisible
                         />
                     </div>
                     <div className="inline-flex flex-wrap items-end pt-16">
