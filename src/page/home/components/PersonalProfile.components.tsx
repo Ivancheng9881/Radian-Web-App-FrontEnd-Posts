@@ -6,20 +6,19 @@ import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import ProfileContext from "../../../utils/profile/context/profile.context";
 import Web3Context from "../../../utils/web3/context/web3.context";
 import { Button } from "antd";
+import { ProfileContextInterface } from "../../../schema/profile/profile.interface";
+import { FixLater } from "../../../schema/helper.interface";
 
 function PersonalProfile() {
     const history = useHistory();
-    const profile = useContext(ProfileContext).profile; // load profile info from provider
-    const web3Context = useContext(Web3Context);
+    const {profile}: ProfileContextInterface = useContext(ProfileContext); // load profile info from provider
+    const web3Context: FixLater = useContext(Web3Context);
 
-    console.log("profile");
-    console.log(profile);
-
-    const connectWallet = () => {
+    const connectWallet = (): void => {
         history.push(startRoute);
     }
 
-    const createProfile = () => {
+    const createProfile = (): void => {
         history.push(createProfileRoute);
     }
     
@@ -57,7 +56,7 @@ function PersonalProfile() {
                         </span>
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
                         bottom-24 opacity-80 text-center`}>
-                            { ! web3Context.providers[web3Context.providers.selected] ?
+                            { ! web3Context.providers[web3Context.providers?.selected] ?
                             <Button
                                 type='primary'
                                 onClick={connectWallet}>
