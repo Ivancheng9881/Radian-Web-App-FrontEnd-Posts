@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
+import { profileRoute } from '../../../commons/route';
 
 function ProfileFrame(props) {
     let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
     const [ fullProfile, setFullProfile ] = useState(null);
+    const history = useHistory();
 
     useEffect(
         () => {
@@ -14,12 +17,17 @@ function ProfileFrame(props) {
 
     const fetchProfile = async () => {
         let p = await ipfsUtils.getContentJson(props.profile.identityID);
-        console.log(p);
         if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
             p.profilePictureCid = defaultProfilePictureId;
         }
         setFullProfile(p);
     };
+
+    
+    // to update profile
+    const updateProfile = ()=>{
+        history.push({pathname: `${profileRoute}/${props.profile.network}/${props.profile?.profileID}`});
+    }
 
     return (
         <div className="">
@@ -44,7 +52,7 @@ function ProfileFrame(props) {
                             className={`absolute w-fit text-theme-white 
                         pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg right-0 top-0 opacity-80`}
                         >
-                            {props.profile.network =="erc" ? 
+                            {props.profile.network =="ERC" ? 
                                 <img
                                 className="m-auto"
                                 src="/logos/polygonRounded.png"
@@ -60,6 +68,15 @@ function ProfileFrame(props) {
                                 />
                             }
                         </span>
+
+                        <span
+                            className={`absolute w-fit text-theme-white
+                        pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg right-0 bottom-0 opacity-80` } 
+                        onClick={updateProfile}
+                        >
+                        <img src="/icons/right_arrow.svg" width="30px" height="30px" alt="right_arrow" />
+                        </span>
+
                     </div>
                 </div>
             )}

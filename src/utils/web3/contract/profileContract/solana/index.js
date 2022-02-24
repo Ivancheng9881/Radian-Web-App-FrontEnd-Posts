@@ -56,7 +56,9 @@ export async function getProfileFromIDSolana(profileID, provider){
     try {
         let profile = await program.account.profile.fetch(profilePDA);
         console.log("Sol Pro", profile);
-        return decodeProfileData(profile);
+        let profileData = decodeProfileData(profile);
+        profileData['profileID'] = profileID;
+        return profileData;
     } catch {
         return undefined;
     }
@@ -102,7 +104,7 @@ function decodeContentID(cidArray) {
 
 function decodeProfileData(profileData) {
     profileData.addressNumber = profileData.addressNumber.toNumber();
-    profileData.identityId = decodeContentID(profileData.identityId);
+    profileData.identityID = decodeContentID(profileData.identityId);
     return profileData;
 }
 

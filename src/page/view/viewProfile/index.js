@@ -45,7 +45,7 @@ export default function ViewProfilePage(props) {
             const provider = new Provider(connection, wallet, "processed");
             getFullProfileFromIDSolana(params.pid, provider).then((result)=>{
                 // get data from IPFS
-                ipfsUtils.getContentJson(result?.identityId).then((profile_result)=>{
+                ipfsUtils.getContentJson(result?.identityID).then((profile_result)=>{
                     // TODO separate addresses into address and external address
                     profile_result.addresses = result.addresses;
                     console.log("profile result sol",profile_result);

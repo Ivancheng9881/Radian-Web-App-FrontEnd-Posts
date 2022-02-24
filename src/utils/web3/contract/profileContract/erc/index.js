@@ -35,6 +35,7 @@ async function initGaslessProfileContract() {
 async function getProfilesFromSubgraph(skip, limit) {
     let query = `query Profile($skip: Int!, $limit: Int!) {
                 profiles(skip: $skip, first: $limit) {
+                    profileID
                     identityID
                     verifyID
                 }
@@ -123,7 +124,7 @@ export async function getProfileListErc(skip, limit) {
     if ( subgraphEnabled ){ // run if subgraph is available
         let profiles = await getProfilesFromSubgraph(skip, limit);
         profiles.map((p) => {
-            p['network'] = "erc";
+            p['network'] = "ERC";
             profileList.push(p);
         })
     } else { // directly read from contract
@@ -141,7 +142,7 @@ export async function getProfileListErc(skip, limit) {
 
         profiles.map((p) => {
             if (!profileList.includes(p[0])) {
-                p['network'] = "erc";
+                p['network'] = "ERC";
                 profileList.push(p)
             }
         })
@@ -179,8 +180,8 @@ export async function getProfileErc(address = undefined) {
 }
 
 // write requests
-export async function createProfileErc(identityId, useGasStation) {
-    console.log('createProfileErc', identityId, useGasStation)
+export async function createProfileErc(identityID, useGasStation) {
+    console.log('createProfileErc', identityID, useGasStation)
 
     let currentProfile = await getProfileErc();
     console.log("Current Profile", currentProfile);
@@ -189,9 +190,9 @@ export async function createProfileErc(identityId, useGasStation) {
     let txn;
     if (currentProfile) {
         // perform update
-        txn = await contract.updateProfile(identityId)
+        txn = await contract.updateProfile(identityID)
     } else {
-        txn = await contract.createProfile(identityId)
+        txn = await contract.createProfile(identityID)
     }
     return txn
 };

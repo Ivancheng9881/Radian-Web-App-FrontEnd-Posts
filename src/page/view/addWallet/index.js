@@ -9,10 +9,12 @@ import DoubleCollumTextfield from '../../../components/DoubleCollumTextfield';
 export default function AddWalletPage(props) {
     
     const { getLatestField, updatedData, updateDataByKey } = useContext(ProfileContext);
-    const {  providers } = useContext(Web3Context);
+    const {  providers, connect } = useContext(Web3Context);
     let [ selected, setSelected ] = useState(null);
     let [ selectedWallet, setSelectedWallet ] = useState(null);
     let [ reveal, setReveal ] = useState(false);
+    let [ showWalletDropdown, setShowWalletDropdown ] = useState(false);
+    let [ connectingWallet, setConnectingWallet ] = useState(null);
 
     // get provider
     useEffect(()=>{
@@ -30,10 +32,24 @@ export default function AddWalletPage(props) {
         
     }, [providers]);
 
-    const toggleReveal = () => {setReveal((prevState)=>{!prevState})};
+    const toggleReveal = () => {setReveal((prevState)=>{ return !prevState})};
+    const toggleDropdown = () => {setShowWalletDropdown((prevState)=>{ return !prevState})};
+
+    const connectMetamask = async () => { 
+        const result = await connect("erc");
+        console.log("erc", result);
+        setConnectingWallet(result[0]);
+
+     }
+
+    const connectSolana = async () => { 
+        const result = await connect("solana");
+        console.log("solana", result);
+        setConnectingWallet(result.toBase58());
+    }
 
     return (
-        <div className="pt-64 pb-72 px-10 w-full overflow-hidden bg-theme-bg-dark scroll">
+        <div className="pt-64 pb-72 px-10 w-full overflow-hidden bg-theme-bg-dark scroll text-theme-white">
             {/*  Select-none disable text selection, else will get randomly highlighted text */}
             <div className="m-auto w-3/5 select-none">
                 <div className='w-full overflow-hidden break-words '>
@@ -49,17 +65,37 @@ export default function AddWalletPage(props) {
                     <DoubleCollumTextfield title={"Chain"} content={"Address"}/>
                     <DoubleCollumTextfield title={selected} content={selectedWallet}/>
 
-                    <div className="text-theme-white text-2xl pt-10">
+                    {! reveal && <div className="text-2xl pt-10">
                         <div className="relative inline-flex align-center w-auto pb-2">
                             <RoundedButton
                                 onClick={toggleReveal}>
                                 Add Wallet
                             </RoundedButton>
                         </div>
-                    </div>
-
+                    </div>}
+                    
                     { reveal &&
-                        <DoubleCollumTextfield title={"Chain"} content={"Address"}/>
+                        <div>
+                            <div className='mt-16'>Connect new wallet</div>
+                            <div className="relative w-2/3 mt-4">
+                                <div className="fixed absolute left-0 top-0 text-theme-white text-left">
+                                    <div className='flex'>
+                                        <label class="btn pr-24" onClick={toggleDropdown}>Chain</label>
+                                        <img src="/icons/arrowDown2.svg" width="10px" height="10px" alt="arrowDown2" />
+                                    </div>
+                                    { showWalletDropdown && 
+                                    <ul class="mt-2 shadow bg-base-100 rounded-box w-52">
+                                        <li className='mt-6 pb-1 w-2/3 border-b border-theme-white' onClick={connectMetamask}><a>Metamask</a></li>
+                                        <li className='mt-3 pb-1 w-2/3 border-b border-theme-white' onClick={connectSolana}><a>Phantom</a></li>
+                                    </ul>}
+                                </div>
+                                
+                                <div className="fixed absolute left-48 top-0 text-theme-white text-center">
+                                    {connectingWallet ? connectingWallet : "Address"}
+                                </div>
+                                <div className="border-b pt-8 border-theme-white"/>
+                            </div>  
+                        </div>
                     }
                 </div>}
             </div>
