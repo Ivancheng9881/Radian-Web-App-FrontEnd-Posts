@@ -19,60 +19,92 @@ const Navbar = (props) => {
     const web3Context = useContext(Web3Context);
     const history = useHistory();
     const [ itemState, setItemState ] = useState([]);
+    const [ selectedProvider, setSelectedProvider ] = useState('');
+    const [ address, setAddress ] = useState({})
 
     const profileContext = useContext(ProfileContext);
     
     const ref = useRef();
-    const close = () => ref.current.close();    
+    const close = () => ref.current.close();  
+    
+    const erc = 'metamask@erc';
+    const sol = 'phantom@solana';
 
-    const getElement = (providerType, click=true)=>{
+    // const getElement = (providerType, click=true)=>{
 
-        if (providerType === "metamask@erc"){
-            return web3Context.providers[providerType]?
-                <RoundedButton
-                    onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
-                    {"ERC: " + truncateAddress(web3Context.providers[providerType])}
-                </RoundedButton> :
-                <RoundedButton 
-                    onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
-                        <MetamaskIcon height={60} width={120}/>
-                </RoundedButton>
-        } else if  (providerType === "phantom@solana") {
-            return web3Context.providers[providerType]?
-                <RoundedButton 
-                    onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
-                    {"SOL: " + truncateAddress(web3Context.providers[providerType].toBase58(), 8)}
-                </RoundedButton> :
-                <RoundedButton 
-                    onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
-                    <PhantomIcon height={60} width={120}/>
-                </RoundedButton>
-        } else {
-            return  <RoundedButton
-                        onClick={()=>{}}>
-                        <div>
-                            Connect Wallet
-                        </div>
-                    </RoundedButton>
+    //     if (providerType === "metamask@erc"){
+    //         return web3Context.providers[providerType]?
+    //             <RoundedButton
+    //                 onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
+    //                 {"ERC: " + truncateAddress(web3Context.providers[providerType])}
+    //             </RoundedButton> :
+    //             <RoundedButton 
+    //                 onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
+    //                     <MetamaskIcon height={60} width={120}/>
+    //             </RoundedButton>
+    //     } else if  (providerType === "phantom@solana") {
+    //         return web3Context.providers[providerType]?
+    //             <RoundedButton 
+    //                 onClick={() => {return click ? switchWalletPriority(providerType) : null}}>
+    //                 {"SOL: " + truncateAddress(web3Context.providers[providerType].toBase58(), 8)}
+    //             </RoundedButton> :
+    //             <RoundedButton 
+    //                 onClick={()=>{return click ? switchWalletPriority(providerType) : null}}>
+                    
+    //             </RoundedButton>
+    //     } else {
+    //         return  <RoundedButton
+    //                     onClick={()=>{}}>
+    //                     <div>
+    //                         Connect Wallet
+    //                     </div>
+    //                 </RoundedButton>
+    //     }
+    // };
+
+    const dropdownEl = [
+        { 
+            label: <span style={{display: 'flex', alignItems: 'center'}}><PhantomIcon height={20} width={80}/>{"SOL: " + address[erc]}</span> , 
+            value: 'metamask@erc'
+        },
+        { 
+            label: <span style={{display: 'flex', alignItems: 'center'}}><MetamaskIcon height={20} width={80}/>{"ERC: " + address[sol]}</span> , 
+            value: 'phantom@solana'
+        },
+        {
+            label: <span style={{display: 'flex'}}>Connect Wallet</span>,
+            value: 'ConnectWallet'   
         }
-    }
+    ]
 
     useEffect(() => {
         preloadWalletIcon()
             .then(console.log)
             .catch(console.error)
     }, [])
-    
 
     useEffect(()=>{
-        const newItemState = [ getElement(web3Context.providers.selected, false) ];
-        const keys = Object.keys(web3Context.providers);
-        for ( let k = 0 ; k < keys.length ; k++ ) {
-            if (keys[k] !== web3Context.providers.selected && keys[k] !== "selected" ) {
-                newItemState.push(getElement(keys[k]));
+        let addr = {};
+        Object.keys(web3Context.providers).map((p, idx) => {
+            let a = '';
+            if (!web3Context.providers[p]) {}
+            else if (p == erc) {
+                a = truncateAddress(web3Context.providers[p]);
+            } 
+            else if (p == sol) {
+                a = truncateAddress(web3Context.providers[p].toBase58(), 8)
             }
-        }
-        setItemState(newItemState);
+            addr[p] = a;
+        });
+        setAddress(addr);
+        // const newItemState = [ getElement(web3Context.providers.selected, false) ];
+        // const keys = Object.keys(web3Context.providers);
+        // for ( let k = 0 ; k < keys.length ; k++ ) {
+        //     if (keys[k] !== web3Context.providers.selected && keys[k] !== "selected" ) {
+        //         newItemState.push(getElement(keys[k]));
+        //     }
+        // }
+        // setItemState(newItemState);
     },[web3Context.providers]);
 
     const switchWalletPriority = async (walletType) => {
@@ -91,6 +123,10 @@ const Navbar = (props) => {
         close();
     }
 
+    const handleChange = (val) => {
+        setSelectedProvider(val)
+    }
+
     return (
         <Layout.Header
             style={{ position: 'fixed', zIndex: 1, width: '100%' }}
@@ -104,9 +140,8 @@ const Navbar = (props) => {
                 </a>
 
                 {/* Wallet address on Navbar */}
-                {(window.ethereum || window.solana) &&
-                <div className={`absolute top-4 pr-2 ${ profileContext.profile?.identityID === "" ? 'right-14' : 'right-24'}`}>
-                    <Popup
+                <div className={`absolute pr-2 right-24`}>
+                    {/* <Popup
                         trigger={<button>
                                     {itemState[0]}                                     
                                 </button>} 
@@ -125,9 +160,20 @@ const Navbar = (props) => {
                                 }
                             )} 
                         </div>
-                    </Popup>
+                    </Popup> */}
+                    <Select size='large' defaultValue={selectedProvider} style={{width: 300}} value={selectedProvider} onChange={handleChange}>
+                        {
+                            dropdownEl.map((b,i) => {
+                                console.log(b,i)
+                                return (
+                                    <Select.Option key={b.value} value={b.value} style={{display: 'flex'}} >
+                                        {b.label}
+                                    </Select.Option>
+                                )
+                            })
+                        }
+                    </Select>
                 </div>
-                }
 
                 {profileContext.profile?.identityID &&
                 <div className="absolute top-4 right-14 w-10 h-10 cursor-pointer rounded-full"
