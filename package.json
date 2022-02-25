@@ -17,6 +17,7 @@
     "antd": "^4.18.8",
     "apollo-fetch": "^0.7.0",
     "axios": "^0.24.0",
+    "craco-less": "^2.0.0",
     "ethers": "^5.5.3",
     "ipfs-core": "^0.13.0",
     "ipfs-http-client": "^55.0.0",

@@ -1,8 +1,7 @@
-import Typography from '../../../../../components/Typography';
-import TextField from '../../../../../components/Textfield';
 import { useContext, useState } from 'react';
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
-import { Input } from 'antd';
+import { Col, Grid, Input, Row, Space, Typography } from 'antd';
+import CustomTypography from '../../../../../components/Typography';
 
 const ProfileLocation = (props) => {
 
@@ -12,22 +11,26 @@ const ProfileLocation = (props) => {
 
     return (
         <div id="RD-CreateProfile-location" className="RD-CreateProfileComponents">
-            <Typography.Featured alignment="left">Basic Info</Typography.Featured>
-            <div className="pt-4 pb-2">
-                <Typography.H2 alignment="left">Your Location</Typography.H2>
-            </div>
-            <div className="mt-10">
-                <div className="w-2/3 mr-5">
-                    <Input
-                        size='large'
-                        type="text"
-                        name="location"
-                        placeholder="location"
-                        value={location}
-                        onChange={updateData}
-                    />
-                </div>
-            </div>
+            <Row>
+                <Col span={24}>
+                    <Space direction='vertical' style={{width: '100%'}}>
+                        <CustomTypography.Featured alignment="left">Basic Info</CustomTypography.Featured>
+                        <Typography.Title level={1} alignment="left">Your Location</Typography.Title>
+                        <Row gutter={12}>
+                            <Col span={12}>
+                                <Input
+                                    size='large'
+                                    name="radianFirstName"
+                                    type="text"
+                                    placeholder="Location"
+                                    value={location}
+                                    onChange={updateData}
+                                />
+                            </Col>
+                        </Row>
+                    </Space>
+                </Col>
+            </Row>
             {/* {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''} */}
         </div>
     );

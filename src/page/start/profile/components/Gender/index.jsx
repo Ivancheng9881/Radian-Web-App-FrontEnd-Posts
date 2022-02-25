@@ -1,7 +1,8 @@
-import Typography from '../../../../../components/Typography';
+import CustomTypography from '../../../../../components/Typography';
 import { useContext } from 'react';
 import Toggler from '../../../../../components/Toggler';
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import { Col, Grid, Input, Row, Space, Typography } from 'antd';
 
 const ProfileGender = (props) => {
 
@@ -23,19 +24,19 @@ const ProfileGender = (props) => {
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">
-            <Typography.Featured alignment="left">Dating Preference</Typography.Featured>
-            <div className="w-4/5">
-                <div className="inline-flex items-end flex-wrap mb-4">
-                    <div className="pt-4 pb-2 pr-4">
-                        <Typography.H2 alignment="left">You defined yourself as</Typography.H2>
-                    </div>
-                    <div className="mt-10 inline-flex items-end">
-                        <div className="mr-5">
-                            <Toggler value={gender} opts={genderOpts} handleToggle={toggleGender} />
+            <Row>
+                <Col span={24}>
+                    <Space direction='vertical' style={{width: '100%'}}>
+                        <CustomTypography.Featured alignment="left">Dating Preference</CustomTypography.Featured>
+                        <Typography.Title level={1} alignment="left">You defined yourself as</Typography.Title>
+                        <div className="mt-10 inline-flex items-end">
+                            <div className="mr-5">
+                                <Toggler value={gender} opts={genderOpts} handleToggle={toggleGender} />
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </Space>
+                </Col>
+            </Row>
         </div>
     );
 };

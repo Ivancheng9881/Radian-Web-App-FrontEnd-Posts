@@ -4,7 +4,7 @@ import Navbar from '../Navbar'
 const DefaultLayout = (props) => {
   return (
     <div
-      className='bg-theme-bg-dark min-h-screen w-full'
+      // className='bg-theme-bg-dark min-h-screen w-full'
     >
       <Layout>
         <Navbar />

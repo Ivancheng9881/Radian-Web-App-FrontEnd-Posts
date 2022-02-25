@@ -14,6 +14,7 @@ import { hasPersonalProfileErc } from '../../../../utils/web3/contract/profileCo
 import { getProfileSolana } from '../../../../utils/web3/contract/profileContract/solana';
 import RoundedButton from '../../../../components/Button/Rounded.components';
 import Popup from 'reactjs-popup';
+import { Select, Typography } from 'antd';
 
 const SelectWallet = (props) => {
     const history = useHistory();
@@ -48,10 +49,7 @@ const SelectWallet = (props) => {
         let pubKey;
         let profile;
         let prevState = selectedWallet;
-
-        close();
-        setItemState(value == 'phantom' ? [buttons['phantom'], buttons['metamask']] : [buttons['metamask'], buttons['phantom']]);
-
+        setItemState(value);
         setSelectedWallet(value);
 
         if (value === 'phantom') {
@@ -65,7 +63,6 @@ const SelectWallet = (props) => {
             profile = await hasPersonalProfileErc(pubKey[0]);
             console.log('window connect Metamask', pubKey);
         }
-        // const pubKey = await web3Cbontext.connect();
         if (pubKey) {
             if (profile) {
                 history.goBack();                
@@ -77,7 +74,23 @@ const SelectWallet = (props) => {
 
     return (
         <div className=" mt-10 text-center pl-2">
-            <Popup
+            <Select 
+                onChange={handleChange} 
+                defaultValue={itemState} 
+                style={{width: 300}} 
+                size='large'
+            >
+                <Select.Option key='connect-wallet' value={'default'}>
+                    <Typography>Connect Wallet</Typography>
+                </Select.Option>
+                <Select.Option key='phantom' value='phantom'>
+                    <PhantomIcon height={35} width={'auto'}/>
+                </Select.Option>
+                <Select.Option key='metamask' value='metamask'>
+                    <MetamaskIcon height={35} width={'auto'}/>
+                </Select.Option>
+            </Select>
+            {/* <Popup
                 trigger={<button> 
                             {itemState[0]}
                         </button>} 
@@ -96,7 +109,7 @@ const SelectWallet = (props) => {
                         }
                     )}                    
                 </div>
-            </Popup>
+            </Popup> */}
 
         </div>
     );

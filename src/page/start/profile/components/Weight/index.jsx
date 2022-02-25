@@ -1,9 +1,8 @@
-import Typography from '../../../../../components/Typography';
-import TextField from '../../../../../components/Textfield';
 import { useContext } from 'react';
 import Toggler from '../../../../../components/Toggler';
 import DatingContext from '../../../context/datingApp/dating.context';
-import { Input } from 'antd';
+import { Col, Grid, Input, Row, Space, Typography } from 'antd';
+import CustomTypography from '../../../../../components/Typography';
 
 const ProfileWeight = (props) => {
 
@@ -29,25 +28,33 @@ const ProfileWeight = (props) => {
 
     return (
         <div id="RD-CreateProfile-weight" className="RD-CreateProfileComponents">
-            <Typography.Featured alignment="left">Basic Info</Typography.Featured>
-            <div className="pt-4 pb-2">
-                <Typography.H2 alignment="left">Weight</Typography.H2>
-            </div>
-            <div className="mt-10 inline-flex items-end flex-wrap">
-                <div className="w-48 mr-5">
-                    <Input
-                        size='large'
-                        type="number"
-                        name="weight"
-                        placeholder={weightUnit.toUpperCase()}
-                        value={weight}
-                        onChange={(e) => updateData(e, 'number')}
-                    />
-                </div>
-                <div className="mr-5 mt-3 z-10">
-                    <Toggler value={weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
-                </div>
-            </div>
+            <Row>
+                <Col span={24}>
+                    <Space direction='vertical' style={{width: '100%'}}>
+                        <CustomTypography.Featured alignment="left">Basic Info</CustomTypography.Featured>
+                        <Typography.Title level={1} alignment="left">Weight</Typography.Title>
+                        <Row gutter={12}>
+                            <Col span={6}>
+                                <Input
+                                    size='large'
+                                    type="number"
+                                    name="weight"
+                                    placeholder={weightUnit.toUpperCase()}
+                                    value={weight}
+                                    onChange={(e) => updateData(e, 'number')}
+                                />
+                            </Col>
+                            <Col span={12}>
+                                <div className="inline-flex items-end">
+                                    <div className="mr-5">
+                                    <Toggler value={weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Space>
+                </Col>
+            </Row>
             {/* {datingInfo.error ? <p className="text-theme-danger">{datingInfo.error}</p> : ''} */}
         </div>
     );

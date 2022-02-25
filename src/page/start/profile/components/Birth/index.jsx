@@ -1,11 +1,11 @@
-import Typography from '../../../../../components/Typography';
+import CustomTypepography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext } from 'react';
 import CreateProfileContext from '../../../context/profile/profile.context';
 import Validator from '../../../../../utils/validation';
 
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
-import { Input } from 'antd';
+import { Col, Grid, Input, Row, Space, Typography } from 'antd';
 
 const ProfileBirth = (props) => {
     const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
@@ -41,7 +41,48 @@ const ProfileBirth = (props) => {
 
     return (
         <div id="RD-CreateProfile-dob" className="RD-CreateProfileComponents">
-            <Typography.Featured alignment="left">Basic Info</Typography.Featured>
+            <Row>
+                <Col span={24}>
+                    <Space direction='vertical' style={{width: '100%'}}>
+                        <CustomTypepography.Featured alignment="left">Basic Info</CustomTypepography.Featured>
+                        <Typography.Title level={1} alignment="left">Birthday is on the</Typography.Title>
+                        <Row gutter={12}>
+                            <Col span={8}>
+                                <Input
+                                    size='large'
+                                    type="day"
+                                    name="day"
+                                    placeholder="DD"
+                                    value={day}
+                                    onChange={handleDayUpdate}
+                                />
+                            </Col>
+                            <Col span={8}>
+                                <Input
+                                    size='large'
+                                    type="number"
+                                    name="month"
+                                    placeholder="MM"
+                                    value={month}
+                                    onChange={handleMonthUpdate}
+                                />
+                            </Col>
+                            <Col span={8}>
+                                <Input
+                                    size='large'
+                                    type="number"
+                                    name="year"
+                                    placeholder="YYYY"
+                                    value={year}
+                                    onChange={handleYearUpdate}
+                                />
+                            </Col>
+                        </Row>
+                    </Space>
+                </Col>
+            </Row>
+
+            {/* <Typography.Featured alignment="left">Basic Info</Typography.Featured>
             <div className="pt-4 pb-2">
                 <Typography.H2 alignment="left">Birthday is on the</Typography.H2>
             </div>
@@ -79,7 +120,7 @@ const ProfileBirth = (props) => {
                         onChange={handleYearUpdate}
                     />
                 </div>
-            </div>
+            </div> */}
             {/* {updatedData?.error ? <p className="text-theme-danger">{updatedData?.error}</p> : ''} */}
             <p className="mt-2 font-semi text-theme-lightGray">
                 e.g. If your birthday is 1 October 2000, the input format will be 01/10/2000 (DD MM YYYY).

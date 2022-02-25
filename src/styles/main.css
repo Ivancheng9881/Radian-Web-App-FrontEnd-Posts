@@ -14,10 +14,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-input[type=number].RD-dob{
-    width: 165px;
-}
-
 input[type=text].RD-Autocomplete-disabler{
     background-color: transparent;
 }

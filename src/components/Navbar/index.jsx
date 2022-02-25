@@ -64,11 +64,17 @@ const Navbar = (props) => {
 
     const dropdownEl = [
         { 
-            label: <span style={{display: 'flex', alignItems: 'center'}}><PhantomIcon height={20} width={80}/>{"SOL: " + address[erc]}</span> , 
+            label: <span style={{display: 'flex', alignItems: 'center'}}>
+                <PhantomIcon height={35} width={'auto'}/>
+                {"SOL: " + address[sol]}
+            </span> , 
             value: 'metamask@erc'
         },
         { 
-            label: <span style={{display: 'flex', alignItems: 'center'}}><MetamaskIcon height={20} width={80}/>{"ERC: " + address[sol]}</span> , 
+            label: <span style={{display: 'flex', alignItems: 'center'}}>
+                <MetamaskIcon height={35} width={'auto'}/>
+                {"ERC: " + address[erc]}
+            </span> , 
             value: 'phantom@solana'
         },
         {

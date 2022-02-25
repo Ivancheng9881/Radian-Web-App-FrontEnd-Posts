@@ -1,8 +1,8 @@
-import Typography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext} from 'react';
 import ProfileContext from '../../../../../utils/profile/context/profile.context';
-import { Input } from 'antd';
+import { Col, Grid, Input, Row, Space, Typography } from 'antd';
+import CustomTypography from '../../../../../components/Typography';
 
 const ProfileName = (props) => {
 
@@ -26,36 +26,36 @@ const ProfileName = (props) => {
     
     return (
         <div id="RD-CreateProfile-name">
-            <div className='w-full overflow-hidden break-words '>
-                <Typography.Featured alignment="left">Create your RADIAN passport</Typography.Featured>
-                <div className="pt-4 pb-2">
-                    <Typography.H2 alignment="left">My name is</Typography.H2>
-                </div>
-            </div>
-
-            <div className="mt-10 flex flex-wrap">
-                <div className="max-w-sm w-2/3 mr-5 mb-10">
-                    <Input
-                        size='large'
-                        name="radianFirstName"
-                        type="text"
-                        placeholder="First Name"
-                        value={firstName}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="max-w-sm w-2/3 mr-5">
-                    <Input
-                        size='large'
-                        name="radianLastName"
-                        type="text"
-                        placeholder="Last Name"
-                        value={lastNameDefault}
-                        onChange={handleChange}
-                    />
-                </div>
-            </div>
-
+            <Row>
+                <Col span={24}>
+                    <Space direction='vertical' style={{width: '100%'}}>
+                        <CustomTypography.Featured alignment="left">Create your RADIAN passport</CustomTypography.Featured>
+                        <Typography.Title level={1} alignment="left">My name is</Typography.Title>
+                        <Row gutter={12}>
+                            <Col span={12}>
+                                <Input
+                                    size='large'
+                                    name="radianFirstName"
+                                    type="text"
+                                    placeholder="First Name"
+                                    value={firstName}
+                                    onChange={handleChange}
+                                />
+                            </Col>
+                            <Col span={12}>
+                                <Input
+                                    size='large'
+                                    name="radianLastName"
+                                    type="text"
+                                    placeholder="Last Name"
+                                    value={lastNameDefault}
+                                    onChange={handleChange}
+                                />
+                            </Col>
+                        </Row>
+                    </Space>
+                </Col>
+            </Row>
             {/* {updatedData.error ? <p className="text-theme-danger">{updatedData.error}</p> : ''} */}
         </div>
     );
