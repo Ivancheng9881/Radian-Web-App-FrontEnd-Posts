@@ -1,10 +1,14 @@
 import { Card } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
+import { profileRoute } from '../../../commons/route';
+import { profileRouteBuilder } from '../../../utils/profile/routing.utils';
 
 function ProfileFrame(props) {
     let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
     const [ fullProfile, setFullProfile ] = useState(null);
+    const history = useHistory();
 
     useEffect(
         () => {
@@ -15,12 +19,18 @@ function ProfileFrame(props) {
 
     const fetchProfile = async () => {
         let p = await ipfsUtils.getContentJson(props.profile.identityID);
-        console.log(p);
         if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
             p.profilePictureCid = defaultProfilePictureId;
         }
         setFullProfile(p);
     };
+
+    
+    // to update profile
+    const handleOpenProfile = ()=>{
+        let pathname = profileRouteBuilder(props.profile.network, props.profile?.profileID);
+        history.push({pathname: pathname});
+    }
 
     return (
         <div className="">
@@ -34,6 +44,7 @@ function ProfileFrame(props) {
                                 alt={fullProfile.firstName}
                             />
                         }
+                        onClick={handleOpenProfile}
                         style={{
                             width: 300,
                             height: 200,

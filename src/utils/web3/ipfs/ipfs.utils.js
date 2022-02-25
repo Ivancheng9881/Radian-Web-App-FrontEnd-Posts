@@ -9,11 +9,11 @@ async function initIpfs() {
 
 async function uploadContent(content) {
     const ipfs = await initIpfs();
-    console.log('Init upload content!', ipfs)
+    // console.log('Init upload content!', ipfs)
     try {
         if (content !== undefined) {
             const { cid } = await ipfs.add(content, { "pin": true });
-            console.log('cid added', cid);
+            // console.log('cid added', cid);
             return cid;
         }
     } catch (err) {
@@ -32,7 +32,7 @@ async function getContentJson(cid) {
     try {
         if (cid !== undefined) {
             let resp = await axios.get(getContentUrl(cid));
-            console.log('axios-get-contentUrl', resp)
+            // console.log('axios-get-contentUrl', resp)
             return resp.data;
         }
 

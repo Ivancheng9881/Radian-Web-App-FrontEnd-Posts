@@ -35,6 +35,7 @@ async function initGaslessProfileContract() {
 async function getProfilesFromSubgraph(skip, limit) {
     let query = `query Profile($skip: Int!, $limit: Int!) {
                 profiles(skip: $skip, first: $limit) {
+                    profileID
                     identityID
                     verifyID
                 }
@@ -53,11 +54,37 @@ async function getProfileListCountFromSubgraph() {
     return count
 }
 
+export async function getProfileFromIDSubgraph(pid) {
+    
+    let query = `query Profile($profileID: BigInt!) {
+                profiles(first: 1, where: {profileID: $profileID}) {
+                    identityID
+                    addresses {
+                        address
+                    }
+                    externalAddresses {
+                        externalAddress
+                    }
+            }
+        }`;
+    let params = {profileID: pid};
+    let result;
+    try {
+        result = await fetchDataFromSubgraph(subgraphUrl, query, params);
+        let profile = result.data.profiles[0];
+        return profile;
+    } catch (e) {
+        console.log(e);
+        return undefined;
+    }
+}
+
 async function getProfileFromAddressSubgraph(address) {
     
     let query = `query Addresses($address: String!) {
             addresses(first: 5, where: {address: $address}) {
             profile {
+                profileID
                 identityID
                 verifyID
             }
@@ -98,7 +125,7 @@ export async function getProfileListErc(skip, limit) {
     if ( subgraphEnabled ){ // run if subgraph is available
         let profiles = await getProfilesFromSubgraph(skip, limit);
         profiles.map((p) => {
-            p['network'] = "erc";
+            p['network'] = "ERC";
             profileList.push(p);
         })
     } else { // directly read from contract
@@ -116,7 +143,7 @@ export async function getProfileListErc(skip, limit) {
 
         profiles.map((p) => {
             if (!profileList.includes(p[0])) {
-                p['network'] = "erc";
+                p['network'] = "ERC";
                 profileList.push(p)
             }
         })
@@ -134,18 +161,17 @@ export async function getProfileErc(address = undefined) {
         if (!address) {
             address = await ERCUtils.getAddress();
         }
-        console.log('getProfileErc Address:',address)
-        let profileFromAddress;
-        if ( subgraphEnabled ) {
-            profileFromAddress = await getProfileFromAddressSubgraph(address);
-        } else {
-            let contract = await initProfileContract();
-            if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
-                profileFromAddress = await contract.getProfilefromAddress(address);
-                console.log('get profile result:');
-            }
+        console.log('getProfileErc Address:',address);
+        if ( subgraphEnabled && false ) return getProfileFromAddressSubgraph(address);
+
+        let contract = await initProfileContract();
+        if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
+            let _profile = await contract.getProfilefromAddressV2(address);
+            return {
+                ..._profile[1],
+                profileID: _profile[0].toString()
+            };
         }
-        return profileFromAddress
 
     } catch (err) {
         console.log('Error in getProfileErc', err)
@@ -154,8 +180,8 @@ export async function getProfileErc(address = undefined) {
 }
 
 // write requests
-export async function createProfileErc(identityId, useGasStation) {
-    console.log('createProfileErc', identityId, useGasStation)
+export async function createProfileErc(identityID, useGasStation) {
+    console.log('createProfileErc', identityID, useGasStation)
 
     let currentProfile = await getProfileErc();
     console.log("Current Profile", currentProfile);
@@ -164,9 +190,9 @@ export async function createProfileErc(identityId, useGasStation) {
     let txn;
     if (currentProfile) {
         // perform update
-        txn = await contract.updateProfile(identityId)
+        txn = await contract.updateProfile(identityID)
     } else {
-        txn = await contract.createProfile(identityId)
+        txn = await contract.createProfile(identityID)
     }
     return txn
 };
@@ -178,7 +204,6 @@ export async function hasPersonalProfileErc (walletAddress) {
         };
     } else {
         let profileResp = await getProfileErc(walletAddress);
-        console.log('getPersonalProfile()', walletAddress, profileResp);
         if (profileResp != undefined) {
             return true;
         }

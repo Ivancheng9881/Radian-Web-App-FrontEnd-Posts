@@ -61,6 +61,8 @@ function ProfileProvider({ children }) {
                 newProfile = matchFields(profileJson, newProfile);
                 newProfile['identityID'] = userProfile.identityID; // set cid for versioning
                 newProfile['dataJson'] = profileJson;
+                newProfile['profileID'] = userProfile.profileID;
+                newProfile['network'] = userProfile.network
                 setProfile(newProfile);
             }
         }

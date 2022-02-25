@@ -50,12 +50,11 @@ export default function HomePage() {
         let countSolana = await getProfileListCountSolana(provider);
         let profiles = await getProfileListSolana(countSolana, provider);
         let profileListSol = [];
-        console.log('Solana COUNT:', countSolana);
-        console.log("Solana Data", profiles);
         profiles.map((k,v)=>{
-            let idObj ={network: "Solana"};
-            idObj.identityID = k.identityId;
-            idObj.verifyID = k.verifyId;
+            if ( k === undefined ) return;
+            let idObj = {network: "Solana"};
+            idObj.identityID = k.identityID;
+            idObj.profileID = k.profileID;
             profileListSol.push(idObj);
         })
         console.log('solana profiles', profileListSol);

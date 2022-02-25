@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router";
-import { startRoute, createProfileRoute } from "../../../commons/route";
+import { startRoute, createProfileRoute, profileRoute } from "../../../commons/route";
 import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import ProfileContext from "../../../utils/profile/context/profile.context";
 import Web3Context from "../../../utils/web3/context/web3.context";
 import { Button } from "antd";
+import { profileRouteBuilder } from "../../../utils/profile/routing.utils";
 
 function PersonalProfile() {
     const history = useHistory();
-    const profile = useContext(ProfileContext).profile; // load profile info from provider
+    const profileContext = useContext(ProfileContext); // load profile info from provider
     const web3Context = useContext(Web3Context);
-
+    const profile = profileContext.profile
     console.log("profile");
-    console.log(profile);
+    console.log(profileContext);
 
     const connectWallet = () => {
         history.push(startRoute);
@@ -21,6 +22,15 @@ function PersonalProfile() {
 
     const createProfile = () => {
         history.push(createProfileRoute);
+    }
+
+    // to update profile
+    const updateProfile = () => {
+        let pathname = profileRouteBuilder(
+            profile.network,
+            profile.profileID,
+        )
+        history.push({pathname: pathname});
     }
     
     return (
@@ -36,7 +46,10 @@ function PersonalProfile() {
                     }}
                 >
                     {
-                        profile.identityID ? <span></span> : <span></span> // icon for update profile
+                        profile.identityID && 
+                            <div className="absolute right-5 bottom-5" onClick={updateProfile}>
+                                <img src="/icons/right_arrow.svg" width="50px" height="50px" alt="menu" />
+                            </div> // icon for update profile
                     }
                     { 
                         profile.identityID ?
@@ -71,12 +84,12 @@ function PersonalProfile() {
                                     <span className='m-auto'>Create Profile Now</span>
                                 </Button>
                                 <div className='pt-2'></div>
-                                <Button
+                                {/* <Button
                                     type='primary' 
                                     disabled={true}
                                 >
                                     <span className='m-auto'>Attach to Existing Profile (Coming Soon)</span>
-                                </Button>
+                                </Button> */}
                             </div>}
                         </span>
 
