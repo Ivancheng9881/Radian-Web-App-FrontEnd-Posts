@@ -170,7 +170,6 @@ const Navbar = (props) => {
                     <Select size='large' defaultValue={selectedProvider} style={{width: 300}} value={selectedProvider} onChange={handleChange}>
                         {
                             dropdownEl.map((b,i) => {
-                                console.log(b,i)
                                 return (
                                     <Select.Option key={b.value} value={b.value} style={{display: 'flex'}} >
                                         {b.label}

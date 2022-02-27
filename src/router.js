@@ -8,7 +8,7 @@ import {
 import { mainRoute, startRoute, profileRoute } from './commons/route'
 import HomePage from './page/home';
 import StartMain from './page/start'
-import ViewProfileRoutePage from './page/view';
+import ViewProfileRoutePage from './page/p';
 
 
 export default function Router() {

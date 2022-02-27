@@ -1,34 +1,35 @@
 import { Card } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
-import { profileRoute } from '../../../commons/route';
 import { profileRouteBuilder } from '../../../utils/profile/routing.utils';
+import { Profile } from '../../../utils/web3/contract/profileContract/index.interface';
+import { FullProfile } from '../../../schema/profile/profile.interface';
 
-function ProfileFrame(props) {
+interface PageProps {
+    profile: Profile
+}
+
+const ProfileFrame : FC<PageProps> = (props) => {
     let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
-    const [ fullProfile, setFullProfile ] = useState(null);
+    const [ fullProfile, setFullProfile ] = useState<FullProfile>(null);
     const history = useHistory();
 
-    useEffect(
-        () => {
-            fetchProfile();
-        },
-        [ props.profile ]
-    );
+    useEffect(() => {
+        fetchProfile();
+    },[ props.profile ]);
 
-    const fetchProfile = async () => {
-        let p = await ipfsUtils.getContentJson(props.profile.identityID);
+    const fetchProfile = async () : Promise<void> => {
+        let p : FullProfile = await ipfsUtils.getContentJson(props.profile.identityID);
         if (p.profilePictureCid == '' || p.profilePictureCid == undefined) {
             p.profilePictureCid = defaultProfilePictureId;
         }
         setFullProfile(p);
     };
 
-    
     // to update profile
-    const handleOpenProfile = ()=>{
-        let pathname = profileRouteBuilder(props.profile.network, props.profile?.profileID);
+    const handleOpenProfile = () : void => {
+        let pathname = profileRouteBuilder(props.profile.network.toLowerCase(), props.profile?.profileID);
         history.push({pathname: pathname});
     }
 

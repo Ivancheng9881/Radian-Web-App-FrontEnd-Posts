@@ -1,32 +1,32 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, FC } from "react";
 import { useHistory } from "react-router";
 import { startRoute, createProfileRoute, profileRoute } from "../../../commons/route";
-import RoundedButton from "../../../components/Button/Rounded.components";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import ProfileContext from "../../../utils/profile/context/profile.context";
 import Web3Context from "../../../utils/web3/context/web3.context";
 import { Button } from "antd";
 import { profileRouteBuilder } from "../../../utils/profile/routing.utils";
+import { ProfileContextInterface } from "../../../schema/profile/profile.interface";
+import { FixLater } from "../../../schema/helper.interface";
 
-function PersonalProfile() {
+const PersonalProfile: FC = (props) => {
     const history = useHistory();
-    const profileContext = useContext(ProfileContext); // load profile info from provider
-    const web3Context = useContext(Web3Context);
+    const profileContext: ProfileContextInterface = useContext(ProfileContext); // load profile info from provider
+    const web3Context: FixLater = useContext(Web3Context);
+    
     const profile = profileContext.profile
-    console.log("profile");
-    console.log(profileContext);
 
-    const connectWallet = () => {
+    const connectWallet = (): void => {
         history.push(startRoute);
     }
 
-    const createProfile = () => {
+    const createProfile = (): void => {
         history.push(createProfileRoute);
     }
 
     // to update profile
-    const updateProfile = () => {
-        let pathname = profileRouteBuilder(
+    const updateProfile = () : void => {
+        let pathname: string = profileRouteBuilder(
             profile.network,
             profile.profileID,
         )
@@ -34,7 +34,9 @@ function PersonalProfile() {
     }
     
     return (
-        <div className='p-2 pl-4 pr-4' style={{ height: '60vh', minWidth: '400px', minHeight: '480px'}}
+        <div 
+            className='p-2 pl-4 pr-4' 
+            style={{ height: '60vh', minWidth: '400px', minHeight: '480px'}}
         >
             <div className='bg-theme-bg-light rounded-lg w-full h-full overflow-hidden'>
                 <div
@@ -70,7 +72,7 @@ function PersonalProfile() {
                         </span>
                         : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
                         bottom-24 opacity-80 text-center`}>
-                            { ! web3Context.providers[web3Context.providers.selected] ?
+                            { ! web3Context.providers[web3Context.providers?.selected] ?
                             <Button
                                 type='primary'
                                 onClick={connectWallet}>
@@ -83,13 +85,6 @@ function PersonalProfile() {
                                     onClick={createProfile}>
                                     <span className='m-auto'>Create Profile Now</span>
                                 </Button>
-                                <div className='pt-2'></div>
-                                {/* <Button
-                                    type='primary' 
-                                    disabled={true}
-                                >
-                                    <span className='m-auto'>Attach to Existing Profile (Coming Soon)</span>
-                                </Button> */}
                             </div>}
                         </span>
 

@@ -2,6 +2,8 @@ import ERCUtils from "../../../context/erc.utils";
 import { abi } from './abi.json';
 import { gasStationNetworkUrl, subgraphUrl } from '../../../../../commons/web3';
 import { fetchDataFromSubgraph } from "../../../subgraph/subgraph.utils"; 
+import { FixLater } from "../../../../../schema/helper.interface";
+import { ERCProfile } from "./index.interface";
 
 
 export const profileContract__evm__abi = abi;
@@ -32,7 +34,7 @@ async function initGaslessProfileContract() {
     );
 }
 
-async function getProfilesFromSubgraph(skip, limit) {
+async function getProfilesFromSubgraph(skip: number, limit: number) {
     let query = `query Profile($skip: Int!, $limit: Int!) {
                 profiles(skip: $skip, first: $limit) {
                     profileID
@@ -42,7 +44,6 @@ async function getProfilesFromSubgraph(skip, limit) {
             }`;
     let params = {skip: skip, limit: limit};
     let result = await fetchDataFromSubgraph(subgraphUrl, query, params);
-    console.log(result.data.profiles);
     return result.data.profiles;
 }
 
@@ -54,7 +55,7 @@ async function getProfileListCountFromSubgraph() {
     return count
 }
 
-export async function getProfileFromIDSubgraph(pid) {
+export async function getProfileFromIDSubgraph(pid: number) {
     
     let query = `query Profile($profileID: BigInt!) {
                 profiles(first: 1, where: {profileID: $profileID}) {
@@ -79,7 +80,7 @@ export async function getProfileFromIDSubgraph(pid) {
     }
 }
 
-async function getProfileFromAddressSubgraph(address) {
+async function getProfileFromAddressSubgraph(address: string) {
     
     let query = `query Addresses($address: String!) {
             addresses(first: 5, where: {address: $address}) {
@@ -102,13 +103,13 @@ async function getProfileFromAddressSubgraph(address) {
     }
 }
 
-async function getProfileFromID(id) {
+async function getProfileFromID(id: number) {
     let contract = await initProfileContract(true);
     return await contract.getProfilefromID(id);
 }
 
-export async function getProfileListCountErc() {
-    let count;
+export async function getProfileListCountErc(): Promise<number> {
+    let count: number;
     if ( subgraphEnabled ) { // if subgraph is available, else directly query the smart contract
         count = await getProfileListCountFromSubgraph();
     } else {
@@ -118,44 +119,54 @@ export async function getProfileListCountErc() {
     return count
 }
 
-export async function getProfileListErc(skip, limit) {
+export async function getProfileListErc(
+    skip: number, 
+    limit: number
+    ) : Promise<ERCProfile[] | null> {
     
-    let profileList = [];
+    let identityIds: string[]  = [];
+    let profileList: ERCProfile[] = [];
 
-    if ( subgraphEnabled ){ // run if subgraph is available
-        let profiles = await getProfilesFromSubgraph(skip, limit);
+    if ( subgraphEnabled ) { 
+        // run if subgraph is available
+        let profiles: ERCProfile[] = await getProfilesFromSubgraph(skip, limit);
         profiles.map((p) => {
-            p['network'] = "ERC";
-            profileList.push(p);
-        })
-    } else { // directly read from contract
- 
-        let arr = [];
-        for (let i = skip + 1; i < limit + skip + 1; i++) {
+            let _p : ERCProfile  = {...p};
+            _p.network = 'ERC'
+            profileList.push(_p);
+        });
+        return profileList
+    } 
+    else { 
+        // directly read from contract
+        let arr: number[] = [];
+        for (let i : number = skip + 1; i < limit + skip + 1; i++) {
             arr.push(i);
         }
 
-        let profiles = await Promise.all(
+        let profiles: ERCProfile[] | void = await Promise.all(
             arr.map(async (id) => { return await getProfileFromID(id) })
         )
             .then(resp => resp)
             .catch(err => console.log('Error in getting profile list', err))
 
-        profiles.map((p) => {
-            if (!profileList.includes(p[0])) {
-                p['network'] = "ERC";
-                profileList.push(p)
+        if (!profiles) return null;
+        
+        profiles.forEach((p) => {
+            if (!identityIds.includes(p.identityID)) {
+                let _p: ERCProfile = {...p};
+                _p.network = "ERC";
+                identityIds.push(p.identityID)
+                profileList.push(_p)
             }
         })
 
-        console.log('updated profileList:', profileList)
+        return profileList
     }
-
-    return profileList
 };
 
 
-export async function getProfileErc(address = undefined) {
+export async function getProfileErc(address? : FixLater) {
         console.log("Calling Get Profile ERC");
     try {
         if (!address) {
@@ -180,7 +191,10 @@ export async function getProfileErc(address = undefined) {
 }
 
 // write requests
-export async function createProfileErc(identityID, useGasStation) {
+export async function createProfileErc(
+    identityID: string, 
+    useGasStation: boolean
+    ) {
     console.log('createProfileErc', identityID, useGasStation)
 
     let currentProfile = await getProfileErc();
@@ -197,7 +211,7 @@ export async function createProfileErc(identityID, useGasStation) {
     return txn
 };
 
-export async function hasPersonalProfileErc (walletAddress) {
+export async function hasPersonalProfileErc (walletAddress: string) {
     if ( subgraphEnabled ) {
         if ( (await getProfileFromAddressSubgraph(walletAddress) != undefined ) ) {
             return true;
