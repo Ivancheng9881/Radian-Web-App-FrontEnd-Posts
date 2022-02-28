@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import Validator from '../validation';
 
 function DataManager({ dataContext, data, dataObj, dataStorageName, children, datachangehandler=null, extraArgs={} }) {
@@ -85,6 +85,7 @@ function DataManager({ dataContext, data, dataObj, dataStorageName, children, da
     }
 
     const getLatestField = (key) => {
+        console.log(key)
         return updatedData[key] != null ? updatedData[key] : data[key];
     }
 

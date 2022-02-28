@@ -3,6 +3,8 @@ import SolanaWalletProvider from "./utils/web3/context/solanaWallet.provider";
 import Web3Provider from "./utils/web3/context/web3.provider";
 import GlobalSnackBarProvider from './page/start/context/snackbar/snackbar.provider';
 import ProfileProvider from "./utils/profile/context/profile.provider";
+import UserProfile from "./utils/user/context/user.provider";
+
 import './styles/main.css';
 import './styles/app.less'
 
@@ -11,9 +13,13 @@ function App() {
         <GlobalSnackBarProvider>
             <SolanaWalletProvider>
                 <Web3Provider>
-                    <ProfileProvider>
+                    <UserProfile >
+                        
+                    {/* <ProfileProvider> */}
                         <Router/>
-                    </ProfileProvider>
+                    {/* </ProfileProvider> */}
+                    </UserProfile>
+
                 </Web3Provider>
         </SolanaWalletProvider>
     </GlobalSnackBarProvider>

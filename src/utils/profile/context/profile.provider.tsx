@@ -1,18 +1,23 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, FC } from 'react';
 import ProfileContext from './profile.context';
+import UserContext from '../../user/context/user.context';
 import Web3Context from '../../web3/context/web3.context';
 import { getPersonalProfile } from '../../web3/contract';
 import ipfsUtils from '../../web3/ipfs/ipfs.utils';
 
 import DataManager from '../data.manager';
+import { FullProfile } from '../../../schema/profile/profile.interface';
+import { FixLater } from '../../../schema/helper.interface';
 
-function ProfileProvider({ children }) {
+const ProfileProvider : FC = ({ children }) => {
     
     const web3Context = useContext(Web3Context);
+    const { profile, setProfile } = useContext(UserContext);
+
     // fetch profile from the graph / blockchain if web3provider is connected
     // then, fetch ipfs data by cid, populate the profile object and storage in local storage for fast retrieval
     // only the top level identity field is populated
-    const profileObj = {
+    const profileObj: any = {
         firstName: "",
         lastName: "",
         day: "",
@@ -38,51 +43,46 @@ function ProfileProvider({ children }) {
         }
     };
 
-    const [ profile, setProfile ] = useState(profileObj);
+    // const [ profile, setProfile ] = useState<FullProfile>(profileObj);
 
     useEffect(() => {
-        if (web3Context.providers.selected != null){
+        if (web3Context.providers.selected){
             fetchUserProfile();
-            return () => setProfile(profileObj);
         }
     }, [web3Context.providers.selected, web3Context.providers]);
 
     const fetchUserProfile = async () => {
         // only reset profile if the address from the provider is connected to a different profile
-        const userProfile  = await getPersonalProfile(web3Context);
+        let userProfile: FullProfile  = await getPersonalProfile(web3Context);
         console.log('HomePage: User profile updated', userProfile);
-        if(userProfile != null || undefined) {
-            if (userProfile.identityID === profile?.identityID) return;
+        if(userProfile.identityID != null) {
+            // if (userProfile.identityID === profile?.identityID) return;
             let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
             console.log(profileJson);
             if ( profileJson ) {
-                let newProfile = Object.assign({}, profileObj);
-                delete newProfile["undefined"];
-                newProfile = matchFields(profileJson, newProfile);
-                newProfile['identityID'] = userProfile.identityID; // set cid for versioning
-                newProfile['dataJson'] = profileJson;
-                newProfile['profileID'] = userProfile.profileID;
-                newProfile['network'] = userProfile.network
-                setProfile(newProfile);
+                let currentProfile : FullProfile = { ...userProfile, ...profileJson};
+                console.log(currentProfile)
+                setProfile(currentProfile);
             }
         }
     }
 
-    const matchFields = (objSource, objTarget) => {
-        const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
-        for ( let k in overlapKeys ) {
-            objTarget[overlapKeys[k]] = objSource[overlapKeys[k]];
-        }
-        return objTarget;
-    }
+    // const matchFields = (objSource: FixLater, objTarget: FixLater) => {
+    //     const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
+    //     for ( let k in overlapKeys ) {
+    //         objTarget[overlapKeys[k]] = objSource[overlapKeys[k]];
+    //     }
+    //     return objTarget;
+    // }
+
 
     return <DataManager
                 dataContext={ProfileContext}
                 data={profile}
                 dataObj={profileObj}
                 dataStorageName={"tempIdentity"}
-                children={children}
                 extraArgs={{profile}} >
+                    {children}
             </DataManager>
 }
 

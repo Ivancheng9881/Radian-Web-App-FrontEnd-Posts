@@ -2,10 +2,6 @@ import React, { FC, useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { getProfileListCountErc, getProfileListErc } from "../../utils/web3/contract/profileContract/erc";
 import { getProfileListCountSolana, getProfileListSolana } from "../../utils/web3/contract/profileContract/solana";
-// import { getProfileSolana } from "../../utils/web3/contract/profileContract/solana";
-// import GlobalSnackBarProvider from '../start/context/snackbar/snackbar.provider'
-// import CreateSnackbarContext from '../start/context/snackbar/snackbar.context';
-// import Web3Context from '../../utils/web3/context/web3.context';
 import PersonalProfile from './components/PersonalProfile.components';
 import ProfileFrame from './components/ProfileFrame.component';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -14,6 +10,9 @@ import { Provider } from '@project-serum/anchor';
 import { FixLater, PaginationType } from "../../schema/helper.interface";
 import config from "../../commons/config";
 import { Profile, ProfileList } from "../../utils/web3/contract/profileContract/index.interface";
+import LoadingScreen from "../../components/LoadingScreen";
+import CustomSider from "../../components/Layout/CustomSider.components";
+import CustomContent from "../../components/Layout/CustomContent.components";
 
 const HomePage: FC = (props) => {
 
@@ -88,18 +87,22 @@ const HomePage: FC = (props) => {
     
     return (
         <Layout>
-            <div className='pt-32'>
-                <div className={`max-w-sm md:fixed h-full`}>
-                        <PersonalProfile/>
+            <CustomSider>
+                <PersonalProfile/>
+            </CustomSider>
+            <CustomContent>
+                
+                { profileList.length > 0
+
+                ? <div className={`flex flex-wrap`}>
+                    {profileList?.map((p, v) => {
+                        return <ProfileFrame key={v} profile={p} />
+                    })}
                 </div>
-                <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
-                        {
-                            profileList?.map((p, v) => {
-                                return <ProfileFrame key={v} profile={p} />
-                            })
-                        }
-                </div>
-            </div>
+
+                : <div><LoadingScreen /></div>
+                }
+            </CustomContent>
         </Layout>
     )
 };

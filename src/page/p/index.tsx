@@ -1,7 +1,8 @@
+import { FC } from "react";
 import ViewRouter from "./router"
 
 
-const ViewProfileRoutePage = (props) => {
+const ViewProfileRoutePage : FC = (props) => {
     return (
         <ViewRouter />
     )

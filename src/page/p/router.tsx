@@ -4,8 +4,9 @@ import { profileRoute, addAddressRoute } from '../../commons/route';
 import Layout from '../../components/Layout';
 import ViewProfilePage from './viewProfile';
 import AddWalletPage from './addWallet';
+import { FC } from 'react';
 
-const ViewRouter = () => {
+const ViewRouter: FC = () => {
     return (
         <Layout>
             <Route exact path={profileRoute} component={ViewProfilePage} />

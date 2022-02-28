@@ -25,7 +25,6 @@ export default function Router() {
                     path={startRoute}
                     component={StartMain}
                 />
-                
                 <Route
                     path={profileRoute}
                     component={ViewProfileRoutePage}

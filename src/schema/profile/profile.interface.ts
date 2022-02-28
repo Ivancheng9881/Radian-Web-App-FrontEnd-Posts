@@ -1,5 +1,9 @@
 import { FixLater } from '../helper.interface'
 
+interface addresses {
+    address: string,
+}
+
 export interface ProfileContextInterface {
     profile: FullProfile,
     updatedData: FixLater,
@@ -38,5 +42,7 @@ export interface FullProfile {
         error: boolean
     }
     network: string,
-    profileID: string
+    profileID: string,
+    addresses: addresses[],
+    externalAddresses: string[],
 }

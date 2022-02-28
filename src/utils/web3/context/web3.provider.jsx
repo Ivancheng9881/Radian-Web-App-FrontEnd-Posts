@@ -11,7 +11,11 @@ const Web3Provider = ({ children }) => {
     const windowNetworkVersion = window.ethereum?.networkVersion
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
-    const [ providers, setProviders ] = useState({'phantom@solana': null, 'metamask@erc': null, selected: null});
+    const [ providers, setProviders ] = useState({
+        'phantom@solana': null, 
+        'metamask@erc': null, 
+        selected: null
+    });
     const [ networkId, setNetworkId ] = useState(undefined)
 
     useEffect(() => {
@@ -21,7 +25,7 @@ const Web3Provider = ({ children }) => {
         // load past connection details, can try to resume connection in the defined order
         window.ethereum?.request({ method: 'eth_accounts' }).then((result)=> {
             if (result.length != 0) {
-                console.log("resuming from", prevProviders);
+                console.log("kayton@debug", prevProviders);
                 connectERCProvider(true).then(
                     (addressList)=>{
                         console.log("Address list", addressList);

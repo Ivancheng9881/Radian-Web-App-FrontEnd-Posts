@@ -11,7 +11,7 @@ import MetamaskIcon from '../Icons/metamask.components';
 import PhantomIcon from '../Icons/phantom.components';
 import Popup from 'reactjs-popup';
 import { preloadWalletIcon } from '../../utils/preload';
-import ProfileContext from "../../utils/profile/context/profile.context";
+import UserContext from "../../utils/user/context/user.context";
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 import { Layout, Select } from 'antd';
 
@@ -22,8 +22,8 @@ const Navbar = (props) => {
     const [ selectedProvider, setSelectedProvider ] = useState('');
     const [ address, setAddress ] = useState({})
 
-    const profileContext = useContext(ProfileContext);
-    
+    const profileContext = useContext(UserContext);
+   
     const ref = useRef();
     const close = () => ref.current.close();  
     

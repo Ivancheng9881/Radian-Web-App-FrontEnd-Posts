@@ -4,7 +4,6 @@ import ProfileContext from '../../../../utils/profile/context/profile.context';
 import CreateProfileContext from './profile.context';
 import { getQuery, setQuery } from '../../../../utils/query';
 import { checkoutProfileRoute, startRoute } from '../../../../commons/route';
-import Validator from '../../../../utils/validation';
 
 function CreateProfileProvider({ children }) {
     const history = useHistory();
