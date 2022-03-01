@@ -6,6 +6,7 @@ import { Provider } from '@project-serum/anchor';
 import config from "../../../../../commons/config";
 import { WalletContextState } from "@solana/wallet-adapter-react";
 import { FullProfile } from "../../../../../schema/profile/profile.interface";
+import { FixLater } from "../../../../../schema/helper.interface";
 
 interface IdentityType {
     identityID: string,
@@ -62,7 +63,6 @@ const fetchProfiles = async (
     network: string,
     SolWallet? : WalletContextState,
 ) => {
-
     try {
         let profile = await getIdentitytID(pid, network, SolWallet);
         let _profile = await ipfsUtils.getContentJson(profile.identityID);
@@ -72,12 +72,19 @@ const fetchProfiles = async (
     } catch(err) {
         console.log(err)
     }
+};
 
-
+const createProfileCid = async (profile: FullProfile) : Promise<FixLater> => {
+    console.log(profile);
+    let profileJson = JSON.stringify(profile);
+    const cid = await ipfsUtils.uploadContent(profileJson);
+    console.log(cid);
+    return cid;
 }
 
 const ProfileContractUtils = {
     fetchProfiles,
+    createProfileCid
 };
 
 export default ProfileContractUtils;

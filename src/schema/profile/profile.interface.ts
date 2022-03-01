@@ -18,6 +18,7 @@ export interface ProfileContextInterface {
 }
 
 export interface FullProfile {
+    [key: string]: any;
     firstName: string
     lastName: string,
     day: number,
@@ -25,7 +26,7 @@ export interface FullProfile {
     year: number,
     countryCode: string,
     number: number,
-    profilePictureCid: string,
+    profilePictureCid: string[],
     nationality: string,
     gender: string,
     interest: string[],

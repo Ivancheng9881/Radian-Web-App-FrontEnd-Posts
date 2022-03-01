@@ -7,3 +7,7 @@ export const checkoutProfileRoute = '/start/checkout'
 
 export const profileRoute = '/p'
 export const addAddressRoute = '/p/wallet'
+
+export const settingRoute = '/settings';
+export const settingProfileRoute = '/settings/profile'
+export const settingWalletRoute = '/settings/wallet'

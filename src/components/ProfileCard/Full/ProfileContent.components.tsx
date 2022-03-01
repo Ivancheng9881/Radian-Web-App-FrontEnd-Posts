@@ -41,34 +41,6 @@ const ProfileContent : FC<PropsType> = ({
                 />
                 <ProfileDetails profile={profile} />
             </Space>
-        {/* {
-            profile.identityID && 
-                <div className="absolute right-5 bottom-5">
-                    <img src="/icons/right_arrow.svg" width="50px" height="50px" alt="menu" />
-                </div>
-        } */}
-        {/* { 
-            profile.identityID ?
-            <span className={`absolute w-fit text-theme-white bg-theme-bg-dark
-                pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg left-2 bottom-2 opacity-80`}>
-                <div className='font-semibold text-3xl'>
-                    {`${profile?.firstName} ${profile?.lastName}`}
-                </div>
-                <div className='font-normal text-sm'>
-                    {`Gender: ${profile?.gender}`}
-                </div>
-                <div className='font-normal text-sm'>
-                    {`Nationality: ${profile?.nationality}`}
-                </div>
-                <div className='font-normal text-sm'>
-                    {`Interest: ${profile?.interest}`}
-                </div>
-            </span>
-            : <span className={`absolute w-full text-theme-white pt-1.5 pb-1.5 pl-3 pr-3 rounded-lg 
-            bottom-24 opacity-80 text-center`}>
-            </span>
-
-        } */}
     </div>
     )
 };

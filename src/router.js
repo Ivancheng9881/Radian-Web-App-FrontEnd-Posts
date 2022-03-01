@@ -5,10 +5,11 @@ import {
     Switch,
 } from 'react-router-dom';
 
-import { mainRoute, startRoute, profileRoute } from './commons/route'
+import { mainRoute, startRoute, profileRoute, settingRoute } from './commons/route'
 import HomePage from './page/home';
 import StartMain from './page/start'
 import ViewProfileRoutePage from './page/p';
+import SettingsRouter from './page/settings';
 
 
 export default function Router() {
@@ -28,6 +29,10 @@ export default function Router() {
                 <Route
                     path={profileRoute}
                     component={ViewProfileRoutePage}
+                />
+                <Route 
+                    path={settingRoute}
+                    component={SettingsRouter}
                 />
             </Switch>
         </BrowserRouter>

@@ -1,17 +1,18 @@
-import { useEffect, useState , useContext} from "react";
+import { useEffect, useState , useContext, FC} from "react";
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
 // import SolanaWalletProvider from "./solanaWallet.provider";
 import CreateSnackbarContext from '../../../page/start/context/snackbar/snackbar.context';
+import { FixLater } from "../../../schema/helper.interface";
+import { WalletProvider } from "./web3.interface";
 
-const Web3Provider = ({ children }) => {
 
-    console.log("Rerun Web3Provider");
 
-    const windowNetworkVersion = window.ethereum?.networkVersion
+const Web3Provider : FC = ({ children }) => {
+
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
-    const [ providers, setProviders ] = useState({
+    const [ providers, setProviders ] = useState<WalletProvider>({
         'phantom@solana': null, 
         'metamask@erc': null, 
         selected: null
@@ -23,13 +24,14 @@ const Web3Provider = ({ children }) => {
         const prevProviders = loadProviderDetails();
 
         // load past connection details, can try to resume connection in the defined order
-        window.ethereum?.request({ method: 'eth_accounts' }).then((result)=> {
+        window.ethereum?.request({ method: 'eth_accounts' })
+            .then((result: string[]) => {
             if (result.length != 0) {
                 console.log("kayton@debug", prevProviders);
                 connectERCProvider(true).then(
                     (addressList)=>{
                         console.log("Address list", addressList);
-                        const connectingAddress = prevProviders && prevProviders["metamask@erc"] in addressList ? prevProviders["metamask@erc"] : addressList[0];
+                        const connectingAddress: string = prevProviders && prevProviders["metamask@erc"] in addressList ? prevProviders["metamask@erc"] : addressList[0];
                         setProviders((prevState) => ({
                             'metamask@erc': connectingAddress, 
                             'phantom@solana': prevState['phantom@solana'],
@@ -44,16 +46,16 @@ const Web3Provider = ({ children }) => {
         console.log("Eager Connecting");
         if (window.solana?.isPhantom) {
             window.solana.connect({onlyIfTrusted: true })
-                .then(({publicKey}) => {
+                .then((result: any) => {
                     // resuming old connection, resuming as the first provider if it was stored as so
                     console.log("Setting Phantom as the first provider");
                     setProviders((prevState) => ({
-                        'phantom@solana': publicKey, 
+                        'phantom@solana': result.publicKey, 
                         'metamask@erc': prevState['metamask@erc'],
                         'selected': prevProviders && prevProviders.selected == 'phantom@solana' ? 'phantom@solana' : prevState.selected
                     }));
                 })
-                .catch((err) => {
+                .catch((err: FixLater) => {
                     console.error(err);
                 } )
         }        
@@ -63,7 +65,7 @@ const Web3Provider = ({ children }) => {
 
     useEffect(() => {
 
-            window.ethereum?.on("chainChanged", async (_chainId) => {
+            window.ethereum?.on("chainChanged", async (_chainId: string) => {
                 if (!_chainId.includes('0x89')) {
                     setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
                     
@@ -75,14 +77,12 @@ const Web3Provider = ({ children }) => {
                 }
             });
 
-            window.ethereum?.on('accountsChanged', (acc) => {
+            window.ethereum?.on('accountsChanged', (acc: string[]) => {
                 // on accounts change, update the providers if no accounts exists for metamask (basically disconnected)
                 // else, if there is >1 accounts connected in metamask, stay connected
-                console.log('listening to accountsChanged event', acc)
                 if (acc.length == 0) {
-                    console.log("Providers", providers);
                     // get available providers
-                    let providerLists = [];
+                    let providerLists: FixLater = [];
                     let existingProviders = Object.keys(providers);
                     for (let p = 0 ; p < existingProviders.length ; p++ ) {
                         if ( existingProviders[p] != 'metamask@erc' && providers[existingProviders[p]]) {
@@ -141,7 +141,7 @@ const Web3Provider = ({ children }) => {
         console.log('connected')
     }
 
-    const connectSolanaProvider = async (resumeFrom=null) => {
+    const connectSolanaProvider = async (resumeFrom : FixLater =null) => {
         console.log("Solana connecting");
         if (window.solana?.isPhantom) {
             const resp = await window.solana.connect();
@@ -158,7 +158,7 @@ const Web3Provider = ({ children }) => {
         }
     }
 
-    const connectERCProvider = async (init=false) => {
+    const connectERCProvider = async (init: boolean=false) => {
         if (window.ethereum !== undefined && window.ethereum?.isMetaMask) {
             let isConnected = await ERCUtils.connectWallet();
             if (isConnected.length > 0) {
@@ -173,14 +173,14 @@ const Web3Provider = ({ children }) => {
         }
     }
 
-    const switchProvider = async (newProvider) =>{
+    const switchProvider = async (newProvider: string) =>{
         setProviders((prevState)=>{
             storeProviderDetails({...prevState, selected: newProvider});
             return {...prevState, selected: newProvider};
         });
     }
 
-    const connectProvider = async (network) => {
+    const connectProvider = async (network: string) => {
         if (network === 'solana') {
             return await connectSolanaProvider();
         } else if (network === 'erc') {
@@ -188,7 +188,7 @@ const Web3Provider = ({ children }) => {
         }
     };
 
-    const storeProviderDetails = (providerObj) => {
+    const storeProviderDetails = (providerObj: WalletProvider) => {
         window.localStorage.setItem('providerDetails', JSON.stringify(providerObj));
     };
 

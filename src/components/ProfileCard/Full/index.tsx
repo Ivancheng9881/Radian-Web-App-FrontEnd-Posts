@@ -3,10 +3,12 @@ import { FullProfile } from '../../../schema/profile/profile.interface';
 import ProfileLoading from "./ProfileLoading.components";
 import ProfileContent from "./ProfileContent.components";
 import config from "../../../commons/config";
+import FullProfileFrame from "./Frame.components";
+import PendingLoading from "./PendingLogin.components";
 
 interface PageProps {
     profile: FullProfile,
-    isOwner?: boolean
+    isOwner?: boolean,
 };
 
 const styles = {
@@ -28,16 +30,19 @@ const styles = {
 const Full : FC<PageProps> = (props) => {
 
     return (
-        <div style={styles.root}>
-            <div style={styles.body} >
-                {
-                    props.profile
-                    ? <ProfileContent profile={props.profile} isOwner={props.isOwner} />
-                    : <ProfileLoading />  
-                }
-            </div>
-        </div>
+        <FullProfileFrame>
+            {
+                props.profile
+                ? <ProfileContent profile={props.profile} isOwner={props.isOwner} />
+                : <ProfileLoading />  
+            }
+        </FullProfileFrame>
     )
 };
 
+export {
+    PendingLoading
+};
+
 export default Full
+

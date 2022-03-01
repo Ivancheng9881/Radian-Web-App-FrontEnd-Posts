@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import './styles.css';
 
-const ProfilePictureFrame = ({ src = undefined, maxHeight = 400, maxWidth = 400, children }) => {
+const ProfilePictureFrame = ({ src = undefined, maxHeight = 400, maxWidth = 400 }) => {
     return (
         <Fragment>
             {src && (

@@ -14,12 +14,8 @@ function App() {
             <SolanaWalletProvider>
                 <Web3Provider>
                     <UserProfile >
-                        
-                    {/* <ProfileProvider> */}
                         <Router/>
-                    {/* </ProfileProvider> */}
                     </UserProfile>
-
                 </Web3Provider>
         </SolanaWalletProvider>
     </GlobalSnackBarProvider>

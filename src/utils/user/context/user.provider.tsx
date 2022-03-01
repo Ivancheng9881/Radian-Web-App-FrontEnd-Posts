@@ -43,6 +43,7 @@ const ProfileProvider : FC = ({ children }) => {
     const [ profile, setProfile ] = useState<FullProfile>(profileObj);
 
     useEffect(() => {
+        console.log('kayton@debug',web3Context)
         if (web3Context.providers.selected){
             fetchUserProfile();
         }
@@ -51,11 +52,12 @@ const ProfileProvider : FC = ({ children }) => {
     const fetchUserProfile = async () => {
         // only reset profile if the address from the provider is connected to a different profile
         let userProfile: FullProfile  = await getPersonalProfile(web3Context);
-        console.log('HomePage: User profile updated', userProfile);
+        console.log('kayton@debug', userProfile);
         if(userProfile.identityID != null) {
             // if (userProfile.identityID === profile?.identityID) return;
             let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
-            console.log(profileJson);
+            console.log('kayton@debug', profileJson);
+
             if ( profileJson ) {
                 let currentProfile : FullProfile = { ...userProfile, ...profileJson};
                 console.log(currentProfile)
@@ -77,7 +79,8 @@ const ProfileProvider : FC = ({ children }) => {
         <UserContext.Provider
             value={{
                 profile: profile,
-                setProfile: setProfile
+                setProfile: setProfile,
+                refreshProfile: fetchUserProfile
             }}
         >
                 {children}

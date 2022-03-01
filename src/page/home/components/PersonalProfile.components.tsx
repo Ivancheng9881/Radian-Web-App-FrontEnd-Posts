@@ -35,9 +35,13 @@ const PersonalProfile: FC = (props) => {
     }
     
     return (
-        <ProfileCard.Full
-            profile={profile}
-        />
+        <>
+            {
+            web3Context.providers.selected 
+            ? <ProfileCard.Full profile={profile} isOwner />
+            : <ProfileCard.PendingLoading />
+            }
+        </>
     )
 }
 

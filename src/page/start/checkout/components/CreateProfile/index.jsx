@@ -20,6 +20,7 @@ import ERCUtils from '../../../../../utils/web3/context/erc.utils';
 import { mainRoute } from '../../../../../commons/route';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
 import { Bars } from 'react-loader-spinner'; 
+import ProfileContractUtils from '../../../../../utils/web3/contract/profileContract/utils';
 
 const barLoader = {
     Component: Bars,
@@ -83,9 +84,7 @@ const CheckoutCreateProfile = () => {
 
     const createProfileCid = async () => {
         let profile = getCompletedProfile();
-        let profileString = JSON.stringify(profile);
-        console.log('before uploading', profile);
-        const cid = await ipfsUtils.uploadContent(profileString);
+        let cid = await ProfileContractUtils.createProfileCid(profile);
         return cid;
     };
 

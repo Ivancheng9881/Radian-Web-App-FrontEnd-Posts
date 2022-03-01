@@ -9,7 +9,9 @@ interface PropsType {
 const DefaultLayout : FC<PropsType> = (props) => {
 
   const styles = {
+    margin: 'auto',
     marginTop: 80, 
+    // maxWidth: 1200,
     display: props.fullWidth ? 'block' : 'flex'
   }
 
