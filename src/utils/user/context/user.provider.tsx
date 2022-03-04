@@ -8,37 +8,39 @@ import { FullProfile } from '../../../schema/profile/profile.interface';
 import { FixLater } from '../../../schema/helper.interface';
 import UserContext from "./user.context";
 
+const profileObj: any = {
+    firstName: "",
+    lastName: "",
+    day: "",
+    month: "",
+    year: "",
+    countryCode: "",
+    number: "",
+    profilePictureCid: [],
+    nationality: "",
+    gender: "",
+    interest: [],
+    nft: [],
+    application: {},
+    identityID: "",
+    dataJson: {},
+    verificationJson: {},
+    temp: {
+        identityID: true,
+        verificationJson: true,
+        visible: true,
+        dataJson: true,
+        error: true
+    }
+} as const;
+
 const ProfileProvider : FC = ({ children }) => {
     
     const web3Context = useContext(Web3Context);
     // fetch profile from the graph / blockchain if web3provider is connected
     // then, fetch ipfs data by cid, populate the profile object and storage in local storage for fast retrieval
     // only the top level identity field is populated
-    const profileObj: any = {
-        firstName: "",
-        lastName: "",
-        day: "",
-        month: "",
-        year: "",
-        countryCode: "",
-        number: "",
-        profilePictureCid: [],
-        nationality: "",
-        gender: "",
-        interest: [],
-        nft: [],
-        application: {},
-        identityID: "",
-        dataJson: {},
-        verificationJson: {},
-        temp: {
-            identityID: true,
-            verificationJson: true,
-            visible: true,
-            dataJson: true,
-            error: true
-        }
-    };
+
 
     const [ profile, setProfile ] = useState<FullProfile>(profileObj);
 
@@ -51,29 +53,24 @@ const ProfileProvider : FC = ({ children }) => {
 
     const fetchUserProfile = async () => {
         // only reset profile if the address from the provider is connected to a different profile
-        let userProfile: FullProfile  = await getPersonalProfile(web3Context);
-        console.log('kayton@debug', userProfile);
-        if(userProfile.identityID != null) {
-            // if (userProfile.identityID === profile?.identityID) return;
-            let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
-            console.log('kayton@debug', profileJson);
-
-            if ( profileJson ) {
-                let currentProfile : FullProfile = { ...userProfile, ...profileJson};
-                console.log(currentProfile)
-                setProfile(currentProfile);
+        try {
+            let userProfile: FullProfile  = await getPersonalProfile(web3Context);
+            console.log('kayton@debug', userProfile);
+            if(userProfile.identityID != null) {
+                // if (userProfile.identityID === profile?.identityID) return;
+                let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
+                console.log('kayton@debug', profileJson);
+    
+                if ( profileJson ) {
+                    let currentProfile : FullProfile = {  ...profileJson, ...userProfile,};
+                    setProfile(currentProfile);
+                }
             }
+        } catch(err) {
+            console.log(err);
+            setProfile(profileObj)
         }
     }
-
-    // const matchFields = (objSource: FixLater, objTarget: FixLater) => {
-    //     const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
-    //     for ( let k in overlapKeys ) {
-    //         objTarget[overlapKeys[k]] = objSource[overlapKeys[k]];
-    //     }
-    //     return objTarget;
-    // }
-
 
     return (
         <UserContext.Provider

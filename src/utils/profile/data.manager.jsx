@@ -85,8 +85,11 @@ function DataManager({ dataContext, data, dataObj, dataStorageName, children, da
     }
 
     const getLatestField = (key) => {
-        console.log(key)
-        return updatedData[key] != null ? updatedData[key] : data[key];
+        console.log(updatedData)
+        
+        let val = updatedData[key] != null ? updatedData[key] : data[key];
+        console.log(val);
+        return 
     }
 
     const getLatestObject = () => {

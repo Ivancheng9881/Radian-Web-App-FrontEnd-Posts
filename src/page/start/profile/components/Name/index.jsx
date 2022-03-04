@@ -1,15 +1,12 @@
 import TextField from '../../../../../components/Textfield';
 import { useContext} from 'react';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../../context/socialApp/profile.context';
 import { Col, Grid, Input, Row, Space, Typography } from 'antd';
 import CustomTypography from '../../../../../components/Typography';
 
 const ProfileName = (props) => {
 
-    const { getLatestField, updatedData, updateDataByKey } = useContext(ProfileContext);
-
-    const firstName = getLatestField('firstName');
-    const lastNameDefault = getLatestField('lastName');
+    const {profile, updateDataByKey} = useContext(ProfileContext);
 
     const handleChange = (e) => {
         let key;
@@ -21,7 +18,7 @@ const ProfileName = (props) => {
                 key = 'lastName';
                 break;
         }
-        updateDataByKey(key, e.target.value, 'text');
+        updateDataByKey(key, e.target.value);
     };
     
     return (
@@ -38,7 +35,7 @@ const ProfileName = (props) => {
                                     name="radianFirstName"
                                     type="text"
                                     placeholder="First Name"
-                                    value={firstName}
+                                    value={profile.firstName}
                                     onChange={handleChange}
                                 />
                             </Col>
@@ -48,7 +45,7 @@ const ProfileName = (props) => {
                                     name="radianLastName"
                                     type="text"
                                     placeholder="Last Name"
-                                    value={lastNameDefault}
+                                    value={profile.lastName}
                                     onChange={handleChange}
                                 />
                             </Col>

@@ -21,7 +21,6 @@ const ProfileFrame : FC<PageProps> = (props) => {
 
     const fetchProfile = async () : Promise<void> => {
         let p : FullProfile = await ipfsUtils.getContentJson(props.profile.identityID);
-        console.log('kayton@debug', p)
         if (p.profilePictureCid.length == 0 || p.profilePictureCid == undefined) {
             p.profilePictureCid = [defaultProfilePictureId];
         }

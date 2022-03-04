@@ -1,7 +1,7 @@
 import Typography from '../../../components/Typography';
 import TextField from '../../../components/Textfield';
 import { useContext, useEffect, useState} from 'react';
-import ProfileContext from '../../../utils/profile/context/profile.context';
+import ProfileContext from '../../start/context/socialApp/profile.context';
 import Web3Context from '../../../utils/web3/context/web3.context';
 import RoundedButton from '../../../components/Button/Rounded.components';
 import DoubleCollumTextfield from '../../../components/DoubleCollumTextfield';

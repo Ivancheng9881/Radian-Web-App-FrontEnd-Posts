@@ -18,6 +18,9 @@ const styles = {
     select: {
         width: '100%'
     },
+    tag: {
+        marginBottom: 5
+    }
 } as const
 
 const EditProfileTags : FC<PropsType> = ({
@@ -67,6 +70,7 @@ const EditProfileTags : FC<PropsType> = ({
                 {value && value?.map((v) => {
                     return (
                         <Tag 
+                            style={styles.tag}
                             key={`tags:${v}`}
                             closable={!disabled}
                             onClose={e => onClose(v)}

@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 
-const InfoDisplayGroup = ({ profileKey, label=null, value, visibleUpdate=null, visibilityData=null, stepName }) => {
+const InfoDisplayGroup = ({ 
+    profileKey, 
+    label=null, 
+    value, 
+    visibleUpdate=null, 
+    visibilityData=null, 
+    stepName 
+}) => {
+
     const [ IconText, setIconText ] = useState('show');
 
     useEffect(()=>{

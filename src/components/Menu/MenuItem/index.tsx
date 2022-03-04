@@ -5,7 +5,13 @@ import { useHistory } from "react-router";
 interface PropsType {
     route?: string,
     onClick?: any
-}
+};
+
+const styles = {
+    item: {
+        width: '100%',
+    }
+} as const;
 
 const CustomMenuItem : FC<PropsType> = (props) => {
 
@@ -21,14 +27,13 @@ const CustomMenuItem : FC<PropsType> = (props) => {
 
 
     return (
-        <Menu.Item>
-            <Typography.Text 
-                strong={history.location.pathname === props.route} 
-                onClick={handleClick} 
-            >
-                {props.children}
-            </Typography.Text>
-        </Menu.Item>
+        <span onClick={handleClick} style={styles.item}>
+            <Menu.Item key={props.route} >
+                <Typography.Text strong={history.location.pathname === props.route} >
+                    {props.children}
+                </Typography.Text>
+            </Menu.Item>
+        </span>
     )
 };
 

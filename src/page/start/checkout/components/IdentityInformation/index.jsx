@@ -1,88 +1,165 @@
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
-import Typography from '../../../../../components/Typography';
+import CustomTypography from '../../../../../components/Typography';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
-import InfoDisplayGroup from '../InfoDisplay/InfoDisplay.components';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../../context/socialApp/profile.context';
+import { Button, Col, Input, Row, Space, Tooltip, Typography } from 'antd';
+import CheckoutInputField from '../InfoDisplay/inputField.components';
+
+const styles = {
+    space: {
+        width: '100%',
+    },
+    title: {
+        textAlign: 'center'
+    },
+    inputGroup: {
+        display: 'flex'
+    }
+};
 
 const CheckoutIdentityInformation = () => {
-    const { getLatestObject, updateDataByPath } = useContext(ProfileContext);
-    let latestProfile = getLatestObject();
+
+    const { profile, visible, setVisible } = useContext(ProfileContext);
 
     useEffect(()=>{
         window.scrollTo({ top: 40, behavior: 'instant' });
     },[])
 
+    const toggleVisibility = (key) => {
+        setVisible((prevState) => { return {
+            ...visible,
+            [key]: {
+                ...prevState[key],
+                status: !prevState[key].status,
+            }
+        }})
+    }
+
     return (
         <div>
-            <div className="pl-6 pr-6">
-                <Typography.Featured>RADIAN Passport Summary</Typography.Featured>
+            <div className="pl-6 pr-6 mb-5">
+                <CustomTypography.Featured>RADIAN Passport Summary</CustomTypography.Featured>
             </div>
-            <div className="inline-flex md:flex-nowrap md:flex-row flex-wrap flex-col-reverse">
-                <div className="w-auto md:w-2/3">
-                    <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold text-center md:text-left">Identity Information</div>
-                    <div className="inline-flex flex-wrap">
-                        <InfoDisplayGroup
-                            profileKey="firstName"
-                            label={`First Name`}
-                            value={latestProfile.firstName}
-                            stepName={`name`} />
-                        <InfoDisplayGroup
-                            profileKey="lastName"
-                            label={`Last Name`}
-                            value={latestProfile.lastName}
-                            stepName={`name`} />
-                        <InfoDisplayGroup
-                            profileKey={["day","month","year"]}
-                            label={`Birthday`}
-                            value={(latestProfile.day || latestProfile.month || latestProfile.year) && `${latestProfile.day}/${latestProfile.month}/${latestProfile.year}`}
-                            visibleUpdate={updateDataByPath}
-                            visibilityData={latestProfile.visible}
-                            stepName={`dob`}
+            <Row gutter={24} >
+                <Col span={18} >
+                    <Typography.Title level={3} style={styles.title} >
+                            Identity Information
+                    </Typography.Title>
+                    <Space style={styles.space} direction='vertical'>
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='firstName'
+                            label='First name'
+                            onClick={toggleVisibility}
                         />
-                        <InfoDisplayGroup 
-                            profileKey="gender" 
-                            label={`Gender`} 
-                            value={latestProfile.gender} 
-                            visibleUpdate={updateDataByPath}
-                            visibilityData={latestProfile.visible}
-                            stepName={`gender`} 
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='lastName'
+                            label='Last name'
+                            onClick={toggleVisibility}
                         />
-                        <InfoDisplayGroup
-                            profileKey={["countryCode","number"]}
-                            label={`Phone`}
-                            value={(latestProfile.countryCode || latestProfile.number) && `${latestProfile.countryCode} ${latestProfile.number}`}
-                            visibleUpdate={updateDataByPath}
-                            visibilityData={latestProfile.visible}
-                            stepName={`phone`}
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='dob'
+                            label='Birthday'
+                            value={(profile.day || profile.month || profile.year) && `${profile.day}/${profile.month}/${profile.year}`}
+                            onClick={toggleVisibility}
                         />
-                        <InfoDisplayGroup
-                            profileKey="nationality"
-                            label={`Nationality`}
-                            value={`${latestProfile.nationality}`}
-                            visibleUpdate={updateDataByPath}
-                            visibilityData={latestProfile.visible}
-                            stepName={`nationality`}
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='gender'
+                            label='Gender'
+                            onClick={toggleVisibility}
                         />
-                        <InfoDisplayGroup
-                            profileKey="interest"
-                            label={`Interests`}
-                            value={`${latestProfile.interest.map((i) => `${i}`)}`}
-                            visibleUpdate={updateDataByPath}
-                            visibilityData={latestProfile.visible}
-                            stepName={`interest`}
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='phoneNumber'
+                            label='Phone Number'
+                            value={`${profile.countryCode} ${profile.number}`}
+                            onClick={toggleVisibility}
                         />
-                    </div>
-                </div>
-                <div className="w-auto md:w-1/3 mb-4">
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='nationality'
+                            label='Nationality'
+                            onClick={toggleVisibility}
+                        />
+                        <CheckoutInputField 
+                            visible={visible}
+                            data={profile}
+                            fieldName='interest'
+                            label='Interest'
+                            value={profile.interest?.join(', ')}
+                            onClick={toggleVisibility}
+                        />
+                    </Space>
+                    {/* <InfoDisplayGroup
+                        profileKey="firstName"
+                        label={`First Name`}
+                        value={profile.firstName}
+                        stepName={`name`} />
+                    <InfoDisplayGroup
+                        profileKey="lastName"
+                        label={`Last Name`}
+                        value={profile.lastName}
+                        stepName={`name`} />
+                    <InfoDisplayGroup
+                        profileKey={["day","month","year"]}
+                        label={`Birthday`}
+                        value={(profile.day || profile.month || profile.year) && `${profile.day}/${profile.month}/${profile.year}`}
+                        visibleUpdate={updateDataByPath}
+                        visibilityData={visible}
+                        stepName={`dob`}
+                    />
+                    <InfoDisplayGroup 
+                        profileKey="gender" 
+                        label={`Gender`} 
+                        value={profile.gender} 
+                        visibleUpdate={updateDataByPath}
+                        visibilityData={visible}
+                        stepName={`gender`} 
+                    />
+                    <InfoDisplayGroup
+                        profileKey={["countryCode","number"]}
+                        label={`Phone`}
+                        value={(profile.countryCode || profile.number) && `${profile.countryCode} ${profile.number}`}
+                        visibleUpdate={updateDataByPath}
+                        visibilityData={visible}
+                        stepName={`phone`}
+                    />
+                    <InfoDisplayGroup
+                        profileKey="nationality"
+                        label={`Nationality`}
+                        value={`${profile.nationality}`}
+                        visibleUpdate={updateDataByPath}
+                        visibilityData={visible}
+                        stepName={`nationality`}
+                    />
+                    <InfoDisplayGroup
+                        profileKey="interest"
+                        label={`Interests`}
+                        value={`${profile.interest.map((i) => `${i}`)}`}
+                        visibleUpdate={updateDataByPath}
+                        visibilityData={visible}
+                        stepName={`interest`}
+                    /> */}
+                </Col>
+                <Col span={6}>
                     <div className="text-2xl mb-4 text-theme-white font-semibold text-center md:text-left">Profile Images</div>
                     <div className='flex flex-wrap gap-5 justify-center md:justify-start'>
-                        { (typeof latestProfile.profilePictureCid === 'string') ? 
+                        { (typeof profile.profilePictureCid === 'string') ? 
                             <ProfilePictureFrame
                             key="profilePictureCid"
-                            src={ipfsUtils.getContentUrl(latestProfile.profilePictureCid)} />
+                            src={ipfsUtils.getContentUrl(profile.profilePictureCid)} />
                             :
-                            latestProfile.profilePictureCid.map((k,v) => {
+                            profile.profilePictureCid.map((k,v) => {
                                 return <ProfilePictureFrame
                                 key={`profilePictureCid_${v}`}
                                         src={ipfsUtils.getContentUrl(k)} />    
@@ -90,8 +167,8 @@ const CheckoutIdentityInformation = () => {
                         }
                         
                     </div>
-                </div>
-            </div>
+                </Col>
+            </Row>
         </div>
     );
 };

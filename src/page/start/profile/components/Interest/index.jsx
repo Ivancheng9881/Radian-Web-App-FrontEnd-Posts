@@ -1,13 +1,13 @@
 import Typography from '../../../../../components/Typography';
-import { useContext } from 'react';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import { useContext, useEffect } from 'react';
+import ProfileContext from '../../../context/socialApp/profile.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
 const DatingInterest = (props) => {
-    const { getLatestField, updateData } = useContext(ProfileContext);
 
-    let interest = getLatestField('interest');
-    if (interest == ""){ interest = []}; 
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
 
     const options = [
         { value: 'foodie', label: 'Foodie' },
@@ -21,6 +21,14 @@ const DatingInterest = (props) => {
         { value: 'diy', label: 'DIY' }
     ];
 
+    useEffect(() => {
+        if (!profile.interest || profile.interest == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.interest])
+
     /**
      * if value not exists in the array, insert one
      * if value already exists in the array, remove
@@ -28,7 +36,7 @@ const DatingInterest = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...interest ];
+        let arr = [ ...profile.interest ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -38,12 +46,7 @@ const DatingInterest = (props) => {
             let idx = arr.indexOf(val);
             arr.splice(idx, 1);
         }
-        updateData({
-            target: {
-                name: 'interest',
-                value: arr
-            }
-        });
+        updateDataByKey('interest', arr);
     };
 
     return (
@@ -56,7 +59,7 @@ const DatingInterest = (props) => {
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={interest}
+                            value={profile.interest}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

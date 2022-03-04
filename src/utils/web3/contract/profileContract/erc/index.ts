@@ -195,11 +195,8 @@ export async function createProfileErc(
     identityID: string, 
     useGasStation: boolean
     ) {
-    console.log('createProfileErc', identityID, useGasStation)
 
     let currentProfile = await getProfileErc();
-    console.log("Current Profile", currentProfile);
-    console.log("from address", await ERCUtils.getAddress());
     let contract = useGasStation ? await initGaslessProfileContract() : await initProfileContract();
     let txn;
     if (currentProfile) {

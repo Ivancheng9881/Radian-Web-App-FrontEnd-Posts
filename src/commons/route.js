@@ -11,3 +11,4 @@ export const addAddressRoute = '/p/wallet'
 export const settingRoute = '/settings';
 export const settingProfileRoute = '/settings/profile'
 export const settingWalletRoute = '/settings/wallet'
+export const settingNFTRoute = '/settings/nft'

@@ -1,22 +1,10 @@
 import { useEffect, useState, useContext, FC } from "react";
 import { useParams } from "react-router-dom";
-import { getProfileFromIDSubgraph } from "../../../utils/web3/contract/profileContract/erc/index"; 
-import { getFullProfileFromIDSolana } from "../../../utils/web3/contract/profileContract/solana/index"; 
-import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
-import ProfileContext from "../../../utils/profile/context/profile.context";
 import ProfileContractUtils from "../../../utils/web3/contract/profileContract/utils";
-
 import { useWallet } from '@solana/wallet-adapter-react';
-import { Connection } from '@solana/web3.js';
-import { Provider } from '@project-serum/anchor';
 import ProfileCard from "../../../components/ProfileCard";
-
-import ViewIdentityInformation from "./viewIdentity";
 import config from "../../../commons/config";
-import { Space, Spin } from "antd";
-import LoadingScreen from "../../../components/LoadingScreen";
 import Layout from "antd/lib/layout";
-import DefaultLayout from "../../../components/Layout";
 import CustomSider from "../../../components/Layout/CustomSider.components";
 import Web3Context from "../../../utils/web3/context/web3.context";
 

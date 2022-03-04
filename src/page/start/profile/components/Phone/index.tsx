@@ -1,38 +1,44 @@
-import { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import Dropdown from 'react-dropdown';
 import CustomTypography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../../context/socialApp/profile.context';
 
 import 'react-dropdown/style.css';
 import './selectCountryCode.styles.css';
 
 import { country_code_list as countryCodeOptions } from './countryCode.json';
 import { Input, Select, Row, Col, Space, Typography  } from 'antd';
+import { FixLater } from '../../../../../schema/helper.interface';
 
-const ProfilePhone = (props) => {
-    const { getLatestField, updatedData, updateData, updateDataByDropdownSelect } = useContext(ProfileContext);
+const styles = {
+    select: {
+        width: '100%'
+    }
+} as const;
 
-    const [ selectedCountryCode, setSelectedCountryCode ] = useState(`Select Code`);
+const ProfilePhone: FC = () => {
+    const { profile, setProfile, updateDataByKey } = useContext(ProfileContext);
 
-    const number = getLatestField('number');
-    const countryCode = getLatestField('countryCode');
+    // const [ selectedCountryCode, setSelectedCountryCode ] = useState(`Select Code`);
+
+    // const number = getLatestField('number');
+    // const countryCode = getLatestField('countryCode');
     
-    useEffect(()=>{
-        if ( countryCode != "" && countryCode != null) {
-            setSelectedCountryCode(countryCode);
-        }
-    })
+    // useEffect(()=>{
+    //     if ( countryCode != "" && countryCode != null) {
+    //         setSelectedCountryCode(countryCode);
+    //     }
+    // })
 
-    const handleChange = async (e) => {
-        let eValue = e.value.replace('+', '');
-
-        setSelectedCountryCode(e.value);
-
-        //update profile state
-        updateDataByDropdownSelect('countryCode', eValue);
+    const handleChange = async (e: FixLater) => {
+        updateDataByKey('countryCode', e);
     };
+
+    const handleNumberUpdate = async (e: FixLater) => {
+        updateDataByKey('number', e.target.value);
+    }
 
     return (
         <div id="RD-CreateProfile-phone" className="RD-CreateProfileComponents">
@@ -40,12 +46,13 @@ const ProfilePhone = (props) => {
                 <Col span={24}>
                     <Space direction='vertical' style={{width: '100%'}}>
                         <CustomTypography.Featured alignment="left">Basic Info</CustomTypography.Featured>
-                        <Typography.Title level={1} alignment="left">You can reach me at</Typography.Title>
+                        <Typography.Title level={1} >You can reach me at</Typography.Title>
                         <Row gutter={12}>
                             <Col span={6}>
                                 <Select
                                     size='large'
-                                    value={`+${selectedCountryCode}`}
+                                    style={styles.select}
+                                    value={profile.countryCode}
                                     onChange={handleChange}
                                 >
                                     {countryCodeOptions.sort().map((val) => {
@@ -66,8 +73,8 @@ const ProfilePhone = (props) => {
                                     name="number"
                                     type="number"
                                     placeholder="000000000"
-                                    value={number}
-                                    onChange={(e) => updateData(e, 'number')}
+                                    value={profile.number}
+                                    onChange={handleNumberUpdate}
                                 />
                             </Col>
                         </Row>

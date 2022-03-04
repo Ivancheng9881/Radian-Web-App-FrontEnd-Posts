@@ -1,15 +1,12 @@
 import { Fragment } from 'react';
+import ProfilePictureFrameRoot from './frame';
 import './styles.css';
 
 const ProfilePictureFrame = ({ src = undefined, maxHeight = 400, maxWidth = 400 }) => {
     return (
-        <Fragment>
-            {src && (
-                <div className="RD-ProfilePictureRoot border-4 border-theme-lightGreen rounded-lg border-2">
-                    <img className="img-fluid" src={src} />
-                </div>
-            )}
-        </Fragment>
+        <ProfilePictureFrameRoot>
+            {src && <img className="img-fluid" src={src} />}
+        </ProfilePictureFrameRoot>
     );
 };
 

@@ -16,9 +16,7 @@ const CreateProfilePage = (props) => {
     }, [])
 
     return (
-        <div>
-            <CreateProfileController />
-        </div>
+        <CreateProfileController />
     )
 };
 

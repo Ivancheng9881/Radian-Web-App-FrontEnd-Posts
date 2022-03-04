@@ -1,13 +1,10 @@
 import Typography from '../../../../../components/Typography';
-import { useContext } from 'react';
-import DatingContext from '../../../context/datingApp/dating.context';
+import { useContext, useEffect } from 'react';
 import ItemOptionList from '../../../../../components/ItemOptions';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 
-const DatingLookingFor = (props) => {
-
-    const { getLatestField, updateData } = useContext(DatingContext);
-
-    const lookingFor = getLatestField('lookingFor');
+const DatingLookingFor = () => {
 
     const options = [
         { value: 'serious-relationship', label: 'Serious Relationship' },
@@ -16,14 +13,20 @@ const DatingLookingFor = (props) => {
         { value: 'friends', label: 'Friends' }
     ];
 
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
+
+    useEffect(() => {
+        console.log(profile.lookingFor)
+        if (!profile.lookingFor || profile.lookingFor == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.lookingFor])
+
     const handleSelect = (val) => {
-        let update = {
-            target: {
-                name: 'lookingFor',
-                value: val
-            }
-        };
-        updateData(update);
+        updateDataByKey('lookingFor', val);
     };
 
     return (
@@ -37,7 +40,7 @@ const DatingLookingFor = (props) => {
                     <div className="mt-10 inline-flex items-end">
                         <div className="mr-5">
                             <ItemOptionList
-                                value={[ lookingFor ]}
+                                value={[ profile.lookingFor ]}
                                 options={options}
                                 handleSelect={handleSelect}
                                 arrangment="inline"

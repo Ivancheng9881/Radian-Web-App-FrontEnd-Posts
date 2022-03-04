@@ -1,30 +1,38 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Toggler from '../../../../../components/Toggler';
-import DatingContext from '../../../context/datingApp/dating.context';
 import { Col, Grid, Input, Row, Space, Typography } from 'antd';
 import CustomTypography from '../../../../../components/Typography';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 
 const ProfileWeight = (props) => {
 
-    const { getLatestField, datingInfo, updateData } = useContext(DatingContext);
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
 
-    const weight = getLatestField('weight');
-    let weightUnit = getLatestField('weightUnit');
-    if (weightUnit == null || weightUnit == ""){
-        weightUnit = "kg";
-    }
+    useEffect(() => {
+        if (!profile.weight || profile.weight == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.weight])
+
+    useEffect(() => {
+        if (profile.weightUnit == null || profile.weightUnit == ""){
+            updateDataByKey('weightUnit', 'kg')
+        }
+    }, [])
 
     const unitOpts = [ { value: 'lbs', label: 'lbs' }, { value: 'kg', label: 'kg' } ];
 
     const toggleUnit = (val) => {
-        let update = {
-            target: {
-                name: 'weightUnit',
-                value: val
-            }
-        };
-        updateData(update, 'number');
+        updateDataByKey('weightUnit', val);
     };
+
+    const handleWeightChange = (e) => {
+        updateDataByKey('weight', e.target.value);
+    }
 
     return (
         <div id="RD-CreateProfile-weight" className="RD-CreateProfileComponents">
@@ -39,15 +47,19 @@ const ProfileWeight = (props) => {
                                     size='large'
                                     type="number"
                                     name="weight"
-                                    placeholder={weightUnit.toUpperCase()}
-                                    value={weight}
-                                    onChange={(e) => updateData(e, 'number')}
+                                    placeholder={profile.weightUnit?.toUpperCase() || 'kg'}
+                                    value={profile.weight}
+                                    onChange={handleWeightChange}
                                 />
                             </Col>
                             <Col span={12}>
                                 <div className="inline-flex items-end">
                                     <div className="mr-5">
-                                    <Toggler value={weightUnit} opts={unitOpts} handleToggle={toggleUnit} />
+                                    <Toggler 
+                                        value={profile.weightUnit} 
+                                        opts={unitOpts} 
+                                        handleToggle={toggleUnit} 
+                                    />
                                     </div>
                                 </div>
                             </Col>

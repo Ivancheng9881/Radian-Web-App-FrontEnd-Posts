@@ -1,10 +1,11 @@
 import ArrowDownIcon from "../Icons/arrowDown.components";
 
 
-const ArrowDownButton = ({
-    onClick,
-    disabled=false
-}) => {
+const ArrowDownButton = (props) => {
+    const {
+        onClick,
+        disabled=true
+    } = props;
 
     const handleClick = (e) => {
         e.preventDefault();
@@ -14,10 +15,10 @@ const ArrowDownButton = ({
 
     return (
         <div 
-        className={`h-16 w-16 bg-theme-dark-blue rounded-full flex transition-all
+            className={`h-16 w-16 bg-theme-dark-blue rounded-full flex transition-all
             ${disabled ? 'cursor-not-allowed opacity-40' : 'cursor-pointer opacity-100'}`
         }
-        onClick={handleClick}
+            onClick={handleClick}
         >
             <ArrowDownIcon />
         </div>

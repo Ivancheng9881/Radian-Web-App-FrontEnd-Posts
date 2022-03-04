@@ -27,6 +27,7 @@ const Web3Provider : FC = ({ children }) => {
         window.ethereum?.request({ method: 'eth_accounts' })
             .then((result: string[]) => {
             if (result.length != 0) {
+                console.log("kayton@debug", result);
                 console.log("kayton@debug", prevProviders);
                 connectERCProvider(true).then(
                     (addressList)=>{

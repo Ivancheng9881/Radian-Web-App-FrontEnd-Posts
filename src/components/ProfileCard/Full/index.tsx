@@ -4,7 +4,6 @@ import ProfileLoading from "./ProfileLoading.components";
 import ProfileContent from "./ProfileContent.components";
 import config from "../../../commons/config";
 import FullProfileFrame from "./Frame.components";
-import PendingLoading from "./PendingLogin.components";
 
 interface PageProps {
     profile: FullProfile,
@@ -38,10 +37,6 @@ const Full : FC<PageProps> = (props) => {
             }
         </FullProfileFrame>
     )
-};
-
-export {
-    PendingLoading
 };
 
 export default Full

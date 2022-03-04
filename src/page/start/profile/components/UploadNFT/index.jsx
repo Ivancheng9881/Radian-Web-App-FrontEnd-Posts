@@ -2,7 +2,6 @@ import Typography from '../../../../../components/Typography';
 import { useContext, useEffect, useState } from 'react';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
 import RoundedButton from '../../../../../components/Button/Rounded.components';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
 
 const ProfileNFT = (props) => {
     // const { getLatestField, updateProfile, updatedProfile, updateProfileByKey } = useContext(ProfileContext);

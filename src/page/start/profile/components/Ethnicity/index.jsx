@@ -1,13 +1,10 @@
 import Typography from '../../../../../components/Typography';
-import { useContext } from 'react';
-import DatingContext from '../../../context/datingApp/dating.context';
+import { useContext, useEffect } from 'react';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
-const DatingEthnicity = (props) => {
-
-    const { getLatestField, updateDataByKey } = useContext(DatingContext);
-    let datingEthnicity = getLatestField("datingEthnicity");
-    if ( ! datingEthnicity ) datingEthnicity = [];
+const DatingEthnicity = () => {
 
     const options = [
         { value: 'american-indian', label: 'American Indian' },
@@ -21,6 +18,23 @@ const DatingEthnicity = (props) => {
         { value: 'open', label: 'Open to All' }
     ];
 
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
+
+    useEffect(() => {
+        if (!profile.datingEthnicity) {
+            updateDataByKey('datingEthnicity', []);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!profile.datingEthnicity || profile.datingEthnicity.length == 0) {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.datingEthnicity])
+
     /**
      * if value not exists in the array, insert one
      * if value already exists in the array, remove
@@ -28,7 +42,7 @@ const DatingEthnicity = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...datingEthnicity ];
+        let arr = [ ...profile.datingEthnicity ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -51,7 +65,7 @@ const DatingEthnicity = (props) => {
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={datingEthnicity}
+                            value={profile.datingEthnicity}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

@@ -1,26 +1,34 @@
 import CustomTypography from '../../../../../components/Typography';
-import { useContext } from 'react';
-import DatingContext from '../../../context/datingApp/dating.context';
+import { useContext, useEffect, useState } from 'react';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 import Toggler from '../../../../../components/Toggler';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
 import { Col, Grid, Input, Row, Slider, Space, Typography } from 'antd';
 
-const DatingAgeRange = (props) => {
-    const { getLatestField, updateDataByKey } = useContext(DatingContext);
+const DatingAgeRange = () => {
 
-    let ageRangeIsDealBreaker = getLatestField("ageRangeIsDealBreaker");
-    let ageRangeMin = getLatestField("ageRangeMin");
-    let ageRangeMax = getLatestField("ageRangeMax");
-    if ( !ageRangeMin ) ageRangeMin = 18;
-    if ( !ageRangeMin ) ageRangeMax = 100;
-    if ( ! ageRangeIsDealBreaker ) ageRangeIsDealBreaker = 0;
+    const ageMinDefault = 18;
+    const ageMaxDefault = 100;
+
+    const { profile, updateMultiple, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
+
+    useEffect(() => {
+
+        if (!profile.ageRangeMin) {
+            updateDataByKey('ageRangeMin', ageMinDefault);
+        }
+        if (!profile.ageRangeMax) {
+            updateDataByKey('ageRangeMax', ageMaxDefault);
+        };        
+    }, []);
 
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
     const handleToggle = (val) => updateDataByKey('ageRangeIsDealBreaker', val);
+   
     const handleAfterChange = (e) => {
-        updateDataByKey('ageRangeMax', e[1]);
-        updateDataByKey('ageRangeMin', e[0])
+        updateMultiple({'ageRangeMax': e[1], 'ageRangeMin': e[0]});
     }
 
     return (
@@ -35,7 +43,7 @@ const DatingAgeRange = (props) => {
                                 <Slider 
                                     min={18}
                                     max={100}
-                                    defaultValue={[ageRangeMin,ageRangeMax]}
+                                    defaultValue={[profile.ageRangeMin, profile.ageRangeMax]}
                                     onAfterChange={handleAfterChange}
                                     step={1}
                                     range
@@ -46,7 +54,7 @@ const DatingAgeRange = (props) => {
                                 <div className="mt-10 inline-flex items-end">
                                     <div className="mr-5">
                                         <Toggler
-                                            value={ageRangeIsDealBreaker}
+                                            value={profile.ageRangeIsDealBreaker}
                                             opts={dealBreakerOpts}
                                             handleToggle={handleToggle}
                                             size="large"

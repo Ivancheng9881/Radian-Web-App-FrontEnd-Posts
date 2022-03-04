@@ -1,15 +1,28 @@
 import CustomTypography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 import { useContext, useEffect, useState } from 'react';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../../context/socialApp/profile.context';
 import { Col, Grid, Input, Row, Space, Typography } from 'antd';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
 const ProfileNationality = (props) => {
 
-    const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
 
-    let nationality = getLatestField('nationality');
+    useEffect(() => {
+        if (!profile.nationality || profile.nationality == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.nationality])
 
+    const handleChange = (e) => {
+        updateDataByKey('nationality', e.target.value);
+    }
+
+    
     return (
         <div id="RD-CreateProfile-nationality" className="RD-CreateProfileComponents">
             <Row>
@@ -24,8 +37,8 @@ const ProfileNationality = (props) => {
                                     type="text"
                                     name="nationality"
                                     placeholder="Nationality"
-                                    value={nationality}
-                                    onChange={updateData}
+                                    value={profile.nationality}
+                                    onChange={handleChange}
                                 />
                             </Col>
                         </Row>

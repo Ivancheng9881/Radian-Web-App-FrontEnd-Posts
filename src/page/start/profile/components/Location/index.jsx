@@ -1,14 +1,26 @@
-import { useContext, useState } from 'react';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import { useContext, useEffect, useState } from 'react';
+import ProfileContext from '../../../context/datingApp/dating.context';
 import { Col, Grid, Input, Row, Space, Typography } from 'antd';
 import CustomTypography from '../../../../../components/Typography';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
-const ProfileLocation = (props) => {
+const ProfileLocation = () => {
 
-    const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
+
+    useEffect(() => {
+        if (!profile.location || profile.location == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.location])
+
+    const handleChange = (e) => {
+        updateDataByKey('location', e.target.value);
+    };
     
-    let location = getLatestField('location');
-
     return (
         <div id="RD-CreateProfile-location" className="RD-CreateProfileComponents">
             <Row>
@@ -23,8 +35,8 @@ const ProfileLocation = (props) => {
                                     name="radianFirstName"
                                     type="text"
                                     placeholder="Location"
-                                    value={location}
-                                    onChange={updateData}
+                                    value={profile.location}
+                                    onChange={handleChange}
                                 />
                             </Col>
                         </Row>

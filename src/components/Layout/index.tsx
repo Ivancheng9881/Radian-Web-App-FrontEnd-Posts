@@ -1,5 +1,6 @@
 import { Layout } from 'antd'
 import { FC } from 'react'
+import ConnectWalletPopup from '../ConnectWalletPopup'
 import Navbar from '../Navbar'
 
 interface PropsType {
@@ -9,18 +10,21 @@ interface PropsType {
 const DefaultLayout : FC<PropsType> = (props) => {
 
   const styles = {
-    margin: 'auto',
-    marginTop: 80, 
-    // maxWidth: 1200,
-    display: props.fullWidth ? 'block' : 'flex'
+    body: {
+      margin: 'auto',
+      marginTop: 80, 
+      display: props.fullWidth ? 'block' : 'flex'
+    },
+    bodyFullWidth: {},
   }
 
   return (
       <Layout>
         <Navbar />
-        <div style={styles}>
+        <div style={props.fullWidth ? styles.bodyFullWidth : styles.body}>
           {props.children}          
         </div>
+        <ConnectWalletPopup />
       </Layout>
   )
 }

@@ -1,7 +1,7 @@
 import Typography from '../../../../../components/Typography';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../../context/socialApp/profile.context';
 import DatingContext from '../../../context/datingApp/dating.context';
 // import RoundedButton from '../../../../../components/Button/Rounded.components';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
@@ -21,6 +21,7 @@ import { mainRoute } from '../../../../../commons/route';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
 import { Bars } from 'react-loader-spinner'; 
 import ProfileContractUtils from '../../../../../utils/web3/contract/profileContract/utils';
+import CreateProfilePopup from '../../../../../components/CreateProfilePopup';
 
 const barLoader = {
     Component: Bars,
@@ -36,7 +37,6 @@ const CheckoutCreateProfile = () => {
 
     const history = useHistory();
     const web3Context = useContext(Web3Context);
-    console.log("web3", web3Context);
     const { setSnackBar } = useContext(CreateSnackbarContext);
     // form data for upload
     const profileContext = useContext(ProfileContext);
@@ -49,46 +49,63 @@ const CheckoutCreateProfile = () => {
         msg: ''
     });
     const [ isLoading, setIsLoading] = useState(false);
+    const [ createPopupOpen, setCreatePopupOpen ] = useState({
+        status: false,
+        network: ''
+    })
+    const [ cid, setCid ] = useState(null);
     const solanaWallet = useWallet();
 
     let logoWidth = 130;
 
-    useEffect(
-        async () => {
-            console.log('solanaWallet:', solanaWallet);
-            if (solTxn && solanaWallet.connected) {
-                console.log('solana wallet is connecting. redo txn now');
-                await createProfileOnSolana();
-                setSolTxn(false);
-            }
-        },
-        [ solanaWallet.connected ]
-    );
+    useEffect(() => {
+        createProfileCid();
+    }, [])
 
-    useEffect(
-        () => {
-            if (web3Context?.providers?.selected?.split('@')[1] === 'solana') {
-                solanaWallet.select(PhantomWalletName);
-            }
-        },
-        [ web3Context?.providers.selected ]
-    );
+    // useEffect(
+    //     async () => {
+    //         console.log('solanaWallet:', solanaWallet);
+    //         if (solTxn && solanaWallet.connected) {
+    //             console.log('solana wallet is connecting. redo txn now');
+    //             await createProfileOnSolana();
+    //             setSolTxn(false);
+    //         }
+    //     },
+    //     [ solanaWallet.connected ]
+    // );
+
+    // useEffect(
+    //     () => {
+    //         if (web3Context?.providers?.selected?.split('@')[1] === 'solana') {
+    //             solanaWallet.select(PhantomWalletName);
+    //         }
+    //     },
+    //     [ web3Context?.providers.selected ]
+    // );
 
     const getCompletedProfile = ()=>{
-        let profile = profileContext.getUploadReadyObject();
-        const datingInfo = datingContext.getUploadReadyObject();
+        let profile = profileContext.getVisibleProfile();
+        let datingInfo = datingContext.getVisibleProfile();
         profile.application["radianDating"] = datingInfo;
-        console.log("Adjusted", profile);
         return profile;    
     }
 
     const createProfileCid = async () => {
         let profile = getCompletedProfile();
-        let cid = await ProfileContractUtils.createProfileCid(profile);
-        return cid;
+        let _cid = await ProfileContractUtils.createProfileCid(profile);
+        setCid(_cid);
     };
 
     const createProfilePolygon = async (useGasStation) => {
+        if (useGasStation) {
+        } else {
+            setCreatePopupOpen({
+                network: 'polygon',
+                status: true
+            })
+        }
+
+        return ;
         // disable if metamask is not the selected provider
         if (web3Context?.providers?.selected.split("@")[1] != 'erc'){
             setSnackBar({ open: true, message: "Please select an ethereum compatible wallet", severity: 'danger' });
@@ -108,7 +125,6 @@ const CheckoutCreateProfile = () => {
             }
             setError({ state: false, msg: '' });
             console.log('is connected');
-            let cid = await createProfileCid();
             try{
                 txn = await createProfileErc(cid.toString(), useGasStation);                
             } catch (error) {
@@ -144,31 +160,10 @@ const CheckoutCreateProfile = () => {
     };
 
     const createProfileOnSolana = async () => {
-
-        // disable if metamask is not the selected provider
-        if (web3Context?.providers?.selected?.split("@")[1] != 'solana'){
-            setSnackBar({ open: true, message: "Please select a phantom compatible wallet", severity: 'danger' });
-            return;
-        }
-
-        setIsLoading(true);
-        setSolTxn(true);
-        console.log("solana wallet", solanaWallet);
-        if (!solanaWallet.connected) {
-            console.log('solana wallet not connected');
-            console.log('trying to connect now');
-            await solanaWallet.connect();
-        } else {
-            let cid = await createProfileCid();
-            let result = await createProfilePipelineSolana(solanaWallet, cid);
-            if (result) {
-                // clear cache and move back
-                profileContext.deleteUpdatingData();
-                datingContext.deleteUpdatingData();
-                history.push(mainRoute);
-            }
-        }
-        setIsLoading(false);
+        setCreatePopupOpen({
+            network: 'solana',
+            status: true,
+        })
     };
 
     // const fetchProfileMappingSolana = async () => {
@@ -177,6 +172,7 @@ const CheckoutCreateProfile = () => {
     // };
 
     return (
+        <>
         <div id="RD-CheckoutProfileRoot" className={isLoading && 'opacity-40'}>
             {isLoading &&
             <div className='fixed left-1/2 top-1/2 transform -translate-x-24 -translate-y-24 
@@ -208,7 +204,7 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={() => ! isLoading && createProfilePolygon(false)}
+                                    onClick={e => createProfilePolygon(false)}
                                 >
                                     <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon</div>
                                 </div>
@@ -226,7 +222,7 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div
                                     className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
-                                    onClick={() => ! isLoading && createProfilePolygon(true)}
+                                    onClick={e => createProfilePolygon(true)}
                                 >
                                     <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon (Free)</div>
                                 </div>
@@ -244,7 +240,7 @@ const CheckoutCreateProfile = () => {
                                 </div>
                                 <div
                                     className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
-                                    onClick={()=> ! isLoading && createProfileOnSolana()}
+                                    onClick={e => createProfileOnSolana()}
                                 >
                                     <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base"> Solana </div>
                                 </div>
@@ -257,6 +253,13 @@ const CheckoutCreateProfile = () => {
                 </div>
             </div>
         </div>
+        <CreateProfilePopup 
+            open={createPopupOpen.status} 
+            network={createPopupOpen.network} 
+            setOpen={setCreatePopupOpen}
+            cid={cid}
+            />
+        </>
     );
 };
 

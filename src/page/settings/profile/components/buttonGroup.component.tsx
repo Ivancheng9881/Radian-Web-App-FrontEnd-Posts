@@ -5,6 +5,7 @@ import { FixLater } from "../../../../schema/helper.interface";
 interface PropsType {
     disabled: boolean,
     clickPrimary: FixLater,
+    clickSecondary: FixLater,
 }
 
 const styles = {
@@ -16,6 +17,7 @@ const styles = {
 const EditProfileButtonGroup : FC<PropsType> = ({
     disabled,
     clickPrimary,
+    clickSecondary
 }) => {
     return (
         <Row justify="end" gutter={24}>
@@ -23,7 +25,7 @@ const EditProfileButtonGroup : FC<PropsType> = ({
                 <Button
                     color="secondary"
                     shape="round"
-                    onClick={clickPrimary}
+                    onClick={clickSecondary}
                     style={styles.button}
                     disabled={disabled}
                 >

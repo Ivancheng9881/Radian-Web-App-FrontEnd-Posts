@@ -1,13 +1,10 @@
 import Typography from '../../../../../components/Typography';
-import { useContext } from 'react';
-import DatingContext from '../../../context/datingApp/dating.context';
+import { useContext, useEffect } from 'react';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 import ItemOptionList from '../../../../../components/ItemOptions';
 
-const DatingReligion = (props) => {
-
-    const { getLatestField, updateDataByKey } = useContext(DatingContext);
-    let datingReligion = getLatestField("datingReligion");
-    if ( ! datingReligion ) datingReligion = [];
+const DatingReligion = () => {
 
     const options = [
         { value: 'buddhist', label: 'Buddhist' },
@@ -23,6 +20,23 @@ const DatingReligion = (props) => {
         { value: 'open-to-all', label: 'Open to All' }
     ];
 
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
+
+    useEffect(() => {
+        if (!profile.datingReligion) {
+            updateDataByKey('datingReligion', []);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!profile.datingReligion || profile.datingReligion.length == 0) {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.datingReligion])
+
     /**
      * if value not exists in the array, insert one
      * if value already exists in the array, remove
@@ -30,7 +44,7 @@ const DatingReligion = (props) => {
      * @param {string} val 
      */
     const handleSelect = (val) => {
-        let arr = [ ...datingReligion ];
+        let arr = [ ...profile.datingReligion ];
 
         if (!arr.includes(val)) {
             // perform insert
@@ -53,7 +67,7 @@ const DatingReligion = (props) => {
                     </div>
                     <div className="mt-10 w-full">
                         <ItemOptionList
-                            value={datingReligion}
+                            value={profile.datingReligion}
                             options={options}
                             handleSelect={handleSelect}
                             arrangement="flex"

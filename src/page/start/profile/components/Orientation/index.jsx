@@ -1,13 +1,22 @@
 import Typography from '../../../../../components/Typography';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Toggler from '../../../../../components/Toggler';
-import DatingContext from '../../../context/datingApp/dating.context';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 
-const DatingSexualOrientation = (props) => {
+const DatingSexualOrientation = () => {
 
-    const { getLatestField, datingInfo, updateData } = useContext(DatingContext);
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
 
-    let orientation = getLatestField('orientation');
+    useEffect(() => {
+        if (!profile.orientation || profile.orientation == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.orientation])
+
 
     const orientationOpts = [
         { value: 'male', label: 'Male' },
@@ -16,13 +25,7 @@ const DatingSexualOrientation = (props) => {
     ];
 
     const toggleOrientation = (val) => {
-        let update = {
-            target: {
-                name: 'orientation',
-                value: val
-            }
-        };
-        updateData(update);
+        updateDataByKey('orientation', val);
     };
 
     return (
@@ -36,7 +39,7 @@ const DatingSexualOrientation = (props) => {
                     <div className="mt-10 inline-flex items-end">
                         <div className="mr-5">
                             <Toggler
-                                value={orientation}
+                                value={profile.orientation}
                                 opts={orientationOpts}
                                 handleToggle={toggleOrientation}
                             />

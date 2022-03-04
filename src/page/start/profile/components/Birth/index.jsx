@@ -1,42 +1,135 @@
 import CustomTypepography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
-import { useContext } from 'react';
-import CreateProfileContext from '../../../context/profile/profile.context';
+import { useContext, useEffect, useState } from 'react';
 import Validator from '../../../../../utils/validation';
+import ProfileContext from '../../../context/socialApp/profile.context';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
 import { Col, Grid, Input, Row, Space, Typography } from 'antd';
 
 const ProfileBirth = (props) => {
-    const { getLatestField, updatedData, updateData } = useContext(ProfileContext);
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
 
-    let day = getLatestField('day');
-    let month = getLatestField('month');
-    let year = getLatestField('year');
+    const [ error, setError ] = useState({
+        day: {
+            status: false,
+            msg: 'invalid value',
+        },
+        month:{
+            status: false,
+            msg: 'invalid value',
+        },
+        year: {
+            status: false,
+            msg: 'invalid value',
+        },        
+    });
+
+    useEffect(() => {
+        setNextDisabled((error.year.status || error.month.status || error.day.status));
+    }, [error.year, error.month, error.day]);
+
+    useEffect(() => {
+        let dayValid = validateDay(profile.day);
+        let monthValid = validateMonth(profile.month);
+        let yearValid = validateYear(profile.year);
+        setError({
+            day: {
+                status: !dayValid,
+                msg: error.day.msg
+            },
+            month: {
+                status: !monthValid,
+                msg: error.month.msg
+            },
+            year: {
+                status: !yearValid,
+                msg: error.year.msg
+            },
+        })
+    }, []);
+
+    const validateDay = (val) => {
+        return Validator.isNumberInRange(val, 0, 31, true)
+    };
+
+    const validateMonth = (val) => {
+        return Validator.isNumberInRange(val, 0, 12, true);
+    };
+
+    const validateYear = (val) => {
+        return Validator.isNumberInRange(val, 0, 2100, true);
+    }
 
     // console.log('ProfileBirth', profile);
     const handleDayUpdate = (e) => {
-        let isValid = Validator.isNumberInRange(e.target.value, 0, 31, true);
-        console.log('DD', isValid);
-        if (isValid){
-            updateData(e, 'date', isValid);
+        let isValid = validateDay(e.target.value);
+        if (!isValid){
+            setError({
+                ...error,
+                day: {
+                    status: true,
+                    msg: 'Day is not valid'
+                }
+            })
+        } else {
+            setError({
+                ...error,
+                day: {
+                    status: false,
+                    msg: error.day.msg
+                }
+            })
         }
+        updateDataByKey('day', e.target.value);
+
     };
 
     const handleMonthUpdate = (e) => {
-        let isValid = Validator.isNumberInRange(e.target.value, 0, 12, true);
-        console.log('MM', isValid);
-        if (isValid) {
-            updateData(e, 'date', isValid);
+        let isValid = validateMonth(e.target.value)
+        if (!isValid){
+            setError({
+                ...error,
+                month: {
+                    status: true,
+                    msg: 'Month is not valid'
+                }
+            })
+        } else {
+            setError({
+                ...error,
+                month: {
+                    status: false,
+                    msg: error.month.msg
+                }
+            })
         }
+        updateDataByKey('month', e.target.value);
+
     };
 
     const handleYearUpdate = (e) => {
-        let isValid = Validator.isNumberInRange(e.target.value, 0, 2100, true);
-        console.log('YYYY', isValid);
-        if (isValid) {
-            updateData(e, 'date', isValid);
+        let isValid = validateYear(e.target.value)
+        if (!isValid){
+            setError({
+                ...error,
+                year: {
+                    status: true,
+                    msg: 'Year is not valid'
+                }
+            })
+        } else {
+            setError({
+                ...error,
+                year: {
+                    status: false,
+                    msg: error.year.msg
+                }
+            })
         }
+        updateDataByKey('year', e.target.value);
+
     };
 
     return (
@@ -53,9 +146,12 @@ const ProfileBirth = (props) => {
                                     type="day"
                                     name="day"
                                     placeholder="DD"
-                                    value={day}
+                                    value={profile.day}
                                     onChange={handleDayUpdate}
                                 />
+                                <Typography.Text type='danger'>
+                                    {error.day.status && error.day.msg}
+                                </Typography.Text>
                             </Col>
                             <Col span={8}>
                                 <Input
@@ -63,9 +159,12 @@ const ProfileBirth = (props) => {
                                     type="number"
                                     name="month"
                                     placeholder="MM"
-                                    value={month}
+                                    value={profile.month}
                                     onChange={handleMonthUpdate}
                                 />
+                                <Typography.Text type='danger'>
+                                    {error.month.status && error.month.msg}
+                                </Typography.Text>
                             </Col>
                             <Col span={8}>
                                 <Input
@@ -73,9 +172,12 @@ const ProfileBirth = (props) => {
                                     type="number"
                                     name="year"
                                     placeholder="YYYY"
-                                    value={year}
+                                    value={profile.year}
                                     onChange={handleYearUpdate}
                                 />
+                                <Typography.Text type='danger'>
+                                    {error.year.status && error.year.msg}
+                                </Typography.Text>
                             </Col>
                         </Row>
                     </Space>

@@ -8,6 +8,8 @@ import { encodeUint8Array } from '../../../general/parser.utils';
 import { SolanaAddressNumber, SolanaContentID, SolanaProfile, SolanaProfileID, SolanaProgram, SolanaSeedBuffer } from './index.interface';
 import { resolve } from 'path/posix';
 import { rejects } from 'assert';
+import { Wallet } from 'ethers';
+import { WalletContextState } from '@solana/wallet-adapter-react';
 const BN = require('bn.js');
 
 
@@ -226,7 +228,7 @@ async function fetchProfileMappingSolana(
         let profileMapping = await program.account.profileMapping.fetch(profileMappingPDA);
         return profileMapping;
     } catch (err) {
-        console.log('Error in fetching solana profile', err);
+        throw({status: 4000})
     }
 };
 
@@ -234,45 +236,118 @@ async function fetchProfileSolana(
     program: Program, 
     provider: Provider
     ) {
-    let profileMapping = await fetchProfileMappingSolana(program, provider);
-    console.log("Profile Mapping", profileMapping);
-    if (profileMapping?.profileId) {
+       
+    let profileMapping
+    
+    // console.log("Profile Mapping", profileMapping);
+    // if (profileMapping?.profileId) {
         try {
+            profileMapping = await fetchProfileMappingSolana(program, provider);
             // only fetch profile when profileMapping exists
             console.log("pm", profileMapping);
             let [profilePDA, profileBump] = await getProfilePDA(program.programId, profileMapping.profileId.toNumber());
             let profile = await program.account.profile.fetch(profilePDA);
             console.log("p", profile);
             return [profileMapping, profile]
-        } catch (err) {
+        } catch (err: any) {
             // profile does not exist
             console.log('Error in fetching profile', err)
-            return [profileMapping, null];
+            if (err.status) {
+                throw(err);
+            } else {
+                throw({status: 4001, data: {profileMapping}})
+            }
         }
-    } else {
-        // no profile mapping nor profile
-        return [null, null]
-    }
+    // } else {
+    //     // no profile mapping nor profile
+    //     return [null, null]
+    // }
 }
 
-async function createProfileMappingSolana(
-    program: Program, 
-    provider: Provider
+export async function createProfileMappingSolana(
+    wallet: FixLater
     ) {
+    let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
     let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet.publicKey);
     let [daoAccountPDA, daoAccountBump] = await getDaoAccountPDA(program.programId);
 
-    let resp = await program.rpc.createProfileMapping(
-        profileMappingBump, new BN(0), 0, {
-        accounts: {
-            daoAccount: daoAccountPDA,
-            profileMapping: profileMappingPDA,
-            user: provider.wallet.publicKey,
-            systemProgram: web3.SystemProgram.programId
-        },
-        signers: [],
-    });
-    return resp;
+    try {
+        let resp = await program.rpc.createProfileMapping(
+            profileMappingBump, new BN(0), 0, {
+            accounts: {
+                daoAccount: daoAccountPDA,
+                profileMapping: profileMappingPDA,
+                user: provider.wallet.publicKey,
+                systemProgram: web3.SystemProgram.programId
+            },
+            signers: [],
+        });
+        return resp;
+    } catch (err) {
+        throw(err)
+    }
+    
+}
+
+export async function createOrUpdateProfileSolana(
+    wallet: WalletContextState,
+    profileId: SolanaProfileID, 
+    contentId: SolanaContentID
+) {
+    let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
+    
+    try {
+        // check if user has existing profile
+        let _currentProfile = await getProfileSolana(wallet);
+        if (_currentProfile) {
+            let resp = await updateProfileSolana(profileId, contentId, program, provider);
+            return resp;
+        } else {
+            let resp = await createProfileSolana(profileId, contentId);
+            return resp;
+        }
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function updateProfileSolana(
+    profileId: SolanaProfileID, 
+    contentId: SolanaContentID,
+    program?: Program,
+    provider?: Provider,
+) {
+
+    let [profile, profileMapping]: any = await Promise.all([
+        await getProfilePDA(program.programId, profileId),
+        await getProfileMappingPDA(program.programId, provider.wallet.publicKey)
+    ])
+        .then(resp => resp)
+        .catch(err => console.log('Error in creating solana profile', err));
+
+    let [profilePDA, profileBump] = profile;
+    let [profileMappingPDA, profileMappingBump] = profileMapping;
+
+    try {
+        let resp = await program.rpc.updateProfile(
+            encodeContentID(contentId),
+            {
+                accounts: {
+                    profileMapping: profileMappingPDA,
+                    profile: profilePDA,
+                    address: provider.wallet.publicKey,
+                    systemProgram: web3.SystemProgram.programId
+                },
+                signers: [],
+            }
+        );
+        console.log('Resp:', resp);
+        if (resp) {
+            return resp;
+        }
+    } catch (err) {
+        console.log('Error in creating profile', err);
+    }
 }
 
 /**
@@ -284,15 +359,12 @@ async function createProfileMappingSolana(
  * @returns 
  */
 async function createProfileSolana(
-    program: Program, 
-    provider: Provider, 
     profileId: SolanaProfileID, 
-    contentId: SolanaContentID
+    contentId: SolanaContentID,
+    program?: Program,
+    provider?: Provider,
     ): Promise<FixLater> {
-    // let  = ;
-    // let [ daoAccountPDA, daoAccountBump ] = await getDaoAccountPDA(program.programId);
-    // let  = ;
-    // let  = ;
+    
     let [profile, search, profileMapping]: any = await Promise.all([
         await getProfilePDA(program.programId, profileId),
         await getSearchAccountPDA(program.programId, profileId),
@@ -301,7 +373,6 @@ async function createProfileSolana(
         .then(resp => resp)
         .catch(err => console.log('Error in creating solana profile', err));
 
-    console.log('Provider:', provider);
     let [profilePDA, profileBump] = profile;
     let [searchAccountPDA, searchAccountBump] = search;
     let [profileMappingPDA, profileMappingBump] = profileMapping;
@@ -323,10 +394,7 @@ async function createProfileSolana(
                 signers: [],
             }
         );
-        console.log('Resp:', resp);
-        if (resp) {
-            return resp;
-        }
+        return resp;
     } catch (err) {
         console.log('Error in creating profile', err);
     }
@@ -338,9 +406,15 @@ export async function getProfileMappingSolana(wallet: FixLater) {
     const { program, provider } = solanaProgram;
     if (!program) return false;
 
-    let profileMapping = await fetchProfileMappingSolana(program, provider);
+    try {
+        let profileMapping = await fetchProfileMappingSolana(program, provider);
+        return profileMapping
+    } catch(err) {
+        console.log(err);
+        throw(err);
+    }
+    
 
-    return profileMapping;
 }
 
 function toHexString(byteArray: FixLater) {
@@ -352,62 +426,20 @@ function toHexString(byteArray: FixLater) {
 
 export async function getProfileSolana(wallet: FixLater) {
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
-    console.log(provider);
+    console.log('kayton@debug', provider);
     if (!program) return false;
-
-    let profile = await fetchProfileSolana(program, provider);
-    if (profile.length > 0) {
-        if (profile[1] == null) return undefined;
-        let contentIdArray = profile[1].identityId
-        let contentId = decodeContentID(contentIdArray);
-        return contentId;
+    try {
+        const profile = await fetchProfileSolana(program, provider);
+        console.log('kayton@debug', profile)
+        if (profile.length > 0) {
+            if (profile[1] == null) return undefined;
+            let contentIdArray = profile[1].identityId
+            let contentId = decodeContentID(contentIdArray);
+            return contentId;
+        }
+    } catch(err) {
+        console.log(err);
+        throw Error('profile not found')
     }
-}
-
-/**
- * 1. check if the wallet is connected
- * 2. check if the user has a profile already
- * 3. check if the user has a profile mapping already
- * 
- * @param {*} wallet 
- * @returns 
- */
-export async function createProfilePipelineSolana(
-    wallet: FixLater, 
-    cid: SolanaContentID
-    ) : Promise<FixLater> {
-
-    console.log('started pipeline')
-    let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
-    if (!program) return false;
-
-    // validate if the user has a profile mapping
-    // let profileMapping = await fetchProfileMappingSolana(program, provider);
-    let [existingProfileMapping, existingProfile]: FixLater  = await fetchProfileSolana(program, provider);
-    console.log("Solana Profile Status: ", existingProfile, existingProfileMapping);
-
-    if (! existingProfileMapping) {
-        existingProfileMapping = await createProfileMappingSolana(program, provider);
-        console.log('profileMapping', existingProfileMapping)
-    }
-
-    if ( ! existingProfile ) {
-        console.log("creating Profile");
-        existingProfile = await createProfileSolana(program, provider, existingProfileMapping.profileId, cid);
-        console.log('P', existingProfile);    
-    }
-
-    return existingProfile;
-
-    // if (profileMapping.profileId) {
-    //     // validate if the user has a profile
-    //     let existingProfile = await fetchProfileSolana(program, provider);
-    //     console.log(existingProfile);
-    // }
-    // console.log(profileMapping)
-    // let profile = await fetchProfileSolana(program, provider);
-    // console.log(profile)
-
-
-    // return await initProfileProgram();
-}
+    
+};

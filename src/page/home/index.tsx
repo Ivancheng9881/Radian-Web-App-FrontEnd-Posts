@@ -28,8 +28,6 @@ const HomePage: FC = (props) => {
     });
 
     useEffect(()=>{
-        // setProfileList([]);
-        // getProfilesSolana();
         getProfileListCount();
     }, []);
 
@@ -75,13 +73,6 @@ const HomePage: FC = (props) => {
             pageSize = count;
         }
         const profiles = await getProfileListErc(skip, pageSize);
-        // setProfileList([...profileList, ...profiles] );
-        
-        // setPagination({
-        //     ...pagination,
-        //     skip: skip + pageSize
-        // })
-
         return profiles
     };
     
@@ -91,16 +82,14 @@ const HomePage: FC = (props) => {
                 <PersonalProfile/>
             </CustomSider>
             <CustomContent>
-                
-                { profileList.length > 0
-
-                ? <div className={`flex flex-wrap`}>
-                    {profileList?.map((p, v) => {
-                        return <ProfileFrame key={v} profile={p} />
-                    })}
-                </div>
-
-                : <div><LoadingScreen /></div>
+                { 
+                    profileList.length > 0
+                    ? <div className={`flex flex-wrap`}>
+                        {profileList?.map((p, v) => {
+                            return <ProfileFrame key={v} profile={p} />
+                        })}
+                    </div>
+                    : <div><LoadingScreen /></div>
                 }
             </CustomContent>
         </Layout>

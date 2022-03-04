@@ -2,7 +2,7 @@ import { Menu } from "antd";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { FC } from "react";
 import { RouteComponentProps, useHistory } from "react-router";
-import { settingProfileRoute, settingWalletRoute } from "../../../../commons/route";
+import { settingNFTRoute, settingProfileRoute, settingWalletRoute } from "../../../../commons/route";
 import CustomMenuItem from "../../../../components/Menu/MenuItem";
 
 interface PropsType {
@@ -34,6 +34,12 @@ const SettingMenu : FC<PropsType> = (props) => {
                     route={settingWalletRoute}
                 >
                     Link Wallet
+                </CustomMenuItem>
+                <CustomMenuItem 
+                    key='item:LinkWallet'
+                    route={settingNFTRoute}
+                >
+                    My NFT
                 </CustomMenuItem>
             </Menu>
         </div>

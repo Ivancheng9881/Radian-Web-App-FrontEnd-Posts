@@ -24,7 +24,7 @@ const ItemOptionList = ({
                         key={item.value}
                         value={item.value}
                         label={item.label}
-                        active={value.includes(item.value)}
+                        active={value?.includes(item.value)}
                         handleSelect={handleSelect}
                     />
                 );

@@ -1,24 +1,28 @@
 import CustomTypography from '../../../../../components/Typography';
-import { useContext } from 'react';
-import DatingContext from '../../../context/datingApp/dating.context';
+import { useContext, useEffect } from 'react';
+import CreateProfileContext from '../../../context/profile/profile.context';
+import ProfileContext from '../../../context/datingApp/dating.context';
 import Toggler from '../../../../../components/Toggler';
-import SingleSlider from '../../../../../components/SingleSlider';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
 import { Col, Grid, Input, Row, Slider, Space, Typography } from 'antd';
 
-const DatingDistance = (props) => {
-    const { getLatestField, updateDataByKey } = useContext(DatingContext);
-
-    let distanceIsDealBreaker = getLatestField("distanceIsDealBreaker");
-    let distanceMax = getLatestField("distanceMax");
-    if ( !distanceMax ) distanceMax = 100;
-    if ( ! distanceIsDealBreaker ) distanceIsDealBreaker = 0;
+const DatingDistance = () => {
 
     const dealBreakerOpts = [ { value: 1, label: 'yes' }, { value: 0, label: 'no' } ];
 
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
+
+    useEffect(() => {
+        if (!profile.distanceIsDealBreaker || profile.distanceIsDealBreaker == '') {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.distanceIsDealBreaker]);
+
     const handleToggle = (val) => updateDataByKey('distanceIsDealBreaker', val);
 
-    const handleMaxChange = (val) => updateDataByKey('distanceMax', val)
+    const handleMaxChange = (val) => updateDataByKey('distanceMax', val);
 
     return (
         <div id="RD-CreateProfile-height" className="RD-CreateProfileComponents">
@@ -30,7 +34,7 @@ const DatingDistance = (props) => {
                         <Row>
                             <Col span={24} >
                                 <Slider
-                                    defaultValue={distanceMax}
+                                    defaultValue={profile.distanceMax}
                                     max={100}
                                     min={0}
                                     onAfterChange={handleMaxChange}
@@ -41,7 +45,7 @@ const DatingDistance = (props) => {
                                 <div className="mt-10 inline-flex items-end">
                                     <div className="mr-5">
                                         <Toggler
-                                            value={distanceIsDealBreaker}
+                                            value={profile.distanceIsDealBreaker}
                                             opts={dealBreakerOpts}
                                             handleToggle={handleToggle}
                                             size="large"

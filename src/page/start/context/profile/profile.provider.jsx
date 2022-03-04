@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import ProfileContext from '../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../context/socialApp/profile.context';
 import CreateProfileContext from './profile.context';
 import { getQuery, setQuery } from '../../../../utils/query';
 import { checkoutProfileRoute, startRoute } from '../../../../commons/route';
@@ -42,42 +42,10 @@ function CreateProfileProvider({ children }) {
         { id: 'profileCreated', stage: 'profileCreated' }
     ];
 
-    const defaultProfile = {
-        firstName: 'Kayton',
-        lastName: 'Chiu',
-        day: '01',
-        month: '01',
-        year: '1995',
-        countryCode: '+852',
-        profilePictureCid: ['QmTDg4VWmgysNRKpUp5CwESnhE9Srkgz8KWyFYr3mfcV8M'],
-        number: '12345678',
-        location: 'Hong Kong',
-        weight: '80',
-        weightUnit: 'kg',
-        height: '170',
-        heightUnit: 'cm',
-        nationality: 'hong kong',
-        gender: 'male',
-        orientation: 'male',
-        lookingFor: 'serious-relationship',
-        interest: [ 'foodie', 'walking' ],
-        ageRangeMin: 20,
-        ageRangeMax: 80,
-        ageRangeIsDealBreaker: 1,
-        distanceMax: 70,
-        distanceIsDealBreaker: 0,
-        datingEthnicity: [ 'asian' ],
-        datingReligion: [ 'spiritual' ],
-        nft: [
-            'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh',
-            'Qmbdji7XbW24ZTDYyxJ1xoCZ9UB5hGiP8gqf4T2yJsNbqH',
-            'QmaPjbWNWTid6Lgne7yiLCsctoYiwfjD9qKge8BmhzwDmn'
-        ]
-    };
-
     const [ step, setStep ] = useState(0);
     const [ checkoutStep, setCheckoutStep ] = useState(0);
     const [ scrollDirection, setScrollDirection ] = useState(true);
+    const [ nextDisabled, setNextDisabled ] = useState(false);
 
     /**
      * @initialHook
@@ -87,6 +55,10 @@ function CreateProfileProvider({ children }) {
         setInitialStep();
         return () => {};
     }, []);
+
+    useEffect(() => {
+        console.log(nextDisabled)
+    }, [nextDisabled])
 
     /**
      * @method
@@ -149,7 +121,9 @@ function CreateProfileProvider({ children }) {
                 setScrollDirection,
                 checkoutStep,
                 checkoutStepList,
-                updateCheckoutStep
+                updateCheckoutStep,
+                nextDisabled,
+                setNextDisabled,
             }}
         >
             {children}

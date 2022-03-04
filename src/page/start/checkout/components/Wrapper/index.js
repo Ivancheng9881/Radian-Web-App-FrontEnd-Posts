@@ -1,8 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ArrowDownButton from "../../../../../components/Button/ArrowDownButton.components";
 import ArrowUpButton from "../../../../../components/Button/ArrowUpButton.components";
 import CreateProfileContext from "../../../context/profile/profile.context";
 import CreateProfileIndicator from "../../../components/indicator.components"
+import { Button } from "antd";
+import ArrowDownIcon from "../../../../../components/Icons/arrowDown.components";
 
 const CheckoutWrapper = ({ children }) => {
 
@@ -11,7 +13,14 @@ const CheckoutWrapper = ({ children }) => {
         checkoutStepList,
         updateCheckoutStep,
         setScrollDirection,
+        nextDisabled
     } = useContext(CreateProfileContext);
+    
+    useEffect(() => {
+      console.log(nextDisabled)
+    
+    }, [nextDisabled])
+    
 
     const nextStep = (e) => {
         e.preventDefault();

@@ -1,26 +1,25 @@
 import Typography from '../../../../../components/Typography';
 import { useContext, useEffect, useState } from 'react';
 import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
-import ProfileContext from '../../../../../utils/profile/context/profile.context';
+import ProfileContext from '../../../context/socialApp/profile.context';
 import UploadButton from '../../../../../components/Button/UploadButton.components';
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
+import CreateProfileContext from '../../../context/profile/profile.context';
 
 const ProfilePicture = (props) => {
     
-    const { getLatestField, updateDataByKey } = useContext(ProfileContext);
-
+    const { profile, updateDataByKey } = useContext(ProfileContext);
+    const { setNextDisabled } = useContext(CreateProfileContext);
     const { setSnackBar } = useContext(CreateSnackbarContext);
 
-    let profileCidList = getLatestField('profilePictureCid');
-    if (! profileCidList) {
-        profileCidList = [];
-    }
-    if (typeof profileCidList === 'string') {
-        profileCidList = [profileCidList];
-    }
-
-    console.log(profileCidList);
+    useEffect(() => {
+        if (!profile.profilePictureCid || profile.profilePictureCid == 0) {
+            setNextDisabled(true);
+        } else {
+            setNextDisabled(false);
+        }
+    }, [profile.profilePictureCid])
 
     const handleUpload = async (file) => {
         console.log("runnning");
@@ -42,11 +41,11 @@ const ProfilePicture = (props) => {
         if (isJpgOrPng || isLt2M) {
             let newCid = await ipfsUtils.uploadContent(file);
             console.log("upload cid", newCid);
-            if (profileCidList.includes(newCid.toString())) {
+            if (profile.profilePictureCid.includes(newCid.toString())) {
                 setSnackBar({ open: true, message: 'Image Already Exists!', severity: 'danger' });
                 return;
             }
-            let cidArr = [ ...profileCidList, newCid.toString() ];
+            let cidArr = [ ...profile.profilePictureCid, newCid.toString() ];
             updateDataByKey('profilePictureCid', cidArr);
             setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
         }
@@ -56,14 +55,14 @@ const ProfilePicture = (props) => {
         let cidToString = cidString;
         cidToString = cidToString.toString();
 
-        let cidIndex = profileCidList.indexOf(cidToString);
+        let cidIndex = profile.profilePictureCid.indexOf(cidToString);
         console.log('deleting index', cidIndex);
 
-        profileCidList.splice(cidIndex, 1);
+        profile.profilePictureCid.splice(cidIndex, 1);
         setSnackBar({ open: true, message: 'delete success!', severity: 'success' });
 
-        console.log("updating", profileCidList);
-        updateDataByKey('profilePictureCid', profileCidList);
+        console.log("updating", profile.profilePictureCid);
+        updateDataByKey('profilePictureCid', profile.profilePictureCid);
 
         return;
     };
@@ -76,7 +75,7 @@ const ProfilePicture = (props) => {
             </div>
             <div className="block">
                 <div className="inline-flex flex-wrap">
-                    {profileCidList.map((c, i) => {
+                    {profile.profilePictureCid.map((c, i) => {
                         return (
                             <div className="ml-5" key={i}>
                                 <div

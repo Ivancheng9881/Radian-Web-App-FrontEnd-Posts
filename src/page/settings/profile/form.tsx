@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import CustomTypography from "../../../components/Typography";
 import InfoDisplayGroup from "../../start/checkout/components/InfoDisplay/InfoDisplay.components";
 import UserContext from "../../../utils/user/context/user.context";
@@ -18,6 +18,8 @@ import EditProfileButtonGroup from "./components/buttonGroup.component";
 import ProfileContractUtils from "../../../utils/web3/contract/profileContract/utils";
 import { createProfileErc, getProfileErc } from '../../../utils/web3/contract/profileContract/erc';
 import Web3Context from "../../../utils/web3/context/web3.context";
+import CreateProfilePopup from "../../../components/CreateProfilePopup";
+import ProfilePictureUpload from "../../../components/ProfilePictureFrame/uploadButton.components";
 
 type InputEventType = React.ChangeEvent<HTMLInputElement>
 
@@ -48,16 +50,49 @@ const EditProfileForm : FC<PropsType> = ({
     profile,
     setProfile,
 }) => {
+    
+    const web3Context = useContext(Web3Context)
 
     const [ disabled, setDisabled ] = useState<boolean>(true);
-    const web3Context = useContext(Web3Context);
+    const [ showPopup, setShowPopup ] = useState({
+        network: '',
+        status: false,
+    });
+    const [ cid, setCid ] = useState(null);
+
+    useEffect(() => {
+        if (web3Context.providers) {
+            console.log(web3Context.providers)
+            let network;
+            switch(web3Context.providers.selected) {
+                case 'phantom@solana':
+                    network = 'solana'
+                    break
+                case 'metamask@erc':
+                    network = 'polygon'
+                    break
+                default:
+                    break
+            }
+            setShowPopup({
+                network: network,
+                status: false,
+            })
+        }
+    }, [web3Context.providers])
 
     const handleProfileUpdate = async () => {
         let cid = await ProfileContractUtils.createProfileCid(profile);
-        let txn = await createProfileErc(cid.toString(), false);
+        setCid(cid);
+        
+        setShowPopup({
+            ...showPopup,
+            status: true
+        })
+
     }
 
-    const clickPrimary = () => {
+    const clickPrimary = () : void => {
         if (disabled) {
             setDisabled(false);
         } else {
@@ -65,6 +100,10 @@ const EditProfileForm : FC<PropsType> = ({
             handleProfileUpdate();
         }
     };
+
+    const clickSecondary = () : void => {
+        setDisabled(true);
+    } 
 
     const handleChange = (e: InputEventType, key: string) => {
         setProfile({
@@ -93,12 +132,18 @@ const EditProfileForm : FC<PropsType> = ({
         let idx = profile[key].indexOf(val);
         let arr = [...profile[key]];
         arr.splice(idx, 1);
-        console.log(arr)
         setProfile({
             ...profile,
             [key]: arr
         })
-    } 
+    };
+
+    const onPropicUpload = (cid: string) => {
+        setProfile({
+            ...profile,
+            profilePictureCid: [cid],
+        })
+    }
 
     return (
         <div style={styles.root}>
@@ -108,51 +153,17 @@ const EditProfileForm : FC<PropsType> = ({
                     <div className='flex flex-wrap gap-5 justify-center md:justify-start'>
                         {
                             profile.profilePictureCid?.map((k: string) => {
-                            return <ProfilePictureFrame
+                            return <ProfilePictureUpload
+                                disabled={disabled}
                                 key={`profilePictureCid_${k}`}
                                 src={ipfsUtils.getContentUrl(k)} 
+                                onUpload={onPropicUpload}
                             />    
                         })}
                     </div>
                 </div>
 
                 <div className="w-full">
-                    {/* <div className="mb-10">
-                    <div className="pl-6 pr-6 text-2xl mb-4 text-theme-white font-semibold text-center md:text-left">Addresses</div>
-                        <InfoDisplayGroup
-                                profileKey="firstName"
-                                label={`ERC-Addresses`}
-                                value={"1 - 0x123456567789"}
-                                stepName={`name`} />
-                        <InfoDisplayGroup
-                                profileKey="firstName"
-                                value={"2 - 0x123456567789"}
-                                stepName={`name`} />
-                        <InfoDisplayGroup
-                                profileKey="firstName"
-                                value={"3 - 0x123456567789"}
-                                stepName={`name`} />
-                        <div className="text-theme-white text-lg md:px-28 pt-10">
-                            <div className="relative inline-flex align-center w-auto pb-2">
-                                <Button
-                                    shape="round"
-                                    onClick={handleClick}
-                                >
-                                    Add Wallet
-                                </Button>
-                            </div>
-                        </div>
-                    </div> */}
-{/* 
-                    <Row gutter={12} >
-                    {formSchema.map((row) => {
-                        return <EditProfileRow 
-                            row={row} 
-                            value={profile[row.key]} 
-                        />
-                    })}
-                    </Row>
-                     */}
                     <Row style={styles.row} gutter={24}>
                         <Col span={6} >
                             <EditProfileLabel>
@@ -214,7 +225,7 @@ const EditProfileForm : FC<PropsType> = ({
                     <Row style={styles.row} gutter={24}>
                         <Col span={6} >
                             <EditProfileLabel>
-                                Phone
+                                Nationality
                             </EditProfileLabel>
                         </Col>
                         <Col span={9} >
@@ -231,7 +242,7 @@ const EditProfileForm : FC<PropsType> = ({
                                 Interests
                             </EditProfileLabel>
                         </Col>
-                        <Col span={9} >
+                        <Col span={18} >
                             <EditProfileTags 
                                 value={profile.interest} 
                                 disabled={disabled}
@@ -245,6 +256,13 @@ const EditProfileForm : FC<PropsType> = ({
                 <EditProfileButtonGroup 
                     disabled={disabled}
                     clickPrimary={clickPrimary}
+                    clickSecondary={clickSecondary}
+                />
+                <CreateProfilePopup 
+                    open={showPopup.status}
+                    setOpen={setShowPopup}
+                    network={showPopup.network}
+                    cid={cid}
                 />
             </Space>
         </div>
