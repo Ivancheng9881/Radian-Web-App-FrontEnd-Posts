@@ -7,8 +7,14 @@ import WalletPopupProvider from "./utils/WalletPopup/context/walletPopup.provide
 
 import './styles/main.css';
 import './styles/app.less'
+import { useEffect } from "react";
 
 function App() {
+
+    useEffect(() => {
+        document.title = 'Radian'
+    }, []);
+    
     return (
         <GlobalSnackBarProvider>
             <SolanaWalletProvider>
