@@ -10,6 +10,9 @@ import { WalletProvider } from "./web3.interface";
 
 const Web3Provider : FC = ({ children }) => {
 
+    const metamaskObjKey = 'metamask@erc';
+    const phantomObjKey = 'phantom@solana';
+
     const SnackbarContext = useContext(CreateSnackbarContext);
     const { setSnackBar } = SnackbarContext;
     const [ providers, setProviders ] = useState<WalletProvider>({
@@ -20,50 +23,15 @@ const Web3Provider : FC = ({ children }) => {
     const [ networkId, setNetworkId ] = useState(undefined)
 
     useEffect(() => {
+        autoConnectEthereum();
+    }, [])
 
-        const prevProviders = loadProviderDetails();
-
-        // load past connection details, can try to resume connection in the defined order
-        window.ethereum?.request({ method: 'eth_accounts' })
-            .then((result: string[]) => {
-            if (result.length != 0) {
-                console.log("kayton@debug", result);
-                console.log("kayton@debug", prevProviders);
-                connectERCProvider(true).then(
-                    (addressList)=>{
-                        console.log("Address list", addressList);
-                        const connectingAddress: string = prevProviders && prevProviders["metamask@erc"] in addressList ? prevProviders["metamask@erc"] : addressList[0];
-                        setProviders((prevState) => ({
-                            'metamask@erc': connectingAddress, 
-                            'phantom@solana': prevState['phantom@solana'],
-                            'selected': prevProviders && prevProviders.selected == 'metamask@erc' ? 'metamask@erc' : prevState.selected
-                        }));
-                    }                        
-                ); // handle connection here    
-            }
-        });
-
-        // handle solana wallet eager connection
-        console.log("Eager Connecting");
-        if (window.solana?.isPhantom) {
-            window.solana.connect({onlyIfTrusted: true })
-                .then((result: any) => {
-                    // resuming old connection, resuming as the first provider if it was stored as so
-                    console.log("Setting Phantom as the first provider");
-                    setProviders((prevState) => ({
-                        'phantom@solana': result.publicKey, 
-                        'metamask@erc': prevState['metamask@erc'],
-                        'selected': prevProviders && prevProviders.selected == 'phantom@solana' ? 'phantom@solana' : prevState.selected
-                    }));
-                })
-                .catch((err: FixLater) => {
-                    console.error(err);
-                } )
-        }        
-
+    // connect solana
+    useEffect(() => {
+        autoConnectSolana();
     }, [window.solana?.isPhantom])
 
-
+    // register ethereum event listener
     useEffect(() => {
 
             window.ethereum?.on("chainChanged", async (_chainId: string) => {
@@ -112,6 +80,7 @@ const Web3Provider : FC = ({ children }) => {
 
             return () => window.ethereum?.removeAllListeners();
     }, [])
+
     // // TODO later extend to more supported networks
     // useEffect(() => {
     //     //Check current network globally
@@ -138,8 +107,49 @@ const Web3Provider : FC = ({ children }) => {
     //     setNetworkId(chainId)
     // }
 
-    const handleConnectEvent = () => {
-        console.log('connected')
+    const autoConnectSolana = async () => {
+        if (!window.solana?.isPhantom) return;
+        
+        const prevProviders = loadProviderDetails();
+
+        try {
+            const result = await window.solana.connect({onlyIfTrusted: true });
+            console.log(result)
+            setProviders((prevState) => ({
+                ...prevState,
+                [phantomObjKey]: result.publicKey,
+                selected: prevProviders && prevProviders.selected == 'phantom@solana' ? 'phantom@solana' : prevState.selected
+            }))
+        } catch(err: FixLater) {
+            console.log(err);
+        }
+    };
+
+    const autoConnectEthereum = async () => {
+
+        const prevProviders = loadProviderDetails();
+
+        // load past connection details, can try to resume connection in the defined order
+
+        try {
+            const result: string[] = await window.ethereum?.request({ method: 'eth_accounts' })
+            if (result.length != 0) {
+                connectERCProvider(true).then(
+                    (addressList)=>{
+                        console.log("Address list", addressList);
+                        const connectingAddress: string = prevProviders && prevProviders["metamask@erc"] in addressList ? prevProviders["metamask@erc"] : addressList[0];
+                        setProviders((prevState) => ({
+                            ...prevState,
+                            [metamaskObjKey]: connectingAddress, 
+                            selected: prevProviders && prevProviders.selected == 'metamask@erc' ? 'metamask@erc' : prevState.selected
+                        }));
+                    }                        
+                ); // handle connection here    
+            }
+
+        } catch (err: FixLater) {
+
+        }
     }
 
     const connectSolanaProvider = async (resumeFrom : FixLater =null) => {

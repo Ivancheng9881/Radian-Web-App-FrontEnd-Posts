@@ -35,6 +35,7 @@ const styles = {
     body: {
         width: '100%',
         maxWidth: 800,
+        margin: 'auto'
     },
     row: {
         marginBottom: 16,

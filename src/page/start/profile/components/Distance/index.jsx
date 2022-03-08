@@ -12,13 +12,14 @@ const DatingDistance = () => {
     const { profile, updateDataByKey } = useContext(ProfileContext);
     const { setNextDisabled } = useContext(CreateProfileContext);
 
-    useEffect(() => {
-        if (!profile.distanceIsDealBreaker || profile.distanceIsDealBreaker == '') {
-            setNextDisabled(true);
-        } else {
-            setNextDisabled(false);
-        }
-    }, [profile.distanceIsDealBreaker]);
+    // useEffect(() => {
+    //     console.log(profile.distanceIsDealBreaker);
+    //     if (!profile.distanceIsDealBreaker || profile.distanceIsDealBreaker == '') {
+    //         setNextDisabled(true);
+    //     } else {
+    //         setNextDisabled(false);
+    //     }
+    // }, [profile.distanceIsDealBreaker]);
 
     const handleToggle = (val) => updateDataByKey('distanceIsDealBreaker', val);
 

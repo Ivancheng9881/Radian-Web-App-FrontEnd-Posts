@@ -15,7 +15,6 @@ const ProfileSettings: FC = () => {
     const [ profile, setProfile ] = useState<FullProfile>(userContext.profile);
 
     useEffect(() => {
-        console.log('kayton@debug',userContext)
         if (userContext.profile?.profileID != profile.profileID) {
             setProfile(userContext.profile);
         }
