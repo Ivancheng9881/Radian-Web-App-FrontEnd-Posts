@@ -95,16 +95,10 @@ const CheckoutCreateProfile = () => {
         setCid(_cid);
     };
 
-    const createProfilePolygon = async (useGasStation) => {
-        if (useGasStation) {
-            setIsGasless(true);
-            setPopupNetwork('polygon');
-            setPopupOpen(true);
-        } else {
-            setPopupNetwork('polygon');
-            setPopupOpen(true);
-        }
-
+    const createProfilePolygon = async (useGasStation=false) => {
+        setIsGasless(useGasStation);
+        setPopupNetwork('polygon');
+        setPopupOpen(true);
         return ;
         // disable if metamask is not the selected provider
         if (web3Context?.providers?.selected.split("@")[1] != 'erc'){
