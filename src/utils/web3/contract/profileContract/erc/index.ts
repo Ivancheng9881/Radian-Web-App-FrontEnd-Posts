@@ -4,6 +4,8 @@ import { gasStationNetworkUrl, subgraphUrl } from '../../../../../commons/web3';
 import { fetchDataFromSubgraph } from "../../../subgraph/subgraph.utils"; 
 import { FixLater } from "../../../../../schema/helper.interface";
 import { ERCProfile } from "./index.interface";
+import { ContractTransaction, Transaction } from "ethers";
+import { TransactionTypes } from "ethers/lib/utils";
 
 
 export const profileContract__evm__abi = abi;
@@ -221,3 +223,67 @@ export async function hasPersonalProfileErc (walletAddress: string) {
     }
     return false;
 };
+
+/**
+ * function for linking profile
+ */
+
+export async function addAddressToProfile(address: string, isManager?: boolean) {
+    const contract = await initProfileContract();
+    try {
+        const txn: ContractTransaction = await contract.addAddressToProfile(address, isManager);
+        return txn;
+
+    } catch(err) {
+        throw({err})
+    }
+};
+
+export async function addProfileMapping(profileID : number) {
+    const contract = await initProfileContract();
+    try {
+        const txn: ContractTransaction = await contract.addProfileMapping(profileID);
+        return txn;
+
+    } catch(err) {
+        throw({err})
+    }
+}
+
+async function getAddressNumberfromProfile(profileID: number): Promise<number> {
+    try {
+        const contract = await initProfileContract();
+        const resp = await contract.getAddressNumberfromProfile(profileID);
+        return resp.toNumber();
+    } catch(err) {
+        console.log(err);
+        throw({err})
+    }
+};
+
+async function profileAddressMapping(profileID: number, mappingID: number): Promise<string> {
+    try {
+        const contract = await initProfileContract();
+        const address = await contract.profileAddressMapping(profileID, mappingID);
+        return address;
+    } catch(err) {
+        console.log(err);
+        throw({err})
+    }
+}
+
+export async function getMappedAddresses(profileID : number): Promise<string[]> {
+    const addressNumber = await getAddressNumberfromProfile(profileID);
+    const promises: any = []
+    for (let n: number = 0; n < addressNumber; n++) {
+        promises.push(new Promise(async (resolve, reject) => {
+            try {
+                const a = await profileAddressMapping(profileID, n);
+                resolve(a)
+            } catch(err) {
+                reject(err)
+            }
+        }))
+    }
+    return await Promise.all(promises);
+}

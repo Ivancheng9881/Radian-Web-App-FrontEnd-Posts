@@ -15,7 +15,7 @@ const BN = require('bn.js');
 
 
 export const profileContract__sol__abi: FixLater = idl;
-export const profileContract__sol__address: string = 'DFYYCSUghKGertoyiAcpQh6LsfDT63arTFybLs4QAFLL';
+export const profileContract__sol__address: string = 'Erd5sdn3uuUY7Xcu6NgWC8n5zAiTPsZcd5wSqfpEXRdd';
 
 const DAO_ACCOUNT_SEED: SolanaSeedBuffer = encodeUint8Array("dao_authority_account");
 const PROFILE_MAPPING_ACCOUNT_SEED: SolanaSeedBuffer = encodeUint8Array("profile_mapping_account");

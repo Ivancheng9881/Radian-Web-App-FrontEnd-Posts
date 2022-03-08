@@ -9,10 +9,10 @@ const truncateAddress = (
     let pre: string, 
         suf: string;
     let half: number = Math.floor(maxFigure / 2 );
-    
+
     pre = address.slice(0, maxFigure - half);
-    suf = address.slice(address.length - half - 1, address.length - 1)
-        
+    suf = address.slice(address.length - half - 1, address.length)
+
     return `${pre}...${suf}`;
 }
 

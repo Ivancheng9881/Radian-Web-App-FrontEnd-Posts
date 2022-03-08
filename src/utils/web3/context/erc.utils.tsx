@@ -22,6 +22,8 @@ function ercErrorHandler(code: string): string {
             return 'Unable to find signer';
         case 4003:
             return 'Unable to connect wallet';
+        case 4100:
+            return 'Invalid address'
     }
 }
 
@@ -142,14 +144,26 @@ async function initContractGasless(
     return contract;
 };
 
+function validAddress(address: string) {
+    try {
+        return ethers.utils.getAddress(address);
+    } catch (err) {
+        console.log(err)
+        throw({status: 4100})
+    }
+    
+}
+
 
 const ERCUtils = {
     getSigner,
     getAddress,
+    validAddress,
     getChainId,
     switchNetwork,
     connectWallet,
     initContract,
+    ercErrorHandler,
     initContractGasless,
     isConnected,
 }
