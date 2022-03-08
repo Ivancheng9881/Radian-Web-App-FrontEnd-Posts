@@ -36,7 +36,7 @@ const SettingMenu : FC<PropsType> = (props) => {
                     Link Wallet
                 </CustomMenuItem>
                 <CustomMenuItem 
-                    key='item:LinkWallet'
+                    key='item:ImportNFT'
                     route={settingNFTRoute}
                 >
                     My NFT

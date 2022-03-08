@@ -3,6 +3,8 @@ import { Button, Modal, Spin, Steps } from "antd";
 import { CreateProfilePopupPropsType } from ".";
 import Web3Context from "../../utils/web3/context/web3.context";
 import { createProfileErc, getProfileErc } from "../../utils/web3/contract/profileContract/erc";
+import { useHistory } from "react-router";
+import { mainRoute } from "../../commons/route";
 
 const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
 
@@ -11,6 +13,8 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
     const completeStep = 2;
     
     const web3Context = useContext(Web3Context);
+    const history = useHistory();
+
     const [ step, setStep ] = useState(connectWalletStep);
     const [ loading, setLoading ] = useState<boolean>(false);
 
@@ -49,6 +53,10 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
     const handleCheckoutComplete = () => {
         setLoading(false);
         setStep(completeStep);
+    };
+
+    const handleBackToHome = () => {
+        history.push(mainRoute);
     }
 
     return (
@@ -84,6 +92,15 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
         />
         <Steps.Step
             title='Profile Created'
+            description={<Button 
+                    size='large' 
+                    type='primary' 
+                    onClick={handleBackToHome}
+                    disabled={step != completeStep}
+                >
+                        Back To Home
+                </Button>
+        }
         />
     </Steps>
     )
