@@ -9,16 +9,12 @@ export interface CreateProfilePopupPropsType {
     setOpen: FixLater,
     network: string,
     cid: FixLater,
+    gasless?: boolean,
 }
 
 const CreateProfilePopup : FC<CreateProfilePopupPropsType> = (props) => {
 
-    const handleCancel = (e?: any) => {
-        props.setOpen({
-            network: props.network,
-            status: false 
-        })
-    };
+    const handleCancel = () => props.setOpen(false);
 
     return (
         <Modal 
@@ -29,7 +25,6 @@ const CreateProfilePopup : FC<CreateProfilePopupPropsType> = (props) => {
         >
             {props.network == 'solana' && <CreateProfilePopupBodySolana {...props} />}
             {props.network == 'polygon' && <CreateProfilePopupPolygon {...props} />}
-            
         </Modal>
     )
 };

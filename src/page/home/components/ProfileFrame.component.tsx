@@ -11,7 +11,9 @@ interface PageProps {
 }
 
 const ProfileFrame : FC<PageProps> = (props) => {
+
     let defaultProfilePictureId = 'QmdxdBrd22pJdKZesdfYFwAkh9ZcRFCQ9SVKUVatSSY3Rh';
+    
     const [ fullProfile, setFullProfile ] = useState<FullProfile>(null);
     const history = useHistory();
 
@@ -66,7 +68,7 @@ const ProfileFrame : FC<PageProps> = (props) => {
                             <img
                                 className="m-auto"
                                 src={
-                                    props.profile.network == 'erc'
+                                    props.profile.network.toUpperCase() == 'ERC'
                                     ? "/logos/polygonRounded.png"
                                     : "/logos/solanaRounded.png"
                                     }

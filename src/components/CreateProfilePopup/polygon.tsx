@@ -1,16 +1,8 @@
 import { FC, useState, useContext, useEffect } from "react";
 import { Button, Modal, Spin, Steps } from "antd";
 import { CreateProfilePopupPropsType } from ".";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { 
-    createProfileMappingSolana, 
-    getProfileMappingSolana
- } from "../../utils/web3/contract/profileContract/solana";
 import Web3Context from "../../utils/web3/context/web3.context";
 import { createProfileErc, getProfileErc } from "../../utils/web3/contract/profileContract/erc";
-import ERCUtils from "../../utils/web3/context/erc.utils";
-import LoadingScreen from "../LoadingScreen";
-
 
 const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
 
@@ -20,7 +12,6 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
     
     const web3Context = useContext(Web3Context);
     const [ step, setStep ] = useState(connectWalletStep);
-    const [ existingProfile, setExistingProfile ] = useState<any>(null);
     const [ loading, setLoading ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -31,7 +22,6 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
         try {
             const addr = await await web3Context.connect('erc');
             if (addr.length > 0) {
-                // await getExistingProfile(addr[0]);
                 setStep(createProfileStep)
             }
         } catch(err) {
@@ -45,7 +35,7 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
      */
     const createProfile = async () => {
         try {
-            const txn = await createProfileErc(props.cid.toString(), false);
+            const txn = await createProfileErc(props.cid.toString(), props.gasless);
             if (txn) {
                 setLoading(true);
                 const isSuccess = await txn.wait();

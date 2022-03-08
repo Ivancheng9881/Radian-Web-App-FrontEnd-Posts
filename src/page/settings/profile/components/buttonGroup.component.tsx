@@ -4,8 +4,8 @@ import { FixLater } from "../../../../schema/helper.interface";
 
 interface PropsType {
     disabled: boolean,
-    clickPrimary: FixLater,
-    clickSecondary: FixLater,
+    setDisabled: FixLater,
+    handleConfirm: FixLater,
 }
 
 const styles = {
@@ -16,32 +16,52 @@ const styles = {
 
 const EditProfileButtonGroup : FC<PropsType> = ({
     disabled,
-    clickPrimary,
-    clickSecondary
+    setDisabled,
+    handleConfirm
 }) => {
+
+    const toggleDisable = () => {
+        setDisabled(!disabled);
+    };
+
     return (
         <Row justify="end" gutter={24}>
-            <Col span={6}>
-                <Button
-                    color="secondary"
-                    shape="round"
-                    onClick={clickSecondary}
-                    style={styles.button}
-                    disabled={disabled}
-                >
-                    Cancel
-                </Button>
-            </Col>
-            <Col span={6}>
-                <Button
-                    type="primary"
-                    shape="round"
-                    onClick={clickPrimary}
-                    style={styles.button}
-                >
-                    { disabled ? 'Edit' : 'Confirm'}
-                </Button>
-            </Col>
+            {
+                disabled 
+                ? <Col span={6}>
+                    <Button
+                        type="primary"
+                        shape="round"
+                        onClick={toggleDisable}
+                        style={styles.button}
+                    >
+                        Edit
+                    </Button>
+                </Col>
+                : <>
+                    <Col span={6}>
+                        <Button
+                            color="secondary"
+                            shape="round"
+                            onClick={toggleDisable}
+                            style={styles.button}
+                            disabled={disabled}
+                        >
+                            Cancel
+                        </Button>
+                    </Col>
+                    <Col span={6}>
+                        <Button
+                            type="primary"
+                            shape="round"
+                            onClick={handleConfirm}
+                            style={styles.button}
+                        >
+                            Confirm
+                        </Button>
+                    </Col>
+                </>
+            }
         </Row>
     )
 };

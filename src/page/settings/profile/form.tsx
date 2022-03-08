@@ -54,15 +54,12 @@ const EditProfileForm : FC<PropsType> = ({
     const web3Context = useContext(Web3Context)
 
     const [ disabled, setDisabled ] = useState<boolean>(true);
-    const [ showPopup, setShowPopup ] = useState({
-        network: '',
-        status: false,
-    });
+    const [ popupOpen, setPopupOpen ] = useState<boolean>(false);
+    const [ popupNetwork, setPopupNetwork ] = useState<string>('');
     const [ cid, setCid ] = useState(null);
 
     useEffect(() => {
         if (web3Context.providers) {
-            console.log(web3Context.providers)
             let network;
             switch(web3Context.providers.selected) {
                 case 'phantom@solana':
@@ -74,36 +71,19 @@ const EditProfileForm : FC<PropsType> = ({
                 default:
                     break
             }
-            setShowPopup({
-                network: network,
-                status: false,
-            })
+            setPopupNetwork(network);
         }
     }, [web3Context.providers])
 
     const handleProfileUpdate = async () => {
         let cid = await ProfileContractUtils.createProfileCid(profile);
         setCid(cid);
-        
-        setShowPopup({
-            ...showPopup,
-            status: true
-        })
-
+        setPopupOpen(true);
     }
 
-    const clickPrimary = () : void => {
-        if (disabled) {
-            setDisabled(false);
-        } else {
-            setDisabled(true);
-            handleProfileUpdate();
-        }
+    const handleConfirm = () : void => {
+        handleProfileUpdate();
     };
-
-    const clickSecondary = () : void => {
-        setDisabled(true);
-    } 
 
     const handleChange = (e: InputEventType, key: string) => {
         setProfile({
@@ -255,13 +235,13 @@ const EditProfileForm : FC<PropsType> = ({
                 </div>
                 <EditProfileButtonGroup 
                     disabled={disabled}
-                    clickPrimary={clickPrimary}
-                    clickSecondary={clickSecondary}
+                    setDisabled={setDisabled}
+                    handleConfirm={handleConfirm}
                 />
                 <CreateProfilePopup 
-                    open={showPopup.status}
-                    setOpen={setShowPopup}
-                    network={showPopup.network}
+                    open={popupOpen}
+                    setOpen={setPopupOpen}
+                    network={popupNetwork}
                     cid={cid}
                 />
             </Space>

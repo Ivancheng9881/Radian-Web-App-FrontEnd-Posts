@@ -49,10 +49,9 @@ const CheckoutCreateProfile = () => {
         msg: ''
     });
     const [ isLoading, setIsLoading] = useState(false);
-    const [ createPopupOpen, setCreatePopupOpen ] = useState({
-        status: false,
-        network: ''
-    })
+    const [ popupOpen, setPopupOpen ] = useState(false);
+    const [ popupNetwork, setPopupNetwork ] = useState('');
+    const [ isGasless, setIsGasless ] = useState(false);
     const [ cid, setCid ] = useState(null);
     const solanaWallet = useWallet();
 
@@ -98,11 +97,12 @@ const CheckoutCreateProfile = () => {
 
     const createProfilePolygon = async (useGasStation) => {
         if (useGasStation) {
+            setIsGasless(true);
+            setPopupNetwork('polygon');
+            setPopupOpen(true);
         } else {
-            setCreatePopupOpen({
-                network: 'polygon',
-                status: true
-            })
+            setPopupNetwork('polygon');
+            setPopupOpen(true);
         }
 
         return ;
@@ -160,10 +160,8 @@ const CheckoutCreateProfile = () => {
     };
 
     const createProfileOnSolana = async () => {
-        setCreatePopupOpen({
-            network: 'solana',
-            status: true,
-        })
+        setPopupNetwork('solana');
+        setPopupOpen(true)
     };
 
     // const fetchProfileMappingSolana = async () => {
@@ -254,10 +252,11 @@ const CheckoutCreateProfile = () => {
             </div>
         </div>
         <CreateProfilePopup 
-            open={createPopupOpen.status} 
-            network={createPopupOpen.network} 
-            setOpen={setCreatePopupOpen}
+            open={popupOpen} 
+            network={popupNetwork} 
+            setOpen={setPopupOpen}
             cid={cid}
+            gasless={isGasless}
             />
         </>
     );
