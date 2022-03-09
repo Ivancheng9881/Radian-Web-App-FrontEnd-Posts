@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext, FC } from 'react';
 import ProfileContext from './user.context';
 import Web3Context from '../../web3/context/web3.context';
-import { getPersonalProfile } from '../../web3/contract';
+import { getPersonalProfile } from '../../web3/contract/profileContract';
 import ipfsUtils from '../../web3/ipfs/ipfs.utils';
 
 import { FullProfile } from '../../../schema/profile/profile.interface';
@@ -66,9 +66,12 @@ const ProfileProvider : FC = ({ children }) => {
                     setProfile(currentProfile);
                 }
             }
-        } catch(err) {
+        } catch(err: any) {
             console.log(err);
-            setProfile(profileObj)
+            if (err.code == 4200) {
+                setProfile(profileObj)
+            }
+            
         }
     }
 

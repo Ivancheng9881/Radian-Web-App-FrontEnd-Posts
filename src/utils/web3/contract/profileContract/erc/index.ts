@@ -6,6 +6,7 @@ import { FixLater } from "../../../../../schema/helper.interface";
 import { ERCProfile } from "./index.interface";
 import { ContractTransaction, Transaction } from "ethers";
 import { TransactionTypes } from "ethers/lib/utils";
+import ErrorHandler from "../../../../errorHandler";
 
 
 export const profileContract__evm__abi = abi;
@@ -168,27 +169,28 @@ export async function getProfileListErc(
 };
 
 
-export async function getProfileErc(address? : FixLater) {
+export async function getProfileErc(address?: string) {
         console.log("Calling Get Profile ERC");
     try {
         if (!address) {
             address = await ERCUtils.getAddress();
         }
-        console.log('getProfileErc Address:',address);
+        console.log('getProfileErc Address:', address);
         if ( subgraphEnabled && false ) return getProfileFromAddressSubgraph(address);
 
         let contract = await initProfileContract();
-        if ((await contract.addressProfileMapping(address)).toNumber() > 0) {
+        let profileMapping = (await contract.addressProfileMapping(address)).toNumber();
+        if (profileMapping == 0) {
+            throw(ErrorHandler(4200));
+        } else {
             let _profile = await contract.getProfilefromAddressV2(address);
             return {
                 ..._profile[1],
                 profileID: _profile[0].toString()
             };
         }
-
     } catch (err) {
-        console.log('Error in getProfileErc', err)
-        return { identityID: null }
+        throw(err)
     }
 }
 
@@ -228,6 +230,8 @@ export async function hasPersonalProfileErc (walletAddress: string) {
  * function for linking profile
  */
 
+type AddAddressNetwork = 'erc' | 'solana';
+
 export async function addAddressToProfile(address: string, isManager?: boolean) {
     const contract = await initProfileContract();
     try {
@@ -238,6 +242,42 @@ export async function addAddressToProfile(address: string, isManager?: boolean) 
         throw({err})
     }
 };
+
+export async function addExternalAddressToProfile(
+    address: string,
+    network: AddAddressNetwork,
+) {
+    const contract = await initProfileContract();
+    try {
+        const supportedNetwork = await contract.supportedExternalNetworks(0);
+        console.log(supportedNetwork)
+    
+    } catch(err) {
+        console.log(err);
+    }
+    // try {
+    //     const txn: ContractTransaction = await contract.addExternalAddressToProfile(address, isManager);
+    //     return txn;
+
+    // } catch(err) {
+    //     throw({err})
+    // }
+}
+
+export async function addAddressERC(
+    address: string,
+    network: AddAddressNetwork,
+) {
+    let isManager = true;
+    console.log(network)
+    if (network == 'erc') {
+        let txn = await addAddressToProfile(address, isManager);
+    } else if (network == 'solana') {
+        let txn = await addExternalAddressToProfile(address, network);
+
+    }
+    
+}
 
 export async function addProfileMapping(profileID : number) {
     const contract = await initProfileContract();

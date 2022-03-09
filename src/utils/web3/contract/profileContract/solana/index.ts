@@ -2,15 +2,13 @@ import idl from './idl.json';
 import { web3, Program, Provider } from "@project-serum/anchor";
 import SolanaUtils from '../../../context/solana.utils';
 // import { TextDecoder } from "web-encoding";
-import { PhantomWalletAdapter, PhantomWalletName } from '@solana/wallet-adapter-wallets';
 import { FixLater } from '../../../../../schema/helper.interface';
 import { encodeUint8Array } from '../../../general/parser.utils';
 import { SolanaAddressNumber, SolanaContentID, SolanaProfile, SolanaProfileID, SolanaProgram, SolanaSeedBuffer } from './index.interface';
-import { resolve } from 'path/posix';
-import { rejects } from 'assert';
-import { Wallet } from 'ethers';
 import { WalletContextState } from '@solana/wallet-adapter-react';
-const BN = require('bn.js');
+import ErrorHandler from '../../../../errorHandler';
+import BN from 'bn.js';
+import { SystemProgram } from '@solana/web3.js';
 
 
 
@@ -222,13 +220,12 @@ async function fetchProfileMappingSolana(
     program: Program, 
     provider: Provider
     ) {
-    console.log("fetch profile provider", provider);
     try {
         let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
         let profileMapping = await program.account.profileMapping.fetch(profileMappingPDA);
         return profileMapping;
     } catch (err) {
-        throw({status: 4000})
+        throw(ErrorHandler(4200))
     }
 };
 
@@ -238,30 +235,15 @@ async function fetchProfileSolana(
     ) {
        
     let profileMapping
-    
-    // console.log("Profile Mapping", profileMapping);
-    // if (profileMapping?.profileId) {
-        try {
-            profileMapping = await fetchProfileMappingSolana(program, provider);
-            // only fetch profile when profileMapping exists
-            console.log("pm", profileMapping);
-            let [profilePDA, profileBump] = await getProfilePDA(program.programId, profileMapping.profileId.toNumber());
-            let profile = await program.account.profile.fetch(profilePDA);
-            console.log("p", profile);
-            return [profileMapping, profile]
-        } catch (err: any) {
-            // profile does not exist
-            console.log('Error in fetching profile', err)
-            if (err.status) {
-                throw(err);
-            } else {
-                throw({status: 4001, data: {profileMapping}})
-            }
-        }
-    // } else {
-    //     // no profile mapping nor profile
-    //     return [null, null]
-    // }
+    try {
+        profileMapping = await fetchProfileMappingSolana(program, provider);
+        // only fetch profile when profileMapping exists
+        let [profilePDA, profileBump] = await getProfilePDA(program.programId, profileMapping.profileId.toNumber());
+        let profile = await program.account.profile.fetch(profilePDA);
+        return [profileMapping, profile]
+    } catch (err: any) {
+        throw(ErrorHandler(4200));
+    }
 }
 
 export async function createProfileMappingSolana(
@@ -295,19 +277,25 @@ export async function createOrUpdateProfileSolana(
     contentId: SolanaContentID
 ) {
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
-    
+    let hasCurrentProfile : boolean = false;
+    // check if user has existing profile
     try {
-        // check if user has existing profile
         let _currentProfile = await getProfileSolana(wallet);
-        if (_currentProfile) {
+        if (_currentProfile) hasCurrentProfile = true;
+    } catch(err: any) {
+        if (err.code == 4200) hasCurrentProfile = false;
+    }
+
+    try {
+        if (hasCurrentProfile) {
             let resp = await updateProfileSolana(profileId, contentId, program, provider);
             return resp;
         } else {
-            let resp = await createProfileSolana(profileId, contentId);
+            let resp = await createProfileSolana(profileId, contentId, program, provider);
             return resp;
         }
     } catch (err) {
-        console.log(err)
+        throw(err)
     }
 }
 
@@ -426,11 +414,9 @@ function toHexString(byteArray: FixLater) {
 
 export async function getProfileSolana(wallet: FixLater) {
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
-    console.log('kayton@debug', provider);
     if (!program) return false;
     try {
         const profile = await fetchProfileSolana(program, provider);
-        console.log('kayton@debug', profile)
         if (profile.length > 0) {
             if (profile[1] == null) return undefined;
             let contentIdArray = profile[1].identityId
@@ -439,7 +425,80 @@ export async function getProfileSolana(wallet: FixLater) {
         }
     } catch(err) {
         console.log(err);
-        throw Error('profile not found')
+        throw(err);
     }
     
 };
+
+
+async function getNetworkPDAFromDao(
+    program: Program, 
+): Promise<number> {
+    const [daoAccountPDA, daoAccountBump] = await getDaoAccountPDA(program.programId);
+    const daoAccount = await program.account.daoAccount.fetch(daoAccountPDA);
+    return daoAccount.networkCount;
+}
+
+async function addExternalAddress(
+    wallet: WalletContextState,
+    networkId: number = 1,
+    program: Program,
+    provider: Provider,
+) {
+
+    // get profile mapping account
+    const [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
+    const profileMappingAccount = await program.account.profileMapping.fetch(profileMappingPDA);
+    const profileMappingId = profileMappingAccount.profileID.toNumber();
+    console.log(profileMappingId);
+
+    // profile account
+    const [profilePDA, profileBump] = await getProfilePDA(program.programId, profileMappingId);
+    const profileAccount = await program.account.profile.fetch(profilePDA);
+    const addressNumber = profileAccount.addressNumber.toNumber();
+    console.log(addressNumber)
+    // search account
+    const [searchPDA, searchBump] = await getSearchAccountPDA(program.programId, profileMappingId);
+
+}
+
+/**
+ * for wallet binding
+ */
+export async function getNetworkCount(
+    wallet: FixLater
+): Promise<number> {
+    let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
+    const networkCount = await getNetworkPDAFromDao(program);
+    return networkCount
+}
+
+export async function createProfileMapping(
+    wallet: WalletContextState
+) {
+    let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
+
+    // get dao account
+    const [daoAccountPDA, daoAccountBump] = await getDaoAccountPDA(program.programId);
+    const [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
+
+    try {
+        const txSig = await program.rpc.createProfileMapping(
+            profileMappingBump, new BN(1), 1, {
+                accounts: {
+                    daoAccount: daoAccountPDA,
+                    profileMapping: profileMappingPDA,
+                    user: provider.wallet.publicKey,
+                    systemProgram: SystemProgram.programId
+                },
+                signers: [],
+            });
+    
+        return txSig;
+    } catch(err) {
+        console.log(err);
+        throw(ErrorHandler(4300))
+    }
+
+
+}

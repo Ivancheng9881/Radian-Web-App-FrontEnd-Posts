@@ -1,9 +1,9 @@
-import { getProfileErc } from "./profileContract/erc";
-import { getProfileSolana } from "./profileContract/solana";
+import { Web3ProviderType } from "../../context/web3.interface";
+import { getProfileErc } from "./erc";
+import { getProfileSolana } from "./solana";
 
-export async function getPersonalProfile(web3Context) {
-    console.log('kayton@debug', web3Context)
-    let profile;
+export async function getPersonalProfile(web3Context: Web3ProviderType) {
+    let profile: any;
     try {
         if (web3Context.providers.selected === "metamask@erc") {
             profile = await getProfileErc(web3Context.providers["metamask@erc"]);
@@ -14,8 +14,7 @@ export async function getPersonalProfile(web3Context) {
             profile.network = 'sol'
         }
         return profile;
-    } catch(err) {
-        throw Error(err);
+    } catch(err: any) {
+        throw(err);
     }
-
 };

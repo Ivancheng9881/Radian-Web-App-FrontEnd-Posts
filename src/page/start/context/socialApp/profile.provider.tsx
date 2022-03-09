@@ -2,7 +2,7 @@ import { useEffect, useState, useContext, FC } from 'react';
 import ProfileContext from './profile.context';
 import UserContext from '../../../../utils/user/context/user.context';
 import Web3Context from '../../../../utils/web3/context/web3.context';
-import { getPersonalProfile } from '../../../../utils/web3/contract';
+import { getPersonalProfile } from '../../../../utils/web3/contract/profileContract';
 import ipfsUtils from '../../../../utils/web3/ipfs/ipfs.utils';
 
 import { FullProfile } from '../../../../schema/profile/profile.interface';
@@ -106,17 +106,19 @@ const ProfileProvider : FC = ({ children }) => {
 
     const fetchUserProfile = async () => {
         // only reset profile if the address from the provider is connected to a different profile
-        let userProfile: FullProfile  = await getPersonalProfile(web3Context);
-        console.log('HomePage: User profile updated', userProfile);
-        if(userProfile.identityID != null) {
-            // if (userProfile.identityID === profile?.identityID) return;
-            let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
-            console.log(profileJson);
-            if ( profileJson ) {
-                let currentProfile : FullProfile = { ...userProfile, ...profileJson};
-                console.log(currentProfile)
-                setProfile(currentProfile);
+        try {
+            let userProfile: FullProfile  = await getPersonalProfile(web3Context);
+            if(userProfile.identityID != null) {
+                // if (userProfile.identityID === profile?.identityID) return;
+                let profileJson = await ipfsUtils.getContentJson(userProfile.identityID);
+                if ( profileJson ) {
+                    let currentProfile : FullProfile = { ...userProfile, ...profileJson};
+                    setProfile(currentProfile);
+                }
             }
+
+        } catch(err) {
+            console.log(err)
         }
     };
 
@@ -135,24 +137,6 @@ const ProfileProvider : FC = ({ children }) => {
         return vp;
     }
 
-    // const validateInput = (val: string, validationType: any) => {
-    //     let validation = Validator.validateInput(val, validationType);
-    //     console.log(validation);
-    //     let _val: string;
-    //     switch (validationType) {
-    //         case 'text':
-    //         case 'number':
-    //             validation = val;
-    //             break;
-    //         case 'date':
-    //             // if (!valid) validation = `invalid input`;
-    //             break;
-    //         default:
-    //             validation = '';
-    //             break;
-    //     }
-    // }
-
     const updateDataByKey = (key: string, val: any) => {
         let _profile = {
             ...tempProfile,
@@ -161,15 +145,6 @@ const ProfileProvider : FC = ({ children }) => {
         setTempProfile(_profile)
         LocalStoreUtils.setJson(storageKey, _profile);
     }
-
-    // const matchFields = (objSource: FixLater, objTarget: FixLater) => {
-    //     const overlapKeys = Object.keys(objTarget).filter(k => Object.keys(objSource).includes(k));
-    //     for ( let k in overlapKeys ) {
-    //         objTarget[overlapKeys[k]] = objSource[overlapKeys[k]];
-    //     }
-    //     return objTarget;
-    // }
-
 
     return <ProfileContext.Provider
                 value={{
