@@ -1,7 +1,11 @@
 import { FixLater } from '../helper.interface'
 
-interface addresses {
+interface IAddresses {
     address: string,
+}
+
+interface IExternalAddress {
+    externalAddress: string,
 }
 
 export interface ProfileContextInterface {
@@ -15,6 +19,11 @@ export interface ProfileContextInterface {
     updateDataByDropdownSelect: () => {},
     updateDataByPath: () => {},
     deleteUpdatingData: () => {},
+}
+
+export interface ILinkedAddress {
+    network: string,
+    address: string,
 }
 
 export interface FullProfile {
@@ -42,8 +51,9 @@ export interface FullProfile {
         dataJson: boolean,
         error: boolean
     }
+    linkedAddress: ILinkedAddress[],
     network: string,
     profileID: string,
-    addresses: addresses[],
-    externalAddresses: string[],
+    addresses: IAddresses[],
+    externalAddresses: IExternalAddress[],
 }

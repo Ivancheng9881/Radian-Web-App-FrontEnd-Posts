@@ -413,6 +413,7 @@ function toHexString(byteArray: FixLater) {
 
 
 export async function getProfileSolana(wallet: FixLater) {
+    console.log(wallet)
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
     if (!program) return false;
     try {

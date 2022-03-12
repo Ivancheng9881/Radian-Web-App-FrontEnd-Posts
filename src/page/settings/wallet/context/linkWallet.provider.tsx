@@ -25,7 +25,7 @@ const LinkWalletProvider : FC = ({children}) => {
     });
     // controller for steppers
     const [ newWallet, setNewWallet ] = useState<NewWalletType>({
-        address: '',
+        address: '6c8RNFQY38d1vmp2PVhPcEz6QWqPLjwaRDVKktWdxqiR',
         network: '',
     })
     const [ step, setStep ] = useState<number>(-1);

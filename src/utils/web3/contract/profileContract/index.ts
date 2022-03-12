@@ -1,3 +1,4 @@
+import { Any } from "@react-spring/types";
 import { Web3ProviderType } from "../../context/web3.interface";
 import { getProfileErc } from "./erc";
 import { getProfileSolana } from "./solana";
@@ -18,3 +19,21 @@ export async function getPersonalProfile(web3Context: Web3ProviderType) {
         throw(err);
     }
 };
+
+type Network = 'erc' | 'sol';
+
+export async function getProfileFromAddress(address: any, network: Network) {
+    let profile: any;
+    try {
+        if (network === "erc") {
+            profile = await getProfileErc(address);
+        } else if (network == "sol") {
+            let identityID = await getProfileSolana(address);
+            profile = {identityID: identityID};
+        }
+        profile.network = network
+        return profile;
+    } catch(err: any) {
+        throw(err);
+    } 
+}

@@ -1,4 +1,4 @@
-import { getProfileFromIDSubgraph } from "../erc/index"; 
+import { getProfileFromID, getProfileFromIDSubgraph, getSupportedExternalNetworkList } from "../erc/index"; 
 import { getFullProfileFromIDSolana } from "../solana/index"; 
 import ipfsUtils from '../../../ipfs/ipfs.utils';
 import { Connection } from '@solana/web3.js';
@@ -29,7 +29,18 @@ const getIdentitytID = async (
 
     try {
         if (network.toUpperCase() === "ERC") {
+            const supportedNetwork = await getSupportedExternalNetworkList();
+            console.log(supportedNetwork)
             const profile: FullProfile = await getProfileFromIDSubgraph(pid);
+            // const profile: FullProfile = await getProfileFromID(pid);
+            console.log(profile)
+            let ercAddr = profile.addresses.map((a) => ({network: 'polygon', address: a.address}));
+            let solAddr = profile.externalAddresses.map((a) => {
+                console.log(a);
+                // let n = supportedNetwork.filter((i) => i.networkID == a.)
+                return {network: 'solana', address: a.externalAddress}
+            })
+            console.log(solAddr, ercAddr)
             return profile;
 
         } else if (network.toUpperCase() === "SOLANA") {
@@ -75,10 +86,8 @@ const fetchProfiles = async (
 };
 
 const createProfileCid = async (profile: FullProfile) : Promise<FixLater> => {
-    console.log(profile);
     let profileJson = JSON.stringify(profile);
     const cid = await ipfsUtils.uploadContent(profileJson);
-    console.log(cid);
     return cid;
 }
 

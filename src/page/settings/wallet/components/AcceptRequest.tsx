@@ -3,7 +3,7 @@ import { FC, useState,  useContext, useEffect } from "react";
 import LinkWalletContext from "../context/linkWallet.context";
 import { LinkWalletContextType } from "../context/linkWallet.interface";
 import LinkProfileFormWrapper from "./wrapper.components";
-import { addAddressERC, addAddressToProfile } from "../../../../utils/web3/contract/profileContract/erc";
+import { addAddressERC, addAddressToProfile, getSupportedExternalNetwork, getSupportedExternalNetworkList } from "../../../../utils/web3/contract/profileContract/erc";
 import Web3Context from "../../../../utils/web3/context/web3.context";
 
 
@@ -19,10 +19,12 @@ const LinkProfileAcceptRequest : FC = (props) => {
     const web3Context = useContext(Web3Context);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ supportedNetwork, setSupportedNetwork ] = useState([]);
+
 
     useEffect(() => {
         handleWalletInit();
-    }, [web3Context.providers, ])
+    }, [web3Context.providers, ]);
 
     const handleWalletInit = async () => {
         if (web3Context.providers?.selected != targetProfile.provider) {
@@ -31,7 +33,7 @@ const LinkProfileAcceptRequest : FC = (props) => {
         } else {
             setIsLoading(false);
         }
-    }
+    };
 
     const handleRequestCheckout = () => {
         setIsLoading(false);
@@ -39,26 +41,22 @@ const LinkProfileAcceptRequest : FC = (props) => {
     }
 
     const handleRequestAccept = async () => {
-        // setIsLoading(true);
-        console.log(targetProfile)
+        setIsLoading(true);
         if (targetProfile.provider == objKey.metamask) {
             await handleRequetAcceptERC();
         } else if (targetProfile.provider == objKey.phantom) {
             await handleRequetAcceptSOL();
         }
-        // try {
-        //     const txn = await addAddressToProfile(newWallet.address, false);
-        //     const isSuccess = await txn.wait();
-        //     if (isSuccess) handleRequestCheckout();
-        // } catch (err) {
-        //     console.log(err);
-        //     setIsLoading(false);
-        // }
     };
 
     const handleRequetAcceptERC = async () => {
-        console.log(newWallet.network)
         const txn = await addAddressERC(newWallet.address, 'solana');
+        let receipt = await txn.wait();
+
+        if (receipt) {
+            setIsLoading(false);
+        }
+
     };
 
     const handleRequetAcceptSOL = async () => {

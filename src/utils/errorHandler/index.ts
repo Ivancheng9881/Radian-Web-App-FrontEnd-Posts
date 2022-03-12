@@ -16,8 +16,14 @@ const ErrorHandler = (code: number): ErrorInterface => {
             message = 'profile not found';
             break;
 
+        /**
+         * @error for binding network
+         */
         case 4300:
             message = 'address already in use';
+            break
+        case 4390:
+            message = 'external network not initialised';
             break
     }
 

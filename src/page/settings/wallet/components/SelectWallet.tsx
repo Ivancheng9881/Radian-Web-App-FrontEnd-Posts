@@ -1,8 +1,9 @@
+import { useWallet } from "@solana/wallet-adapter-react";
 import { Button, Input, message, Select, Spin, Typography } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
 import { FullProfile } from "../../../../schema/profile/profile.interface";
 import Web3Context from "../../../../utils/web3/context/web3.context";
-import { getPersonalProfile } from "../../../../utils/web3/contract/profileContract";
+import { getPersonalProfile, getProfileFromAddress } from "../../../../utils/web3/contract/profileContract";
 import { getProfileErc } from "../../../../utils/web3/contract/profileContract/erc";
 import { truncateAddress } from "../../../../utils/web3/general/parser.utils";
 import LinkWalletContext from "../context/linkWallet.context";
@@ -19,6 +20,7 @@ const LinkProfileSelectWallet : FC = (props) => {
 
     const { newWallet, setNewWallet, targetProfile, setStep, step, objKey } : LinkWalletContextType = useContext(LinkWalletContext);
     const web3Context = useContext(Web3Context);
+    const solanaWallet = useWallet();
     
     const [ refreshing, setRefreshing ] = useState(true);
     const [ invalidAddress, setInvalidAddress ] = useState<string>('');
@@ -60,9 +62,19 @@ const LinkProfileSelectWallet : FC = (props) => {
      * @returns 
      */
     const validateNewWallet = async (): Promise<boolean> => {
-        
+        let _network : string;
+        let _address : any;
+        // if (web3Context.providers.selected === "metamask@erc") {
+        //     _network = 'erc';
+        //     _address = web3Context.providers['metamask@erc'];
+        // } else if (web3Context.providers.selected === "phantom@solana") {
+        //     _network = 'sol';
+        //     _address = ''
+        // }
+        console.log(newWallet)
         try {
             let _p = await getPersonalProfile(web3Context);
+            console.log(_p)
             setRefreshing(false);
             if (!_p) {
                 setInvalidAddress('');

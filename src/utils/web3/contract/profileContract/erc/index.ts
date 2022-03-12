@@ -68,6 +68,7 @@ export async function getProfileFromIDSubgraph(pid: number) {
                     }
                     externalAddresses {
                         externalAddress
+                        networkID
                     }
             }
         }`;
@@ -106,7 +107,7 @@ async function getProfileFromAddressSubgraph(address: string) {
     }
 }
 
-async function getProfileFromID(id: number) {
+export async function getProfileFromID(id: number) {
     let contract = await initProfileContract(true);
     return await contract.getProfilefromID(id);
 }
@@ -243,25 +244,110 @@ export async function addAddressToProfile(address: string, isManager?: boolean) 
     }
 };
 
+/**
+ * 
+ * @throws 4390 if no external network has been initialised for the DID contract
+ * @returns total number of external network supports
+ */
+async function getSupportedNetworkCount(): Promise<number> {
+    const contract = await initProfileContract();
+
+    try {
+        let count = await contract.getSupportedNetworkListLength();
+        count = count.toNumber();
+        if (count === 0) {
+            throw(ErrorHandler(4390));
+        }
+        return count
+    } catch(err) {
+        console.log(err);
+        throw(err)
+    }
+}
+
+interface ISupportedExternalNetwork {
+    networkType: string,
+    networkID: number,
+}
+
+/**
+ * get supported external network by ID
+ * the ID should be acquired from @function getSupportedNetworkCount
+ * @param id external network id
+ * @returns 
+ */
+export async function getSupportedExternalNetwork(id: number): Promise<ISupportedExternalNetwork> {
+    const contract = await initProfileContract();
+    try {
+        let supportedNetwork: any = await contract.supportedExternalNetworks(id);
+        return {
+            ...supportedNetwork,
+            networkID: supportedNetwork.networkID.toNumber()
+        };
+    } catch(err: any) {
+        throw(err)
+    }
+}
+
+export async function getSupportedExternalNetworkList(): Promise<ISupportedExternalNetwork[]> {
+    try {
+        let count = await getSupportedNetworkCount();
+        let promises: any = [];
+        for (let i : number = 0;  i < count; i++) {
+            let _p = new Promise(async (resolve, reject) => {
+                try {
+                    let n = await getSupportedExternalNetwork(i);
+                    resolve(n);
+                } catch(err) {
+                }
+            });
+            promises.push(_p);
+        }
+
+        let network: ISupportedExternalNetwork[] = await Promise.all(promises);
+        return network;
+
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+async function addExternalAddressTransaction(
+    address: string,
+    networkID: number,
+) {
+    const contract = await initProfileContract();
+    try {
+        const txn: ContractTransaction = await contract.addExternalAddressToProfile(networkID, address);
+        return txn;
+
+    } catch(err) {
+        throw({err})
+    }
+}
+
 export async function addExternalAddressToProfile(
     address: string,
     network: AddAddressNetwork,
 ) {
-    const contract = await initProfileContract();
-    try {
-        const supportedNetwork = await contract.supportedExternalNetworks(0);
-        console.log(supportedNetwork)
-    
-    } catch(err) {
-        console.log(err);
-    }
-    // try {
-    //     const txn: ContractTransaction = await contract.addExternalAddressToProfile(address, isManager);
-    //     return txn;
+    let networkList: ISupportedExternalNetwork[];
 
-    // } catch(err) {
-    //     throw({err})
-    // }
+    try {
+        networkList = await getSupportedExternalNetworkList()
+
+    } catch(err) {
+        console.log(err)
+    }
+    let networkMapping = networkList.filter((n) => n.networkType.toLowerCase() == network)
+    console.log(networkMapping[0].networkID)
+    try {
+        const txn = await addExternalAddressTransaction(address, networkMapping[0].networkID)
+        return txn;
+    } catch(err) {
+        console.log(err)
+    }
+    
+
 }
 
 export async function addAddressERC(
@@ -269,14 +355,15 @@ export async function addAddressERC(
     network: AddAddressNetwork,
 ) {
     let isManager = true;
-    console.log(network)
-    if (network == 'erc') {
-        let txn = await addAddressToProfile(address, isManager);
-    } else if (network == 'solana') {
-        let txn = await addExternalAddressToProfile(address, network);
+    let txn;
 
+    if (network == 'erc') {
+        txn = await addAddressToProfile(address, isManager);
+    } else if (network == 'solana') {
+        txn = await addExternalAddressToProfile(address, network);
     }
-    
+
+    return txn;
 }
 
 export async function addProfileMapping(profileID : number) {
