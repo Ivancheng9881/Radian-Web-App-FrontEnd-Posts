@@ -13,6 +13,7 @@ import { Profile, ProfileList } from "../../utils/web3/contract/profileContract/
 import LoadingScreen from "../../components/LoadingScreen";
 import CustomSider from "../../components/Layout/CustomSider.components";
 import CustomContent from "../../components/Layout/CustomContent.components";
+import { getTagWithSignature } from "../../utils/web3/contract/profileContract";
 
 const HomePage: FC = (props) => {
 

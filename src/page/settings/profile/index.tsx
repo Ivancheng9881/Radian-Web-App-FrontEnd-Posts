@@ -1,11 +1,6 @@
-import { Button } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
-import CustomTypography from "../../../components/Typography";
-import InfoDisplayGroup from "../../start/checkout/components/InfoDisplay/InfoDisplay.components";
 import UserContext from "../../../utils/user/context/user.context";
 import { FullProfile } from "../../../schema/profile/profile.interface";
-import ProfilePictureFrame from "../../../components/ProfilePictureFrame";
-import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import EditProfileForm from "./form";
 
 const ProfileSettings: FC = () => {

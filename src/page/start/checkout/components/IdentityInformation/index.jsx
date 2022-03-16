@@ -100,56 +100,6 @@ const CheckoutIdentityInformation = () => {
                             onClick={toggleVisibility}
                         />
                     </Space>
-                    {/* <InfoDisplayGroup
-                        profileKey="firstName"
-                        label={`First Name`}
-                        value={profile.firstName}
-                        stepName={`name`} />
-                    <InfoDisplayGroup
-                        profileKey="lastName"
-                        label={`Last Name`}
-                        value={profile.lastName}
-                        stepName={`name`} />
-                    <InfoDisplayGroup
-                        profileKey={["day","month","year"]}
-                        label={`Birthday`}
-                        value={(profile.day || profile.month || profile.year) && `${profile.day}/${profile.month}/${profile.year}`}
-                        visibleUpdate={updateDataByPath}
-                        visibilityData={visible}
-                        stepName={`dob`}
-                    />
-                    <InfoDisplayGroup 
-                        profileKey="gender" 
-                        label={`Gender`} 
-                        value={profile.gender} 
-                        visibleUpdate={updateDataByPath}
-                        visibilityData={visible}
-                        stepName={`gender`} 
-                    />
-                    <InfoDisplayGroup
-                        profileKey={["countryCode","number"]}
-                        label={`Phone`}
-                        value={(profile.countryCode || profile.number) && `${profile.countryCode} ${profile.number}`}
-                        visibleUpdate={updateDataByPath}
-                        visibilityData={visible}
-                        stepName={`phone`}
-                    />
-                    <InfoDisplayGroup
-                        profileKey="nationality"
-                        label={`Nationality`}
-                        value={`${profile.nationality}`}
-                        visibleUpdate={updateDataByPath}
-                        visibilityData={visible}
-                        stepName={`nationality`}
-                    />
-                    <InfoDisplayGroup
-                        profileKey="interest"
-                        label={`Interests`}
-                        value={`${profile.interest.map((i) => `${i}`)}`}
-                        visibleUpdate={updateDataByPath}
-                        visibilityData={visible}
-                        stepName={`interest`}
-                    /> */}
                 </Col>
                 <Col span={6}>
                     <div className="text-2xl mb-4 text-theme-white font-semibold text-center md:text-left">Profile Images</div>
@@ -157,12 +107,13 @@ const CheckoutIdentityInformation = () => {
                         { (typeof profile.profilePictureCid === 'string') ? 
                             <ProfilePictureFrame
                             key="profilePictureCid"
-                            src={ipfsUtils.getContentUrl(profile.profilePictureCid)} />
+                            src={profile.profilePictureCid} />
                             :
                             profile.profilePictureCid.map((k,v) => {
                                 return <ProfilePictureFrame
-                                key={`profilePictureCid_${v}`}
-                                        src={ipfsUtils.getContentUrl(k)} />    
+                                    key={`profilePictureCid_${v}`}
+                                    src={k} 
+                                />    
                             })
                         }
                         

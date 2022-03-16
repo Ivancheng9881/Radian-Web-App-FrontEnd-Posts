@@ -36,7 +36,7 @@ const ProfileContent : FC<PropsType> = ({
             <Space direction="vertical" style={styles.space}>
                 { isOwner && <ProfileSettings />}
                 <ProfileAvatar   
-                    profilePicture={ipfsUtils.getContentUrl(profile?.profilePictureCid)}
+                    profilePicture={profile?.profilePictureCid[0]}
                     username={`${profile.firstName} ${profile.lastName}`}
                 />
                 <ProfileDetails profile={profile} />

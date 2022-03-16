@@ -26,9 +26,9 @@ const ViewProfilePage : FC = (props) => {
     const solana_rpc_api = config.web3.network.solana.rpc;
     const wallet = useWallet();
 
-    useEffect( () => {
+    useEffect(() => {
         getProfile();
-    }, [params, web3Context]);
+    }, [params, web3Context.providers]);
 
 
     const getProfile = async () => {
@@ -52,14 +52,6 @@ const ViewProfilePage : FC = (props) => {
                 />
             </CustomSider>
             <Layout.Content>
-            <div className='pt-32'>
-                <div className={`max-w-sm md:fixed h-full`}>
-                    
-
-                </div>
-                <div className={`flex flex-wrap ml-8 md:ml-0 md:justify-start md:pt-0 pl-0 md:pl-96`}>
-                </div>
-            </div>
             </Layout.Content>
         </Layout>
     )

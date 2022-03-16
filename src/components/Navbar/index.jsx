@@ -146,7 +146,7 @@ const Navbar = (props) => {
                 {profileContext.profile?.identityID &&
                 <div className="absolute top-4 right-4 w-10 h-10 cursor-pointer rounded-full"
                     style={{
-                        backgroundImage: `url(${ipfsUtils.getContentUrl(profileContext.profile?.profilePictureCid)})`,
+                        backgroundImage: `${ipfsUtils.getBkgdImageFromCDNFailover(profileContext.profile?.profilePictureCid)}`,
                         backgroundPosition: 'center center',
                         backgroundSize: 'cover'
                     }}

@@ -40,9 +40,11 @@ const ProfileProvider : FC = ({ children }) => {
     // fetch profile from the graph / blockchain if web3provider is connected
     // then, fetch ipfs data by cid, populate the profile object and storage in local storage for fast retrieval
     // only the top level identity field is populated
-
-
     const [ profile, setProfile ] = useState<FullProfile>(profileObj);
+
+    useEffect(() => {
+        console.log(profile)
+    }, [profile])
 
     useEffect(() => {
         console.log('kayton@debug',web3Context)

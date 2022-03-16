@@ -1,3 +1,4 @@
+import CSS from 'csstype';
 
 
 export interface PaginationType {
@@ -8,3 +9,8 @@ export interface PaginationType {
 
 
 export type FixLater = any;
+
+
+export interface StyleSheet {
+    [key: string] : CSS.Properties
+}

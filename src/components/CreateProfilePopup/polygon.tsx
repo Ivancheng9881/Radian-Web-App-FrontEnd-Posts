@@ -1,5 +1,5 @@
 import { FC, useState, useContext, useEffect } from "react";
-import { Button, Modal, Spin, Steps } from "antd";
+import { Button, message, Modal, Spin, Steps } from "antd";
 import { CreateProfilePopupPropsType } from ".";
 import Web3Context from "../../utils/web3/context/web3.context";
 import { createProfileErc, getProfileErc } from "../../utils/web3/contract/profileContract/erc";
@@ -38,15 +38,18 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
      * the ERC util will handle this later
      */
     const createProfile = async () => {
+        setLoading(true)
         try {
             const txn = await createProfileErc(props.cid.toString(), props.gasless);
             if (txn) {
-                setLoading(true);
+                // setLoading(true);
                 const isSuccess = await txn.wait();
                 if (isSuccess) handleCheckoutComplete()
             }
-        } catch(err) {
+        } catch(err: any) {
+            setLoading(false);
             console.log(err)
+            message.warning(err.message);
         }
     };
 
@@ -77,17 +80,20 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
         <Steps.Step
             title='Create Profile'
             description={
-                    loading
-                    ? <Spin size="large" style={{marginLeft: '1rem'}} />
-                    : <Button 
+                <Spin 
+                    size="large" 
+                    spinning={loading}
+                    style={{marginLeft: '1rem'}} 
+                >
+                    <Button 
                         size='large' 
                         type='primary' 
                         onClick={createProfile}
                         disabled={step != createProfileStep}
                     >
-                            Create Profile
+                        Create Profile
                     </Button>
-                
+                </Spin>
             }
         />
         <Steps.Step

@@ -41,7 +41,7 @@ const ViewIdentityInformation: FC<PageProps> = (props) => {
             <div
                 className={`w-full h-full relative`}
                 style={{
-                    backgroundImage: `url(${profile.identityID && ipfsUtils.getContentUrl(profile?.profilePictureCid)})`,
+                    backgroundImage: ipfsUtils.getBkgdImageFromCDNFailover(profile?.profilePictureCid),
                     backgroundPosition: 'center center',
                     backgroundSize: 'cover'
                 }}

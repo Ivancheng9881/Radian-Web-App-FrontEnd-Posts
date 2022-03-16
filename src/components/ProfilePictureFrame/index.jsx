@@ -1,11 +1,12 @@
 import { Fragment } from 'react';
+import ImageHolder from '../ImageHolder';
 import ProfilePictureFrameRoot from './frame';
 import './styles.css';
 
-const ProfilePictureFrame = ({ src = undefined, maxHeight = 400, maxWidth = 400 }) => {
+const ProfilePictureFrame = ({ src = undefined}) => {
     return (
         <ProfilePictureFrameRoot>
-            {src && <img className="img-fluid" src={src} />}
+            {src && <ImageHolder cid={src} />}
         </ProfilePictureFrameRoot>
     );
 };

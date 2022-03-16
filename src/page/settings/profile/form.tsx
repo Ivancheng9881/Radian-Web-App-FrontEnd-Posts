@@ -137,7 +137,7 @@ const EditProfileForm : FC<PropsType> = ({
                             return <ProfilePictureUpload
                                 disabled={disabled}
                                 key={`profilePictureCid_${k}`}
-                                src={ipfsUtils.getContentUrl(k)} 
+                                cid={k} 
                                 onUpload={onPropicUpload}
                             />    
                         })}

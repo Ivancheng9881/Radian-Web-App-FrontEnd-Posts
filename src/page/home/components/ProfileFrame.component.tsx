@@ -5,10 +5,11 @@ import ipfsUtils from '../../../utils/web3/ipfs/ipfs.utils';
 import { profileRouteBuilder } from '../../../utils/profile/routing.utils';
 import { Profile } from '../../../utils/web3/contract/profileContract/index.interface';
 import { FullProfile } from '../../../schema/profile/profile.interface';
+import ImageHolder from '../../../components/ImageHolder';
 
 interface PageProps {
     profile: Profile
-}
+};
 
 const ProfileFrame : FC<PageProps> = (props) => {
 
@@ -17,9 +18,14 @@ const ProfileFrame : FC<PageProps> = (props) => {
     const [ fullProfile, setFullProfile ] = useState<FullProfile>(null);
     const history = useHistory();
 
+
     useEffect(() => {
         fetchProfile();
     },[ props.profile ]);
+
+    useEffect(() => {
+
+    })
 
     const fetchProfile = async () : Promise<void> => {
         let p : FullProfile = await ipfsUtils.getContentJson(props.profile.identityID);
@@ -41,12 +47,7 @@ const ProfileFrame : FC<PageProps> = (props) => {
                 <div className="p-2">
                     <Card
                         hoverable
-                        cover={
-                            <img 
-                                src={ipfsUtils.getContentUrl(fullProfile.profilePictureCid)}
-                                alt={fullProfile.firstName}
-                            />
-                        }
+                        cover={fullProfile.profilePictureCid && <ImageHolder cid={fullProfile.profilePictureCid[0]} />}
                         onClick={handleOpenProfile}
                         style={{
                             width: 300,

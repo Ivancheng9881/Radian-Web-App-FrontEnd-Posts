@@ -1,4 +1,9 @@
+import { FixLater } from "../../../../../schema/helper.interface";
 
+interface RSV {
+    data: number[],
+    type: string
+}
 
 
 export interface ERCProfile {
@@ -6,4 +11,12 @@ export interface ERCProfile {
     network: string,
     profileID: string,
     verifyID: string
+}
+
+export interface TagResponse {
+    tag: string[],
+    deadline: Date,
+    v: number,
+    r: number[],
+    s: number[],
 }

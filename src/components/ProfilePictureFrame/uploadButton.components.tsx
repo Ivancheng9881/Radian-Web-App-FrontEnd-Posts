@@ -1,17 +1,14 @@
 import { Button, message, Space, Upload } from "antd";
 import { FC, useEffect, useState } from "react";
-import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import ProfilePictureFrame from ".";
 import ProfilePictureFrameRoot from "./frame";
-import config from "../../commons/config";
-import { useRef } from "react";
 import UploadButton from "../Button/UploadButton.components";
 import MediaUtils from "../../utils/mediaUpload";
-import { ipfsContentRoot } from "../../commons/web3";
 import { FixLater } from "../../schema/helper.interface";
+import { useImage } from 'react-image';
+import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
 interface PropsType {
-    src: string,
+    cid: string,
     onUpload: FixLater,
     disabled?: boolean
     maxHeight?: number,
@@ -21,12 +18,16 @@ interface PropsType {
 const ProfilePictureUpload : FC<PropsType> = (props) => {
 
     const [ imageUrl, setImageUrl ] = useState<string>('');
+    const {src} = useImage({
+        srcList: ipfsUtils.getImageFromCDNFailover(props.cid),
+        useSuspense: false,
+    })
 
     useEffect(() => {
-        if (props.src) {
-            setImageUrl(props.src);
+        if (props.cid) {
+            setImageUrl(props.cid);
         }
-    }, [props.src]);
+    }, [props.cid]);
 
     const handleUpload = async (file: any) => {
         try {
@@ -46,7 +47,7 @@ const ProfilePictureUpload : FC<PropsType> = (props) => {
     return (
         <Space direction="horizontal">
             <ProfilePictureFrameRoot >
-                <img src={imageUrl} />
+                <img src={src} />
             </ProfilePictureFrameRoot>
                 <UploadButton 
                     placeholder={'change profile picture'}

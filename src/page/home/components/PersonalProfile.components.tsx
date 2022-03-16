@@ -9,7 +9,7 @@ const PersonalProfile: FC = (props) => {
     const userContext: ProfileContextInterface = useContext(UserContext); // load profile info from provider
     const web3Context: FixLater = useContext(Web3Context);
     const profile = userContext.profile;
-    
+
     return (
         <>
             {

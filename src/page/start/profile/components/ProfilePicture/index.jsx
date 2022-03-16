@@ -85,7 +85,7 @@ const ProfilePicture = (props) => {
                                 >
                                     X
                                 </div>
-                                <ProfilePictureFrame src={ipfsUtils.getContentUrl(c)} />
+                                <ProfilePictureFrame src={c} />
                             </div>
                         );
                     })}

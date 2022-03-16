@@ -10,14 +10,29 @@ const ErrorHandler = (code: number): ErrorInterface => {
 
     switch(code) {
 
-        // 
-        // get profile error
+        /**
+         * @error FOR CREATE/UPDATE PROFILE
+         */
+
+        case 4010:
+            message = 'Inappropriate Content Detected: Explicit Nudity, Violence, Visually Disturbing, Drugs, Hate Symbols';
+            break
+
+
+        /**
+         * @error FOR UPDATE PROFILE
+         */
+
+        /**
+         * @error FOR FETCHING PROFILE
+         */
         case 4200:
             message = 'profile not found';
             break;
 
+
         /**
-         * @error for binding network
+         * @error FOR BINDING NETWORK
          */
         case 4300:
             message = 'address already in use';

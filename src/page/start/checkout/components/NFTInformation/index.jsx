@@ -20,7 +20,7 @@ const CheckoutNFTInformation = () => {
                                 return (
                                     <div className="" key={c}>
                                     <ProfilePictureFrame 
-                                        src={ipfsUtils.getContentUrl(c)}
+                                        src={c}
                                     />
                                     </div>
                                 )

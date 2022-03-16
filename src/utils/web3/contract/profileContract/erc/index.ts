@@ -1,18 +1,18 @@
 import ERCUtils from "../../../context/erc.utils";
-import { abi } from './abi.json';
-import { gasStationNetworkUrl, subgraphUrl } from '../../../../../commons/web3';
+import { gasStationNetworkUrl, subgraphUrlRoot } from '../../../../../commons/web3';
 import { fetchDataFromSubgraph } from "../../../subgraph/subgraph.utils"; 
-import { FixLater } from "../../../../../schema/helper.interface";
 import { ERCProfile } from "./index.interface";
 import { ContractTransaction, Transaction } from "ethers";
-import { TransactionTypes } from "ethers/lib/utils";
 import ErrorHandler from "../../../../errorHandler";
+import ProfileContract__evm__config from "./config";
+import { getTagWithSignature } from "..";
 
 
-export const profileContract__evm__abi = abi;
-export const profileContract__evm__address = '0x1EFC4aBA053A793933df06f16B11a69bbAAdB38F';
-const paymasterAddress = "0xDeB767A9F567FfC6cbcCB8E48940b4ADB7A2aD88";
-const subgraphEnabled = true;
+const profileContract__evm__abi = ProfileContract__evm__config.abi;
+const profileContract__evm__address = ProfileContract__evm__config.address;
+const paymasterAddress = ProfileContract__evm__config.payMasterAddress;
+const subgraphEnabled = ProfileContract__evm__config.subgraph.enabled;
+const subgraphUrl = `${subgraphUrlRoot}/${ProfileContract__evm__config.subgraph.graphId}`
 
 async function initProfileContract(readOnly=false) {
     return await ERCUtils.initContract(
@@ -38,13 +38,14 @@ async function initGaslessProfileContract() {
 }
 
 async function getProfilesFromSubgraph(skip: number, limit: number) {
-    let query = `query Profile($skip: Int!, $limit: Int!) {
-                profiles(skip: $skip, first: $limit) {
-                    profileID
-                    identityID
-                    verifyID
-                }
-            }`;
+    let query = `
+        query Profile($skip: Int!, $limit: Int!) {
+            profiles(skip: $skip, first: $limit) {
+                profileID
+                identityID
+            }
+        }
+    `;
     let params = {skip: skip, limit: limit};
     let result = await fetchDataFromSubgraph(subgraphUrl, query, params);
     return result.data.profiles;
@@ -60,18 +61,20 @@ async function getProfileListCountFromSubgraph() {
 
 export async function getProfileFromIDSubgraph(pid: number) {
     
-    let query = `query Profile($profileID: BigInt!) {
-                profiles(first: 1, where: {profileID: $profileID}) {
-                    identityID
-                    addresses {
-                        address
-                    }
-                    externalAddresses {
-                        externalAddress
-                        networkID
-                    }
+    let query = `
+        query Profile($profileID: BigInt!) {
+            profiles(first: 1, where: {profileID: $profileID}) {
+                identityID
+                addresses {
+                    address
+                }
+                externalAddresses {
+                    externalAddress
+                    networkID
+                }
             }
-        }`;
+        }
+    `;
     let params = {profileID: pid};
     let result;
     try {
@@ -86,15 +89,16 @@ export async function getProfileFromIDSubgraph(pid: number) {
 
 async function getProfileFromAddressSubgraph(address: string) {
     
-    let query = `query Addresses($address: String!) {
+    let query = `
+        query Addresses($address: String!) {
             addresses(first: 5, where: {address: $address}) {
-            profile {
-                profileID
-                identityID
-                verifyID
+                profile {
+                    profileID
+                    identityID
+                }
             }
         }
-    }`;
+    `;
     let params = {address: address};
     let result;
     try {
@@ -171,7 +175,7 @@ export async function getProfileListErc(
 
 
 export async function getProfileErc(address?: string) {
-        console.log("Calling Get Profile ERC");
+    console.log("Calling Get Profile ERC");
     try {
         if (!address) {
             address = await ERCUtils.getAddress();
@@ -191,8 +195,20 @@ export async function getProfileErc(address?: string) {
             };
         }
     } catch (err) {
+        console.log(err);
         throw(err)
     }
+}
+
+async function createTag(cid: string, tags?: string[]) {
+
+    try {
+        const res = await getTagWithSignature(cid, tags);
+        return res;
+    } catch(err) {
+        throw(err);
+    }
+    
 }
 
 // write requests
@@ -201,16 +217,54 @@ export async function createProfileErc(
     useGasStation: boolean
     ) {
 
-    let currentProfile = await getProfileErc();
-    let contract = useGasStation ? await initGaslessProfileContract() : await initProfileContract();
-    let txn;
-    if (currentProfile) {
-        // perform update
-        txn = await contract.updateProfile(identityID)
-    } else {
-        txn = await contract.createProfile(identityID)
+    let hasProfile: boolean = false;
+    let tagResponse;
+
+    try {
+        await getProfileErc();
+        hasProfile = true;
+    } catch(err: any) {
+        if (err.code === 4200) {
+            hasProfile = false;
+        }
     }
-    return txn
+
+    try {
+        tagResponse = await createTag(identityID);
+    } catch(err) {
+        throw(err);
+    }
+
+    let contract = useGasStation ? await initGaslessProfileContract() : await initProfileContract();
+    try {
+        let txn;
+
+        if (hasProfile) {
+            // perform update
+            txn = await contract.updateProfileWithTags(
+                identityID,
+                tagResponse.tag,
+                tagResponse.deadline,
+                tagResponse.v,
+                tagResponse.r,
+                tagResponse.s
+                )
+        } else {
+            txn = await contract.createProfileWithTags(
+                identityID,
+                tagResponse.tag,
+                tagResponse.deadline,
+                tagResponse.v,
+                tagResponse.r,
+                tagResponse.s
+            )
+            return txn
+        }
+    } catch(err) {
+        console.log(err);
+        throw(err);
+    }
+
 };
 
 export async function hasPersonalProfileErc (walletAddress: string) {
@@ -277,8 +331,9 @@ interface ISupportedExternalNetwork {
  * @returns 
  */
 export async function getSupportedExternalNetwork(id: number): Promise<ISupportedExternalNetwork> {
-    const contract = await initProfileContract();
+    
     try {
+        const contract = await initProfileContract();
         let supportedNetwork: any = await contract.supportedExternalNetworks(id);
         return {
             ...supportedNetwork,
@@ -289,22 +344,12 @@ export async function getSupportedExternalNetwork(id: number): Promise<ISupporte
     }
 }
 
-export async function getSupportedExternalNetworkList(): Promise<ISupportedExternalNetwork[]> {
+export async function getSupportedExternalNetworkList(): Promise<string[]> {
     try {
         let count = await getSupportedNetworkCount();
-        let promises: any = [];
-        for (let i : number = 0;  i < count; i++) {
-            let _p = new Promise(async (resolve, reject) => {
-                try {
-                    let n = await getSupportedExternalNetwork(i);
-                    resolve(n);
-                } catch(err) {
-                }
-            });
-            promises.push(_p);
-        }
-
-        let network: ISupportedExternalNetwork[] = await Promise.all(promises);
+        const contract = await initProfileContract();
+        let network: string[] = await contract.getSupportedNetworks(0, count);
+        console.log('network', network)
         return network;
 
     } catch(err) {
@@ -330,7 +375,7 @@ export async function addExternalAddressToProfile(
     address: string,
     network: AddAddressNetwork,
 ) {
-    let networkList: ISupportedExternalNetwork[];
+    let networkList: string[];
 
     try {
         networkList = await getSupportedExternalNetworkList()
@@ -338,10 +383,9 @@ export async function addExternalAddressToProfile(
     } catch(err) {
         console.log(err)
     }
-    let networkMapping = networkList.filter((n) => n.networkType.toLowerCase() == network)
-    console.log(networkMapping[0].networkID)
+    let networkID: number = networkList.findIndex((n) => n.toLowerCase() == network)
     try {
-        const txn = await addExternalAddressTransaction(address, networkMapping[0].networkID)
+        const txn = await addExternalAddressTransaction(address, networkID)
         return txn;
     } catch(err) {
         console.log(err)

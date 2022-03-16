@@ -65,9 +65,24 @@ export const validateInput = (value, type) => {
     return true;
 };
 
+
+function isUrl(val) {
+    let pattern = /https?:\/\//gi;
+    return validatePattern(val, pattern);
+}
+
+function isIpfs(val) {
+    let pattern = /ipfs?:\/\//gi;
+    return validatePattern(val, pattern);
+}
+
+
+
 const Validator = {
     isNumberOnly,
     isNumberInRange,
+    isUrl,
+    isIpfs,
     validateInput
 };
 
