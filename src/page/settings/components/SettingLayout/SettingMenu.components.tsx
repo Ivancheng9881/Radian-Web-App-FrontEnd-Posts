@@ -1,9 +1,9 @@
 import { Menu } from "antd";
-import SubMenu from "antd/lib/menu/SubMenu";
 import { FC } from "react";
 import { RouteComponentProps, useHistory } from "react-router";
-import { settingNFTRoute, settingProfileRoute, settingWalletRoute } from "../../../../commons/route";
+import { settingNFTEthRoute, settingNFTPolygonRoute, settingNFTRoute, settingNFTSolanaRoute, settingProfileRoute, settingWalletRoute } from "../../../../commons/route";
 import CustomMenuItem from "../../../../components/Menu/MenuItem";
+import CustomSubMenu from "../../../../components/Menu/SubMenu";
 
 interface PropsType {
 }
@@ -35,12 +35,29 @@ const SettingMenu : FC<PropsType> = (props) => {
                 >
                     Link Wallet
                 </CustomMenuItem>
-                <CustomMenuItem 
-                    key='item:ImportNFT'
-                    route={settingNFTRoute}
-                >
-                    My NFT
-                </CustomMenuItem>
+                <CustomSubMenu title={`My NFT`} >
+                    <CustomMenuItem
+                        key='item:NFT:ETH'
+                        route={settingNFTEthRoute}
+                        isSubItem
+                    >
+                        ETH
+                    </CustomMenuItem>
+                    <CustomMenuItem
+                        key='item:NFT:Polygon'
+                        route={settingNFTPolygonRoute}
+                        isSubItem
+                    >
+                        Polygon
+                    </CustomMenuItem>
+                    <CustomMenuItem
+                        key='item:NFT:Solana'
+                        route={settingNFTSolanaRoute}
+                        isSubItem
+                    >
+                        Solana
+                    </CustomMenuItem>
+                </CustomSubMenu>
             </Menu>
         </div>
     )

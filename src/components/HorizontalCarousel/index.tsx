@@ -1,6 +1,5 @@
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { count } from "console";
 import React, { useState, FC, useEffect, useRef, useLayoutEffect, memo } from "react";
 import { StyleSheet } from "../../schema/helper.interface";
 
@@ -12,11 +11,9 @@ interface PageProps {
     count: number,
     fetchDataCallback?: () => Promise<void>,
     fetchBuffer?: number,
-    offset: number,
-    setOffset: any,
 }
 
-const HorizontalCarousel : FC<PageProps> = memo(({
+const HorizontalCarousel : FC<PageProps> = ({
     children,
     itemWidth,
     itemPadding=10,
@@ -24,13 +21,16 @@ const HorizontalCarousel : FC<PageProps> = memo(({
     iconMargin=10,
     count,
     fetchDataCallback,
-    fetchBuffer=5,
-    offset,
-    setOffset
+    fetchBuffer=5
 }) => {
 
+    const [ offset, setOffset ] = useState(0);
     const [ buffering, setBuffering ] = useState(false);
     const bodyInnerRef = useRef(null);
+
+    useEffect(() => {
+        setBuffering(false);
+    }, [count])
 
     const styles: StyleSheet = {
         root: {
@@ -53,7 +53,7 @@ const HorizontalCarousel : FC<PageProps> = memo(({
             display: 'flex',
             marginLeft: `${-(itemWidth + itemPadding * 2) * offset}px`,
             transition: `0.3s`
-        }, 
+        },
         itemWrapper: {
             padding: `0px ${itemPadding}px`
         },
@@ -64,19 +64,22 @@ const HorizontalCarousel : FC<PageProps> = memo(({
 
     const handlePrev = (e: any) => {
         e.preventDefault()
-        offset--
-        setOffset(offset);
+        setOffset((prevState) => {
+            prevState--
+            return prevState
+        });
     }
 
     const handleNext = (e: any) => {
         e.preventDefault()
-
-        if (offset + fetchBuffer > count && !buffering) {
-            setBuffering(true)
-            fetchDataCallback();
-        };
-        offset++
-        setOffset(offset);
+        setOffset((prevState) => {
+            prevState++
+            if (prevState + fetchBuffer > count && !buffering) {
+                setBuffering(true)
+                fetchDataCallback();
+            };
+            return prevState
+        });
     };
 
 
@@ -116,6 +119,6 @@ const HorizontalCarousel : FC<PageProps> = memo(({
             </div>
         </div>
     )
-});
+};
 
 export default HorizontalCarousel;

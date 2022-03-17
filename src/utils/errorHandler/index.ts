@@ -10,6 +10,10 @@ const ErrorHandler = (code: number): ErrorInterface => {
 
     switch(code) {
 
+        case 3000:
+            message = 'CDN fallback';
+            break
+
         /**
          * @error FOR CREATE/UPDATE PROFILE
          */

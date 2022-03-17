@@ -12,3 +12,8 @@ export const settingRoute = '/settings';
 export const settingProfileRoute = '/settings/profile'
 export const settingWalletRoute = '/settings/wallet'
 export const settingNFTRoute = '/settings/nft'
+export const settingNFTEthRoute = '/settings/nft/eth'
+export const settingNFTPolygonRoute = '/settings/nft/polygon'
+export const settingNFTSolanaRoute = '/settings/nft/solana'
+
+export const passportRoute = '/passport';

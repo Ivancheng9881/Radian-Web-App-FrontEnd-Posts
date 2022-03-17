@@ -1,21 +1,26 @@
 import { Menu, Typography } from "antd";
 import React, { FC } from "react";
 import { useHistory } from "react-router";
+import { StyleSheet } from "../../../schema/helper.interface";
 
 interface PropsType {
     route?: string,
-    onClick?: any
+    onClick?: any,
+    isSubItem?: boolean
 };
 
-const styles = {
-    item: {
-        width: '100%',
-    }
-} as const;
 
 const CustomMenuItem : FC<PropsType> = (props) => {
 
     const history = useHistory();
+
+    const styles: StyleSheet = {
+        item: {
+            width: '100%',
+            paddingLeft: props.isSubItem ? '32px' : '16px'
+        }
+    };
+    
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -28,7 +33,7 @@ const CustomMenuItem : FC<PropsType> = (props) => {
 
     return (
         <span onClick={handleClick} style={styles.item}>
-            <Menu.Item key={props.route} >
+            <Menu.Item key={props.route} style={styles.item} >
                 <Typography.Text strong={history.location.pathname === props.route} >
                     {props.children}
                 </Typography.Text>

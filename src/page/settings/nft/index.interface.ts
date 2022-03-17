@@ -8,22 +8,24 @@ export interface INFTMetadata {
 }
 
 export interface INFTItem {
-    owner_of: string,
-    amount: string,
-    synced_at: string,
+    owner_of?: string,
+    amount?: string,
+    synced_at?: string,
     token_address: string,
-    token_id: string,
+    token_id?: string,
     token_uri: string
     metadata: INFTMetadata,
 }
 
 export interface INFTList {
-    cursor: string,
-    page: number,
-    page_size: number,
+    cursor?: string,
+    page?: number,
+    page_size?: number,
     result: INFTItem[],
-    status: string,
-    total: number
+    status?: string,
+    total: number,
+    offset: number,
+    limit: number,
 }
 
 export interface INFTMapping {

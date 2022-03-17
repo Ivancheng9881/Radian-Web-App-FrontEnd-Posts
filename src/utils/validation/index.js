@@ -77,12 +77,18 @@ function isIpfs(val) {
 }
 
 
+function isBase64Encoded(val) {
+    let pattern = /data:application\/json;base64?/gi;
+    return validatePattern(val, pattern);
+}
+
 
 const Validator = {
     isNumberOnly,
     isNumberInRange,
     isUrl,
     isIpfs,
+    isBase64Encoded,
     validateInput
 };
 
