@@ -28,6 +28,8 @@ const styles = {
 
 const Full : FC<PageProps> = (props) => {
 
+    console.log('kayton@debug', props.profile)
+
     return (
         <FullProfileFrame>
             {

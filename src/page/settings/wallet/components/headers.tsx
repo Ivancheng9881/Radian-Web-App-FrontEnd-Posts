@@ -8,7 +8,7 @@ import { LinkWalletContextType } from "../context/linkWallet.interface";
 const LinkProfileHeader: FC = () => {
 
     const linkWalletContext: LinkWalletContextType = useContext(LinkWalletContext);
-
+    console.log(linkWalletContext)
     return (
         <div>
             <Typography.Title level={2} >Bind your profile with additional addresses</Typography.Title>

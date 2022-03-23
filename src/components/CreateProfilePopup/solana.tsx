@@ -46,8 +46,6 @@ const CreateProfilePopupBodySolana : FC<CreateProfilePopupPropsType> = (props) =
     } 
 
     const solConnectPhantom = async () => {
-        console.log(solanaWallet);
-        
         try {
             if (solanaWallet.wallet!) {
                 solanaWallet.select(PhantomWalletName)

@@ -37,6 +37,8 @@ const ViewProfilePage : FC = (props) => {
             params.network,
             wallet
         );
+
+        console.log('kayton@debug', profile)
         const addresses: string[] = profile.addresses.map((a) => a.address);
         const currentAddr: string = web3Context.providers[web3Context.providers.selected];
         setIsOwner(addresses.includes(currentAddr))

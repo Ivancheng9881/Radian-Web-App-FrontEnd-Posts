@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 import Web3Context from "../../../../utils/web3/context/web3.context";
-import { getMappedAddresses, getProfileErc } from "../../../../utils/web3/contract/profileContract/erc";
+import { getMappedAddresses, getMappedExtAddresses, getProfileErc } from "../../../../utils/web3/contract/profileContract/erc";
 import LinkWalletContext from "./linkWallet.context";
 import { NewWalletType, TargetProfileType } from "./linkWallet.interface";
 
@@ -25,7 +25,7 @@ const LinkWalletProvider : FC = ({children}) => {
     });
     // controller for steppers
     const [ newWallet, setNewWallet ] = useState<NewWalletType>({
-        address: '6c8RNFQY38d1vmp2PVhPcEz6QWqPLjwaRDVKktWdxqiR',
+        address: '',
         network: '',
     })
     const [ step, setStep ] = useState<number>(-1);
@@ -41,13 +41,22 @@ const LinkWalletProvider : FC = ({children}) => {
         let addr = web3Context.providers[web3Context.providers.selected];
         if (web3Context.providers.selected == objKey.metamask && !targetProfile.isFrozen) {
             let _p = await getProfileErc(addr);
-            let addresses = await getMappedAddresses(_p.profileID)
+            let addresses = await getMappedAddresses(_p.profileID);
+            let extAddress = await getMappedExtAddresses(_p.profileID);
+            extAddress = extAddress.map((a:any) => a.addressOrPubKey);
+
+            let extAddressUnique: string[] = [];
+            extAddress.forEach((a) => {
+                if (!extAddressUnique.includes(a)) {
+                    extAddressUnique.push(a)
+                }
+            })
 
             setTargetProfile({
                 ...targetProfile,
                 address: addr,
                 profileID: _p.profileID,
-                mappedAddresses: addresses,
+                mappedAddresses: [...addresses, ...extAddressUnique],
                 provider: web3Context.providers.selected,
                 isFrozen: false,
             })

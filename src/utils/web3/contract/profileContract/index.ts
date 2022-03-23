@@ -8,7 +8,6 @@ import { getProfileSolana } from "./solana";
 
 export async function getPersonalProfile(web3Context: Web3ProviderType) {
     let profile: any;
-    console.log(web3Context)
     try {
         if (web3Context.providers.selected === "metamask@erc") {
             profile = await getProfileErc(web3Context.providers["metamask@erc"]);
@@ -18,6 +17,8 @@ export async function getPersonalProfile(web3Context: Web3ProviderType) {
             let identityID = await getProfileSolana(web3Context.providers["phantom@solana"]);
             profile = {identityID: identityID};
             profile.network = 'sol'
+            console.log('kayton@debug', identityID);
+
         }
         return profile;
     } catch(err: any) {

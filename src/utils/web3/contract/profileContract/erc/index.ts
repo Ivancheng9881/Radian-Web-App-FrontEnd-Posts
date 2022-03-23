@@ -348,8 +348,7 @@ export async function getSupportedExternalNetworkList(): Promise<string[]> {
     try {
         let count = await getSupportedNetworkCount();
         const contract = await initProfileContract();
-        let network: string[] = await contract.getSupportedNetworks(0, count);
-        console.log('network', network)
+        let network: string[] = await contract.getSupportedNetworks(count, 0);
         return network;
 
     } catch(err) {
@@ -379,11 +378,10 @@ export async function addExternalAddressToProfile(
 
     try {
         networkList = await getSupportedExternalNetworkList()
-
     } catch(err) {
         console.log(err)
     }
-    let networkID: number = networkList.findIndex((n) => n.toLowerCase() == network)
+    let networkID: number = networkList.findIndex((n) => n.toLowerCase() == network)  + 1;
     try {
         const txn = await addExternalAddressTransaction(address, networkID)
         return txn;
@@ -425,6 +423,7 @@ async function getAddressNumberfromProfile(profileID: number): Promise<number> {
     try {
         const contract = await initProfileContract();
         const resp = await contract.getAddressNumberfromProfile(profileID);
+        console.log(resp)
         return resp.toNumber();
     } catch(err) {
         console.log(err);
@@ -450,6 +449,47 @@ export async function getMappedAddresses(profileID : number): Promise<string[]> 
         promises.push(new Promise(async (resolve, reject) => {
             try {
                 const a = await profileAddressMapping(profileID, n);
+                resolve(a)
+            } catch(err) {
+                reject(err)
+            }
+        }))
+    }
+    return await Promise.all(promises);
+}
+
+async function getExtAddressNumberfromProfile(profileID: number): Promise<number> {
+    try {
+        const contract = await initProfileContract();
+        const resp = await contract.getExternalAddressNumberfromProfile(profileID);
+        console.log(resp)
+        return resp.toNumber();
+    } catch(err) {
+        console.log(err);
+        throw({err})
+    }
+};
+
+
+async function profileExtAddressMapping(profileID: number, mappingID: number): Promise<string> {
+    try {
+        const contract = await initProfileContract();
+        const address = await contract.externalAddressProfileMapping(profileID, mappingID);
+        return address;
+    } catch(err) {
+        console.log(err);
+        throw({err})
+    }
+}
+
+export async function getMappedExtAddresses(profileID : number): Promise<string[]> {
+    const addressNumber = await getExtAddressNumberfromProfile(profileID);
+    console.log(addressNumber)
+    const promises: any = []
+    for (let n: number = 0; n < addressNumber; n++) {
+        promises.push(new Promise(async (resolve, reject) => {
+            try {
+                const a = await profileExtAddressMapping(profileID, n);
                 resolve(a)
             } catch(err) {
                 reject(err)

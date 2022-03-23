@@ -1,4 +1,5 @@
 import { useWallet } from "@solana/wallet-adapter-react";
+import { PhantomWalletName } from "@solana/wallet-adapter-wallets";
 import { Button, Input, message, Select, Spin, Typography } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
 import { FullProfile } from "../../../../schema/profile/profile.interface";
@@ -64,14 +65,7 @@ const LinkProfileSelectWallet : FC = (props) => {
     const validateNewWallet = async (): Promise<boolean> => {
         let _network : string;
         let _address : any;
-        // if (web3Context.providers.selected === "metamask@erc") {
-        //     _network = 'erc';
-        //     _address = web3Context.providers['metamask@erc'];
-        // } else if (web3Context.providers.selected === "phantom@solana") {
-        //     _network = 'sol';
-        //     _address = ''
-        // }
-        console.log(newWallet)
+
         try {
             let _p = await getPersonalProfile(web3Context);
             console.log(_p)
@@ -99,7 +93,11 @@ const LinkProfileSelectWallet : FC = (props) => {
         }
     }
 
-    const handleClick = () => {
+    const handleClick = async () => {
+        if (newWallet.network == 'phantom') {
+            solanaWallet.select(PhantomWalletName)
+            await solanaWallet.connect();
+        }
         setStep(step+1);
     } 
 
@@ -125,7 +123,7 @@ const LinkProfileSelectWallet : FC = (props) => {
                             size="large"
                             disabled={invalidAddress.length > 0}
                         >
-                            {newWallet.address === targetProfile.address ? 'Remember to change the address you stupid ass' :'Confirm'}
+                            {newWallet.address === targetProfile.address ? 'Remember to change the address' :'Confirm'}
                         </Button>
                     </Spin>
                 </>

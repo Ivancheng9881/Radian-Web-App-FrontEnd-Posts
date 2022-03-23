@@ -47,7 +47,7 @@ const ProfileDetails: FC<PropsType> = ({profile}) =>  {
                                     copyable 
                                     key={a.address}
                                 >
-                                    {truncateAddress(a.address)}    
+                                    {a.address}
                                 </Typography.Paragraph>
                             )
                         })}

@@ -29,7 +29,7 @@ const Web3Provider : FC = ({ children }) => {
     // connect solana
     useEffect(() => {
         autoConnectSolana();
-    }, [window.solana?.isPhantom])
+    }, [window.solana?.isPhantom]);
 
     // register ethereum event listener
     useEffect(() => {

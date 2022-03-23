@@ -47,7 +47,6 @@ const ProfileProvider : FC = ({ children }) => {
     }, [profile])
 
     useEffect(() => {
-        console.log('kayton@debug',web3Context)
         if (web3Context.providers.selected){
             fetchUserProfile();
         }

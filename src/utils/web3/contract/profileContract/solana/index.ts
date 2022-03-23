@@ -61,7 +61,7 @@ export async function getFullProfileFromIDSolana(
     provider: FixLater
     ) : Promise<FixLater> {
     let profile = await getProfileFromIDSolana(profileID, provider);
-    console.log('solanautils', profile)
+    console.log('kayton@debug', profile)
     const addresses = await getProfileAddressListSolana(profileID, profile.addressNumber, provider);
     profile.addresses = addresses;
     return profile;
@@ -75,6 +75,7 @@ export async function getProfileFromIDSolana(
     let [profilePDA, profileBump] = await getProfilePDA(program.programId, profileID);
     try {
         let profile = await program.account.profile.fetch(profilePDA);
+        console.log('kayton@debug', profile.addresses[0])
         let profileData = decodeProfileData(profile);
         profileData.profileID = profileID;
         profileData.network = 'Solana'
@@ -477,6 +478,7 @@ export async function getNetworkCount(
 export async function createProfileMapping(
     wallet: WalletContextState
 ) {
+    console.log(wallet)
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
 
     // get dao account
