@@ -54,8 +54,9 @@ const SettingMenu : FC<PropsType> = (props) => {
                         key='item:NFT:Solana'
                         route={settingNFTSolanaRoute}
                         isSubItem
+                        disabled
                     >
-                        Solana
+                        Solana (Coming Soon)
                     </CustomMenuItem>
                 </CustomSubMenu>
             </Menu>

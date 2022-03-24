@@ -1,11 +1,9 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import Dropdown from 'react-dropdown';
 import CustomTypography from '../../../../../components/Typography';
 import TextField from '../../../../../components/Textfield';
 
 import ProfileContext from '../../../context/socialApp/profile.context';
 
-import 'react-dropdown/style.css';
 import './selectCountryCode.styles.css';
 
 import { country_code_list as countryCodeOptions } from './countryCode.json';

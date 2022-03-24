@@ -2,7 +2,6 @@ import { useContext, useState, useRef, useEffect} from 'react';
 import { useHistory } from 'react-router-dom';
 
 // stylesheet
-import 'react-dropdown/style.css';
 import './selectWallet.styles.css';
 
 // components

@@ -6,36 +6,42 @@ import { StyleSheet } from "../../../schema/helper.interface";
 interface PropsType {
     route?: string,
     onClick?: any,
-    isSubItem?: boolean
+    isSubItem?: boolean,
+    disabled?: boolean
 };
 
-
-const CustomMenuItem : FC<PropsType> = (props) => {
+const CustomMenuItem : FC<PropsType> = ({
+    children,
+    route,
+    onClick,
+    isSubItem,
+    disabled=false,
+}) => {
 
     const history = useHistory();
 
     const styles: StyleSheet = {
         item: {
             width: '100%',
-            paddingLeft: props.isSubItem ? '32px' : '16px'
+            paddingLeft: isSubItem ? '32px' : '16px',
         }
-    };
-    
+    };    
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
+        if (disabled) return;
         // injected onClick function can override handleClick function
-        if (props.onClick) return props.onClick();
+        if (onClick) return onClick();
         
-        history.push(props.route);
+        history.push(route);
     }
 
 
     return (
         <span onClick={handleClick} style={styles.item}>
-            <Menu.Item key={props.route} style={styles.item} >
-                <Typography.Text strong={history.location.pathname === props.route} >
-                    {props.children}
+            <Menu.Item key={route} style={styles.item} disabled={disabled} >
+                <Typography.Text disabled={disabled} strong={history.location.pathname === route} >
+                    {children}
                 </Typography.Text>
             </Menu.Item>
         </span>
