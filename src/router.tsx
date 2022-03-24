@@ -17,7 +17,7 @@ export default function Router() {
         <BrowserRouter basename='/'>
             <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
-                    <Route exact path={mainRoute} >
+                    <Route exact path={mainRoute}>
                         <HomePage />
                     </Route>
                     <Route path={startRoute}>
@@ -26,10 +26,11 @@ export default function Router() {
                     <Route path={profileRoute} >
                         <ViewProfileRoutePage />
                     </Route>
-                    <Route path={settingRoute} >
+                    <Route path={settingRoute}
+                    >
                         <SettingsRouter />
                     </Route>
-                    <Route path={passportRoute} >
+                    <Route path={passportRoute}>
                         <PassportPage />
                     </Route>
                 </Switch>
