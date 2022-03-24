@@ -2,7 +2,7 @@ import { Card, Spin } from "antd";
 import { FC } from "react";
 import { StyleSheet } from "../../../../schema/helper.interface";
 import { truncateAddress } from "../../../../utils/web3/general/parser.utils";
-import { INFTItem } from "../index.interface";
+import { INFTItem, } from "../../../../utils/nft/erc/index.d";
 import { useImage } from 'react-image'
 
 interface PageProps {

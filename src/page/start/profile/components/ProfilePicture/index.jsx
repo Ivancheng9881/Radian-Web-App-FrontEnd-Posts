@@ -6,6 +6,7 @@ import UploadButton from '../../../../../components/Button/UploadButton.componen
 import ipfsUtils from '../../../../../utils/web3/ipfs/ipfs.utils';
 import ProfilePictureFrame from '../../../../../components/ProfilePictureFrame';
 import CreateProfileContext from '../../../context/profile/profile.context';
+import { message } from 'antd';
 
 const ProfilePicture = (props) => {
     
@@ -27,12 +28,14 @@ const ProfilePicture = (props) => {
         // only accept JPG or PNG file & Image smaller than 2MB
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            setSnackBar({ open: true, message: 'You can only upload JPG or PNG file!', severity: 'danger' });
+            message.warning('You can only upload JPG or PNG file!');
+            // setSnackBar({ open: true, message: 'You can only upload JPG or PNG file!', severity: 'danger' });
             return;
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            setSnackBar({ open: true, message: 'Image must smaller than 2MB!', severity: 'danger' });
+            message.warning('Image must smaller than 2MB!');
+            // setSnackBar({ open: true, message: 'Image must smaller than 2MB!', severity: 'danger' });
             return;
         }
 
@@ -42,12 +45,14 @@ const ProfilePicture = (props) => {
             let newCid = await ipfsUtils.uploadContent(file);
             console.log("upload cid", newCid);
             if (profile.profilePictureCid.includes(newCid.toString())) {
-                setSnackBar({ open: true, message: 'Image Already Exists!', severity: 'danger' });
+                message.warning('Image Already Exists!');
+                // setSnackBar({ open: true, message: 'Image Already Exists!', severity: 'danger' });
                 return;
             }
             let cidArr = [ ...profile.profilePictureCid, newCid.toString() ];
             updateDataByKey('profilePictureCid', cidArr);
-            setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
+            message.success('upload success!');
+            // setSnackBar({ open: true, message: 'upload success!', severity: 'success' });
         }
     };
 
@@ -59,7 +64,8 @@ const ProfilePicture = (props) => {
         console.log('deleting index', cidIndex);
 
         profile.profilePictureCid.splice(cidIndex, 1);
-        setSnackBar({ open: true, message: 'delete success!', severity: 'success' });
+        message.success('delete success!');
+        // setSnackBar({ open: true, message: 'delete success!', severity: 'success' });
 
         console.log("updating", profile.profilePictureCid);
         updateDataByKey('profilePictureCid', profile.profilePictureCid);

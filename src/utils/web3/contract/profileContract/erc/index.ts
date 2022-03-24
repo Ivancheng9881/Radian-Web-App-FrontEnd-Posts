@@ -258,8 +258,9 @@ export async function createProfileErc(
                 tagResponse.r,
                 tagResponse.s
             )
-            return txn
         }
+        return txn
+
     } catch(err) {
         console.log(err);
         throw(err);

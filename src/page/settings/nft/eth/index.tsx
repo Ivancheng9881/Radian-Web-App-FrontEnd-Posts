@@ -3,10 +3,11 @@ import { Space } from "antd";
 import Web3Context from "../../../../utils/web3/context/web3.context";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { apiGatewayRoot, ipfsCloudFrontRoot,  } from "../../../../commons/web3";
-import { INFTItem, INFTList,  INFTMetadata, } from "./../index.interface";
+import { INFTList, } from "./../index.interface";
+import { INFTItem, } from "../../../../utils/nft/erc/index.d";
 import NFTCarousel from "./../components/nftCarousel.components";
 import Validator from "../../../../utils/validation";
-import ErrorHandler from "../../../../utils/errorHandler";
+import NFTUtils from "../../../../utils/nft";
 
 const styles = {
     root: {
@@ -27,8 +28,9 @@ const NFTETHSettings: FC = () => {
 
     const web3Context = useContext(Web3Context);
     const pageSize = 20;
-    const NFTListApiRoute = '/nft';
-    const solNFTMetadataRoute = '/nft/solana/metadata'
+    const network = 'erc';
+    let address = web3Context.providers?.['metamask@erc'];
+
 
     const [ ethData, setEthData ] = useState<INFTList>({
         cursor: '',
@@ -40,99 +42,56 @@ const NFTETHSettings: FC = () => {
         offset: 0,
         limit: pageSize,
     });
-    const [ polygonData, setPolygonData ] = useState<INFTList>({
-        cursor: '',
-        page: 0,
-        page_size: 0,
-        result: [],
-        status: '',
-        total: 0,
-        offset: 0,
-        limit: pageSize,
-    });
-    const [ solanaData, setSolanaData ] = useState<INFTList>({
-        result: [],
-        total: 0,
-        offset: 0,
-        limit: 5,
-    });
-    
+    const [ buffering, setBuffering ] = useState<boolean>(true);
 
     useEffect(() => {
-        if (web3Context.providers[web3Context.providers.selected]) {
-            getNFTErc();
-        }
+        let addr = web3Context.providers?.['metamask@erc'];
+        if (addr) {
+            getNFTErc(addr);
+        };
     }, [web3Context.providers]);
 
-    const getNFTErc = async () => {
+    const getNFTErc = async (address: string) => {
 
         try {
-            let evmResp : AxiosResponse = await axios.request({
-                method: 'post',
-                baseURL: apiGatewayRoot,
-                url: NFTListApiRoute,
-                data: {
-                    address: "0x8e79eF9e545Fa14e205D89970d50E7caA3456683",
-                    networks: [
-                        {network: "eth", offset: ethData.offset, limit: ethData.limit},
-                    ]
-                }
-            })
-
+            let networks = [
+                {network: "eth", offset: ethData.offset, limit: ethData.limit},
+            ]
+            let evmResp = await NFTUtils.erc.getData(address, networks);
             let ethNftData = await handleErcNFTDataMapping(evmResp.data.eth.result);
             evmResp.data.eth.result = ethNftData;
-
             setEthData({
                 ...ethData,
                 ...evmResp.data.eth,
                 offset: ethData.offset + pageSize
             });
+            setBuffering(false);
 
         } catch(err) {
             console.log(err);
         }
     };
-
-    const handleFetchNextErc = async () => {
-        await handleFetchNext('eth')
-    };
-
-    const handleFetchNextPolygon = async () => {
-        await handleFetchNext('polygon')
-    }
-
-    const handleFetchNext = async (network: string) => {
+    
+    const handleFetchNext = async () => {
 
         try {
             let networkBody: any = {
                 network: network,
                 limit: pageSize,
             };
-            
-            if (network == 'eth') {
-                networkBody.offset = ethData.offset;
-            }
 
+            networkBody.offset = ethData.offset;
 
-            let {data} = await axios.request({
-                method: 'post',
-                baseURL: apiGatewayRoot,
-                url: NFTListApiRoute,
-                data: {
-                    address: "0x8e79eF9e545Fa14e205D89970d50E7caA3456683",
-                    networks: [ networkBody ]
-                }
-            })
+            let { data } = await NFTUtils.erc.getData(address, [networkBody]);
             let newData = await handleErcNFTDataMapping(data[network].result);
             
-            if (network == 'eth') {
-                setEthData({
-                    ...ethData,
-                    ...data[network],
-                    result: [...ethData.result, ...newData],
-                    offset: ethData.offset + pageSize,
-                })
-            }
+            setEthData({
+                ...ethData,
+                ...data[network],
+                result: [...ethData.result, ...newData],
+                offset: ethData.offset + pageSize,
+            })
+
 
         } catch(err) {
             console.log(err);
@@ -184,7 +143,8 @@ const NFTETHSettings: FC = () => {
                     data={ethData.result}
                     count={ethData.result.length}
                     title={`ETH (${ethData.result.length})`}
-                    fetchDataCallback={handleFetchNextErc}
+                    fetchDataCallback={handleFetchNext}
+                    isBuffering={buffering}
                 />
 
             </Space>

@@ -52,14 +52,17 @@ const DatingAgeRange = () => {
                             </Col>
                             <Col span={24} >
                                 <div className="mt-10 inline-flex items-end">
-                                    <div className="mr-5">
-                                        <Toggler
-                                            value={profile.ageRangeIsDealBreaker}
-                                            opts={dealBreakerOpts}
-                                            handleToggle={handleToggle}
-                                            size="large"
-                                        />
-                                    </div>
+                                    <Space direction='horizontal'>
+                                        <Typography.Title level={2} alignment="left">Is it a deal breaker?</Typography.Title>
+                                        <div className="mr-5">
+                                            <Toggler
+                                                value={profile.ageRangeIsDealBreaker}
+                                                opts={dealBreakerOpts}
+                                                handleToggle={handleToggle}
+                                                size="large"
+                                            />
+                                        </div>
+                                    </Space>
                                 </div>
                             </Col>
                         </Row>

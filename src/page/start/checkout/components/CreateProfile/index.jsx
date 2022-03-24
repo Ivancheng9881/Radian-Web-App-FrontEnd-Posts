@@ -22,6 +22,7 @@ import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
 import { Bars } from 'react-loader-spinner'; 
 import ProfileContractUtils from '../../../../../utils/web3/contract/profileContract/utils';
 import CreateProfilePopup from '../../../../../components/CreateProfilePopup';
+import { Button } from 'antd';
 
 const barLoader = {
     Component: Bars,
@@ -158,10 +159,11 @@ const CheckoutCreateProfile = () => {
         setPopupOpen(true)
     };
 
-    // const fetchProfileMappingSolana = async () => {
-    //     let profileMapping = await getProfileMappingSolana(solanaWallet);
-    //     console.log(profileMapping.profileId.toString());
-    // };
+    const styles = {
+        button: {
+            marginTop: `1rem`
+        }
+    };
 
     return (
         <>
@@ -194,12 +196,15 @@ const CheckoutCreateProfile = () => {
                                     />
                                     <div className="pt-4">Metamask</div>
                                 </div>
-                                <div
-                                    className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
+                                <Button
+                                    style={styles.button}
+                                    type='primary'
+                                    size='large'
+                                    shape='round'
                                     onClick={e => createProfilePolygon(false)}
                                 >
-                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon</div>
-                                </div>
+                                    Polygon
+                                </Button>
                             </div>
                             
                             <div className="p-4">
@@ -212,12 +217,16 @@ const CheckoutCreateProfile = () => {
                                     />
                                     <div className="pt-4">Metamask</div>
                                 </div>
-                                <div
-                                    className={`mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer`}
+                                <Button
+                                    style={styles.button}
+                                    type='primary'
+                                    size='large'
+                                    shape='round'
+                                    disabled
                                     onClick={e => createProfilePolygon(true)}
                                 >
-                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base">Polygon (Free)</div>
-                                </div>
+                                    Polygon (Free)
+                                </Button>
                             </div>
                             
                             <div className="p-4">
@@ -230,12 +239,16 @@ const CheckoutCreateProfile = () => {
                                     />
                                     <div className="pt-4">Phantom</div>
                                 </div>
-                                <div
-                                    className="mt-4 bg-theme-bg-dark w-max m-auto rounded-full cursor-pointer"
+                                <Button
+                                    style={styles.button}
+                                    type='primary'
+                                    size='large'
+                                    shape='round'
+                                    disabled
                                     onClick={e => createProfileOnSolana()}
                                 >
-                                    <div className="pt-2 pb-2 text-sm px-5 md:px-10 md:text-base"> Solana </div>
-                                </div>
+                                    Solana
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -251,7 +264,7 @@ const CheckoutCreateProfile = () => {
             setOpen={setPopupOpen}
             cid={cid}
             gasless={isGasless}
-            />
+        />
         </>
     );
 };

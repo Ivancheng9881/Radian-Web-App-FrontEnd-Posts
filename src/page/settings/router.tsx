@@ -19,10 +19,7 @@ const SettingsRouter : FC = () => {
                 </Route>
                 <Route exact path={settingProfileRoute} component={ProfileSettings} />
                 <Route exact path={settingWalletRoute} component={WalletSettings} />
-                <Route exact path={settingNFTRoute} component={NFTSettings} />
-                <Route exact path={settingNFTEthRoute} component={NFTETHSettings} />
-                <Route exact path={settingNFTPolygonRoute} component={NFTPolygonSettings} />
-                <Route exact path={settingNFTSolanaRoute} component={NFTSolanaSettings} />
+                <Route path={settingNFTRoute} component={NFTSettings} />
             </SettingLayout>
         </DefaultLayout>
     )

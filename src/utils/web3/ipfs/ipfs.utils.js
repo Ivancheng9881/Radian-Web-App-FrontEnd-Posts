@@ -55,20 +55,16 @@ async function getContentJsonFallover(cid) {
         let url = getContentUrl(cid, true)
         console.log('trying to fetch cdn')
         let resp = await axios.get(url);
-        console.log(resp);
         if (resp) {
             return resp;
-        } else {
-            console.log('getting content from source')
-            url = getContentUrl(cid, false);
-            resp = await axios.get(url);
-            console.log(resp);
-
-            return resp
         }
         
     } catch(err) {
         console.log(err);
+        let url = getContentUrl(cid, false);
+        let resp = await axios.get(url);
+        console.log(resp);
+        return resp
     }
 }
 

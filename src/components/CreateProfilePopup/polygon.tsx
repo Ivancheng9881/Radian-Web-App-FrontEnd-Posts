@@ -39,11 +39,14 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
      */
     const createProfile = async () => {
         setLoading(true)
+        console.log(props.cid.toString())
         try {
             const txn = await createProfileErc(props.cid.toString(), props.gasless);
+            console.log(txn)
             if (txn) {
                 // setLoading(true);
                 const isSuccess = await txn.wait();
+                console.log(isSuccess)
                 if (isSuccess) handleCheckoutComplete()
             }
         } catch(err: any) {
@@ -65,7 +68,7 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
     return (
         <Steps direction="vertical" current={step} >
         <Steps.Step
-            title='Connect Phantom Wallet'
+            title='Connect Metamask Wallet'
             description={
                 <Button 
                     size='large' 

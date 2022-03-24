@@ -3,10 +3,11 @@ import { Space } from "antd";
 import Web3Context from "../../../../utils/web3/context/web3.context";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { apiGatewayRoot, ipfsCloudFrontRoot,  } from "../../../../commons/web3";
-import { INFTItem, INFTList,  INFTMetadata, } from "./../index.interface";
+import { INFTList, } from "./../index.interface";
+import { INFTItem, INFTMetadata } from "../../../../utils/nft/erc/index.d";
 import NFTCarousel from "./../components/nftCarousel.components";
-import Validator from "../../../../utils/validation";
 import ErrorHandler from "../../../../utils/errorHandler";
+import NFTUtils from "../../../../utils/nft";
 
 const styles = {
     root: {
@@ -26,9 +27,9 @@ const styles = {
 const NFTSolanaSettings: FC = () => {
 
     const web3Context = useContext(Web3Context);
-    const pageSize = 20;
     const NFTListApiRoute = '/nft';
     const solNFTMetadataRoute = '/nft/solana/metadata'
+    let address = '4wqq8gjYgVX9UytDVWjMtq9Q4dbY2fdayEdBXcbEHGMv' || web3Context.providers?.['metamask@erc'];
 
     const [ solanaData, setSolanaData ] = useState<INFTList>({
         result: [],
@@ -36,6 +37,7 @@ const NFTSolanaSettings: FC = () => {
         offset: 0,
         limit: 5,
     });
+    const [ isBuffering, setIsBuffering ] = useState<boolean>(true);
     
 
     useEffect(() => {
@@ -46,17 +48,10 @@ const NFTSolanaSettings: FC = () => {
 
     const getNFTSol = async () => {
 
-        let nftListResp : AxiosResponse = await axios.request({
-            method: 'post',
-            baseURL: apiGatewayRoot,
-            url: NFTListApiRoute,
-            data: {
-                address: "4wqq8gjYgVX9UytDVWjMtq9Q4dbY2fdayEdBXcbEHGMv",
-                networks: [
-                    {network: "solana", offset: solanaData.offset, limit: solanaData.limit},
-                ]
-            }
-        });
+        let networks = [
+            {network: "solana", offset: solanaData.offset, limit: solanaData.limit},
+        ]
+        let nftListResp = await NFTUtils.erc.getData(address, networks)
 
         let result = nftListResp.data.solana.map((d: any) => {
             return {
@@ -78,6 +73,7 @@ const NFTSolanaSettings: FC = () => {
             total: result.length,
             result: result,
         });
+        setIsBuffering(false)
     };
 
     const getSolanaMetadataFromCdn = async (tokenAddress: string) => {
@@ -160,6 +156,7 @@ const NFTSolanaSettings: FC = () => {
                     count={solanaData.result.length}
                     title={`Solana (${solanaData.result.length})`}
                     fetchDataCallback={handleSolanaFetchNext}
+                    isBuffering={isBuffering}
                 />
 
             </Space>

@@ -10,6 +10,8 @@ const PersonalProfile: FC = (props) => {
     const web3Context: FixLater = useContext(Web3Context);
     const profile = userContext.profile;
 
+    console.log(profile)
+
     return (
         <>
             {
