@@ -3,7 +3,6 @@ import { Route } from "react-router";
 import { 
     settingNFTEthRoute, 
     settingNFTPolygonRoute,
-    settingNFTRoute,
     settingNFTSolanaRoute
 } from "../../../commons/route";
 import NFTETHSettings from "./eth";
@@ -13,9 +12,15 @@ import NFTSolanaSettings from "./solana";
 const NFTSettingRouter : FC = () => {
     return (
         <>
-            <Route exact path={settingNFTEthRoute} component={NFTETHSettings} />
-            <Route exact path={settingNFTPolygonRoute} component={NFTPolygonSettings} />
-            <Route exact path={settingNFTSolanaRoute} component={NFTSolanaSettings} />
+            <Route exact path={settingNFTEthRoute}>
+                <NFTETHSettings />
+            </Route>
+            <Route exact path={settingNFTPolygonRoute}>
+                <NFTPolygonSettings />
+            </Route>
+            <Route exact path={settingNFTSolanaRoute}>
+                <NFTSolanaSettings />
+            </Route>
         </>
     )
 };

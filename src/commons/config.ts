@@ -13,6 +13,10 @@ const web3 : any = {
     }
 };
 
+const assets : any = {
+    cdn: 'https://radian-static-content-cdn.s3.ap-east-1.amazonaws.com'
+} as const;
+
 const antd = {
     layout: {
         headerHeight: 80,
@@ -43,7 +47,8 @@ const theme = {
 const config : any = {
     web3,
     antd,
-    theme
+    theme,
+    assets
 };
 
 

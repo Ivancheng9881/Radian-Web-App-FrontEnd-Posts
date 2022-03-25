@@ -1,5 +1,5 @@
 import { FC, useState, useContext, useEffect } from "react";
-import { Button, Modal, Steps } from "antd";
+import { Button, Steps } from "antd";
 import { CreateProfilePopupPropsType } from ".";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { 

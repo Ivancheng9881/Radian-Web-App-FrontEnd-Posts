@@ -1,15 +1,16 @@
-import { useContext, useEffect } from "react";
+import { FC, useContext, useEffect } from "react";
+import { RouterProps, useHistory } from "react-router";
 import { getQuery } from "../../../utils/query";
 import CreateProfileContext from "../context/profile/profile.context";
 import CreateProfileController from "./components/StepController";
 
-const CreateProfilePage = (props) => {
+const CreateProfilePage: FC = () => {
 
-    const { updateStep } = useContext(CreateProfileContext)
+    const { updateStep } = useContext(CreateProfileContext);
+    const history = useHistory<History>();
 
     useEffect(() => {
-        let query = getQuery(props.history.location.search);
-        console.log('CreateProfilePage-steps:', query)
+        let query = getQuery(history.location.search);
         if (query?.step) {
             updateStep(query.step)
         }

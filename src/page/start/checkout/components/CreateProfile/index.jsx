@@ -23,6 +23,7 @@ import { Bars } from 'react-loader-spinner';
 import ProfileContractUtils from '../../../../../utils/web3/contract/profileContract/utils';
 import CreateProfilePopup from '../../../../../components/CreateProfilePopup';
 import { Button } from 'antd';
+import config from '../../../../../commons/config';
 
 const barLoader = {
     Component: Bars,
@@ -190,7 +191,7 @@ const CheckoutCreateProfile = () => {
                                 <div className="text-center">
                                     <img
                                         className="m-auto"
-                                        src="/logos/polygonRounded.png"
+                                        src={`${config.assets.cdn}/polygonRounded.png`}
                                         width={logoWidth}
                                         height={'auto'}
                                     />
@@ -211,7 +212,7 @@ const CheckoutCreateProfile = () => {
                                 <div className="text-center">
                                     <img
                                         className="m-auto"
-                                        src="/logos/polygonRounded.png"
+                                        src={`${config.assets.cdn}/polygonRounded.png`}
                                         width={logoWidth}
                                         height={'auto'}
                                     />
@@ -233,7 +234,7 @@ const CheckoutCreateProfile = () => {
                                 <div className="text-center">
                                     <img
                                         className="m-auto"
-                                        src="/logos/solanaRounded.png"
+                                        src={`${config.assets.cdn}/solanaRounded.png`}
                                         width={logoWidth}
                                         height={'auto'}
                                     />

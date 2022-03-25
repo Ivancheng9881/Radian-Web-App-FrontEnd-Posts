@@ -6,6 +6,7 @@ import { profileRouteBuilder } from '../../../utils/profile/routing.utils';
 import { Profile } from '../../../utils/web3/contract/profileContract/index.interface';
 import { FullProfile } from '../../../schema/profile/profile.interface';
 import ImageHolder from '../../../components/ImageHolder';
+import config from '../../../commons/config';
 
 interface PageProps {
     profile: Profile
@@ -70,8 +71,8 @@ const ProfileFrame : FC<PageProps> = (props) => {
                                 className="m-auto"
                                 src={
                                     props.profile.network.toUpperCase() == 'ERC'
-                                    ? "/logos/polygonRounded.png"
-                                    : "/logos/solanaRounded.png"
+                                    ? `${config.assets.cdn}/polygonRounded.png`
+                                    : `${config.assets.cdn}/solanaRounded.png`
                                     }
                                 width={30}
                                 height={'auto'}

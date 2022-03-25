@@ -18,19 +18,15 @@ const HomeRouter = () => {
                 <DatingProvider>
                     <CreateProfileProvider>
                         <Suspense fallback={<div>Loading...</div>} >
-                            <Route 
-                                exact 
-                                path={startRoute} 
-                                component={<ChooseWalletPage />} 
-                            />
-                            <Route 
-                                path={createProfileRoute} 
-                                component={<CreateProfilePage />} 
-                            />
-                            <Route 
-                                path={checkoutProfileRoute} 
-                                component={<CreateProfileCheckout />} 
-                            />
+                            <Route exact path={startRoute} >
+                                <ChooseWalletPage />
+                            </Route>
+                            <Route path={createProfileRoute} >
+                                <CreateProfilePage />
+                            </Route>
+                            <Route path={checkoutProfileRoute} >
+                                <CreateProfileCheckout />
+                            </Route>
                         </Suspense>
                     </CreateProfileProvider>
                 </DatingProvider>

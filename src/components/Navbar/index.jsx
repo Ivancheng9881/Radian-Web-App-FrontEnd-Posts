@@ -16,6 +16,7 @@ import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 import { Button, Layout, Select } from 'antd';
 import WalletPopupContext from '../../utils/WalletPopup/context/walletPopup.context';
 import ProfileSettings from '../ProfileCard/Full/ProfileSettings.components';
+import config from '../../commons/config';
 
 const Navbar = (props) => {
 
@@ -132,7 +133,7 @@ const Navbar = (props) => {
         <div id="RD-navbar">
                 <a onClick={() => history.push(mainRoute)}>
                     {/* use small icon when on mobile */}
-                    <img className='absolute top-4 left-4 invisible sm:visible' src="/logos/radian.png" width="149px" height="41px" alt="radian logo" />
+                    <img className='absolute top-4 left-4 invisible sm:visible' src={`${config.assets.cdn}/radian.png`} width="149px" height="41px" alt="radian logo" />
                     <img className='absolute top-4 left-5 visible sm:invisible' src="/logo192.png" width="41px" height="41px" alt="radian logo small" />
                 </a>
 

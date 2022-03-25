@@ -4,6 +4,7 @@ import { StyleSheet } from "../../../../schema/helper.interface";
 import { truncateAddress } from "../../../../utils/web3/general/parser.utils";
 import { INFTItem, } from "../../../../utils/nft/erc/index.d";
 import { useImage } from 'react-image'
+import config from "../../../../commons/config";
 
 interface PageProps {
     data: INFTItem
@@ -15,7 +16,7 @@ const NFTFrame: FC<PageProps> = ({data}) => {
         srcList: [
             data.metadata.image,
             data.metadata.image ? `https://ipfs.io/ipfs/${data.metadata.image.slice(7, data.metadata.image.length)}` : '',
-            '/images/imageNotFound.png',
+            `${config.assets.cdn}/imageNotFound.png`,
         ],
         useSuspense: false,
     });

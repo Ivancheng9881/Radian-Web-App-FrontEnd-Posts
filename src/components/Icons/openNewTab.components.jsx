@@ -1,8 +1,9 @@
+import config from "../../commons/config";
 
 const OpenNewTabIcon= ({height=0, width=0}) => {
     return (
         <img 
-            src='/icons/openInNewTab.png'
+            src={`${config.assets.cdn}/openInNewTab.png`}
             width={width}
             height={height}
             quality={100}

@@ -4,13 +4,17 @@ import SolanaUtils from '../../../context/solana.utils';
 // import { TextDecoder } from "web-encoding";
 import { FixLater } from '../../../../../schema/helper.interface';
 import { encodeUint8Array } from '../../../general/parser.utils';
-import { SolanaAddressNumber, SolanaContentID, SolanaProfile, SolanaProfileID, SolanaProgram, SolanaSeedBuffer } from './index.interface';
+import { 
+    SolanaAddressNumber, 
+    SolanaContentID, 
+    SolanaProfile, 
+    SolanaProfileID, 
+    SolanaProgram, 
+    SolanaSeedBuffer } from './index.interface';
 import { WalletContextState } from '@solana/wallet-adapter-react';
 import ErrorHandler from '../../../../errorHandler';
 import BN from 'bn.js';
 import { SystemProgram } from '@solana/web3.js';
-
-
 
 export const profileContract__sol__abi: FixLater = idl;
 export const profileContract__sol__address: string = 'Erd5sdn3uuUY7Xcu6NgWC8n5zAiTPsZcd5wSqfpEXRdd';
@@ -50,7 +54,7 @@ export async function getProfileAddressListSolana(
     let addresses = [];
     const program = new Program(profileContract__sol__abi, profileContract__sol__address, provider);
     for ( let i = 0 ; i < addressNumber ; i++ ) {
-        let [searchPDA, searchBump] = await getSearchAccountPDA(program.programId, profileID, i);
+        let [searchPDA, ] = await getSearchAccountPDA(program.programId, profileID, i);
         addresses.push(await program.account.searchMapping.fetch(searchPDA));
     }
     return addresses;
@@ -72,7 +76,7 @@ export async function getProfileFromIDSolana(
     provider: FixLater
     ) : Promise<SolanaProfile | undefined> {
     const program = new Program(profileContract__sol__abi, profileContract__sol__address, provider);
-    let [profilePDA, profileBump] = await getProfilePDA(program.programId, profileID);
+    let [profilePDA, ] = await getProfilePDA(program.programId, profileID);
     try {
         let profile = await program.account.profile.fetch(profilePDA);
         console.log('kayton@debug', profile.addresses[0])
@@ -222,7 +226,7 @@ async function fetchProfileMappingSolana(
     provider: Provider
     ) {
     try {
-        let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
+        let [profileMappingPDA, ] = await getProfileMappingPDA(program.programId, provider.wallet);
         let profileMapping = await program.account.profileMapping.fetch(profileMappingPDA);
         return profileMapping;
     } catch (err) {
@@ -252,7 +256,7 @@ export async function createProfileMappingSolana(
     ) {
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
     let [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet.publicKey);
-    let [daoAccountPDA, daoAccountBump] = await getDaoAccountPDA(program.programId);
+    let [daoAccountPDA, ] = await getDaoAccountPDA(program.programId);
 
     try {
         let resp = await program.rpc.createProfileMapping(
@@ -314,8 +318,8 @@ async function updateProfileSolana(
         .then(resp => resp)
         .catch(err => console.log('Error in creating solana profile', err));
 
-    let [profilePDA, profileBump] = profile;
-    let [profileMappingPDA, profileMappingBump] = profileMapping;
+    let [profilePDA, ] = profile;
+    let [profileMappingPDA, ] = profileMapping;
 
     try {
         let resp = await program.rpc.updateProfile(
@@ -364,7 +368,7 @@ async function createProfileSolana(
 
     let [profilePDA, profileBump] = profile;
     let [searchAccountPDA, searchAccountBump] = search;
-    let [profileMappingPDA, profileMappingBump] = profileMapping;
+    let [profileMappingPDA ] = profileMapping;
 
 
     try {
@@ -406,13 +410,6 @@ export async function getProfileMappingSolana(wallet: FixLater) {
 
 }
 
-function toHexString(byteArray: FixLater) {
-    return Array.from(byteArray, function (byte: FixLater) {
-        return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-    }).join('')
-}
-
-
 export async function getProfileSolana(wallet: FixLater) {
     console.log(wallet)
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
@@ -429,39 +426,15 @@ export async function getProfileSolana(wallet: FixLater) {
         console.log(err);
         throw(err);
     }
-    
 };
 
 
 async function getNetworkPDAFromDao(
     program: Program, 
 ): Promise<number> {
-    const [daoAccountPDA, daoAccountBump] = await getDaoAccountPDA(program.programId);
+    const [daoAccountPDA,] = await getDaoAccountPDA(program.programId);
     const daoAccount = await program.account.daoAccount.fetch(daoAccountPDA);
     return daoAccount.networkCount;
-}
-
-async function addExternalAddress(
-    wallet: WalletContextState,
-    networkId: number = 1,
-    program: Program,
-    provider: Provider,
-) {
-
-    // get profile mapping account
-    const [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
-    const profileMappingAccount = await program.account.profileMapping.fetch(profileMappingPDA);
-    const profileMappingId = profileMappingAccount.profileID.toNumber();
-    console.log(profileMappingId);
-
-    // profile account
-    const [profilePDA, profileBump] = await getProfilePDA(program.programId, profileMappingId);
-    const profileAccount = await program.account.profile.fetch(profilePDA);
-    const addressNumber = profileAccount.addressNumber.toNumber();
-    console.log(addressNumber)
-    // search account
-    const [searchPDA, searchBump] = await getSearchAccountPDA(program.programId, profileMappingId);
-
 }
 
 /**
@@ -478,11 +451,10 @@ export async function getNetworkCount(
 export async function createProfileMapping(
     wallet: WalletContextState
 ) {
-    console.log(wallet)
     let { program, provider }: SolanaProgram = await initProfileProgram(wallet);
 
     // get dao account
-    const [daoAccountPDA, daoAccountBump] = await getDaoAccountPDA(program.programId);
+    const [daoAccountPDA] = await getDaoAccountPDA(program.programId);
     const [profileMappingPDA, profileMappingBump] = await getProfileMappingPDA(program.programId, provider.wallet);
 
     try {

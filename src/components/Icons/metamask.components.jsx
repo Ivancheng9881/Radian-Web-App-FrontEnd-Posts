@@ -1,8 +1,9 @@
+import config from "../../commons/config";
 
 const MetamaskIcon  = ({height=0, width=0}) => {
     return (
         <img 
-            src='/logos/metamask.png'
+            src={`${config.assets.cdn}/metamask.png`}
             width={width}
             height={height}
             quality={100}

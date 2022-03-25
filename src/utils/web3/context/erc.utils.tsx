@@ -1,11 +1,7 @@
-import React from 'react';
 import { ethers, Signer } from "ethers";
 import PolygonIcon from "../../../components/Icons/polygon.components";
 import { FixLater } from '../../../schema/helper.interface';
 import { Web3Provider } from '@ethersproject/providers';
-// import Web3 from "web3";
-// import { maticHttpProvider } from "../../../commons/web3";\
-const { RelayProvider } = require('@opengsn/provider');
 
 async function initEtherProvider(): Promise<Web3Provider> {
     console.log("init provider");
@@ -137,6 +133,7 @@ async function initContractGasless(
     abi: any, 
     config: FixLater) {
     let provider = await initEtherProvider();
+    const RelayProvider = require('@opengsn/provider');
     let relayProvider = provider = await RelayProvider.newProvider({ provider: window.ethereum, config }).init();
     const provider2 = new ethers.providers.Web3Provider(relayProvider, "any");
     const signer = provider2.getSigner();

@@ -5,6 +5,7 @@ import ProfileContext from '../../start/context/socialApp/profile.context';
 import Web3Context from '../../../utils/web3/context/web3.context';
 import RoundedButton from '../../../components/Button/Rounded.components';
 import DoubleCollumTextfield from '../../../components/DoubleCollumTextfield';
+import config from '../../../commons/config';
 
 export default function AddWalletPage(props) {
     
@@ -81,7 +82,7 @@ export default function AddWalletPage(props) {
                                 <div className="fixed absolute left-0 top-0 text-theme-white text-left">
                                     <div className='flex'>
                                         <label class="btn pr-24" onClick={toggleDropdown}>Chain</label>
-                                        <img src="/icons/arrowDown2.svg" width="10px" height="10px" alt="arrowDown2" />
+                                        <img src={`${config.assets.cdn}/arrowDown2.svg`} width="10px" height="10px" alt="arrowDown2" />
                                     </div>
                                     { showWalletDropdown && 
                                     <ul class="mt-2 shadow bg-base-100 rounded-box w-52">

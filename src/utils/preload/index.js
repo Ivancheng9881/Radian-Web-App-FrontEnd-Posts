@@ -1,15 +1,11 @@
-
+import config from "../../commons/config";
 
 const walletIconList = () => {
     return [
-        '/logos/metamask.png',
-        '/logos/phantom.png',   
+        `${config.assets.cdn}/metamask.png`,
+        `${config.assets.cdn}/phantom.png`
     ]
 }
-
-// const cacheImg = async () => {
-
-// }
 
 export const preloadWalletIcon = async () => {
 
