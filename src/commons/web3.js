@@ -3,7 +3,7 @@
 // export const ipfsNodeUrl = 'https://ipfs.infura.io:5001/api/v0';
 
 export const ipfsContentRoot = 'https://ipfs.gateway.radian.community/ipfs/';
-export const ipfsCDNRoot = 'https://xay36gfrl4.execute-api.ap-east-1.amazonaws.com/prod/';
+export const ipfsCDNRoot = 'https://api.radian.community/ipfs/';
 export const ipfsCloudFrontRoot = 'https://dpsgdb63ej10g.cloudfront.net/';
 
 export const ipfsNodeUrl = 'https://ipfs.gateway.radian.community';
