@@ -1,5 +1,6 @@
 import { Layout } from 'antd'
 import { FC } from 'react'
+import FloatingChatButton from '../Button/FloatingChatButton.components'
 import ConnectWalletPopup from '../ConnectWalletPopup'
 import Navbar from '../Navbar'
 
@@ -24,6 +25,7 @@ const DefaultLayout : FC<PropsType> = (props) => {
         <div style={props.fullWidth ? styles.bodyFullWidth : styles.body}>
           {props.children}          
         </div>
+        <FloatingChatButton />
         <ConnectWalletPopup />
       </Layout>
   )

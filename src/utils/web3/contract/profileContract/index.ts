@@ -8,6 +8,7 @@ import { getProfileSolana } from "./solana";
 
 export async function getPersonalProfile(web3Context: Web3ProviderType) {
     let profile: any;
+    console.log(web3Context)
     try {
         if (web3Context.providers.selected === "metamask@erc") {
             profile = await getProfileErc(web3Context.providers["metamask@erc"]);
