@@ -45,6 +45,7 @@ const LinkProfileBody: FC = () => {
                 <Divider />
                 {!targetProfile.isFrozen && <div style={styles.button}>
                     <Button 
+                        className="rd-btn-featured"
                         type="primary"
                         shape="round"
                         size='large'

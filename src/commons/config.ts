@@ -14,7 +14,10 @@ const web3 : any = {
 };
 
 const assets : any = {
-    cdn: 'https://radian-static-content-cdn.s3.ap-east-1.amazonaws.com'
+    cdn: 'https://d1skj8m4trskbx.cloudfront.net',
+    searchEngine: {
+        uri: 'https://search.radian.community',
+    }
 } as const;
 
 const antd = {

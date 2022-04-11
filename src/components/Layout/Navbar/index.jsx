@@ -1,28 +1,34 @@
 import { useContext, useState, useRef, useEffect, useCallback } from 'react';
-import Web3Context from '../../utils/web3/context/web3.context';
+import Web3Context from '../../../utils/web3/context/web3.context';
 // import SolanaUtils from '../../utils/web3/context/solana.utils';
-import RoundedButton from '../Button/Rounded.components';
-import { truncateAddress } from '../../utils/web3/general/parser.utils';
+import { truncateAddress } from '../../../utils/web3/general/parser.utils';
 import { useHistory } from 'react-router-dom';
-import { mainRoute, settingProfileRoute } from '../../commons/route';
-import './styles.css';
+import { mainRoute, settingProfileRoute } from '../../../commons/route';
 
-import MetamaskIcon from '../Icons/metamask.components';
-import PhantomIcon from '../Icons/phantom.components';
+import MetamaskIcon from '../../Icons/metamask.components';
+import PhantomIcon from '../../Icons/phantom.components';
 import Popup from 'reactjs-popup';
-import { preloadWalletIcon } from '../../utils/preload';
-import UserContext from "../../utils/user/context/user.context";
-import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
-import { Button, Layout, Select } from 'antd';
-import WalletPopupContext from '../../utils/WalletPopup/context/walletPopup.context';
-import ProfileSettings from '../ProfileCard/Full/ProfileSettings.components';
-import config from '../../commons/config';
+import { preloadWalletIcon } from '../../../utils/preload';
+import UserContext from "../../../utils/user/context/user.context";
+import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
+import { Avatar, Button, Layout, Select, Space } from 'antd';
+import WalletPopupContext from '../../../utils/WalletPopup/context/walletPopup.context';
+import ProfileSettings from '../../ProfileCard/Full/ProfileSettings.components';
+import config from '../../../commons/config';
+
+import './styles/index.less';
+import { useImage } from 'react-image';
 
 const Navbar = (props) => {
 
     const web3Context = useContext(Web3Context);
     const profileContext = useContext(UserContext);
     const walletPopupContext = useContext(WalletPopupContext);
+
+    const { src } = useImage({
+        srcList: ipfsUtils.getImageFromCDNFailover(profileContext.profile?.profilePictureCid),
+        useSuspense: false,
+    });
 
     const history = useHistory();
 
@@ -126,39 +132,22 @@ const Navbar = (props) => {
     }
 
     return (
-        <Layout.Header
-            style={{ position: 'fixed', zIndex: 1, width: '100%' }}
-        >
-
-        <div id="RD-navbar">
+        <Layout.Header>
+            <div className='rd-navbar-root'>
                 <a onClick={() => history.push(mainRoute)}>
                     {/* use small icon when on mobile */}
-                    <img className='absolute top-4 left-4 invisible sm:visible' src={`${config.assets.cdn}/radian.png`} width="149px" height="41px" alt="radian logo" />
-                    <img className='absolute top-4 left-5 visible sm:invisible' src="/logo192.png" width="41px" height="41px" alt="radian logo small" />
+                    <img src={`${config.assets.cdn}/logo/logo_horizontal_200x50.png`} alt="radian logo" />
                 </a>
 
                 {/* Wallet address on Navbar */}
-                <div className={`absolute pr-2 right-24`}>
+                <Space className='rd-navbar-control-root' size='large'>
                     <Button shape='round' size='large' type='primary' onClick={handleWalletButtonClick} >
                         {currentWallet}
                     </Button>
-                </div>
-
-                {profileContext.profile?.identityID &&
-                <div className="absolute top-4 right-4 w-10 h-10 cursor-pointer rounded-full"
-                    style={{
-                        backgroundImage: `${ipfsUtils.getBkgdImageFromCDNFailover(profileContext.profile?.profilePictureCid)}`,
-                        backgroundPosition: 'center center',
-                        backgroundSize: 'cover'
-                    }}
-                    // to do direct people to profile
-                    onClick={e => history.push(settingProfileRoute)}>
-                </div>}
-
-                <div className="absolute top-5 right-16 cursor-pointer">
+                    { profileContext.profile?.identityID && <Avatar className='rd-avatar-root' src={src} /> }
                     <ProfileSettings />
-                </div>
-        </div>
+                </Space>
+            </div>
         </Layout.Header>
     );
 };

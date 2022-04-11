@@ -1,23 +1,31 @@
-@import '~antd/dist/antd.dark.less'; // Introduce the official dark less style entry file
+@import '~antd/dist/antd.less'; // Introduce the official dark less style entry file
+@import './components/typography.less'; 
+@import './components//button.less';
+@import './components//avatar.less';
+@import './components/layout.less';
 
-@background-dark-primary: #000;
-@background-dark-secondary: #141414;
+@import './theme/color.less';
+
+
+// @background-dark-primary: #000;
+// @background-dark-secondary: #141414;
 
 @primary-1: #3B04DE;
 // Body
-@body-background: @background-dark-primary;
+// @body-background: @background-dark-primary;
 @text-color: #fafafa;
 
 
 // Layout
-@layout-body-background: @background-dark-primary;
-@layout-header-background: @background-dark-secondary;
-@layout-sider-background: @background-dark-primary;
+// @layout-body-background: @background-dark-primary;
+// @layout-header-background: @background-dark-secondary;
+// @layout-sider-background: @background-dark-primary;
 
-@component-background: @background-dark-secondary;
+// @component-background: @background-dark-secondary;
 
 // Select
 // @select-background: 
 @select-dropdown-height-custom: 50px;
-@select-selection-item-bg: @background-dark-secondary;
+// @select-selection-item-bg: @background-dark-secondary;
 @select-dropdown-height: @select-dropdown-height-custom;
+

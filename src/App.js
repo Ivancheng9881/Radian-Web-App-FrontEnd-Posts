@@ -6,8 +6,10 @@ import UserProfile from "./utils/user/context/user.provider";
 import WalletPopupProvider from "./utils/WalletPopup/context/walletPopup.provider";
 
 import './styles/main.css';
-import './styles/app.less'
+import './styles/app.less';
 import { useEffect } from "react";
+import searchEngineClient from "./utils/web3/searchEngine";
+import { ApolloProvider } from "@apollo/client";
 
 function App() {
 
@@ -16,17 +18,19 @@ function App() {
     }, []);
     
     return (
-        <GlobalSnackBarProvider>
-            <SolanaWalletProvider>
-                <WalletPopupProvider>
-                    <Web3Provider>
-                        <UserProfile >
-                            <Router/>
-                        </UserProfile>
-                    </Web3Provider>
-                </WalletPopupProvider> 
-        </SolanaWalletProvider>
-    </GlobalSnackBarProvider>
+        <ApolloProvider client={searchEngineClient} >
+            <GlobalSnackBarProvider>
+                <SolanaWalletProvider>
+                    <WalletPopupProvider>
+                        <Web3Provider>
+                            <UserProfile >
+                                <Router/>
+                            </UserProfile>
+                        </Web3Provider>
+                    </WalletPopupProvider> 
+                </SolanaWalletProvider>
+            </GlobalSnackBarProvider>
+        </ApolloProvider>
     );
 }
 

@@ -36,9 +36,7 @@ const ProfileSettings : FC<PropsType> = (props) => {
     };
 
     return (
-        // <Popover content={PopOverContent} trigger='click'>
         <SettingOutlined style={styles.icon} onClick={routeToSettings} />
-        // </Popover>
     )
 };
 

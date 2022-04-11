@@ -1,0 +1,87 @@
+@import '../../../styles/theme/color.less';
+
+
+@rd-landing-section-margin-vertical: 50px;
+@rd-landing-section-margin-horizontal: 50px;
+
+.rd-landing-section {
+    margin: @rd-landing-section-margin-vertical @rd-landing-section-margin-horizontal;
+}
+
+@rd-landing-orbit-size: 800px;
+
+@orbit-rotation-item-1: 180deg;
+@orbit-rotation-item-2: 240deg;
+@orbit-rotation-item-3: 300deg;
+@orbit-rotation-item-4: 360deg;
+
+.rd-landing-orbit-root {
+
+    .rd-landing-orbit-inner {
+        margin: auto;
+        border-radius: 50%;
+        // border: 1px solid @theme-color-grey-100;
+        height: @rd-landing-orbit-size;
+        width: @rd-landing-orbit-size;
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        position: relative;
+    }
+
+    .rd-landing-orbit-item {
+        filter: grayscale(1);
+        background-color: #e0e0e020;
+        border-radius: 50%;
+        grid-column: 1;
+        grid-row: 1;
+        transform: .3s;
+    }
+
+    .rd-landing-orbit-item.rd-landing-orbit-item-active {
+        filter: grayscale(0);
+        background-color: transparent;
+        grid-column: 1;
+        grid-row: 1;
+        transition: .3s;
+    }
+
+    .rd-landing-orbit-item-1 {
+        transform: rotate(@orbit-rotation-item-1) translate(calc(@rd-landing-orbit-size / 2));
+
+        img {
+            transform: rotate(-@orbit-rotation-item-1);
+        }
+    }
+
+    .rd-landing-orbit-item-2 {
+        transform: rotate(@orbit-rotation-item-2) translate(calc(@rd-landing-orbit-size / 2));
+
+        img {
+            transform: rotate(-@orbit-rotation-item-2);
+        }
+    }
+
+    .rd-landing-orbit-item-3 {
+        transform: rotate(@orbit-rotation-item-3) translate(calc(@rd-landing-orbit-size / 2));
+
+        img {
+            transform: rotate(-@orbit-rotation-item-3);
+        }
+    }
+
+    .rd-landing-orbit-item-4 {
+        transform: rotate(@orbit-rotation-item-4) translate(calc(@rd-landing-orbit-size / 2));;
+
+        img {
+            transform: rotate(-@orbit-rotation-item-4);
+        }
+    }
+
+    .rd-landing-orbit-content {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        height: 100%;
+    }
+}

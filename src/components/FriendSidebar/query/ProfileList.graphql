@@ -1,0 +1,18 @@
+query {
+  identityList {
+    data {
+      id
+      content {
+        firstName
+        lastName
+        profilePictureCid
+        
+      }
+    }
+    meta {
+      count
+      skip
+      limit
+    }
+  }
+}
