@@ -1,8 +1,12 @@
-import { FC } from "react";
+import React, { FC } from "react";
 
-const LandingSection : FC = ({children}) => {
+interface PageProps {
+    passRef: React.RefObject<HTMLDivElement>,
+}
+
+const LandingSection : FC<PageProps> = ({children, passRef}) => {
     return (
-        <div className="rd-landing-section">
+        <div className="rd-landing-section" ref={passRef}>
             {children}
         </div>
     )

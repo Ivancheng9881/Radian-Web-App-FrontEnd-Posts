@@ -1,26 +1,47 @@
 @import '../../../styles/theme/color.less';
 
-
 @rd-landing-section-margin-vertical: 50px;
 @rd-landing-section-margin-horizontal: 50px;
+@rd-landing-section-offset-top: 90px;
 
 .rd-landing-section {
-    margin: @rd-landing-section-margin-vertical @rd-landing-section-margin-horizontal;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 20px;
+    top: @rd-landing-section-offset-top;
+    height: calc(100vh - @rd-landing-section-offset-top);
+    width: 100vw;
 }
 
-@rd-landing-orbit-size: 800px;
+@rd-landing-orbit-size: 1000px;
 
 @orbit-rotation-item-1: 180deg;
 @orbit-rotation-item-2: 240deg;
 @orbit-rotation-item-3: 300deg;
 @orbit-rotation-item-4: 360deg;
 
+@keyframes orbit-text-animation {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 .rd-landing-orbit-root {
+
+    // .rd-landing-orbit-gradient-outer {
+    //     margin: auto;
+    //     border: double 1em transparent;
+    //     border-radius: 50%;
+    //     height: calc(@rd-landing-orbit-size + 5px);
+    //     width: calc(@rd-landing-orbit-size + 5px);
+    //     background-image: @linear-gradient-1;
+    //     background-origin: border-box;
+    //     background-clip: content-box, border-box;
+    // }
 
     .rd-landing-orbit-inner {
         margin: auto;
-        border-radius: 50%;
-        // border: 1px solid @theme-color-grey-100;
         height: @rd-landing-orbit-size;
         width: @rd-landing-orbit-size;
         display: grid;
@@ -29,9 +50,14 @@
         position: relative;
     }
 
+    // .rd-landing-orbit-gradient-inner {
+    //     border-radius: 50%;
+    //     background-color: @theme-color-white-100;
+    // }
+
     .rd-landing-orbit-item {
         filter: grayscale(1);
-        background-color: #e0e0e020;
+        background-color: #fefefe;
         border-radius: 50%;
         grid-column: 1;
         grid-row: 1;
@@ -40,7 +66,7 @@
 
     .rd-landing-orbit-item.rd-landing-orbit-item-active {
         filter: grayscale(0);
-        background-color: transparent;
+        background-color: @theme-color-white-100;
         grid-column: 1;
         grid-row: 1;
         transition: .3s;
@@ -81,7 +107,42 @@
     .rd-landing-orbit-content {
         position: absolute;
         width: 100%;
-        text-align: center;
-        height: 100%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+
+        .rd-landing-orbit-content-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: -45px;
+
+            .ant-typography {
+                margin: 0;
+            }
+
+            .rd-landing-orbit-title {
+                font-size: 22px;
+                font-weight: 700;
+            }
+
+            .rd-landing-orbit-title-blue {
+                color: @theme-color-purple-100;
+                margin-top: 1.5rem;
+            }
+
+            .rd-landing-orbit-desc {
+                text-align: center;
+                // @todo handle mobile responsive here
+                width: 70%;
+                font-weight: 600;
+                margin-top: 1.5rem;
+            }
+
+            .rd-landing-orbit-text-animation {
+                animation: orbit-text-animation 5s forwards infinite;
+            }
+        }
     }
 }
