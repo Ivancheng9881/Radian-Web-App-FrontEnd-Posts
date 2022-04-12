@@ -1,10 +1,12 @@
-import { FC, lazy, useEffect, useRef, useState } from "react";
-import LandingStep from "./components/Steps.compoents";
+import { FC, useEffect, useRef, useState } from "react";
+import LandingSection3 from "./components/Section3";
 import DefaultLayout from "../../components/Layout";
 import { Layout } from "antd";
-import { useSpring, animated, Transition } from 'react-spring'
 
 import './styles/index.less';
+import LandingSection2 from "./components/Section2.components";
+import LandingSection1 from "./components/Section1.components";
+import DefaultFooter from "./components/Footer";
 
 interface PageProps {
 
@@ -22,7 +24,7 @@ const LangingPage : FC<PageProps> = () => {
     const sec3Ref: React.RefObject<HTMLDivElement> = useRef(null);
 
     const calcElHeight = () => {
-        let currentElHeight = window.innerHeight * 3;
+        let currentElHeight = window.innerHeight * NO_OF_ELEMENT;
         setScrollElHeight(currentElHeight);
     };
 
@@ -38,9 +40,14 @@ const LangingPage : FC<PageProps> = () => {
             targetEl = sec3Ref.current;
         }
 
-        const target = Math.round(offsetTop / targetEl.clientHeight);
-        console.log(target);
-        setSlide(target + 1)
+        let target = Math.round(offsetTop / targetEl.clientHeight);
+        if (target >= 3) {
+            target = 3;
+        } else {
+            target++
+        }
+
+        setSlide(target)        
     }
 
     useEffect(() => {
@@ -58,41 +65,11 @@ const LangingPage : FC<PageProps> = () => {
     return (
         <DefaultLayout>
             <Layout.Content>
-                <Transition
-                    items={slide === 1}
-                    from={{zIndex: -1, opacity: 0}}
-                    enter={{zIndex: 1001, opacity: 1}}
-                    leave={{zIndex: -1, opacity: 0}}
-                    delay={200}
-                >
-                    {(styles, item) => 
-                        item && <animated.span><LandingStep passRef={sec1Ref} /></animated.span>
-                    } 
-                </Transition>
-                <Transition
-                    items={slide === 2}
-                    from={{zIndex: -1, opacity: 0}}
-                    enter={{zIndex: 1001, opacity: 1}}
-                    leave={{zIndex: -1, opacity: 0}}
-                    delay={200}
-                >
-                    {(styles, item) => 
-                        item && <animated.span><LandingStep passRef={sec2Ref} /></animated.span>
-                    } 
-                </Transition>
-                <Transition
-                    items={slide === 3}
-                    from={{zIndex: -1, opacity: 0}}
-                    enter={{zIndex: 1001, opacity: 1}}
-                    leave={{zIndex: -1, opacity: 0}}
-                    delay={200}
-                >
-                    {(styles, item) => 
-                        item && <animated.span><LandingStep passRef={sec3Ref} /></animated.span>
-                    } 
-                </Transition>
-
+                <LandingSection1 passRef={sec1Ref} isActive={slide === 1} />
+                <LandingSection2 passRef={sec2Ref} isActive={slide === 2} />
+                <LandingSection3 passRef={sec3Ref} isActive={slide === 3} />
                 <div id='rd-scroll-el-height' style={{height: scrollElHeight}}></div>
+                <DefaultFooter />
             </Layout.Content>
         </DefaultLayout>
     )

@@ -12,5 +12,4 @@ const LandingSection : FC<PageProps> = ({children, passRef}) => {
     )
 };
 
-
 export default LandingSection;

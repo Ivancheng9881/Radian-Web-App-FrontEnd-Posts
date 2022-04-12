@@ -3,13 +3,31 @@
 @button-padding-vertical: 21px;
 @button-padding-horizontal: 45px;
 
-.ant-btn-round.ant-btn-lg {
+
+.ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg {
     font-size: @button-sm-size !important;
+    background-color: @theme-color-black-100;
+    border: none;
     padding: @button-padding-vertical @button-padding-horizontal !important;
     height: calc(@button-sm-size + @button-padding-vertical * 2);
     line-height: 1;
     font-family: @font-family;
 }
+
+.ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg:hover {
+    background-color: @theme-color-purple-100;
+}
+
+.ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg:active {
+    background-color: @theme-color-purple-200;
+}
+
+[ant-click-animating-without-extra-node='true']::after{
+    display: none;
+    // box-shadow: 0 0 0 0 @theme-color-purple-100 !important;
+}
+
+
 
 // .ant-btn-round.rd-btn-featured {
 //     background-color: white;
@@ -26,3 +44,12 @@
 //     -webkit-background-clip: text;
 //     -webkit-text-fill-color: transparent;  
 // }
+
+.ant-btn.rd-btn-img {
+    display: flex;
+    color: @theme-color-black-100;
+
+    img {
+        margin-right: 3px;
+    }
+}

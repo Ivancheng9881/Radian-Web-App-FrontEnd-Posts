@@ -7,7 +7,7 @@
 .rd-landing-section {
     position: fixed;
     z-index: 1000;
-    padding-top: 20px;
+    // padding-top: 20px;
     top: @rd-landing-section-offset-top;
     height: calc(100vh - @rd-landing-section-offset-top);
     width: 100vw;
@@ -20,25 +20,7 @@
 @orbit-rotation-item-3: 300deg;
 @orbit-rotation-item-4: 360deg;
 
-@keyframes orbit-text-animation {
-    0% { opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
 .rd-landing-orbit-root {
-
-    // .rd-landing-orbit-gradient-outer {
-    //     margin: auto;
-    //     border: double 1em transparent;
-    //     border-radius: 50%;
-    //     height: calc(@rd-landing-orbit-size + 5px);
-    //     width: calc(@rd-landing-orbit-size + 5px);
-    //     background-image: @linear-gradient-1;
-    //     background-origin: border-box;
-    //     background-clip: content-box, border-box;
-    // }
 
     .rd-landing-orbit-inner {
         margin: auto;
@@ -50,11 +32,6 @@
         position: relative;
     }
 
-    // .rd-landing-orbit-gradient-inner {
-    //     border-radius: 50%;
-    //     background-color: @theme-color-white-100;
-    // }
-
     .rd-landing-orbit-item {
         filter: grayscale(1);
         background-color: #fefefe;
@@ -64,7 +41,7 @@
         transform: .3s;
     }
 
-    .rd-landing-orbit-item.rd-landing-orbit-item-active {
+    .rd-landing-orbit-item.rd-active {
         filter: grayscale(0);
         background-color: @theme-color-white-100;
         grid-column: 1;
@@ -113,14 +90,10 @@
         align-items: end;
 
         .rd-landing-orbit-content-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            // display: flex;
+            // flex-direction: column;
+            // align-items: center;
             margin-bottom: -45px;
-
-            .ant-typography {
-                margin: 0;
-            }
 
             .rd-landing-orbit-title {
                 font-size: 22px;
@@ -135,14 +108,98 @@
             .rd-landing-orbit-desc {
                 text-align: center;
                 // @todo handle mobile responsive here
-                width: 70%;
+                width: 100%;
                 font-weight: 600;
-                margin-top: 1.5rem;
+                margin-top: 1rem;
             }
 
-            .rd-landing-orbit-text-animation {
-                animation: orbit-text-animation 5s forwards infinite;
+            .rd-landing-orbit-content-animation-root {
+
+                position: relative;
+                width: 100%;
+                height: 150px;
+
+                .rd-landing-orbit-content-animated {
+                    position: absolute;
+                    width: 100%;
+                    flex-direction: column;
+                    align-items: center;    
+                    display: flex;
+                    opacity: 0;
+                    transition: .3s;          
+                }
+    
+                .rd-landing-orbit-content-animated.rd-active {
+                    opacity: 1;
+                    transition: .3s;
+                }
             }
+        }
+    }
+}
+
+@rd-circle-width: 5px;
+
+.rd-circle-root {
+    position: absolute;
+    z-index: -1;
+    height: calc(@rd-landing-orbit-size / 2);
+    overflow: hidden;
+
+    .rd-circle {
+        border: 3px solid @theme-color-grey-100;
+        opacity: 0.3;
+        border-radius: 50%;
+        width: @rd-landing-orbit-size;
+        height: @rd-landing-orbit-size;
+    }
+}
+
+
+.rd-landing-content-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .rd-landing-desc {
+        text-align: center;
+        // @todo handle mobile responsive here
+        width: 100%;
+        font-weight: 600;
+        margin-top: 1rem;
+        width: 80vw;
+        max-width: 600px;
+    }
+
+    .ant-typography {
+        margin: 0 !important;
+    }
+}
+
+@rd-footer-height: 650px;
+
+.rd-footer-root {
+
+    position: relative;
+    height: calc(100vh - @rd-landing-section-offset-top);
+    z-index: 1002;
+    background-color: @theme-color-white-100;
+    display: flex;
+    align-items: flex-end;
+
+    .rd-footer {
+        height: @rd-footer-height;
+        background-color: @theme-color-black-100;
+        width: 100%;
+        padding: 250px 0px;
+
+        .rd-footer-content {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .rd-footer-text {
+            color: @theme-color-white-100;
         }
     }
 }
