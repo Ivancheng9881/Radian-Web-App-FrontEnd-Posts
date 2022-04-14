@@ -33,7 +33,7 @@ const Navbar = (props) => {
     const history = useHistory();
 
     const [ address, setAddress ] = useState({});
-    const [ currentWallet, setCurrentWallet ] = useState('Connect Wallet'); 
+    const [ currentWallet, setCurrentWallet ] = useState('Connect'); 
 
     const ref = useRef();
     const close = () => ref.current.close();  
@@ -100,11 +100,11 @@ const Navbar = (props) => {
                     addr = 'phantom: ' + truncateAddress(addr.toBase58(), 8);
                     break
                 default:
-                    addr = 'Connect Wallet'
+                    addr = 'Connect'
             }
             setCurrentWallet(addr);
         } else {
-            setCurrentWallet('Connect Wallet')
+            setCurrentWallet('Connect')
         }
       },
       [web3Context.providers,],
@@ -141,11 +141,11 @@ const Navbar = (props) => {
 
                 {/* Wallet address on Navbar */}
                 <Space className='rd-navbar-control-root' size='large'>
-                    <Button shape='round' size='large' type='primary' onClick={handleWalletButtonClick} >
+                    {/* <Button shape='round' size='large' type='primary' onClick={handleWalletButtonClick} >
                         {currentWallet}
-                    </Button>
-                    { profileContext.profile?.identityID && <Avatar className='rd-avatar-root' src={src} /> }
-                    <ProfileSettings />
+                    </Button> */}
+                    {/* { profileContext.profile?.identityID && <Avatar className='rd-avatar-root' src={src} /> } */}
+                    {/* <ProfileSettings /> */}
                 </Space>
             </div>
         </Layout.Header>

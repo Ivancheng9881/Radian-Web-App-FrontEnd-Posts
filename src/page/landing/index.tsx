@@ -3,9 +3,8 @@ import LandingSection3 from "./components/Section3";
 import DefaultLayout from "../../components/Layout";
 import { Layout } from "antd";
 
-import './styles/index.less';
-import LandingSection2 from "./components/Section2.components";
-import LandingSection1 from "./components/Section1.components";
+import LandingSection2 from "./components/Section2";
+import LandingSection1 from "./components/Section1";
 import DefaultFooter from "./components/Footer";
 
 interface PageProps {
@@ -30,24 +29,15 @@ const LangingPage : FC<PageProps> = () => {
 
     const handleScroll = () => {
         const offsetTop = document.body.scrollTop || document.documentElement.scrollTop;
-        let targetEl;
 
-        if (slide === 1) {
-            targetEl = sec1Ref.current;
-        } else if (slide === 2) {
-            targetEl = sec2Ref.current;
-        } else if (slide === 3) {
-            targetEl = sec3Ref.current;
-        }
+        let heightPerSlide = window.innerHeight;
+        let _slide = Math.round(offsetTop / heightPerSlide) + 1;
 
-        let target = Math.round(offsetTop / targetEl.clientHeight);
-        if (target >= 3) {
-            target = 3;
-        } else {
-            target++
-        }
+        setSlide(_slide)       
+    }
 
-        setSlide(target)        
+    const handleResize = () => {
+        calcElHeight();
     }
 
     useEffect(() => {
@@ -56,11 +46,19 @@ const LangingPage : FC<PageProps> = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
-
+        window.addEventListener('resize', handleResize);
         return () => {
-            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleResize);
         }
-    })
+    }, [scrollElHeight])
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, [])
 
     return (
         <DefaultLayout>

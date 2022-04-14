@@ -20,16 +20,62 @@ sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
 @heading-5-size: ceil(@font-size-base * 1.14);
 @button-sm-size: 29px;
 
+
+@btn-link-icon-font-size: 24px;
+@btn-link-font-size: 16px;
+
 @typography-title-font-weight: 700;
+
+.ant-typography::selection {
+    background: @theme-color-purple-200;
+}
 
 h4.ant-typography {
     font-weight: 400;
 }
-
 
 .rd-typo-family-regular {
     font-family: @font-family-regular;
     font-weight: 500;
 }
 
+@lg-multiplier: 0.7;
+@sm-multiplier: 0.4;
 
+@media screen and (max-width: @screen-lg) {
+
+    h1.ant-typography {
+        font-size: @heading-1-size * @lg-multiplier;
+    }
+
+    h2.ant-typography {
+        font-size: @heading-2-size * @lg-multiplier;
+    }
+
+    h3.ant-typography {
+        font-size: @heading-3-size * @lg-multiplier;
+    }
+
+    h4.ant-typography {
+        font-size: @heading-4-size * @lg-multiplier;
+    }
+}
+
+@media screen and (max-width: @screen-sm) {
+
+    h1.ant-typography {
+        font-size: @heading-1-size * @sm-multiplier;
+    }
+
+    h2.ant-typography {
+        font-size: @heading-2-size * @sm-multiplier;
+    }
+
+    h3.ant-typography {
+        font-size: @heading-3-size * @sm-multiplier;
+    }
+
+    h4.ant-typography {
+        font-size: @heading-4-size * @sm-multiplier;
+    }
+}

@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import { Suspense, lazy } from "react";
 import { mainRoute, startRoute, profileRoute, settingRoute, passportRoute, homeRoute } from './commons/route'
+import SuspenseScreen from './components/SuspenseScreen';
 
 const HomePage = lazy(() => import('./page/home'));
 const StartMain = lazy(() => import('./page/start'));
@@ -16,12 +17,12 @@ const LandingPage = lazy(() => import('./page/landing'));
 export default function Router() {
     return (
         <BrowserRouter basename='/'>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<SuspenseScreen logoOnly />}>
                 <Switch>
                     <Route exact path={mainRoute}>
                         <LandingPage />
                     </Route>
-                    <Route exact path={homeRoute}>
+                    {/* <Route exact path={homeRoute}>
                         <HomePage />
                     </Route>
                     <Route path={startRoute}>
@@ -36,7 +37,7 @@ export default function Router() {
                     </Route>
                     <Route path={passportRoute}>
                         <PassportPage />
-                    </Route>
+                    </Route> */}
                 </Switch>
             </Suspense>
         </BrowserRouter>

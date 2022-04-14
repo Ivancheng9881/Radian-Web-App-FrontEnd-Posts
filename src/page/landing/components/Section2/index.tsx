@@ -1,8 +1,8 @@
 import { Space, Typography } from "antd";
 import { FC } from "react";
-import config from "../../../commons/config";
-import LandingFadeInOutWrapper from "./FadeInOutWrapper.components";
-import LandingSection from "./Section.components";
+import config from "../../../../commons/config";
+import LandingFadeInOutWrapper from "../FadeInOutWrapper.components";
+import LandingSection from "../Section.components";
 
 interface PageProps {
     isActive: boolean,
@@ -17,7 +17,7 @@ const LandingSection2 : FC<PageProps> = ({isActive, passRef}) => {
                 <div className="rd-landing-content-group">
                     <div className="rd-flexbox rd-flexbox-horizontal">
                         <div>
-                            <img src={`${config.assets.cdn}/logo/logo_square.png`} />
+                            <img className="rd-img" src={`${config.assets.cdn}/logo/logo_square.png`} />
                         </div>
                     </div>
                     <br/>

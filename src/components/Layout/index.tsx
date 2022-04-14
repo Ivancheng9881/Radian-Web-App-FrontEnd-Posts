@@ -25,7 +25,7 @@ const DefaultLayout : FC<PropsType> = (props) => {
         <div style={props.fullWidth ? styles.bodyFullWidth : styles.body}>
           {props.children}          
         </div>
-        <FloatingChatButton />
+        {/* <FloatingChatButton /> */}
         <ConnectWalletPopup />
       </Layout>
   )

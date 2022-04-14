@@ -3,6 +3,8 @@
 @button-padding-vertical: 21px;
 @button-padding-horizontal: 45px;
 
+@button-padding-vertical-sm: @button-padding-vertical * @sm-multiplier * 0.8;
+@button-padding-horizontal-sm: @button-padding-horizontal * @sm-multiplier;
 
 .ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg {
     font-size: @button-sm-size !important;
@@ -24,32 +26,28 @@
 
 [ant-click-animating-without-extra-node='true']::after{
     display: none;
-    // box-shadow: 0 0 0 0 @theme-color-purple-100 !important;
 }
 
-
-
-// .ant-btn-round.rd-btn-featured {
-//     background-color: white;
-//     padding: 0 !important;
-//     height: auto;
-//     border: none;
-// }
-
-// .ant-btn-round.rd-btn-featured span {
-//     background-clip: text;
-//     background: @linear-gradient-1;
-//     padding: @button-padding-vertical @button-padding-horizontal !important;
-//     height: calc(@button-sm-size + @button-padding-vertical * 2);
-//     -webkit-background-clip: text;
-//     -webkit-text-fill-color: transparent;  
-// }
-
-.ant-btn.rd-btn-img {
-    display: flex;
+.ant-btn.ant-btn-link {
     color: @theme-color-black-100;
+    font-size: @btn-link-font-size;
+    display: flex;
+    align-items: center;
+    font-family: @font-family-regular;
 
-    img {
-        margin-right: 3px;
+    .anticon {
+        font-size: @btn-link-icon-font-size;
+    }
+}
+
+@media screen and (max-width: @screen-sm) {
+
+    .ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg {
+        font-size: @button-sm-size * @sm-multiplier !important;
+        padding: @button-padding-vertical-sm @button-padding-horizontal-sm !important;
+        height: calc(@button-sm-size + @button-padding-vertical-sm * 2);
+        line-height: 1;
+        font-family: @font-family;
+    
     }
 }

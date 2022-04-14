@@ -18,7 +18,7 @@ const StepContent: FC<PageProps> = ({
 }) => {
 
     return (
-        <div className={`rd-landing-orbit-content-animated ${isActive && 'rd-active'}`}>
+        <div className={`rd-landing-orbit-content-animated ${isActive ? 'rd-active' : ''}`}>
             <Typography.Text className="rd-landing-orbit-text-animation rd-landing-orbit-title rd-landing-orbit-title-blue">
                 {content.title}
             </Typography.Text>

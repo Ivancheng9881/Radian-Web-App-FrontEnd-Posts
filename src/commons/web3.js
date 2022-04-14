@@ -13,3 +13,16 @@ export const tagProviderUrl = 'https://api.radian.community/query/tag'
 export const apiGatewayRoot = 'https://api.radian.community/query';
 
 // export const maticHttpProvider = ''
+
+export const WALLET_DOWNLOAD_LINK = {
+    metamask: {
+        chrome: 'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+        firefox: 'https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/',
+        unsupported: undefined,
+    },
+    phantom: {
+        chrome: 'https://chrome.google.com/webstore/detail/phantom/bfnaelmomeimhlpmgjnjophhpkkoljpa?hl=en',
+        firefox: 'https://addons.mozilla.org/en-US/firefox/addon/phantom-app/',
+        unsupported: undefined,
+    },
+};
