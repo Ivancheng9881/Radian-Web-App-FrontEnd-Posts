@@ -6,14 +6,22 @@
 @button-padding-vertical-sm: @button-padding-vertical * @sm-multiplier * 0.8;
 @button-padding-horizontal-sm: @button-padding-horizontal * @sm-multiplier;
 
-.ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg {
-    font-size: @button-sm-size !important;
-    background-color: @theme-color-black-100;
+.ant-btn.ant-btn-round.ant-btn-lg {
     border: none;
+    font-family: @font-family;
+    line-height: 1;
+    font-size: @button-sm-size !important;
     padding: @button-padding-vertical @button-padding-horizontal !important;
     height: calc(@button-sm-size + @button-padding-vertical * 2);
-    line-height: 1;
-    font-family: @font-family;
+}
+
+.ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg {
+    background-color: @theme-color-black-200;
+}
+
+.ant-btn.ant-btn-round.ant-btn-default.ant-btn-lg {
+    background-color: @theme-color-white-100;
+    color: @theme-color-purple-100;
 }
 
 .ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg:hover {
@@ -28,8 +36,12 @@
     display: none;
 }
 
+.ant-btn-primary[disabled] {
+    color: @theme-color-white-100-trans;
+}
+
 .ant-btn.ant-btn-link {
-    color: @theme-color-black-100;
+    color: @theme-color-black-200;
     font-size: @btn-link-font-size;
     display: flex;
     align-items: center;
@@ -49,5 +61,15 @@
         line-height: 1;
         font-family: @font-family;
     
+    }
+}
+
+.rd-btn-custom-icon {
+    display: flex;
+
+    img {
+        height: 100%;
+        width: auto;
+        margin-right: 5px;
     }
 }

@@ -5,6 +5,9 @@ import ERCUtils from "./erc.utils";
 import CreateSnackbarContext from '../../../page/start/context/snackbar/snackbar.context';
 import { FixLater } from "../../../schema/helper.interface";
 import { WalletProvider } from "./web3.interface";
+import detectEthereumProvider from "@metamask/detect-provider";
+import { message } from "antd";
+import SplashScreenContext from "../../SplashScreenContext/Splash.context";
 
 
 
@@ -14,13 +17,16 @@ const Web3Provider : FC = ({ children }) => {
     const phantomObjKey = 'phantom@solana';
 
     const SnackbarContext = useContext(CreateSnackbarContext);
+    const SplashContext = useContext(SplashScreenContext);
+     
     const { setSnackBar } = SnackbarContext;
     const [ providers, setProviders ] = useState<WalletProvider>({
         'phantom@solana': null, 
         'metamask@erc': null, 
         selected: null
     });
-    const [ networkId, setNetworkId ] = useState(undefined)
+    const [ networkId, setNetworkId ] = useState(undefined);
+    const [ hasMetamask, setHasMetamask ] = useState<boolean>(false);
 
     useEffect(() => {
         autoConnectEthereum();
@@ -33,7 +39,6 @@ const Web3Provider : FC = ({ children }) => {
 
     // register ethereum event listener
     useEffect(() => {
-
             window.ethereum?.on("chainChanged", async (_chainId: string) => {
                 if (!_chainId.includes('0x89')) {
                     setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
@@ -192,10 +197,23 @@ const Web3Provider : FC = ({ children }) => {
     }
 
     const connectProvider = async (network: string) => {
+        SplashContext.setIsLoading(true);
+
         if (network === 'solana') {
-            return await connectSolanaProvider();
+            const resp = await connectSolanaProvider();
+            message.success(`${resp.length} wallet(s) connected`);
+            return resp
         } else if (network === 'erc') {
-            return await connectERCProvider();
+            try {
+                const resp: string[] = await connectERCProvider();
+                if (resp.length > 0) {
+                    message.success(`${resp.length} wallet(s) connected`);
+                    SplashContext.setIsLoading(false);
+                }
+                return resp;            
+            } catch (error) {
+                console.log(error)
+            }
         }
     };
 
@@ -209,11 +227,25 @@ const Web3Provider : FC = ({ children }) => {
         return providerCache === undefined ? null : JSON.parse(providerCache);
     }
 
+    const detectMetamask = async () => {
+        const provider: any = await detectEthereumProvider();
+        if (provider) {
+            setHasMetamask(true);
+        } else {
+            setHasMetamask(false);
+        }
+    }
+
+    useEffect(() => {
+        detectMetamask()
+    }, [])
+
     const providerValue = {
         connect: connectProvider,
         switchProvider: switchProvider,
         providers: providers,
-        network: networkId
+        network: networkId,
+        hasMetamask: hasMetamask,
     };
  
     return (

@@ -10,6 +10,13 @@ const ErrorHandler = (code: number): ErrorInterface => {
 
     switch(code) {
 
+        /**
+         * @error wallet connection issue
+         */
+        case 1000:
+            message = 'Metamask not installed'
+            break;
+
         case 3000:
             message = 'CDN fallback';
             break

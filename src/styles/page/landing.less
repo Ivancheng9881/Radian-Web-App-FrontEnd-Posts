@@ -13,6 +13,14 @@
     background-size: cover;
 }
 
+@media screen and (max-width: @screen-lg) {
+    .rd-landing-section {
+        background: url('https://d1skj8m4trskbx.cloudfront.net/misc/background_450x974.png');
+        background-position: center;
+        background-size: cover;    
+    }
+}
+
 @rd-landing-orbit-size: 1000px;
 
 @orbit-rotation-item-1: 180deg;
@@ -268,7 +276,7 @@
 
     .rd-footer {
         height: @rd-footer-height;
-        background-color: @theme-color-black-100;
+        background-color: @theme-color-black-200;
         width: 100%;
         padding: 250px 30px;
 
@@ -285,7 +293,7 @@
     @media screen and (max-width: @screen-lg) {
         .rd-footer {
             height: @rd-footer-height;
-            background-color: @theme-color-black-100;
+            background-color: @theme-color-black-200;
             width: 100%;
             padding: 60px 30px 30px;
         }

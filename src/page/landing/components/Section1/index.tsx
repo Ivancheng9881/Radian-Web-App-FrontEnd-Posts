@@ -1,10 +1,13 @@
 import {  Col, Row, Space, Typography } from "antd";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import LandingFadeInOutWrapper from "../FadeInOutWrapper.components";
 import LandingSection from "../Section.components";
 import LandingConnectWallet from "./ConnectWallet.components";
 import UAParser from 'ua-parser-js';
 import { WALLET_DOWNLOAD_LINK } from "../../../../commons/web3";
+import Web3Context from "../../../../utils/web3/context/web3.context";
+import { useHistory } from "react-router";
+import { signupRoute } from "../../../../commons/route";
 
 interface PageProps {
     isActive: boolean,
@@ -14,6 +17,9 @@ interface PageProps {
 const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
 
     type TUserAgent = 'chrome' | 'firefox' | 'unsupported';
+
+    const web3Proivder = useContext(Web3Context);
+    const history = useHistory<History>();
 
     const [ userAgent, setUserAgent ] = useState<TUserAgent>('unsupported');
 
@@ -30,9 +36,21 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
                 break;
             default:
                 setUserAgent('unsupported');
-        }
-        
+                break
+        }  
     };
+
+    const handleConnectMetamask = async () => {
+        const response = await handleConnect('erc');
+        console.log(response)
+        if (response) {
+            history.push(signupRoute);
+        }
+    }
+
+    const handleConnect = async (network: string) => {
+        return await web3Proivder.connect(network);
+    } 
 
     useEffect(() => {
         parseUserAgent();
@@ -56,6 +74,8 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
                                     title='Metmamsk'
                                     iconName="metamask_square.png"
                                     downloadUri={WALLET_DOWNLOAD_LINK['metamask'][userAgent]}
+                                    onClick={handleConnectMetamask}
+                                    disabled={!web3Proivder.hasMetamask}
                                 />
                             </Col>
                             <Col span={12}>
@@ -63,6 +83,8 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
                                     title='Phantom'
                                     iconName="phantom_square.png"
                                     downloadUri={WALLET_DOWNLOAD_LINK['phantom'][userAgent]}
+                                    onClick={handleConnectMetamask}
+                                    disabled={!web3Proivder.hasMetamask}
                                 />
                             </Col>
                         </Row>

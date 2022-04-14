@@ -6,6 +6,7 @@
     "@ant-design/icons": "^4.7.0",
     "@apollo/client": "^3.5.10",
     "@craco/craco": "^6.3.0",
+    "@metamask/detect-provider": "^1.2.0",
     "@opengsn/provider": "^2.2.5",
     "@project-serum/anchor": "^0.20.1",
     "@solana/wallet-adapter-base": "^0.9.2",

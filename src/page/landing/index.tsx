@@ -6,6 +6,7 @@ import { Layout } from "antd";
 import LandingSection2 from "./components/Section2";
 import LandingSection1 from "./components/Section1";
 import DefaultFooter from "./components/Footer";
+import ScrollIndicator from "../../components/ScrollIndicator";
 
 interface PageProps {
 
@@ -67,6 +68,7 @@ const LangingPage : FC<PageProps> = () => {
                 <LandingSection2 passRef={sec2Ref} isActive={slide === 2} />
                 <LandingSection3 passRef={sec3Ref} isActive={slide === 3} />
                 <div id='rd-scroll-el-height' style={{height: scrollElHeight}}></div>
+                <ScrollIndicator />
                 <DefaultFooter />
             </Layout.Content>
         </DefaultLayout>

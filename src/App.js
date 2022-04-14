@@ -10,6 +10,7 @@ import './styles/app.less';
 import { useEffect } from "react";
 import searchEngineClient from "./utils/web3/searchEngine";
 import { ApolloProvider } from "@apollo/client";
+import SplashScreenProvider from "./utils/SplashScreenContext/Splash.provider";
 
 function App() {
 
@@ -20,15 +21,17 @@ function App() {
     return (
         <ApolloProvider client={searchEngineClient} >
             <GlobalSnackBarProvider>
-                <SolanaWalletProvider>
-                    <WalletPopupProvider>
-                        <Web3Provider>
-                            <UserProfile >
-                                <Router/>
-                            </UserProfile>
-                        </Web3Provider>
-                    </WalletPopupProvider> 
-                </SolanaWalletProvider>
+                <SplashScreenProvider>
+                    <SolanaWalletProvider>
+                        <WalletPopupProvider>
+                            <Web3Provider>
+                                <UserProfile >
+                                    <Router/>
+                                </UserProfile>
+                            </Web3Provider>
+                        </WalletPopupProvider> 
+                    </SolanaWalletProvider>
+                </SplashScreenProvider>
             </GlobalSnackBarProvider>
         </ApolloProvider>
     );

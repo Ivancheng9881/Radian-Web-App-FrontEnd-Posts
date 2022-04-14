@@ -1,0 +1,20 @@
+@rd-splash-size: 400px;
+
+.rd-splash-root {
+    position: fixed;
+    z-index: 9100;
+    height: 100vh;
+    width: 100vw;
+    background: url('https://d1skj8m4trskbx.cloudfront.net/misc/background.png');
+    background-position: center;
+    background-size: cover;
+    // background-color: @theme-color-black-500-80;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .rd-splash-inner {
+        width: @rd-splash-size;
+        height: @rd-splash-size;
+    }
+}

@@ -4,7 +4,7 @@ import {
     Switch,
 } from 'react-router-dom';
 import { Suspense, lazy } from "react";
-import { mainRoute, startRoute, profileRoute, settingRoute, passportRoute, homeRoute } from './commons/route'
+import { mainRoute, signupRoute, startRoute, profileRoute, settingRoute, passportRoute, homeRoute } from './commons/route'
 import SuspenseScreen from './components/SuspenseScreen';
 
 const HomePage = lazy(() => import('./page/home'));
@@ -13,6 +13,7 @@ const ViewProfileRoutePage = lazy(() => import('./page/p'));
 const SettingsRouter = lazy(() => import('./page/settings'));
 const PassportPage = lazy(() => import('./page/passport'));
 const LandingPage = lazy(() => import('./page/landing'));
+const SignupRouter = lazy(() => import('./page/signup/router'))
 
 export default function Router() {
     return (
@@ -21,6 +22,9 @@ export default function Router() {
                 <Switch>
                     <Route exact path={mainRoute}>
                         <LandingPage />
+                    </Route>
+                    <Route path={signupRoute}>
+                        <SignupRouter />
                     </Route>
                     {/* <Route exact path={homeRoute}>
                         <HomePage />

@@ -2,6 +2,8 @@ import { ethers, Signer } from "ethers";
 import PolygonIcon from "../../../components/Icons/polygon.components";
 import { FixLater } from '../../../schema/helper.interface';
 import { Web3Provider } from '@ethersproject/providers';
+import detectEthereumProvider from "@metamask/detect-provider";
+import ErrorHandler from "../../errorHandler";
 
 async function initEtherProvider(): Promise<Web3Provider> {
     console.log("init provider");
@@ -91,20 +93,31 @@ async function switchNetwork(chainId: string) {
  * @returns {[string]} array of wallet address
  */
 async function connectWallet() : Promise<string[]> {
-    console.log("connecting wallet");
+    const provider: any = await detectEthereumProvider();
+    console.log(provider)
+    if (provider) {
         try {
-            if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
-                let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
-                return resp;
-            }
-        } catch (err: FixLater) {
-            if (err.code == -32002) {
-                console.log("Pending Request");
-                // TODO show snack bar to notify user here
-            }
-            console.log('Error in connecting wallet', err.message);
-            throw Error('4003')
+            const resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
+            return resp;    
+        } catch(err) {
+            console.log(err)
         }
+    } else {
+        throw(ErrorHandler(1000))
+    }
+        // try {
+        //     if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+        //         let resp = await window.ethereum.request({ method: 'eth_requestAccounts', params: [{ eth_accounts: {} }] })
+        //         return resp;
+        //     }
+        // } catch (err: FixLater) {
+        //     if (err.code == -32002) {
+        //         console.log("Pending Request");
+        //         // TODO show snack bar to notify user here
+        //     }
+        //     console.log('Error in connecting wallet', err.message);
+        //     throw Error('4003')
+        // }
 }
 
 function isConnected() {

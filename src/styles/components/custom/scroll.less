@@ -1,0 +1,44 @@
+@rd-scroll-icon-height: 60px;
+@rd-scroll-icon-width: 30px;
+@rd-scroll-dot-size: 10px;
+@rd-scoll-border-width: 2px;
+
+@keyframes scroll-dot-movement {
+    0% {
+        transform: translate(0px, 10px);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0px, (@rd-scroll-icon-height - @rd-scroll-dot-size - 10px));
+        opacity: 0;
+    }
+}
+
+.rd-scroll-root {
+    z-index: 1300;
+    position: fixed;
+    right: 50%;
+    bottom: (@rd-scroll-icon-width);
+
+    .rd-scroll-body {
+        position: relative;
+        height: @rd-scroll-icon-height;
+        width: @rd-scroll-icon-width;
+        border: @rd-scoll-border-width solid @theme-color-purple-100;
+        border-radius: (@rd-scroll-icon-width / 2);
+        background: transparent;
+
+        .rd-scroll-dot-root {
+            position: absolute;
+            height: @rd-scroll-dot-size;
+            width: @rd-scroll-dot-size;
+            background-color: @theme-color-purple-100;
+            border-radius: 50%;
+            left: ((@rd-scroll-icon-width - @rd-scroll-dot-size - @rd-scoll-border-width * 2) / 2);
+            animation: scroll-dot-movement 2s infinite;
+        }
+    }
+}

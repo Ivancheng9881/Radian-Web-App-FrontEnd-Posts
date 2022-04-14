@@ -7,12 +7,16 @@ interface PageProps {
     iconName: string,
     downloadUri: string | undefined,
     title: string,
+    onClick: any,
+    disabled: boolean,
 }
 
 const LandingConnectWallet : FC<PageProps> = ({
     iconName,
     downloadUri,
-    title
+    title,
+    onClick,
+    disabled,
 }) => {
 
     return (
@@ -27,6 +31,8 @@ const LandingConnectWallet : FC<PageProps> = ({
                 type="primary" 
                 size="large" 
                 shape="round" 
+                onClick={onClick}
+                disabled={disabled}
             >
                 {title}
             </Button>

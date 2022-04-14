@@ -1,6 +1,9 @@
 
 export const mainRoute = '/'
 
+export const signupRoute = '/signup';
+export const signupInfoRoute = '/signup/info';
+
 export const homeRoute = '/home'
 
 export const startRoute = '/start';

@@ -1,0 +1,40 @@
+.ant-dropdown {
+    z-index: 1111;
+}
+
+@navbar-wallet-item-height: 30px;
+
+.ant-dropdown {
+    box-shadow: 0px 10px 50px 4px @theme-color-black-500;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.rd-navbar-wallet-title {
+    padding: 25px 11px;
+
+    .ant-menu-item {
+        height: @navbar-wallet-item-height;
+        line-height: @navbar-wallet-item-height;
+
+        .ant-menu-title-content {
+            height: @navbar-wallet-item-height;
+            line-height: @navbar-wallet-item-height;
+            display: flex;
+            align-items: center;
+            
+            img {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .ant-typography {
+        margin-bottom: 0px;
+    }
+
+    .ant-menu-item:not(:last-child) {
+        margin-bottom: 30px;
+    }
+}
+

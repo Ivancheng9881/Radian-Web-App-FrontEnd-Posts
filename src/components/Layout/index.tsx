@@ -1,5 +1,7 @@
 import { Layout } from 'antd'
 import { FC } from 'react'
+import { useHistory } from 'react-router'
+import { mainRoute } from '../../commons/route'
 import FloatingChatButton from '../Button/FloatingChatButton.components'
 import ConnectWalletPopup from '../ConnectWalletPopup'
 import Navbar from './Navbar'
@@ -9,11 +11,12 @@ interface PropsType {
 }
 
 const DefaultLayout : FC<PropsType> = (props) => {
+  
+  const history = useHistory<History>();
 
   const styles = {
     body: {
-      // margin: 'auto',
-      marginTop: 80, 
+      marginTop: history.location.pathname === mainRoute ? 90 : 0, 
       display: props.fullWidth ? 'block' : 'flex'
     },
     bodyFullWidth: {},
