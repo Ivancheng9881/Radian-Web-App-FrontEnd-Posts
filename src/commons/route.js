@@ -3,6 +3,7 @@ export const mainRoute = '/'
 
 export const signupRoute = '/signup';
 export const signupInfoRoute = '/signup/info';
+export const signupPropicRoute = '/signup/profile-picture'
 
 export const homeRoute = '/home'
 

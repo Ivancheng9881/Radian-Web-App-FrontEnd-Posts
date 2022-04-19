@@ -2,15 +2,90 @@
 @rd-landing-section-margin-horizontal: 50px;
 @rd-landing-section-offset-top: 90px;
 
+@rd-landing-circle-size: 250px;
+@rd-landing-circle-offset: (@rd-landing-circle-size / 2);
+
+
+.rd-bkgd-circle-group {
+    position: absolute;
+
+    .rd-bkgd-circle {
+        position: absolute;
+        margin:10px 5px;
+        width: @rd-landing-circle-size;
+        height: @rd-landing-circle-size;
+        border-radius:50%;
+        filter: blur((@rd-landing-circle-size * 0.3));  
+        opacity: 0.9;  
+    }
+
+    .rd-bkgd-circle-blue-1 {
+        background: @theme-color-blue-100;
+    }
+
+    .rd-bkgd-circle-orange-1 {
+        background: @thene-color-orange-100;
+    }
+
+    .rd-bkgd-circle-purple-1 {
+        background: @theme-color-purple-100;
+    }
+
+    .rd-bkgd-circle-purple-2 {
+        background: @theme-color-purple-300;
+    }
+
+    .rd-bkgd-circle-1 {
+        margin-top: (@rd-landing-circle-offset);
+    }
+
+    .rd-bkgd-circle-2 {
+        margin-top: @rd-landing-circle-offset;
+        margin-left: (-@rd-landing-circle-offset);
+    }
+
+    .rd-bkgd-circle-3 {
+        margin-bottom: (-@rd-landing-circle-offset);
+        margin-right: (-@rd-landing-circle-offset);
+    }
+
+    .rd-bkgd-circle-4 {
+        margin-top: (-@rd-landing-circle-offset);
+        margin-left: (-@rd-landing-circle-offset);
+    }
+
+    .rd-bkgd-circle-5 {
+        margin-bottom: (-@rd-landing-circle-offset);
+        margin-right: (-@rd-landing-circle-offset);
+    }
+}
+
+.rd-bkgd-circle-group-1 {
+    top: 15%;
+    left: 10%;
+    transform: scale(0.7);
+}
+
+.rd-bkgd-circle-group-2 {
+    right: 15%;
+    top: 40%;
+    transform: scale(1.1);
+}
+
+.rd-bkgd-circle-group-3 {
+    top: 50%;
+    left: 10%;
+}
+
 .rd-landing-section {
     position: fixed;
     z-index: 1000;
     top: @rd-landing-section-offset-top;
     height: calc(100vh - @rd-landing-section-offset-top);
     width: 100vw;
-    background: url('https://d1skj8m4trskbx.cloudfront.net/misc/background.png');
-    background-position: center;
-    background-size: cover;
+    // background: url('https://d1skj8m4trskbx.cloudfront.net/misc/background.png');
+    // background-position: center;
+    // background-size: cover;
 }
 
 @media screen and (max-width: @screen-lg) {
@@ -239,7 +314,6 @@
     }
 }
 
-
 .rd-landing-content-group {
     display: flex;
     flex-direction: column;
@@ -270,7 +344,6 @@
     z-index: 1002;
     background: @theme-color-white-100;
     background: linear-gradient(0deg, rgba(255,255,255,1) 80%, rgba(255,255,255,0) 100%);
-
     display: flex;
     align-items: flex-end;
 

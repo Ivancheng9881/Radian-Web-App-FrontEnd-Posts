@@ -7,7 +7,7 @@ import UAParser from 'ua-parser-js';
 import { WALLET_DOWNLOAD_LINK } from "../../../../commons/web3";
 import Web3Context from "../../../../utils/web3/context/web3.context";
 import { useHistory } from "react-router";
-import { signupRoute } from "../../../../commons/route";
+import { signupInfoRoute, signupRoute } from "../../../../commons/route";
 
 interface PageProps {
     isActive: boolean,
@@ -44,7 +44,7 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
         const response = await handleConnect('erc');
         console.log(response)
         if (response) {
-            history.push(signupRoute);
+            history.push(signupInfoRoute);
         }
     }
 

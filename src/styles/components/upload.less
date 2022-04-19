@@ -1,0 +1,27 @@
+
+
+.rd-upload-root {
+    display: flex;
+    flex-direction: column-reverse;
+
+    .ant-upload-list {
+        padding-bottom: 10px;
+    }
+}
+
+.rd-upload-root.rd-upload-root-light {
+    .ant-upload-list,
+    .ant-upload-list-item-card-actions {
+        color: @theme-color-white-100;
+
+        .anticon {
+            color: @theme-color-white-100;
+        }
+    }
+}
+
+.rd-upload-root.rd-upload-root-light:hover {
+    .ant-upload-list-item-info {
+        background-color: @theme-color-purple-100;
+    }
+}

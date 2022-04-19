@@ -1,9 +1,5 @@
-
-
 .rd-signup-layout-root {
-    background: url('https://d1skj8m4trskbx.cloudfront.net/signup/background_desktop.png');
-    background-position: center;
-    background-size: cover;
+    background: @linear-gradient-2;
     min-height: 100vh;
     min-width: 100vw;
     padding-top: @header-vertical-offset;
@@ -17,10 +13,74 @@
         left: 0px;
         display: flex;
         align-items: end;
-        background-image: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
+        background-image: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 50%);
     }
 
     .rd-signup-body {
         padding-top: 10px;
+    }
+}
+
+@rd-signup-form-action-offset: 30px;
+
+.rd-signup-form-root {
+    min-height: 100%;
+    color: @theme-color-white-100;
+    position: relative;
+    display: flex;
+        
+    .ant-typography {
+        color: @theme-color-white-100;
+        margin-bottom: 0px;
+    }
+
+    .rd-signup-form-body {
+        max-width: 1000px;
+        padding: 100px 90px 0;
+
+        .rd-signup-form-title {
+            padding-bottom: 100px;
+        }
+    
+        .rd-signup-row {
+            margin-bottom: 45px;
+        }
+ 
+    }    
+
+    .rd-signup-propic-root {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .rd-signup-propic-body {
+            padding-left: 220px;
+
+            .rd-signup-propic-img {
+                margin-right: 45px;
+            }
+
+            .rd-signup-propic-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+        }
+    }
+
+    .rd-signup-action {
+        position: absolute;
+        bottom: @rd-signup-form-action-offset;
+        right: @rd-signup-form-action-offset;
+    }
+
+    .rd-signup-return {
+        top: 45px;
+        left: 45px;
+        position: absolute;
+
+        .anticon {
+            font-size: @button-sm-size;
+        }
     }
 }
