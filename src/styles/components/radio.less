@@ -1,0 +1,39 @@
+@radio-button-radius: 25px;
+@radio-button-group-padding: 5px;
+
+.rd-radio-root {
+    border-radius: @radio-button-radius;
+    padding: @radio-button-group-padding;
+    background-color: @theme-color-white-100;
+
+    .ant-radio-button-wrapper {
+        border-radius: @radio-button-radius;
+        border: none;
+        font-weight: 600;
+        color: @theme-color-purple-100;
+        padding: 0 @radio-button-radius;
+
+        span {
+            vertical-align: middle;
+        }
+    }
+
+    .ant-radio-button-wrapper:not(:first-child)::before {
+        height: 0px;
+        width: 0px;
+    }
+
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-diasbled) {
+        background-color: @theme-color-purple-100;
+        box-shadow: none;
+    }
+
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-diasbled):active,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-diasbled):focus,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-diasbled):focus-within,
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-diasbled):hover {
+        
+        background-color: @theme-color-purple-200;
+        box-shadow: none;
+    }
+}

@@ -2,7 +2,7 @@ import { Button, Image, Typography, Upload } from "antd";
 import { FC, useState } from "react";
 import config from '../../../commons/config';
 import { useHistory } from "react-router";
-import { signupInfoRoute, signupPropicRoute } from "../../../commons/route";
+import { SIGNUP_INFO_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupFormWrapper from "../components/signupFormWrapper";
 import SignupReturn from "../components/signupReturn";
@@ -15,11 +15,11 @@ const SignupProfilePicturePage : FC = () => {
     const [ imageCid, setImageCid ] = useState<string>('');
 
     const handleNextClick = () => {
-        history.push(signupPropicRoute);
+        history.push(SIGNUP_TOKEN_ROUTE);
     };
 
     const handleReturnClick = () => {
-        history.push(signupInfoRoute);
+        history.push(SIGNUP_INFO_ROUTE);
     };
 
     const handleUploadClick = async (file: any, fileList: any) => {

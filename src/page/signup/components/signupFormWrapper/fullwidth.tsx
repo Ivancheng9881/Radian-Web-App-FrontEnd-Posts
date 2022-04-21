@@ -2,12 +2,11 @@ import { Col, Row } from "antd";
 import { FC } from "react";
 import GlassCard from "../../../../components/GlassCard";
 
-const SignupFormWrapper : FC = ({children}) => {
+const SignupFormWrapperFullWidth : FC = ({children}) => {
 
     return (
         <Row>
-            <Col span={6}></Col>
-            <Col span={18}>
+            <Col span={24}>
                 <GlassCard>
                     {children}
                 </GlassCard>
@@ -16,4 +15,4 @@ const SignupFormWrapper : FC = ({children}) => {
     )
 };
 
-export default SignupFormWrapper;
+export default SignupFormWrapperFullWidth;

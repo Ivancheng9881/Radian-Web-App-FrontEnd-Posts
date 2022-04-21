@@ -5,7 +5,7 @@ import RadianForm from "../../../components/RadianForm";
 import GlassCard from "../../../components/GlassCard";
 import { gender } from "../../../commons/signupOptions";
 import { useHistory } from "react-router";
-import { signupPropicRoute } from "../../../commons/route";
+import { SIGNUP_PROPIC_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupFormWrapper from "../components/signupFormWrapper";
 import SignupReturn from "../components/signupReturn";
@@ -17,12 +17,8 @@ const SignupInfoPage : FC = () => {
     const history = useHistory<History>();
 
     const handleNextClick = () => {
-        history.push(signupPropicRoute);
+        history.push(SIGNUP_PROPIC_ROUTE);
     };
-
-    // const handleBackClick = () => {
-    //     history.push
-    // }
 
     return (
         <div className="rd-signup-body">

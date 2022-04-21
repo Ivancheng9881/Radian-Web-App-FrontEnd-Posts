@@ -1,9 +1,10 @@
 
 export const mainRoute = '/'
 
-export const signupRoute = '/signup';
-export const signupInfoRoute = '/signup/info';
-export const signupPropicRoute = '/signup/profile-picture'
+export const SIGNUP_ROUTE = '/signup';
+export const SIGNUP_INFO_ROUTE = '/signup/info';
+export const SIGNUP_PROPIC_ROUTE = '/signup/profile-picture'
+export const SIGNUP_TOKEN_ROUTE = '/signup/token';
 
 export const homeRoute = '/home'
 
