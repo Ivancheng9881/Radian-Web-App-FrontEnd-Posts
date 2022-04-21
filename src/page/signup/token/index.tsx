@@ -9,21 +9,21 @@ import RadianInput from "../../../components/RadianForm";
 import { gql, useQuery } from "@apollo/client";
 import TokenTable from "./TokenTable.components";
 import { ITokenBalance } from "../../../schema/Token/tokenList";
+import { COMMON_TOKEN_LIST } from "../../../commons/web3";
+import { IPriceFeed } from "../../../schema/Token/priceFeed";
 
 const SignupTokenPage : FC = () => {
 
-
-
-    const TOKEN_BALANCE_QUERY = gql`
+const TOKEN_BALANCE_QUERY = gql`
         query getTokenList(
             $address: String!,
-            $symbols: [TokenSearchQuery]!
+            $symbols: [TokenSearchQuery]!,
+            $priceSymbols: [String]!
         ) {
             tokenList(
                 address: $address, 
                 tokens: $symbols
             ) {
-                lastPrice
                 balance
                 tokens {
                 address
@@ -33,38 +33,28 @@ const SignupTokenPage : FC = () => {
                 symbol
                 }
             }
+            priceFeed(
+                symbols: $priceSymbols
+            ) {
+                symbol
+                price
+                updatedAt
+            }
         }
     `
 
     const history = useHistory<History>();
     
-    const [ tokenListVariable, setTokenListVariable ] = useState([
-        {
-          "symbol": "usdt",
-          "contract": [
-            {
-              "network": "polygon",
-              "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-            }
-          ]
-        },
-        {
-          "symbol": "matic",
-          "contract": [
-            {
-              "network": "polygon",
-              "address": "0x0000000000000000000000000000000000000000"
-            }
-          ]
-        }
-    ]);
-    const [ address, setAddress ] = useState<string>('0x98ca954886C04908602E36f054e2AF461c04cAd5');
+    const [ tokenListVariable, setTokenListVariable ] = useState(COMMON_TOKEN_LIST);
+    const [ address, setAddress ] = useState<string>('0xB246b07E891914701CE706fda2E3c460031Ca25a');
+    const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
-    const { loading, error, data } = useQuery(TOKEN_BALANCE_QUERY, {
+    const tokenListQueryCallback = useQuery(TOKEN_BALANCE_QUERY, {
         variables: {
             address: address,
-            symbols: tokenListVariable
+            symbols: tokenListVariable,
+            priceSymbols: priceSymbols
         }
     });
 
@@ -77,13 +67,38 @@ const SignupTokenPage : FC = () => {
     };
 
     useEffect(() => {
-      console.log(data);
-      if (!loading) {
-          setTokenList(data.tokenList)
-      }
+        const { loading, error, data } = tokenListQueryCallback;
+        if (!loading) {
+            const _tokenList = data.tokenList.map((t: ITokenBalance) => {
+                const getLastPrice = () : number => {
+                    let b = t.tokens[0].symbol.toLowerCase();
+                    let p : number = data.priceFeed.filter((v: IPriceFeed) => {
+                        let a = v.symbol.toLowerCase();
+                        if (b === 'weth') {
+                            b = 'eth'
+                        }
+                        return a === b;
+                    })[0]?.price || 1;
+                    
+                    if (b === 'usdt' || b === 'usdc') {
+                        p = 1;
+                    };
 
-    }, [loading, data])
-    
+                    return p
+                }
+                let lastPrice = getLastPrice();
+                return {
+                    ...t,
+                    lastPrice: lastPrice
+                }
+            });
+            setTokenList(_tokenList)
+        };
+        if (error) {
+            throw(error)
+        }
+    }, [tokenListQueryCallback.loading, tokenListQueryCallback.data]);
+
 
     return (
         <div className="rd-signup-body">

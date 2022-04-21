@@ -1,18 +1,21 @@
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import { Table, TableColumnProps, TableColumnsType } from "antd";
+import { Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { FC, Fragment, useCallback, useEffect, useState } from "react";
 import RadianInput from "../../../components/RadianForm";
+import { IPriceFeed } from "../../../schema/Token/priceFeed";
 import { ITokenBalance } from "../../../schema/Token/tokenList";
 
 interface ITableData {
     balance: number,
     symbol: string,
-    visible: boolean
+    visible: boolean,
+    lastPrice?: number,
 }
 
 interface PageProps {
-    data?: ITokenBalance[]
+    data?: ITokenBalance[],
+    priceFeed?: IPriceFeed[]
 }
 
 const TokenTable : FC<PageProps> = ({
@@ -30,16 +33,26 @@ const TokenTable : FC<PageProps> = ({
             key: 'symbol'
         },
         { 
-            title: 'Balance', 
+            title: 'Amount', 
             dataIndex: 'balance',
-            key: 'balance'
+            key: 'balance',
+            render: (balance: number, record: ITableData) => {
+                return `${Number(balance.toPrecision(4))} ${record.symbol}`
+            }
+        },
+        {
+            title: 'Price (in USD)',
+            dataIndex: 'lastPrice',
+            key: 'lastPrice',
+            render: (lastPrice: number, record: ITableData) => {
+                return Number((record.balance * lastPrice).toPrecision(4));
+            }
         },
         { 
             title: 'Status', 
             dataIndex: 'visible', 
             key: 'visible',
-            render: (visible: boolean, record: any, idx: number) => {
-                console.log(record, visible, idx)
+            render: (visible: boolean, _: any, idx: number) => {
                 const props = {
                     onClick: (e: any) => handleVisibilityToggle(idx, !visible),
                 }
@@ -63,9 +76,10 @@ const TokenTable : FC<PageProps> = ({
                     balance: d.balance,
                     symbol: d.tokens[0].symbol,
                     visible: false,
+                    lastPrice: d.lastPrice
                 }
             });
-
+            console.log(_tableData)
             setTableData(_tableData)
         }
     }, [data]);
@@ -92,7 +106,7 @@ const TokenTable : FC<PageProps> = ({
         <div className="rd-align-right">
             <RadianInput.Radio 
                 size="large"
-                defaultValue={1}
+                defaultValue={0}
                 onChange={handleAllVisChange}
                 options={TOKEN_VISIBILITY_OPTIONS}                                    
             />
@@ -101,6 +115,7 @@ const TokenTable : FC<PageProps> = ({
 
         <div className="rd-token-table">
             <Table
+                rowKey={(record) => `${record.symbol}-visiblity`}
                 bordered={false} 
                 pagination={false}
                 rowClassName={(record, index) => index % 2 === 0 ? 'rd-table-row-light' :  'rd-table-row-dark'}
