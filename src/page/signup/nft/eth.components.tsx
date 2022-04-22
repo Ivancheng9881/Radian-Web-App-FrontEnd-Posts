@@ -8,6 +8,7 @@ import { INFTList } from '../../../components/NftGrid/index.d';
 import { apiGatewayRoot } from "../../../commons/web3";
 import NftGridView from "../../../components/NftGrid/components/Grid.components";
 import { NftGridItemActionProps } from "../../../components/NftGrid/components/Action/GridItemAction.components";
+import RadianInput from "../../../components/RadianForm";
 
 interface PageProps extends NftGridItemActionProps {
     address?: string,
@@ -20,7 +21,11 @@ const NftEth : FC<PageProps> = ({
 }) => {
 
     const PAGE_SIZE = 20;
-    const NETWORK = 'eth'
+    const NETWORK = 'eth';
+    const TOKEN_VISIBILITY_OPTIONS = [
+        { label: 'All Public', value: 1 },
+        { label: 'All Private', value: 0 }
+    ];
 
     const [ data, setData ] = useState<INFTList>({
         cursor: '',
@@ -118,14 +123,32 @@ const NftEth : FC<PageProps> = ({
     };
 
     const handleVisToggle = async (id: number) : Promise<void> => {
-        console.log(id);
         let _result = data.result;
         _result[id].visible = !_result[id].visible;
         setData({
             ...data,
             result: _result
         })
+    };
+
+    const handleAllVisChange = (e: any) => {
+        let visibility: boolean;
+        if (e.target.value === 1) {
+            visibility = true;
+        } else if (e.target.value === 0) {
+            visibility = false
+        };
+
+        let _result = data.result.map((d) => {
+            d.visible = visibility;
+            return d;
+        })
+        setData({
+            ...data,
+            result: _result
+        });
     }
+
 
     useEffect(() => {
         if (address) {
@@ -134,15 +157,26 @@ const NftEth : FC<PageProps> = ({
     }, [address])
 
     return (
-        <NftGridView 
-            data={data.result} 
-            handleFetchNext={handleFetchNext}
-            buffering={buffering}
-            mode={mode}
-            iconClx={iconClx}
-            actionHandler={handleVisToggle}
-            visibleKey='visible'       
-        />
+        <div className="rd-flexbox rd-flexbox-full rd-flexbox-vertical">
+            <div className="rd-align-right">
+                <RadianInput.Radio 
+                    size="large"
+                    defaultValue={0}
+                    onChange={handleAllVisChange}
+                    options={TOKEN_VISIBILITY_OPTIONS}                                    
+                />
+            </div>
+            <br/>
+            <NftGridView 
+                data={data.result} 
+                handleFetchNext={handleFetchNext}
+                buffering={buffering}
+                mode={mode}
+                iconClx={iconClx}
+                actionHandler={handleVisToggle}
+                visibleKey='visible'       
+            />
+        </div>
     )
 };
 

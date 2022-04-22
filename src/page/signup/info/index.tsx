@@ -2,13 +2,11 @@ import { Button, Col, Row, Select, Typography } from "antd";
 import { FC } from "react";
 import config from '../../../commons/config';
 import RadianForm from "../../../components/RadianForm";
-import GlassCard from "../../../components/GlassCard";
 import { gender } from "../../../commons/signupOptions";
 import { useHistory } from "react-router";
 import { SIGNUP_PROPIC_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupFormWrapper from "../components/signupFormWrapper";
-import SignupReturn from "../components/signupReturn";
 
 const SignupInfoPage : FC = () => {
 
@@ -64,7 +62,7 @@ const SignupInfoPage : FC = () => {
                             </Col>
                             <Col lg={8}>
                                 <RadianForm.Label label="Gender" required>
-                                    <RadianForm.Select  >
+                                    <RadianForm.Select >
                                         {
                                             gender.map((g) => {
                                                 return <Select.Option key={`signup-${g.value}`} value={g.value}>

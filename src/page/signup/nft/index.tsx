@@ -1,15 +1,20 @@
-import { Button, Tabs, Typography } from "antd";
+import { Button, Col, Row, Select, Tabs, Typography } from "antd";
 import { FC, useState, useEffect, Fragment } from "react";
 import { useHistory } from "react-router";
 import {  SIGNUP_PROPIC_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
-import { ITokenBalance } from "../../../schema/Token/tokenList";
-import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import NftEth from "./eth.components";
+import RadianInput from "../../../components/RadianForm";
 
 const SignupTokenPage : FC = () => {
+
+    const NETWORK_OPTIONS = [
+        { label: 'ethereum', value: 'ethereum' },
+        { label: 'polygon', value: 'polygon' },
+        { label: 'solana', value: 'solana' }
+    ]
 
     const history = useHistory<History>();
     
@@ -23,10 +28,10 @@ const SignupTokenPage : FC = () => {
     const handleReturnClick = () => {
         history.push(SIGNUP_PROPIC_ROUTE);
     };
-
-    useEffect(() => {
-
-    }, [])
+    
+    const handleNetworkChange = (val: string): void => {
+        setCurrentNetwork(val)
+    }
 
     return (
         <div className="rd-signup-body">
@@ -35,8 +40,26 @@ const SignupTokenPage : FC = () => {
                 <div className="rd-signup-form-root">
                     <SignupReturn onClick={handleReturnClick} />
                     <div className="rd-signup-card-root ">
+                        <Row className="rd-signup-nft-network">
+                            <Col lg={6}>
+                                <div className="rd-input-label-root">
+                                    <RadianInput.Select 
+                                        value={currentNetwork} 
+                                        onChange={handleNetworkChange}
+                                    >
+                                        {NETWORK_OPTIONS.map((n) => {
+                                            return (
+                                                <Select.Option key={n.value} value={n.value} >
+                                                    {n.label}
+                                                </Select.Option>
+                                            )
+                                        })}
+                                    </RadianInput.Select>
+                                </div>
+                            </Col>
+                        </Row>
                         <Tabs 
-                            activeKey={currentNetwork} 
+                            activeKey={currentNetwork}
                         >
                             <Tabs.TabPane key='ethereum'>
                                 <NftEth 

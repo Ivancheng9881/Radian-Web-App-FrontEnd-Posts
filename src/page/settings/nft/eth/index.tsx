@@ -92,7 +92,6 @@ const NFTETHSettings: FC = () => {
                 offset: ethData.offset + pageSize,
             })
 
-
         } catch(err) {
             console.log(err);
         }
