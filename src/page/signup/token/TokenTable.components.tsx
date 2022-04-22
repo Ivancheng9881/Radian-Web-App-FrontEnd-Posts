@@ -54,7 +54,7 @@ const TokenTable : FC<PageProps> = ({
             key: 'visible',
             render: (visible: boolean, _: any, idx: number) => {
                 const props = {
-                    onClick: (e: any) => handleVisibilityToggle(idx, !visible),
+                    onClick: () => handleVisibilityToggle(idx, !visible),
                 }
                 return visible ? <EyeOutlined {...props} /> : <EyeInvisibleOutlined {...props} />
             }
@@ -79,13 +79,11 @@ const TokenTable : FC<PageProps> = ({
                     lastPrice: d.lastPrice
                 }
             });
-            console.log(_tableData)
             setTableData(_tableData)
         }
     }, [data]);
 
     const handleAllVisChange = (e: any) => {
-        console.log(e.target.value);
         let visibility: boolean;
         if (e.target.value === 1) {
             visibility = true;
@@ -102,28 +100,28 @@ const TokenTable : FC<PageProps> = ({
 
     return (
         <Fragment>
-        {/* toggle all action */}
-        <div className="rd-align-right">
-            <RadianInput.Radio 
-                size="large"
-                defaultValue={0}
-                onChange={handleAllVisChange}
-                options={TOKEN_VISIBILITY_OPTIONS}                                    
-            />
-        </div>
-        {/* token balance table */}
+            {/* toggle all action */}
+            <div className="rd-align-right">
+                <RadianInput.Radio 
+                    size="large"
+                    defaultValue={0}
+                    onChange={handleAllVisChange}
+                    options={TOKEN_VISIBILITY_OPTIONS}                                    
+                />
+            </div>
+            {/* token balance table */}
 
-        <div className="rd-token-table">
-            <Table
-                rowKey={(record) => `${record.symbol}-visiblity`}
-                bordered={false} 
-                pagination={false}
-                rowClassName={(record, index) => index % 2 === 0 ? 'rd-table-row-light' :  'rd-table-row-dark'}
-                columns={tableCol}
-                dataSource={tableData}
-                scroll={{y: 240}}
-            /> 
-        </div>
+            <div className="rd-token-table">
+                <Table
+                    rowKey={(record) => `${record.symbol}-visiblity`}
+                    bordered={false} 
+                    pagination={false}
+                    rowClassName={(record, index) => index % 2 === 0 ? 'rd-table-row-light' :  'rd-table-row-dark'}
+                    columns={tableCol}
+                    dataSource={tableData}
+                    scroll={{y: 240}}
+                /> 
+            </div>
         </Fragment>
     )
 };

@@ -1,0 +1,88 @@
+@nft-grid-border-radius: 20px;
+@nft-grid-item-height: 250px;
+@nft-grid-image-height: 190px;
+@nft-grid-height-lg: (@nft-grid-item-height * 3);
+
+.rd-nft-grid-root {
+    padding: 15px;
+    height: 60vh;
+    overflow-y: scroll;
+    max-height: @nft-grid-height-lg;
+
+    .rd-nft-grid-item-root {
+        height: @nft-grid-item-height;
+        transition: .3s;
+        border-radius: @nft-grid-border-radius;
+        box-shadow: 0 4px 4px 1px @theme-color-black-shadow;
+
+        .rd-nft-grid-item-image {
+            background-size: cover;
+            height: @nft-grid-image-height;
+            border-top-left-radius: @nft-grid-border-radius;
+            border-top-right-radius: @nft-grid-border-radius;
+            position: relative;
+
+            .rd-nft-action-icon {
+                position: absolute;
+                color: @theme-color-white-100;
+                font-size: @heading-5-size;
+                top: (@nft-grid-image-height * 0.05);
+                right: (@nft-grid-image-height * 0.05);
+            }
+
+            .rd-nft-action-icon-clickable {
+                cursor: pointer;
+            }
+
+            .rd-nft-action-icon-vis {
+
+            }
+        }
+
+        .rd-nft-grid-item-meta {
+            background-color: @theme-color-white-100;
+            height: (@nft-grid-item-height - @nft-grid-image-height);
+            border-bottom-left-radius: @nft-grid-border-radius;
+            border-bottom-right-radius: @nft-grid-border-radius;
+            padding: 4px 8px;
+        
+
+            .rd-nft-grid-item-title {
+                font-size: (@button-sm-size * 0.65);
+                font-weight: 600;
+                color: @theme-color-purple-100;
+            }
+
+            .rd-nft-grid-item-subtitle {
+                font-size: (@button-sm-size * 0.45);
+                font-weight: 500;
+                color: @theme-color-grey-100;
+            }
+
+            .rd-nft-grid-item-text {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+
+    .rd-nft-grid-more-root {
+        border: 2px solid @theme-color-white-100;
+        cursor: pointer;
+        box-shadow: none;
+
+        .anticon {
+            font-size: @heading-5-size;
+            color: @theme-color-white-100;
+        }
+    }
+
+    .rd-nft-grid.rd-disabled {
+        cursor: not-allowed
+    }
+
+}
+
+

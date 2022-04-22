@@ -2,7 +2,7 @@ import { Button, Image, Typography, Upload } from "antd";
 import { FC, useState } from "react";
 import config from '../../../commons/config';
 import { useHistory } from "react-router";
-import { SIGNUP_INFO_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
+import { SIGNUP_INFO_ROUTE, SIGNUP_NFT_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupFormWrapper from "../components/signupFormWrapper";
 import SignupReturn from "../components/signupReturn";
@@ -15,7 +15,7 @@ const SignupProfilePicturePage : FC = () => {
     const [ imageCid, setImageCid ] = useState<string>('');
 
     const handleNextClick = () => {
-        history.push(SIGNUP_TOKEN_ROUTE);
+        history.push(SIGNUP_NFT_ROUTE);
     };
 
     const handleReturnClick = () => {
@@ -23,11 +23,9 @@ const SignupProfilePicturePage : FC = () => {
     };
 
     const handleUploadClick = async (file: any, fileList: any) => {
-        console.log(file);
         setImageCid(file.name);
         try {
             const response = await ipfsUtils.uploadContent(file);
-            console.log(response.toString())
             setImageCid(response.toString())
         } catch (error: any) {
             console.log(error)

@@ -5,6 +5,7 @@ export interface INFTMetadata {
 };
 
 export interface INFTItem {
+    [key: string]: any,
     owner_of?: string,
     amount?: string,
     synced_at?: string,
@@ -12,6 +13,8 @@ export interface INFTItem {
     token_id?: string,
     token_uri: string
     metadata: INFTMetadata,
+    name?: string,
+    visible?: boolean,
 }
 
 

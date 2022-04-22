@@ -1,11 +1,10 @@
 import { Button, Typography } from "antd";
 import { FC, useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import {  SIGNUP_PROPIC_ROUTE } from "../../../commons/route";
+import {  SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
-import RadianInput from "../../../components/RadianForm";
 import { gql, useQuery } from "@apollo/client";
 import TokenTable from "./TokenTable.components";
 import { ITokenBalance } from "../../../schema/Token/tokenList";
@@ -63,30 +62,14 @@ const TOKEN_BALANCE_QUERY = gql`
     };
 
     const handleReturnClick = () => {
-        history.push(SIGNUP_PROPIC_ROUTE);
+        history.push(SIGNUP_NFT_ROUTE);
     };
 
     useEffect(() => {
         const { loading, error, data } = tokenListQueryCallback;
         if (!loading) {
             const _tokenList = data.tokenList.map((t: ITokenBalance) => {
-                const getLastPrice = () : number => {
-                    let b = t.tokens[0].symbol.toLowerCase();
-                    let p : number = data.priceFeed.filter((v: IPriceFeed) => {
-                        let a = v.symbol.toLowerCase();
-                        if (b === 'weth') {
-                            b = 'eth'
-                        }
-                        return a === b;
-                    })[0]?.price || 1;
-                    
-                    if (b === 'usdt' || b === 'usdc') {
-                        p = 1;
-                    };
-
-                    return p
-                }
-                let lastPrice = getLastPrice();
+                let lastPrice = getLastPriceBySymbol(t, data.priceFeed);
                 return {
                     ...t,
                     lastPrice: lastPrice
@@ -99,6 +82,22 @@ const TOKEN_BALANCE_QUERY = gql`
         }
     }, [tokenListQueryCallback.loading, tokenListQueryCallback.data]);
 
+    const getLastPriceBySymbol = (t: ITokenBalance, priceFeed: IPriceFeed[]) => {
+        let b = t.tokens[0].symbol.toLowerCase();
+        let p : number = priceFeed.filter((v: IPriceFeed) => {
+            let a = v.symbol.toLowerCase();
+            if (b === 'weth') {
+                b = 'eth'
+            }
+            return a === b;
+        })[0]?.price || 1;
+        
+        if (b === 'usdt' || b === 'usdc') {
+            p = 1;
+        };
+
+        return p
+    }
 
     return (
         <div className="rd-signup-body">
