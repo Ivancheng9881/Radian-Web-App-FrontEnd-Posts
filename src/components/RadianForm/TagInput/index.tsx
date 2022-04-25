@@ -3,18 +3,19 @@ import { FC } from "react";
 
 
 const CustomTagSelect : FC<SelectProps> = (props) => {
-    console.log(props.options)
+
     return (
         <Select 
             className="rd-input-root" 
             {...props}
-            mode="multiple"
+            mode="tags"
+            tokenSeparators={[',']}
         >
             {
-                props.options.map((opt) => {
-                    return <Select.Option key={`select-option-${opt.label}`}>
+                props.value.map((opt: string) => {
+                    return <Select.Option key={`select-option-${opt}`}>
                         <Tag className="rd-content-tag">
-                            {opt.label}
+                            {opt}
                         </Tag>
                     </Select.Option>
                 })

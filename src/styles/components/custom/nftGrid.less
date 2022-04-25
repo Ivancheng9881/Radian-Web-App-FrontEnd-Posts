@@ -34,10 +34,6 @@
             .rd-nft-action-icon-clickable {
                 cursor: pointer;
             }
-
-            .rd-nft-action-icon-vis {
-
-            }
         }
 
         .rd-nft-grid-item-meta {
@@ -65,6 +61,20 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+        }
+    }
+
+    .rd-nft-grid-visibility {
+        .rd-nft-grid-item-image {
+            filter: brightness(0.3);
+            transition: 0.3s;
+        }
+    }
+
+    .rd-nft-grid-visibility.rd-nft-grid-visible {
+        .rd-nft-grid-item-image {
+            filter: brightness(1);
+            transition: 0.3s;
         }
     }
 

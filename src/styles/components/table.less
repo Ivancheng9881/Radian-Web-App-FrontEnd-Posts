@@ -27,13 +27,21 @@
     }
 
     .ant-table-body {
+
+        // alternating row color
         .rd-table-row-light {
             background: transparent;
         }
-
         .rd-table-row-dark {
             background-color: @theme-color-purple-100;
         }
+
+        // disabled row
+        .rd-table-row-disabled {
+            color: @theme-color-white-100-trans;
+            transition: .3s;
+        }
+        
         .ant-table-row {
             font-size: 20px;
 

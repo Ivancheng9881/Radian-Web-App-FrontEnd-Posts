@@ -5,3 +5,13 @@ export interface ITokenBalance {
     tokens: IToken[],
     lastPrice?: number,
 }
+
+export interface ITokenContractMeta {
+    network: string,
+    address: string,
+}
+
+export interface ITokenList {
+    symbol: string,
+    contract: ITokenContractMeta[],
+}

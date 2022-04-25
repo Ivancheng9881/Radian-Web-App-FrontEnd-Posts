@@ -1,19 +1,19 @@
 import { Button, Typography } from "antd";
 import { FC, useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import {  SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE } from "../../../commons/route";
+import {  SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
 import { gql, useQuery } from "@apollo/client";
 import TokenTable from "./TokenTable.components";
-import { ITokenBalance } from "../../../schema/Token/tokenList";
+import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { IPriceFeed } from "../../../schema/Token/priceFeed";
 
 const SignupTokenPage : FC = () => {
 
-const TOKEN_BALANCE_QUERY = gql`
+    const TOKEN_BALANCE_QUERY = gql`
         query getTokenList(
             $address: String!,
             $symbols: [TokenSearchQuery]!,
@@ -44,7 +44,7 @@ const TOKEN_BALANCE_QUERY = gql`
 
     const history = useHistory<History>();
     
-    const [ tokenListVariable, setTokenListVariable ] = useState(COMMON_TOKEN_LIST);
+    const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>(COMMON_TOKEN_LIST);
     const [ address, setAddress ] = useState<string>('0xB246b07E891914701CE706fda2E3c460031Ca25a');
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
@@ -58,7 +58,7 @@ const TOKEN_BALANCE_QUERY = gql`
     });
 
     const handleNextClick = () => {
-        history.push(SIGNUP_PROPIC_ROUTE);
+        history.push(SIGNUP_SUMMARY_ROUTE);
     };
 
     const handleReturnClick = () => {
@@ -75,13 +75,19 @@ const TOKEN_BALANCE_QUERY = gql`
                     lastPrice: lastPrice
                 }
             });
-            setTokenList(_tokenList)
+            setTokenList(_tokenList);
         };
         if (error) {
             throw(error)
         }
     }, [tokenListQueryCallback.loading, tokenListQueryCallback.data]);
 
+    /**
+     * method to get the latest price of the token
+     * @param t 
+     * @param priceFeed 
+     * @returns 
+     */
     const getLastPriceBySymbol = (t: ITokenBalance, priceFeed: IPriceFeed[]) => {
         let b = t.tokens[0].symbol.toLowerCase();
         let p : number = priceFeed.filter((v: IPriceFeed) => {

@@ -7,11 +7,11 @@ import { handleNftMapping } from "./nft.controller";
 import { ISignupContext, NftGridRootProps } from "./type";
 import SignupContext from "../context/signup.context";
 
-const NftEth : FC<NftGridRootProps> = (props) => {
+const NftPolygon : FC<NftGridRootProps> = (props) => {
     const { address, publicListUpdate, publicListUpdateAll } = props;
 
     const PAGE_SIZE = 20;
-    const NETWORK = 'eth';
+    const NETWORK = 'polygon';
     const TOKEN_VISIBILITY_OPTIONS = [
         { label: 'All Public', value: 1 },
         { label: 'All Private', value: 0 }
@@ -38,7 +38,7 @@ const NftEth : FC<NftGridRootProps> = (props) => {
                 {network: NETWORK, offset: data.offset, limit: data.limit},
             ] 
             let response = await NFTUtils.erc.getData(address, networks);
-            let mappedData = await handleNftMapping(response.data[NETWORK].result, publicNft[NETWORK]);
+            let mappedData = await handleNftMapping(response.data[NETWORK].result);
             response.data[NETWORK].result = mappedData;
             setData({
                 ...response,
@@ -63,7 +63,7 @@ const NftEth : FC<NftGridRootProps> = (props) => {
             };
 
             let response = await NFTUtils.erc.getData(address, [networkBody]);
-            let newData = await handleNftMapping(response.data[NETWORK].result);
+            let newData = await handleNftMapping(response.data[NETWORK].result, publicNft[NETWORK]);
             
             setData({
                 ...data,
@@ -90,11 +90,7 @@ const NftEth : FC<NftGridRootProps> = (props) => {
     };
 
     const _computeNewVisibility = (input: number) : boolean => {
-        if (input === 1) {
-            return true;
-        } else if (input === 0) {
-            return false
-        };
+        return input === 1;
     }
 
     const handleAllVisChange = (e: any) => {
@@ -131,11 +127,11 @@ const NftEth : FC<NftGridRootProps> = (props) => {
                 buffering={buffering}
                 {...props}
                 actionHandler={handleVisToggle}
-                visibleKey='visible'
+                visibleKey='visible'       
             />
         </div>
     )
 };
 
 export type { INFTList };
-export default NftEth;
+export default NftPolygon;

@@ -10,11 +10,11 @@ interface PageProps extends NftGridItemActionProps  {
 
 const NftGridItem : FC<PageProps> = (props) => {
 
-    const { data, mode, iconClx } = props
+    const { data, mode, visible } = props
 
     return (
         <Col lg={4}>
-            <div className="rd-nft-grid-item-root">
+            <div className={`rd-nft-grid-item-root ${mode === 'visibility' ? 'rd-nft-grid-visibility' : ''} ${visible ? 'rd-nft-grid-visible' : ''}`}>
                 <div 
                     className="rd-nft-grid-item-image"
                     style={{

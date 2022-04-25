@@ -1,10 +1,11 @@
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { Table } from "antd";
-import { ColumnsType } from "antd/lib/table";
-import { FC, Fragment, useCallback, useEffect, useState } from "react";
+import { FC, Fragment, useContext, useEffect, useState } from "react";
 import RadianInput from "../../../components/RadianForm";
 import { IPriceFeed } from "../../../schema/Token/priceFeed";
 import { ITokenBalance } from "../../../schema/Token/tokenList";
+import SignupContext from "../context/signup.context";
+import { ISignupContext } from "../nft/type";
 
 interface ITableData {
     balance: number,
@@ -61,21 +62,46 @@ const TokenTable : FC<PageProps> = ({
         }
     ];
 
+    // context
+    const { publicToken, setPublicToken } : ISignupContext = useContext(SignupContext);
+
+    // state
     const [ tableData, setTableData ] = useState<ITableData[]>();
+
+    const updatePublicTokenList = (record: ITableData, isPublic: boolean) => {
+        const { symbol } = record;
+        const tokenExist: number = publicToken?.indexOf(symbol);
+        if (isPublic) {
+            // handle append case
+            // check if it already exists on the array
+            if (tokenExist > -1) return;
+            // if not exist, append the token symbol to the array
+            setPublicToken([...publicToken, symbol]);
+        } else {
+            // handle remove case
+            // check if it already exists on the array
+            if (tokenExist === -1) return;
+            //  if token exist, remove it from the array
+            setPublicToken([...publicToken].splice(tokenExist, 1));
+        }
+    }
 
     const handleVisibilityToggle = (recordId: number, newVal: boolean) => {
         let _data = [...tableData];
         _data[recordId].visible = newVal;
+        updatePublicTokenList(_data[recordId], newVal);
         setTableData(_data)
-    }
+    };
+
 
     useEffect(() => {
         if (data) {
             let _tableData = data?.map((d) => {
+                const symbol = d.tokens[0].symbol
                 return {
                     balance: d.balance,
-                    symbol: d.tokens[0].symbol,
-                    visible: false,
+                    symbol: symbol,
+                    visible: publicToken.includes(symbol),
                     lastPrice: d.lastPrice
                 }
             });
@@ -96,7 +122,14 @@ const TokenTable : FC<PageProps> = ({
             return d;
         })
         setTableData(_tableData);
-    }
+    };
+
+    const createRowClx = (record: ITableData, index: number): string => {
+        // set alternating row color
+        let rowColor = index % 2 === 0 ? 'rd-table-row-light' :  'rd-table-row-dark';
+        let vis = !record.visible ? 'rd-table-row-disabled' : '';
+        return[ rowColor, vis ].join(' ');
+    } 
 
     return (
         <Fragment>
@@ -116,7 +149,7 @@ const TokenTable : FC<PageProps> = ({
                     rowKey={(record) => `${record.symbol}-visiblity`}
                     bordered={false} 
                     pagination={false}
-                    rowClassName={(record, index) => index % 2 === 0 ? 'rd-table-row-light' :  'rd-table-row-dark'}
+                    rowClassName={createRowClx}
                     columns={tableCol}
                     dataSource={tableData}
                     scroll={{y: 240}}

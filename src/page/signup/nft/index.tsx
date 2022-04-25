@@ -1,5 +1,5 @@
-import { Button, Col, Row, Select, Tabs, Typography } from "antd";
-import { FC, useState, useEffect, Fragment } from "react";
+import { Button, Col, Row, Select, Tabs } from "antd";
+import { FC, useState, useContext } from "react";
 import { useHistory } from "react-router";
 import {  SIGNUP_PROPIC_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
@@ -7,19 +7,25 @@ import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
 import NftEth from "./eth.components";
 import RadianInput from "../../../components/RadianForm";
+import NftPolygon from "./polygon.components";
+import { ISignupContext } from "./type";
+import { INFTItem } from "../../../utils/nft/erc/index.d";
+import SignupContext from "../context/signup.context";
+import { findIndexFromItemList } from "./nft.controller";
 
 const SignupTokenPage : FC = () => {
 
     const NETWORK_OPTIONS = [
         { label: 'ethereum', value: 'ethereum' },
         { label: 'polygon', value: 'polygon' },
-        { label: 'solana', value: 'solana' }
+        // { label: 'solana', value: 'solana' }
     ]
 
     const history = useHistory<History>();
+    const signupContext: ISignupContext = useContext(SignupContext);
     
     const [ address, setAddress ] = useState<string>('0x8e79eF9e545Fa14e205D89970d50E7caA3456683');
-    const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum')
+    const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum');
 
     const handleNextClick = () => {
         history.push(SIGNUP_TOKEN_ROUTE);
@@ -31,6 +37,46 @@ const SignupTokenPage : FC = () => {
     
     const handleNetworkChange = (val: string): void => {
         setCurrentNetwork(val)
+    };
+
+    const publicListUpdate = (
+        network: string,
+        item: INFTItem,
+        visible: boolean
+        ) : void => {
+        let shouldUpdateState: boolean = false;
+        let arr = signupContext.publicNft[network] || [];
+        // first lookup if the item exists on the list;
+        let itemIdx = findIndexFromItemList(arr, item);
+        if (itemIdx === -1) {
+            // item not existing in the array
+            // do nothing if the new state is {!visible}
+            // push item to the array if the new state is {visible}
+            if (visible) {
+                arr.push(item);
+                shouldUpdateState = true;
+            }
+        } else if (itemIdx >= 0) {
+            // item existing in the array
+            // do nothing if the new state is {visible}
+            // remove item if the new state is invisible
+            if (!visible) {
+                arr.splice(itemIdx, 1);
+                shouldUpdateState = true;
+            }
+        }
+        
+        // set the updated array to the state
+        if (shouldUpdateState) signupContext.setPublicNft({ ...signupContext.publicNft, [network]: arr });  
+    };
+    
+    const publicListUpdateAll = (
+        network: string,
+        visible: boolean, 
+        items?: INFTItem[]
+        ): void => {
+        let arr : INFTItem[] = visible ? items : [];
+        signupContext.setPublicNft({ ...signupContext.publicNft, [network]: arr })
     }
 
     return (
@@ -48,27 +94,33 @@ const SignupTokenPage : FC = () => {
                                         onChange={handleNetworkChange}
                                     >
                                         {NETWORK_OPTIONS.map((n) => {
-                                            return (
-                                                <Select.Option key={n.value} value={n.value} >
-                                                    {n.label}
-                                                </Select.Option>
-                                            )
+                                            return (<Select.Option key={n.value} value={n.value} >
+                                                {n.label}
+                                            </Select.Option>)
                                         })}
                                     </RadianInput.Select>
                                 </div>
                             </Col>
                         </Row>
-                        <Tabs 
-                            activeKey={currentNetwork}
-                        >
+                        <Tabs activeKey={currentNetwork} >
                             <Tabs.TabPane key='ethereum'>
                                 <NftEth 
                                     address={address}
                                     mode='visibility'
                                     iconClx='rd-nft-action-icon rd-nft-action-icon-clickable rd-nft-action-icon-vis'
+                                    publicListUpdate={publicListUpdate}
+                                    publicListUpdateAll={publicListUpdateAll}
                                 />
                             </Tabs.TabPane>
-                            <Tabs.TabPane key='polygon'></Tabs.TabPane>
+                            <Tabs.TabPane key='polygon'>
+                                <NftPolygon 
+                                    address={address}
+                                    mode='visibility'
+                                    iconClx='rd-nft-action-icon rd-nft-action-icon-clickable rd-nft-action-icon-vis'
+                                    publicListUpdate={publicListUpdate}
+                                    publicListUpdateAll={publicListUpdateAll}
+                                />
+                            </Tabs.TabPane>
                             <Tabs.TabPane key='solana'></Tabs.TabPane>
                         </Tabs>
                     </div>

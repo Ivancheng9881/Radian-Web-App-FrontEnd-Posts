@@ -1,0 +1,42 @@
+@modal-radius: 20px;
+@modal-zindex: 1111;
+
+.ant-modal-mask,
+.ant-modal-wrap {
+    z-index: @modal-zindex;
+}
+
+.ant-modal {
+    .ant-modal-content {
+        border-radius: @modal-radius;
+    }
+
+}
+
+.img-crop-modal {
+
+    .ant-modal-header {
+        border-top-left-radius: @modal-radius;
+        border-top-right-radius: @modal-radius;
+    }
+
+    .ant-modal-header {
+        .ant-modal-title {
+            color: @theme-color-purple-100;
+            font-weight: 600;
+            font-size: @heading-5-size;
+        }
+    }
+
+    .ant-modal-footer {
+
+        .ant-btn {
+            border-radius: 16px;
+        }
+        .ant-btn-primary {
+            border: none;
+            background-color: @theme-color-black-200;
+        }
+    }
+
+}

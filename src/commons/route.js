@@ -6,6 +6,7 @@ export const SIGNUP_INFO_ROUTE = '/signup/info';
 export const SIGNUP_PROPIC_ROUTE = '/signup/profile-picture'
 export const SIGNUP_NFT_ROUTE = '/signup/nft';
 export const SIGNUP_TOKEN_ROUTE = '/signup/token';
+export const SIGNUP_SUMMARY_ROUTE = '/signup/summary'
 
 export const homeRoute = '/home'
 

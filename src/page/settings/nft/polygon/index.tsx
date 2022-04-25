@@ -96,7 +96,6 @@ const NFTPolygonSettings: FC = () => {
     return (
         <div style={styles.root}>
             <Space direction="vertical" style={styles.body}>
-
                 <NFTCarousel 
                     key='polygon-nft' 
                     data={polygonData.result}
@@ -105,7 +104,6 @@ const NFTPolygonSettings: FC = () => {
                     fetchDataCallback={handleFetchNext}
                     isBuffering={isBuffering}
                 />
-
             </Space>
         </div>
     )
