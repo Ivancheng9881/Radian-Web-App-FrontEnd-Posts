@@ -8,7 +8,7 @@ import { SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/rout
 import SignupAction from "../components/signupAction";
 import SignupFormWrapper from "../components/signupFormWrapper";
 import SignupContext from "../context/signup.context";
-import { ISignupContext } from "../nft/type";
+import { ISignupContext } from "../type";
 import { SignupLocationState } from '../router'
 
 
@@ -58,7 +58,7 @@ const SignupInfoPage : FC = () => {
             required: true,
             error: false
         },
-        tags: {
+        interest: {
             required: false,
             error: false
         },
@@ -224,11 +224,11 @@ const SignupInfoPage : FC = () => {
                         </Row>
                         <Row className="rd-signup-row" gutter={[HORIZONTAL_GUTTER, 0]}>
                             <Col lg={24}>
-                                <RadianForm.Label label="Your tag(s)" >
+                                <RadianForm.Label label="Your interest(s)" >
                                     <RadianForm.TagSelect 
                                         options={TAG_OPTIONS} 
-                                        onChange={arr => handleValUpdate('tags', arr)}
-                                        value={info.tags} 
+                                        onChange={arr => handleValUpdate('interest', arr)}
+                                        value={info.interest} 
                                     />
                                 </RadianForm.Label>
                             </Col>

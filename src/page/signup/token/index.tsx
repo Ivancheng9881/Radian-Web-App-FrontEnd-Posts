@@ -1,5 +1,5 @@
 import { Button, Typography } from "antd";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { useHistory, useLocation } from "react-router";
 import {  SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
@@ -11,6 +11,7 @@ import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { IPriceFeed } from "../../../schema/Token/priceFeed";
 import { SignupLocationState } from "../router";
+import Web3Context from "../../../utils/web3/context/web3.context";
 
 const SignupTokenPage : FC = () => {
 
@@ -44,10 +45,10 @@ const SignupTokenPage : FC = () => {
     `
 
     const history = useHistory<History>();
-    const location = useLocation<SignupLocationState>();
+    const web3Context = useContext(Web3Context);
 
     const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>(COMMON_TOKEN_LIST);
-    const [ address, setAddress ] = useState<string>('0xB246b07E891914701CE706fda2E3c460031Ca25a');
+    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 

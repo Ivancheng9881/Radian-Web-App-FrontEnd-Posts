@@ -4,7 +4,7 @@ import config from "../../../commons/config";
 import RadianInput from "../../../components/RadianForm";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
 import SignupContext from "../context/signup.context";
-import { ISignupContext } from "../nft/type";
+import { ISignupContext } from "../type";
 
 
 const SignupSummaryInfo : FC = () => {
@@ -65,7 +65,7 @@ const SignupSummaryInfo : FC = () => {
                     </Col>
                     <Col span={24}>
                         <RadianInput.Label label='Interest' >
-                            <RadianInput.TagSelect value={info.tags} disabled />
+                            <RadianInput.TagSelect value={info.interest} disabled />
                         </RadianInput.Label>
                     </Col>
                 </Row>

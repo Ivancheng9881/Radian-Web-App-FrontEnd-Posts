@@ -2,7 +2,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import NftGridView from "../../../components/NftGrid/components/Grid.components";
 import { INFTItem } from "../../../utils/nft/erc/index.d";
 import SignupContext from "../context/signup.context";
-import { ISignupContext } from "../nft/type";
+import { ISignupContext } from "../type";
 
 const SignupSummaryNft : FC = () => {
 

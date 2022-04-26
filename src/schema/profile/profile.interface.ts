@@ -1,3 +1,5 @@
+import { IPublicNftList } from '../../page/signup/type';
+import { INFTItem } from '../../utils/nft/erc/index.d';
 import { FixLater } from '../helper.interface'
 
 interface IAddresses {
@@ -26,34 +28,31 @@ export interface ILinkedAddress {
     address: string,
 }
 
+export interface IDisplayNft {
+    [key: string]: INFTItem[]
+}
+
 export interface FullProfile {
     [key: string]: any;
-    firstName: string
-    lastName: string,
-    day: number,
-    month: number,
-    year: number,
-    countryCode: string,
-    number: number,
-    profilePictureCid: string[],
-    nationality: string,
-    gender: string,
-    interest: string[],
-    nft: string[],
-    application: FixLater,
-    identityID: string,
-    dataJson: FixLater,
-    verificationJson: FixLater,
-    temp: {
-        identityID: boolean,
-        verificationJson: boolean,
-        visible: boolean,
-        dataJson: boolean,
-        error: boolean
-    }
-    linkedAddress: ILinkedAddress[],
-    network: string,
-    profileID: string,
-    addresses: IAddresses[],
-    externalAddresses: IExternalAddress[],
+    firstName?: string
+    lastName?: string,
+    username?: string,
+    profilePictureCid?: string[],
+    nationality?: string,
+    location?: string,
+    religion?: string,
+    ethnicity?: string,
+    gender?: string,
+    interest?: string[],
+    nft?: IDisplayNft,
+    token?: string[],
+    application?: FixLater,
+    identityID?: string,
+    dataJson?: FixLater,
+    verificationJson?: FixLater,
+    linkedAddress?: ILinkedAddress[],
+    network?: string,
+    profileID?: string,
+    addresses?: IAddresses[],
+    externalAddresses?: IExternalAddress[],
 }

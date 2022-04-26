@@ -10,7 +10,7 @@ import SignupAction from "../components/signupAction";
 import SignupFormWrapper from "../components/signupFormWrapper";
 import SignupReturn from "../components/signupReturn";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
-import { ISignupContext } from "../nft/type";
+import { ISignupContext } from "../type";
 import SignupContext from "../context/signup.context";
 
 const SignupProfilePicturePage : FC = () => {

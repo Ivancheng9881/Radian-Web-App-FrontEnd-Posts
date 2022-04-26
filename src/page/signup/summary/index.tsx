@@ -8,7 +8,7 @@ import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { mapTokenPrice } from "../../../utils/web3/tokenPrice";
 import SignupContext from "../context/signup.context";
-import { ISignupContext } from "../nft/type";
+import { ISignupContext } from "../type";
 import SignupSummaryAction from "./action.components";
 import SignupSummaryInfo from "./info.components";
 import SignupSummaryNft from "./nft.components";

@@ -18,6 +18,7 @@ const CreateProfilePopup : FC<CreateProfilePopupPropsType> = (props) => {
 
     return (
         <Modal 
+            className="rd-popup-root"
             visible={props.open} 
             footer={null}
             title={`Create profile on ${props.network}`}

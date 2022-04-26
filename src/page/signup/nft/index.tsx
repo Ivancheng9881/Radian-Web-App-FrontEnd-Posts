@@ -8,11 +8,12 @@ import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidt
 import NftEth from "./eth.components";
 import RadianInput from "../../../components/RadianForm";
 import NftPolygon from "./polygon.components";
-import { ISignupContext } from "./type";
+import { ISignupContext } from "../type";
 import { INFTItem } from "../../../utils/nft/erc/index.d";
 import SignupContext from "../context/signup.context";
 import { findIndexFromItemList } from "./nft.controller";
 import { SignupLocationState } from "../router";
+import Web3Context from "../../../utils/web3/context/web3.context";
 
 const SignupTokenPage : FC = () => {
 
@@ -24,9 +25,10 @@ const SignupTokenPage : FC = () => {
 
     const history = useHistory();
     const location = useLocation<SignupLocationState>();
+    const web3Context = useContext(Web3Context);
     const signupContext: ISignupContext = useContext(SignupContext);
     
-    const [ address, setAddress ] = useState<string>('0x8e79eF9e545Fa14e205D89970d50E7caA3456683');
+    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
     const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum');
 
     const handleNextClick = () => {

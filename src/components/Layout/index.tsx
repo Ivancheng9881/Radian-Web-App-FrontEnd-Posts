@@ -22,16 +22,16 @@ const DefaultLayout : FC<PropsType> = (props) => {
     bodyFullWidth: {},
   }
 
-  return (
-      <Layout>
-        <Navbar />
-        <div style={props.fullWidth ? styles.bodyFullWidth : styles.body}>
-          {props.children}          
-        </div>
-        {/* <FloatingChatButton /> */}
-        <ConnectWalletPopup />
-      </Layout>
-  )
+    return (
+        <Layout>
+            <Navbar />
+            <div style={props.fullWidth ? styles.bodyFullWidth : styles.body}>
+                {props.children}          
+            </div>
+            {/* <FloatingChatButton /> */}
+            <ConnectWalletPopup />
+        </Layout>
+    )
 }
 
 export default DefaultLayout

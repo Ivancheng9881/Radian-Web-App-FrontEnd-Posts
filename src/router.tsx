@@ -13,7 +13,7 @@ const ViewProfileRoutePage = lazy(() => import('./page/p'));
 const SettingsRouter = lazy(() => import('./page/settings'));
 const PassportPage = lazy(() => import('./page/passport'));
 const LandingPage = lazy(() => import('./page/landing'));
-const SIGNUP_ROUTEr = lazy(() => import('./page/signup/router'))
+const SignupPage = lazy(() => import('./page/signup/router'))
 
 export default function Router() {
     return (
@@ -24,7 +24,7 @@ export default function Router() {
                         <LandingPage />
                     </Route>
                     <Route path={SIGNUP_ROUTE}>
-                        <SIGNUP_ROUTEr />
+                        <SignupPage />
                     </Route>
                     {/* <Route exact path={homeRoute}>
                         <HomePage />
@@ -39,9 +39,10 @@ export default function Router() {
                     >
                         <SettingsRouter />
                     </Route>
+                     */}
                     <Route path={passportRoute}>
                         <PassportPage />
-                    </Route> */}
+                    </Route>
                 </Switch>
             </Suspense>
         </BrowserRouter>

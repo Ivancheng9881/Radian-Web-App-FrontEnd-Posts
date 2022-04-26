@@ -1,88 +1,39 @@
+import { Col, Image, Row, Space, Typography } from "antd";
 import { FC, useEffect, useRef, useState } from "react"
-import { StyleSheet } from "../../schema/helper.interface";
+import config from "../../commons/config";
 import { FullProfile } from "../../schema/profile/profile.interface";
-import ReactCardFlip from 'react-card-flip';
-import RadianPassportBack from "./back.components";
-import RadianPassportFront from "./front.components";
+import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
 interface PageProps {
     profile: FullProfile,
 }
 
-const RadianPassport: FC<PageProps> = ({children, profile}) => {
-
-    const cardRef = useRef(null);
-
-    const [ isFlipped, setIsFlipped ] = useState(false);
-
-    const handleFlip = async () => {
-        setIsFlipped((prevState) => !prevState)
-    }
-
-    const demoProfile: any = {
-        "0": "QmYqa3nDfGRbAZZypT2YHRFbpQwY7KNvdtxGYagXhBXnnA",
-        "firstName": "nana",
-        "lastName": "ba",
-        "day": "12",
-        "month": "04",
-        "year": "2098",
-        "countryCode": "+852",
-        "number": "52525252",
-        "profilePictureCid": [
-            "QmUZBUfnmywuX7w6tDYMuZBn4W8MJ4HfzYxCU5zgQWCNVy"
-        ],
-        "nationality": "venus",
-        "gender": "male",
-        "interest": [
-            "language-exchage",
-            "karaoke",
-            "art"
-        ],
-        "nft": [],
-        "application": {
-            "radianDating": {
-                "location": "Mars",
-                "weight": "30",
-                "weightUnit": "lbs",
-                "height": "180",
-                "heightUnit": "inch",
-                "orientation": "both",
-                "lookingFor": "friends",
-                "ageRangeMin": 26,
-                "ageRangeMax": 36,
-                "ageRangeIsDealBreaker": 0,
-                "distanceMax": 19,
-                "distanceIsDealBreaker": 0,
-                "datingEthnicity": [
-                    "american-indian"
-                ],
-                "datingReligion": [],
-                "temp": {
-                    "visible": true,
-                    "error": true
-                }
-            }
-        },
-        "identityID": "QmYqa3nDfGRbAZZypT2YHRFbpQwY7KNvdtxGYagXhBXnnA",
-        "dataJson": {},
-        "verificationJson": {},
-        "temp": {
-            "identityID": true,
-            "verificationJson": true,
-            "visible": true,
-            "dataJson": true,
-            "error": true
-        },
-        "profileID": "1",
-        "network": "erc"
-    }
+const RadianPassport: FC<PageProps> = ({profile}) => {
 
     return (
-        <div>
-            <ReactCardFlip isFlipped={isFlipped} flipDirection='horizontal'>
-                <RadianPassportFront onClick={handleFlip} profile={demoProfile} />
-                <RadianPassportBack onClick={handleFlip} profile={demoProfile} />
-            </ReactCardFlip>
+        <div className="rd-passport-root">
+            <div className="rd-passport-body">
+                <Row >
+                    <Col lg={6} >
+                        <Space direction="vertical" >
+                            <Image src={`${config.assets.cdn}/logo/logo_black.png`} />
+                            <div className="rd-passport-avatar">
+                                <img src={`${ipfsUtils.getContentUrl(profile.profilePictureCid[0])}`} />
+                            </div>
+                            <div className="">
+                                <div>
+                                    <Typography.Text className='rd-typo-reverse rd-passport-label'>
+                                        username:
+                                    </Typography.Text>
+                                    <Typography.Title level={2} className='rd-typo-reverse'>
+                                        {profile.username}
+                                    </Typography.Title>
+                                </div>
+                            </div>
+                        </Space>
+                    </Col>
+                </Row>
+            </div>
         </div>
     )
 };

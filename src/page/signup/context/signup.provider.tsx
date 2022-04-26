@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { ITokenList } from "../../../schema/Token/tokenList";
-import { IPublicNftList, ISignupInfo } from "../nft/type";
+import { IPublicNftList, ISignupInfo } from "../type";
 import SignupContext from "./signup.context";
 
 
@@ -24,7 +24,7 @@ const SignupProvider : FC = ({children}) => {
         gender: '',
         nationality: '',
         ethnicity: '',
-        tags: [],
+        interest: [],
         profilePictureCid: []
     });
     const [ publicToken, setPublicToken ] = useState<string[]>([]);

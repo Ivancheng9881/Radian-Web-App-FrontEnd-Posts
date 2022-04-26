@@ -89,7 +89,7 @@ const createProfileCid = async (profile: FullProfile) : Promise<FixLater> => {
     let profileJson = JSON.stringify(profile);
     const cid = await ipfsUtils.uploadContent(profileJson);
     return cid;
-}
+};
 
 const ProfileContractUtils = {
     fetchProfiles,

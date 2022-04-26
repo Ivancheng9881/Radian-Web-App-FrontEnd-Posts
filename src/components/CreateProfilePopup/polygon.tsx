@@ -1,5 +1,5 @@
 import { FC, useState, useContext, useEffect } from "react";
-import { Button, message, Modal, Spin, Steps } from "antd";
+import { Button, message, Modal, Spin, Steps, Tabs } from "antd";
 import { CreateProfilePopupPropsType } from ".";
 import Web3Context from "../../utils/web3/context/web3.context";
 import { createProfileErc, getProfileErc } from "../../utils/web3/contract/profileContract/erc";
@@ -66,52 +66,49 @@ const CreateProfilePopupPolygon : FC<CreateProfilePopupPropsType> = (props) => {
     }
 
     return (
-        <Steps direction="vertical" current={step} >
-        <Steps.Step
-            title='Connect Metamask Wallet'
-            description={
-                <Button 
-                    size='large' 
-                    type='primary' 
-                    onClick={connectWallet}
-                    disabled={step != connectWalletStep}
-                    >
-                    Connect
-                </Button>
-            }
-        />
-        <Steps.Step
-            title='Create Profile'
-            description={
-                <Spin 
-                    size="large" 
-                    spinning={loading}
-                    style={{marginLeft: '1rem'}} 
-                >
-                    <Button 
-                        size='large' 
-                        type='primary' 
-                        onClick={createProfile}
-                        disabled={step != createProfileStep}
-                    >
-                        Create Profile
-                    </Button>
-                </Spin>
-            }
-        />
-        <Steps.Step
-            title='Profile Created'
-            description={<Button 
-                    size='large' 
-                    type='primary' 
-                    onClick={handleBackToHome}
-                    disabled={step != completeStep}
-                >
-                        Back To Home
-                </Button>
-        }
-        />
-    </Steps>
+        <>
+        <Steps direction="horizontal" current={step} >
+            <Steps.Step title='Connect Metamask Wallet' />
+            <Steps.Step title='Create Profile' />
+            <Steps.Step title='Profile Created' />
+        </Steps>
+        { step === 0 && <Button 
+            size='large' 
+            type='primary' 
+            shape="round"
+            onClick={connectWallet}
+            disabled={step != connectWalletStep}
+            >
+            Connect
+        </Button> }
+        <div className="rd-step-action-content">
+        { step === 1 && 
+        <Spin size="large" 
+            spinning={loading}
+            style={{marginLeft: '1rem'}} 
+        >
+            <Button 
+                size='large' 
+                type='primary' 
+                shape="round"
+                onClick={createProfile}
+                disabled={step != createProfileStep}
+            >
+                Create Profile
+            </Button>
+        </Spin>}
+        { step === 2 && <Button 
+            size='large' 
+            type='primary'
+            shape="round"
+            onClick={handleBackToHome}
+            disabled={step != completeStep}
+        >
+            Back To Home
+        </Button>}
+        </div>
+    </>
+
     )
 };
 

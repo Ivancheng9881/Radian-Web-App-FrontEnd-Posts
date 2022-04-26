@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 interface PageProps {
-    passRef: React.RefObject<HTMLDivElement>,
+    passRef?: React.RefObject<HTMLDivElement>,
 }
 
 const LandingSection : FC<PageProps> = ({children, passRef}) => {

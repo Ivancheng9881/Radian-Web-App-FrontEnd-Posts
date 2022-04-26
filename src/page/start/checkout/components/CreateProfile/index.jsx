@@ -18,7 +18,6 @@ import { PhantomWalletName } from '@solana/wallet-adapter-phantom';
 import ERCUtils from '../../../../../utils/web3/context/erc.utils';
 
 import { mainRoute } from '../../../../../commons/route';
-import CreateSnackbarContext from '../../../context/snackbar/snackbar.context';
 import { Bars } from 'react-loader-spinner'; 
 import ProfileContractUtils from '../../../../../utils/web3/contract/profileContract/utils';
 import CreateProfilePopup from '../../../../../components/CreateProfilePopup';
@@ -39,7 +38,6 @@ const CheckoutCreateProfile = () => {
 
     const history = useHistory();
     const web3Context = useContext(Web3Context);
-    const { setSnackBar } = useContext(CreateSnackbarContext);
     // form data for upload
     const profileContext = useContext(ProfileContext);
     const datingContext = useContext(DatingContext);
@@ -102,39 +100,6 @@ const CheckoutCreateProfile = () => {
         setPopupNetwork('polygon');
         setPopupOpen(true);
         return ;
-        // disable if metamask is not the selected provider
-        if (web3Context?.providers?.selected.split("@")[1] != 'erc'){
-            setSnackBar({ open: true, message: "Please select an ethereum compatible wallet", severity: 'danger' });
-            return;
-        }
-
-        setIsLoading(true);
-        let txn;
-        let publicKey = await ERCUtils.connectWallet();
-        // check if the wallet is connected
-        if (publicKey) {
-            console.log(window.ethereum.networkVersion == 137);
-            if (window.ethereum.networkVersion != 137) {
-                setError({ state: true, msg: 'Please switch to polygon network' });
-                setIsLoading(false);
-                return;
-            }
-            setError({ state: false, msg: '' });
-            console.log('is connected');
-            try{
-                txn = await createProfileErc(cid.toString(), useGasStation);                
-            } catch (error) {
-                setSnackBar({ open: true, message: error?.data?.message ? error?.data?.message : error.message, severity: 'danger' });
-            }
-            // make this better
-            if (txn) {
-                // clear cache and move back
-                profileContext.deleteUpdatingData();
-                datingContext.deleteUpdatingData();
-                history.push(mainRoute);
-            }
-        }
-        setIsLoading(false);
     };
 
     const getProfile = async () => {

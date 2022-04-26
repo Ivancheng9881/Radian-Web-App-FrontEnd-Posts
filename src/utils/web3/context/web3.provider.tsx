@@ -2,24 +2,19 @@ import { useEffect, useState , useContext, FC} from "react";
 import Web3Context from "./web3.context"
 import ERCUtils from "./erc.utils";
 // import SolanaWalletProvider from "./solanaWallet.provider";
-import CreateSnackbarContext from '../../../page/start/context/snackbar/snackbar.context';
 import { FixLater } from "../../../schema/helper.interface";
 import { WalletProvider } from "./web3.interface";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { message } from "antd";
 import SplashScreenContext from "../../SplashScreenContext/Splash.context";
 
-
-
 const Web3Provider : FC = ({ children }) => {
 
     const metamaskObjKey = 'metamask@erc';
     const phantomObjKey = 'phantom@solana';
 
-    const SnackbarContext = useContext(CreateSnackbarContext);
     const SplashContext = useContext(SplashScreenContext);
      
-    const { setSnackBar } = SnackbarContext;
     const [ providers, setProviders ] = useState<WalletProvider>({
         'phantom@solana': null, 
         'metamask@erc': null, 
@@ -41,8 +36,7 @@ const Web3Provider : FC = ({ children }) => {
     useEffect(() => {
             window.ethereum?.on("chainChanged", async (_chainId: string) => {
                 if (!_chainId.includes('0x89')) {
-                    setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
-                    
+                    message.warn(`Invalid network, polygon mainnet required`)
                     //Request for switching network if not on the Polygon mainnet
                     setTimeout(async () => {
                         await ERCUtils.switchNetwork('0x89')
@@ -85,32 +79,6 @@ const Web3Provider : FC = ({ children }) => {
 
             return () => window.ethereum?.removeAllListeners();
     }, [])
-
-    // // TODO later extend to more supported networks
-    // useEffect(() => {
-    //     //Check current network globally
-    //     window.ethereum.request({ method: 'eth_accounts' }).then((result)=> {
-    //         if (result.length != 0) {     
-    //             getCurrentChainId();
-    //             if(window.ethereum.networkVersion !== null && Number(window.ethereum.networkVersion) !== 137 && networkId !== 137){
-    //                 setSnackBar({ open: true, message: `Invalid network, polygon mainnet required`, severity: 'danger' })
-    //                 setTimeout( async () => {
-    //                     await ERCUtils.switchNetwork('0x89')
-    //                     console.log('UPDATED NETWORK TO 137')
-    //                 }, 1000)
-    //             }
-    //         }
-    //     });
-
-    // }, [windowNetworkVersion, networkId]);
-
-    // const getCurrentChainId = async () => {
-    //     const chainInfo = await ERCUtils.getChainId();
-    //     if (!chainInfo) return; // do not update chainID if metamask is not connected
-    //     const { name, chainId } = chainInfo;
-    //     console.log('Web3Provider', { name, chainId })
-    //     setNetworkId(chainId)
-    // }
 
     const autoConnectSolana = async () => {
         if (!window.solana?.isPhantom) return;

@@ -88,27 +88,6 @@ const Navbar : FC = (props) => {
       },
       [web3Context.providers,],
     )
-    
-
-    // const switchWalletPriority = async (walletType) => {
-        
-    //     // attempt to connect to wallet if not connected
-    //     if ( !web3Context.providers[walletType] ) {
-    //         await web3Context.connect(walletType.split("@")[1]);
-    //     }
-
-    //     // switch new wallet to selected if successfully connected        
-    //     if ( web3Context.providers[walletType] ) {
-    //         web3Context.switchProvider(walletType);
-    //     }
-
-    //     // switch off the pop up
-    //     close();
-    // }
-
-    // const handleWalletButtonClick = (e) => {
-    //     walletPopupContext.setOpen(true);
-    // }
 
     return (
         <Layout.Header className={`${history.location.pathname === mainRoute ? 'rd-header-solid' : 'rd-header-transparent'}`}>

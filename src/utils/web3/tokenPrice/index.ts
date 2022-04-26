@@ -62,7 +62,6 @@ const parseTokenSymbol = (v: string) => {
             l = v.toUpperCase();
             break
     }
-    console.log(l)
 
     return l;
 }

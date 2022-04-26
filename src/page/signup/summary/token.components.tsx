@@ -29,7 +29,8 @@ const SignupSummaryToken : FC<SignupSummaryTokenProps> = (props) => {
                 count={tokenList.length}
             >
                 {tokenList.map((t) => {
-                    return (<TokenCarouselItem  
+                    return (<TokenCarouselItem 
+                        key={`summary-token-${t.tokens[0].symbol}`} 
                         amount={t.balance}
                         fx={t.lastPrice}
                         label={t.tokens[0].symbol}

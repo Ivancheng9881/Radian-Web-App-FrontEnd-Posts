@@ -4,7 +4,7 @@ import { INFTList } from '../../../components/NftGrid/index.d';
 import NftGridView from "../../../components/NftGrid/components/Grid.components";
 import RadianInput from "../../../components/RadianForm";
 import { handleNftMapping } from "./nft.controller";
-import { ISignupContext, NftGridRootProps } from "./type";
+import { ISignupContext, NftGridRootProps } from "../type";
 import SignupContext from "../context/signup.context";
 
 const NftPolygon : FC<NftGridRootProps> = (props) => {

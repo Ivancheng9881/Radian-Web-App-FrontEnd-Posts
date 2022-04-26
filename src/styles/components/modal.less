@@ -10,24 +10,14 @@
     .ant-modal-content {
         border-radius: @modal-radius;
     }
+}
 
+.ant-modal-header {
+    border-top-left-radius: @modal-radius;
+    border-top-right-radius: @modal-radius;
 }
 
 .img-crop-modal {
-
-    .ant-modal-header {
-        border-top-left-radius: @modal-radius;
-        border-top-right-radius: @modal-radius;
-    }
-
-    .ant-modal-header {
-        .ant-modal-title {
-            color: @theme-color-purple-100;
-            font-weight: 600;
-            font-size: @heading-5-size;
-        }
-    }
-
     .ant-modal-footer {
 
         .ant-btn {
@@ -38,5 +28,24 @@
             background-color: @theme-color-black-200;
         }
     }
-
 }
+
+.rd-popup-root {
+    .ant-modal-header {
+        .ant-modal-title {
+            color: @theme-color-purple-100;
+            font-weight: 600;
+            font-size: @heading-5-size;
+        }
+    }
+
+    .rd-step-action-content {
+        padding: 20px;
+
+    }
+
+    .ant-btn.ant-btn-round.ant-btn-primary.ant-btn-lg {
+        color: @theme;
+    }
+}
+

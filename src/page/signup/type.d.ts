@@ -1,23 +1,12 @@
-import { NftGridItemActionProps } from "../../../components/NftGrid/components/Action/GridItemAction.components";
-import { ITokenList } from "../../../schema/Token/tokenList";
-import { INFTItem } from "../../../utils/nft/erc/index.d";
+import { NftGridItemActionProps } from "../../components/NftGrid/components/Action/GridItemAction.components";
+import { FullProfile, IDisplayNft } from "../../schema/profile/profile.interface";
+import { ITokenList } from "../../schema/Token/tokenList";
+import { INFTItem } from "../../utils/nft/erc/index.d";
 
-interface IPublicNftList {
-    [key: string]: INFTItem[]
-}
+type IPublicNftList = IDisplayNft;
 
-interface ISignupInfo {
+interface ISignupInfo extends FullProfile {
     [key: string]: any,
-    firstName: string,
-    lastName: string,
-    username: string,
-    location: string,
-    religion?: string,
-    gender?: string,
-    nationality?: string,
-    ethnicity?: string,
-    tags: string[],
-    profilePictureCid: string[],
 }
 
 interface NftGridRootProps extends NftGridItemActionProps {

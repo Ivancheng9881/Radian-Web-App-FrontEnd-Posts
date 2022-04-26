@@ -5,7 +5,7 @@ import RadianInput from "../../../components/RadianForm";
 import { IPriceFeed } from "../../../schema/Token/priceFeed";
 import { ITokenBalance } from "../../../schema/Token/tokenList";
 import SignupContext from "../context/signup.context";
-import { ISignupContext } from "../nft/type";
+import { ISignupContext } from "../type";
 
 interface ITableData {
     balance: number,
