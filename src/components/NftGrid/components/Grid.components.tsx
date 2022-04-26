@@ -9,7 +9,8 @@ import NFTGridItemLoadmore from "./GridItemMore.components";
 interface PageProps extends NftGridItemActionProps {
     data: INFTItem[],
     buffering: boolean,
-    handleFetchNext(): Promise<void>,
+    handleFetchNext?(): Promise<void>,
+    scrollable?: boolean
 }
 
 const NftGridView : FC<PageProps> = (props) => {
@@ -18,7 +19,8 @@ const NftGridView : FC<PageProps> = (props) => {
         data,
         buffering,
         handleFetchNext,
-        visibleKey
+        visibleKey,
+        scrollable=false
     } = props;
 
     const onIconClick = async (id: number) => {
@@ -26,7 +28,7 @@ const NftGridView : FC<PageProps> = (props) => {
     }
     
     return (
-        <div className="rd-nft-grid-root">
+        <div className={`rd-nft-grid-root ${scrollable ? 'rd-nft-grid-scrollable' : ''}`}>
             <Row gutter={[12, 12]}>
                 {data?.map((d, id) => {
                     return (
@@ -39,7 +41,7 @@ const NftGridView : FC<PageProps> = (props) => {
                         />
                     )
                 })}   
-                <NFTGridItemLoadmore isLoading={buffering} onClick={handleFetchNext} /> 
+                {handleFetchNext && <NFTGridItemLoadmore isLoading={buffering} onClick={handleFetchNext} /> }
             </Row>
         </div>
     )

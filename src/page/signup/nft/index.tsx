@@ -1,7 +1,7 @@
 import { Button, Col, Row, Select, Tabs } from "antd";
 import { FC, useState, useContext } from "react";
-import { useHistory } from "react-router";
-import {  SIGNUP_PROPIC_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
+import { useHistory, useLocation } from "react-router";
+import {  SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
@@ -12,6 +12,7 @@ import { ISignupContext } from "./type";
 import { INFTItem } from "../../../utils/nft/erc/index.d";
 import SignupContext from "../context/signup.context";
 import { findIndexFromItemList } from "./nft.controller";
+import { SignupLocationState } from "../router";
 
 const SignupTokenPage : FC = () => {
 
@@ -21,14 +22,19 @@ const SignupTokenPage : FC = () => {
         // { label: 'solana', value: 'solana' }
     ]
 
-    const history = useHistory<History>();
+    const history = useHistory();
+    const location = useLocation<SignupLocationState>();
     const signupContext: ISignupContext = useContext(SignupContext);
     
     const [ address, setAddress ] = useState<string>('0x8e79eF9e545Fa14e205D89970d50E7caA3456683');
     const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum');
 
     const handleNextClick = () => {
-        history.push(SIGNUP_TOKEN_ROUTE);
+        if (location.state?.fromSummary) {
+            history.push(SIGNUP_SUMMARY_ROUTE)
+        } else {
+            history.push(SIGNUP_TOKEN_ROUTE)
+        }
     };
 
     const handleReturnClick = () => {

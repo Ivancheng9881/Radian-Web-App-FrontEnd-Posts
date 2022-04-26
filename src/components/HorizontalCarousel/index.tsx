@@ -59,7 +59,7 @@ const HorizontalCarousel : FC<PageProps> = ({
         },
         button: {
             width: `${iconSize}px`
-        }
+        },
     };
 
     const handlePrev = (e: any) => {
@@ -82,7 +82,6 @@ const HorizontalCarousel : FC<PageProps> = ({
         });
     };
 
-
     const shouldNextDisabled = count < Math.floor(bodyInnerRef.current?.offsetWidth / itemWidth) + offset
 
     return (
@@ -92,9 +91,9 @@ const HorizontalCarousel : FC<PageProps> = ({
                 <Button 
                     shape="circle" 
                     style={styles.button} 
-                    type="primary" 
+                    type="default" 
                     disabled={offset <=  0}
-                    icon={<CaretLeftOutlined />} 
+                    icon={<CaretLeftOutlined className="rd-icon rd-icon-purple" />} 
                     onClick={handlePrev}
                 />
             </div>
@@ -109,10 +108,10 @@ const HorizontalCarousel : FC<PageProps> = ({
             {/* right control */}
             <div style={styles.controller}>
                 <Button 
-                    type="primary" 
+                    type="default" 
                     style={styles.button} 
                     shape="circle" 
-                    icon={<CaretRightOutlined />} 
+                    icon={<CaretRightOutlined className="rd-icon rd-icon-purple" />} 
                     onClick={handleNext}
                     disabled={shouldNextDisabled}
                 />

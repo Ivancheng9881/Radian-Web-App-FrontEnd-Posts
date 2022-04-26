@@ -22,58 +22,46 @@ const SignupSummaryInfo : FC = () => {
                 />
             </Col>
             <Col lg={16} >
-                <Row gutter={[0, 36]} >
-                    <Col span={24}>
-                        <Row gutter={[36, 0]} >
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='First Name' >
-                                    <RadianInput.Input value={info.firstName} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Last Name' >
-                                    <RadianInput.Input value={info.lastName} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Username' >
-                                    <RadianInput.Input value={info.username} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                        </Row>
+                <Row gutter={[36, 36]} >
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='First Name' >
+                            <RadianInput.Input value={info.firstName} disabled />
+                        </RadianInput.Label>
                     </Col>
-                    <Col span={24}>
-                        <Row gutter={[36, 0]} >
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Located in' >
-                                    <RadianInput.Input value={info.location} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Religions' >
-                                    <RadianInput.Input value={info.religion} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Gender' >
-                                    <RadianInput.Input value={info.gender} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                        </Row>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Last Name' >
+                            <RadianInput.Input value={info.lastName} disabled />
+                        </RadianInput.Label>
                     </Col>
-                    <Col span={24}>
-                        <Row gutter={[36, 0]} >
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Nationality' >
-                                    <RadianInput.Input value={info.location} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                            <Col lg={8} sm={8} >
-                                <RadianInput.Label label='Ethnicity' >
-                                    <RadianInput.Input value={info.religion} disabled />
-                                </RadianInput.Label>
-                            </Col>
-                        </Row>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Username' >
+                            <RadianInput.Input value={info.username} disabled />
+                        </RadianInput.Label>
+                    </Col>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Located in' >
+                            <RadianInput.Input value={info.location} disabled />
+                        </RadianInput.Label>
+                    </Col>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Religions' >
+                            <RadianInput.Input value={info.religion} disabled />
+                        </RadianInput.Label>
+                    </Col>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Gender' >
+                            <RadianInput.Input value={info.gender} disabled />
+                        </RadianInput.Label>
+                    </Col>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Nationality' >
+                            <RadianInput.Input value={info.location} disabled />
+                        </RadianInput.Label>
+                    </Col>
+                    <Col lg={8} sm={8} >
+                        <RadianInput.Label label='Ethnicity' >
+                            <RadianInput.Input value={info.religion} disabled />
+                        </RadianInput.Label>
                     </Col>
                     <Col span={24}>
                         <RadianInput.Label label='Interest' >

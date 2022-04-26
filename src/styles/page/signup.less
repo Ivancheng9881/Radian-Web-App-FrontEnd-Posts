@@ -1,7 +1,7 @@
 .rd-signup-layout-root {
     background: @linear-gradient-2;
     min-height: 100vh;
-    min-width: 100vw;
+    width: 100%;
     padding-top: @header-vertical-offset;
     position: relative;
 
@@ -118,6 +118,7 @@
 
 .rd-signup-summary {
     max-width: 1200px;
+    padding-bottom: 50px;
     margin: auto;
     color: @theme-color-white-100;
 
@@ -131,6 +132,16 @@
 
         .ant-image .ant-image-img {
             border-radius: 10px;
+        }
+    }
+
+    .rd-signup-summary-heading {
+        display: flex;
+        align-items: center;
+
+        .anticon {
+            margin-left: (@heading-3-size * 0.2);
+            font-size: (@heading-3-size * 0.6);
         }
     }
 }

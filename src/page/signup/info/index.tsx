@@ -85,13 +85,12 @@ const SignupInfoPage : FC = () => {
     const handleNextClick = () => {
         // do data validation
         if (validateRequiredField()) {
-            if (location.state.fromSummary) {
+            if (location.state?.fromSummary) {
                 history.push(SIGNUP_SUMMARY_ROUTE)
             } else {
                 history.push(SIGNUP_PROPIC_ROUTE)
             }
         };
-        
     };
 
     const handleValUpdate = (key: string, value: any) => {

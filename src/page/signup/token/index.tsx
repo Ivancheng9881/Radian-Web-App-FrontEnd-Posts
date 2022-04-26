@@ -1,6 +1,6 @@
 import { Button, Typography } from "antd";
 import { FC, useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import {  SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
@@ -10,6 +10,7 @@ import TokenTable from "./TokenTable.components";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { IPriceFeed } from "../../../schema/Token/priceFeed";
+import { SignupLocationState } from "../router";
 
 const SignupTokenPage : FC = () => {
 
@@ -43,7 +44,8 @@ const SignupTokenPage : FC = () => {
     `
 
     const history = useHistory<History>();
-    
+    const location = useLocation<SignupLocationState>();
+
     const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>(COMMON_TOKEN_LIST);
     const [ address, setAddress ] = useState<string>('0xB246b07E891914701CE706fda2E3c460031Ca25a');
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
@@ -57,13 +59,9 @@ const SignupTokenPage : FC = () => {
         }
     });
 
-    const handleNextClick = () => {
-        history.push(SIGNUP_SUMMARY_ROUTE);
-    };
+    const handleNextClick = () => history.push(SIGNUP_SUMMARY_ROUTE);
 
-    const handleReturnClick = () => {
-        history.push(SIGNUP_NFT_ROUTE);
-    };
+    const handleReturnClick = () => history.push(SIGNUP_NFT_ROUTE);
 
     useEffect(() => {
         const { loading, error, data } = tokenListQueryCallback;
