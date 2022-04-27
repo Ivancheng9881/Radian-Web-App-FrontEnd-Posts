@@ -24,7 +24,7 @@ const SignupProvider : FC = ({children}) => {
         gender: '',
         nationality: '',
         ethnicity: '',
-        interest: [],
+        tags: [],
         profilePictureCid: []
     });
     const [ publicToken, setPublicToken ] = useState<string[]>([]);

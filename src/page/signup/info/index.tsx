@@ -58,7 +58,7 @@ const SignupInfoPage : FC = () => {
             required: true,
             error: false
         },
-        interest: {
+        tags: {
             required: false,
             error: false
         },
@@ -227,8 +227,8 @@ const SignupInfoPage : FC = () => {
                                 <RadianForm.Label label="Your interest(s)" >
                                     <RadianForm.TagSelect 
                                         options={TAG_OPTIONS} 
-                                        onChange={arr => handleValUpdate('interest', arr)}
-                                        value={info.interest} 
+                                        onChange={arr => handleValUpdate('tags', arr)}
+                                        value={info.tags} 
                                     />
                                 </RadianForm.Label>
                             </Col>

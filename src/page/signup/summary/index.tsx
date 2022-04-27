@@ -17,9 +17,7 @@ import SignupSummaryToken from "./token.components";
 const SignupSummaryPage : FC = () => {
 
     const history = useHistory();
-    const { 
-        publicToken,
-    } : ISignupContext = useContext(SignupContext);
+    const {  publicToken, } : ISignupContext = useContext(SignupContext);
 
     const TOKEN_BALANCE_QUERY = gql`
         query getTokenList(

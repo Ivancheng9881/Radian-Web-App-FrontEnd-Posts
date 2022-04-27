@@ -22,16 +22,8 @@ import { FixLater } from '../../../schema/helper.interface';
 const Navbar : FC = (props) => {
 
     const web3Context = useContext(Web3Context);
-    const profileContext = useContext(UserContext);
-    const walletPopupContext = useContext(WalletPopupContext);
 
     const history = useHistory<History>();
-
-    const { src } = useImage({
-        srcList: ipfsUtils.getImageFromCDNFailover(profileContext.profile?.profilePictureCid),
-        useSuspense: false,
-    });
-
     const [ address, setAddress ] = useState({});
     const [ currentWallet, setCurrentWallet ] = useState('Connect'); 
 
@@ -90,7 +82,7 @@ const Navbar : FC = (props) => {
     )
 
     return (
-        <Layout.Header className={`${history.location.pathname === mainRoute ? 'rd-header-solid' : 'rd-header-transparent'}`}>
+        <Layout.Header className={`${!history.location.pathname.includes('signup') ? 'rd-header-solid' : 'rd-header-transparent'}`}>
             <div className={`rd-navbar-root`}>
                 <a onClick={() => history.push(mainRoute)}>
                     {/* use small icon when on mobile */}

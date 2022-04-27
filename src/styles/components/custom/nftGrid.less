@@ -100,3 +100,44 @@
     height: min-content;
     overflow: auto;
 }
+
+.rd-nft-page-root {
+    background-color: @theme-color-white-100;
+
+    .rd-nft-page-action-root {
+        padding: 0 15px;
+
+        .rd-nft-page-action {
+            font-weight: 600;
+            float: right;
+            margin-bottom: 10px;
+    
+            .ant-btn {
+                margin: 0 10px;
+                border: none;
+                box-shadow: 0 0 10px @theme-color-black-500-80;
+            }
+    
+            .anticon {
+                color: @theme-color-purple-200;
+            }
+        }
+    
+        .rd-nft-filter-action {
+            width: 150px;
+            float: left;
+
+            .ant-select {
+                width: 100%;
+            }
+            .ant-select-selection-item {
+                color: @theme-color-black-100;
+            }
+            .ant-select-arrow {
+                color: @theme-color-black-100;
+            }
+        }
+    }
+
+
+}

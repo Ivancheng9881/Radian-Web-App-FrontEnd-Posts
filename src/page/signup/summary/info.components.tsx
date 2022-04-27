@@ -65,7 +65,7 @@ const SignupSummaryInfo : FC = () => {
                     </Col>
                     <Col span={24}>
                         <RadianInput.Label label='Interest' >
-                            <RadianInput.TagSelect value={info.interest} disabled />
+                            <RadianInput.TagSelect value={info.tags} disabled />
                         </RadianInput.Label>
                     </Col>
                 </Row>

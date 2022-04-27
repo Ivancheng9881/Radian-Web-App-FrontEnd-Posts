@@ -5,7 +5,7 @@ import { Layout } from "antd";
 
 import LandingSection2 from "./components/Section2";
 import LandingSection1 from "./components/Section1";
-import DefaultFooter from "./components/Footer";
+import DefaultFooter from "../../components/Footer";
 import ScrollIndicator from "../../components/ScrollIndicator";
 
 interface PageProps {

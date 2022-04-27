@@ -4,11 +4,15 @@
 .rd-passport-root {
     padding: 30px 0;
 
+    .ant-typography {
+        margin: 0 !important;
+    }
     .rd-passport-body {
         width: @rd-passport-width;
         height: (@rd-passport-width / 1.65);
         margin: auto;
-        background: @theme-color-purple-100;
+        background: url('https://d1skj8m4trskbx.cloudfront.net/misc/card_front.jpg');
+        background-size: cover;
         border-radius: 40px;
         padding: 60px;
 
@@ -24,5 +28,40 @@
             font-size: 20px;
             font-weight: 600;
         }
+
+        .rd-passport-field {
+            border-bottom: 1px solid @theme-color-white-100;
+            width: 100%;
+        }
+    }
+}
+
+.rd-assets-root {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    box-shadow: 0 0 20px @theme-color-black-500-80;
+    padding: 30px;
+    height: auto;
+    overflow: initial;
+}
+
+.rd-assets-token-root {
+    background-color: @theme-color-purple-100;
+
+    .rd-assets-token-row {
+        color: @theme-color-white-100;
+        height: 70px;
+        align-items: center;
+        font-weight: 600;
+        font-size: @heading-5-size;
+        font-family: @font-family-regular;
+    }
+
+    .rd-assets-token-header {
+        border-bottom: 2px solid @theme-color-white-100-trans;
+        height: initial;
+        padding-bottom: 10px;
     }
 }

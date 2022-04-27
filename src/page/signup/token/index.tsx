@@ -1,7 +1,7 @@
 import { Button, Typography } from "antd";
 import { FC, useState, useEffect, useContext } from "react";
-import { useHistory, useLocation } from "react-router";
-import {  SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/route";
+import { useHistory } from "react-router";
+import {  SIGNUP_NFT_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/route";
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
@@ -10,7 +10,6 @@ import TokenTable from "./TokenTable.components";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { IPriceFeed } from "../../../schema/Token/priceFeed";
-import { SignupLocationState } from "../router";
 import Web3Context from "../../../utils/web3/context/web3.context";
 
 const SignupTokenPage : FC = () => {

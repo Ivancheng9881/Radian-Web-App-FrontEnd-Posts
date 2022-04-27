@@ -2,7 +2,6 @@ import { Layout } from 'antd'
 import { FC } from 'react'
 import { useHistory } from 'react-router'
 import { mainRoute } from '../../commons/route'
-import FloatingChatButton from '../Button/FloatingChatButton.components'
 import ConnectWalletPopup from '../ConnectWalletPopup'
 import Navbar from './Navbar'
 

@@ -6,10 +6,13 @@ import { ISignupContext } from "../type";
 import ProfileContractUtils from "../../../utils/web3/contract/profileContract/utils";
 import { FullProfile } from "../../../schema/profile/profile.interface";
 import { createProfileErc } from "../../../utils/web3/contract/profileContract/erc";
+import { useHistory } from "react-router";
+import { PASSPORT_ROUTE } from "../../../commons/route";
 
 const SignupSummaryAction : FC = () => {
 
     // context
+    const history = useHistory();
     const {info, publicNft, publicToken} : ISignupContext = useContext(SignupContext);
 
     // state
@@ -34,10 +37,10 @@ const SignupSummaryAction : FC = () => {
     };
 
     const createProfileTx = async (cid: any) => {
-        console.log(createProfileTx);
         try {
             const txn = await createProfileErc(cid.toString(), false);
-            console.log(txn)
+            console.log(txn);
+            message.info(`waiting tx ${txn.hash} to complete`)
             if (txn) {
                 const isSuccess = await txn.wait();
                 console.log(isSuccess)
@@ -53,6 +56,7 @@ const SignupSummaryAction : FC = () => {
     const createProfileSuccess = async () => {
         setLoading(false);
         message.info('passport created');
+        history.push(PASSPORT_ROUTE);
     }
 
     return (

@@ -42,7 +42,6 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
 
     const handleConnectMetamask = async () => {
         const response = await handleConnect('erc');
-        console.log(response)
         if (response) {
             history.push(SIGNUP_INFO_ROUTE);
         }
@@ -69,20 +68,11 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
                         </Typography.Title>
                         <br/><br/>
                         <Row gutter={{sm: 0, md: 24}}>
-                            <Col span={12}>
+                            <Col span={24}>
                                 <LandingConnectWallet 
                                     title='Metamamsk'
                                     iconName="metamask_square.png"
                                     downloadUri={WALLET_DOWNLOAD_LINK['metamask'][userAgent]}
-                                    onClick={handleConnectMetamask}
-                                    disabled={!web3Proivder.hasMetamask}
-                                />
-                            </Col>
-                            <Col span={12}>
-                                <LandingConnectWallet 
-                                    title='Phantom'
-                                    iconName="phantom_square.png"
-                                    downloadUri={WALLET_DOWNLOAD_LINK['phantom'][userAgent]}
                                     onClick={handleConnectMetamask}
                                     disabled={!web3Proivder.hasMetamask}
                                 />

@@ -1,11 +1,16 @@
-import { Button, Col, Grid, Row, Space, Typography } from "antd";
+import { Col, Row, Space, Typography } from "antd";
 import { FC } from "react";
-import config from "../../../../commons/config";
+import config from "../../commons/config";
 
-const DefaultFooter : FC = () => {
+interface DefaultFooterProps {
+    disableGutter?: boolean
+}
+
+const DefaultFooter : FC<DefaultFooterProps> = (props) => {
+    const { disableGutter = false } = props 
 
     return (
-        <div className="rd-footer-root">
+        <div className={`rd-footer-root ${disableGutter ? 'rd-footer-root-no-gutter' : ''}`}>
             <div className="rd-footer" >
                 <div className="rd-footer-content">
                 <Row gutter={[0, {xs: 12, sm: 24, md: 24}]}>

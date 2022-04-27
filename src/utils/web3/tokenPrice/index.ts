@@ -66,7 +66,33 @@ const parseTokenSymbol = (v: string) => {
     return l;
 }
 
+const parseTokenName = (v: string) => {
+    let l: string;
+
+    switch(v.toUpperCase()) {
+        case 'WETH':
+        case 'ETH':
+            l = 'Ethereum';
+            break
+        case 'MATIC':
+            l = 'Polygon';
+            break
+        case 'USDT':
+            l = 'Tether USD';
+            break
+        case 'USDC':
+            l = 'USD Coin';
+            break
+        default:
+            l = v.toUpperCase();
+            break
+    }
+
+    return l;
+}
+
 export { 
     mapTokenPrice,
-    parseTokenSymbol
+    parseTokenSymbol,
+    parseTokenName
 }
