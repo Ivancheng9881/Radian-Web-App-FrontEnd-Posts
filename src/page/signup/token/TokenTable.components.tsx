@@ -71,19 +71,21 @@ const TokenTable : FC<PageProps> = ({
     const updatePublicTokenList = (record: ITableData, isPublic: boolean) => {
         const { symbol } = record;
         const tokenExist: number = publicToken?.indexOf(symbol);
+        let _publicToken = [...publicToken];
         if (isPublic) {
             // handle append case
             // check if it already exists on the array
             if (tokenExist > -1) return;
             // if not exist, append the token symbol to the array
-            setPublicToken([...publicToken, symbol]);
+            _publicToken = [..._publicToken, symbol];
         } else {
             // handle remove case
             // check if it already exists on the array
             if (tokenExist === -1) return;
             //  if token exist, remove it from the array
-            setPublicToken([...publicToken].splice(tokenExist, 1));
+            _publicToken.splice(tokenExist, 1);
         }
+        setPublicToken(_publicToken)
     }
 
     const handleVisibilityToggle = (recordId: number, newVal: boolean) => {
@@ -122,6 +124,12 @@ const TokenTable : FC<PageProps> = ({
             return d;
         })
         setTableData(_tableData);
+        if (visibility) {
+            let _publicToken = _tableData.map((t) => t.symbol);
+            setPublicToken(_publicToken)
+        } else {
+            setPublicToken([])
+        }
     };
 
     const createRowClx = (record: ITableData, index: number): string => {

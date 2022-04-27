@@ -70,7 +70,7 @@
   "scripts": {
     "start": "craco start",
     "test": "react-scripts test",
-    "build": "craco build",
+    "build": "craco --max_old_space_size=8192 build",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },

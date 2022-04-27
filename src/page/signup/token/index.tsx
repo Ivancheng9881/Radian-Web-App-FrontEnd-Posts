@@ -9,8 +9,8 @@ import { gql, useQuery } from "@apollo/client";
 import TokenTable from "./TokenTable.components";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
-import { IPriceFeed } from "../../../schema/Token/priceFeed";
 import Web3Context from "../../../utils/web3/context/web3.context";
+import { getLastPriceBySymbol } from "../../../utils/web3/tokenPrice";
 
 const SignupTokenPage : FC = () => {
 
@@ -86,22 +86,22 @@ const SignupTokenPage : FC = () => {
      * @param priceFeed 
      * @returns 
      */
-    const getLastPriceBySymbol = (t: ITokenBalance, priceFeed: IPriceFeed[]) => {
-        let b = t.tokens[0].symbol.toLowerCase();
-        let p : number = priceFeed.filter((v: IPriceFeed) => {
-            let a = v.symbol.toLowerCase();
-            if (b === 'weth') {
-                b = 'eth'
-            }
-            return a === b;
-        })[0]?.price || 1;
+    // const getLastPriceBySymbol = (t: ITokenBalance, priceFeed: IPriceFeed[]) => {
+    //     let b = t.tokens[0].symbol.toLowerCase();
+    //     let p : number = priceFeed.filter((v: IPriceFeed) => {
+    //         let a = v.symbol.toLowerCase();
+    //         if (b === 'weth') {
+    //             b = 'eth'
+    //         }
+    //         return a === b;
+    //     })[0]?.price || 1;
         
-        if (b === 'usdt' || b === 'usdc') {
-            p = 1;
-        };
+    //     if (b === 'usdt' || b === 'usdc') {
+    //         p = 1;
+    //     };
 
-        return p
-    }
+    //     return p
+    // }
 
     return (
         <div className="rd-signup-body">

@@ -92,6 +92,7 @@ const parseTokenName = (v: string) => {
 }
 
 export { 
+    getLastPriceBySymbol,
     mapTokenPrice,
     parseTokenSymbol,
     parseTokenName
