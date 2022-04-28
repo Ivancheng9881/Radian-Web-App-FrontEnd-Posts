@@ -3,12 +3,13 @@ import Web3Context from '../../../utils/web3/context/web3.context';
 // import SolanaUtils from '../../utils/web3/context/solana.utils';
 import { truncateAddress } from '../../../utils/web3/general/parser.utils';
 import { useHistory } from 'react-router-dom';
-import { mainRoute } from '../../../commons/route';
+import { mainRoute, SIGNUP_INFO_ROUTE, SIGNUP_NFT_ROUTE, SIGNUP_TOKEN_ROUTE } from '../../../commons/route';
 import { preloadWalletIcon } from '../../../utils/preload';
 import { Layout, Space, Typography } from 'antd';
 import config from '../../../commons/config';
 import NavBarWalletPopOver from './ConnectWallet.components';
 import { FixLater } from '../../../schema/helper.interface';
+import SIGNUP_ROUTER from '../../../page/signup/router';
 
 const Navbar : FC = (props) => {
 
@@ -84,8 +85,15 @@ const Navbar : FC = (props) => {
       [web3Context.providers,],
     )
 
+    const TRANS_NAVBAR_WHILTELIST = [
+        SIGNUP_INFO_ROUTE,
+        SIGNUP_TOKEN_ROUTE,
+        SIGNUP_ROUTER,
+        SIGNUP_NFT_ROUTE,
+    ];
+
     return (
-        <Layout.Header className={`${!history.location.pathname.includes('signup') ? 'rd-header-solid' : 'rd-header-transparent'}`}>
+        <Layout.Header className={`${!TRANS_NAVBAR_WHILTELIST.includes(history.location.pathname) ? 'rd-header-solid' : 'rd-header-transparent'}`}>
             <div className={`rd-navbar-root`}>
                 <a onClick={() => history.push(mainRoute)}>
                     {/* use small icon when on mobile */}

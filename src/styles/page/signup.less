@@ -27,6 +27,7 @@
     }
 
     .rd-signup-illustration:before {
+        z-index: 10;
         content: '';
         height: 100vh;
         width: 30vw;
@@ -37,6 +38,12 @@
         display: flex;
         align-items: end;
         background-image: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 140%);
+    }
+
+    .rd-signup-illustration {
+        img {
+            z-index: 11;
+        }
     }
 
     .rd-signup-illustration.rd-signup-illustration-blank:before {
@@ -52,7 +59,12 @@
 
     .rd-signup-body {
         padding-top: (@header-vertical-offset + 10px);
-        // padding-top: 10px;
+
+        .rd-glass-root,
+        .rd-signup-summary {
+            position: relative;
+            z-index: 12;
+        }
     }
 }
 
@@ -148,6 +160,7 @@
 
 .rd-signup-summary {
     max-width: 1200px;
+    padding-top: 50px;
     padding-bottom: 50px;
     margin: auto;
     color: @theme-color-white-100;
@@ -158,7 +171,7 @@
 
     .rd-propic {
         display: flex;
-        justify-content: center;
+        justify-content: left;
 
         .ant-image .ant-image-img {
             border-radius: 10px;

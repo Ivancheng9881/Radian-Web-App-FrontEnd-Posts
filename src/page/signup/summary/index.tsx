@@ -48,7 +48,7 @@ const SignupSummaryPage : FC = () => {
         }
     `;
 
-    const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>();
+    const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>([]);
     const [ address, setAddress ] = useState<string>('0xB246b07E891914701CE706fda2E3c460031Ca25a');
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
@@ -88,7 +88,7 @@ const SignupSummaryPage : FC = () => {
     }, [tokenListVariable]);
 
     useEffect(() => {
-        if (publicToken) {
+        if (publicToken.length > 0) {
             // filter the common token list 
             // so that only those selected by the user will show up here
             let _tokenList = COMMON_TOKEN_LIST.filter((t) => {
@@ -106,7 +106,7 @@ const SignupSummaryPage : FC = () => {
             <div className="rd-signup-summary">
                 <Row gutter={[0, 48]}>
                     <Col lg={24}>
-                        <Typography.Title level={2} className='rd-align rd-align-center rd-typo-reverse'>
+                        <Typography.Title level={3} className='rd-align rd-align-center rd-typo-reverse'>
                             RADIAN Passport Summary 
                         </Typography.Title>
                     </Col>

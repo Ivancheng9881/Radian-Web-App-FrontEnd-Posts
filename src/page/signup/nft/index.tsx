@@ -14,7 +14,6 @@ import SignupContext from "../context/signup.context";
 import { findIndexFromItemList } from "./nft.controller";
 import { SignupLocationState } from "../router";
 import Web3Context from "../../../utils/web3/context/web3.context";
-import CustomScrollbar from "../../../components/CustomScrollBar";
 
 const SignupTokenPage : FC = () => {
 
@@ -29,8 +28,8 @@ const SignupTokenPage : FC = () => {
     const web3Context = useContext(Web3Context);
     const signupContext: ISignupContext = useContext(SignupContext);
     
-    // const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
-    const address = '0x8e79eF9e545Fa14e205D89970d50E7caA3456683'
+    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
+    // const address = '0x8e79eF9e545Fa14e205D89970d50E7caA3456683'
     const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum');
 
     const handleNextClick = () => {

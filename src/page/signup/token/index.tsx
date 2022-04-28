@@ -5,7 +5,7 @@ import {  SIGNUP_NFT_ROUTE, SIGNUP_SUMMARY_ROUTE } from "../../../commons/route"
 import SignupAction from "../components/signupAction";
 import SignupReturn from "../components/signupReturn";
 import SignupFormWrapperFullWidth from "../components/signupFormWrapper/fullwidth";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useLazyQuery, useQuery } from "@apollo/client";
 import TokenTable from "./TokenTable.components";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
@@ -51,33 +51,41 @@ const SignupTokenPage : FC = () => {
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
-    const tokenListQueryCallback = useQuery(TOKEN_BALANCE_QUERY, {
-        variables: {
-            address: address,
-            symbols: tokenListVariable,
-            priceSymbols: priceSymbols
-        }
-    });
+    const [tokenListQuery] = useLazyQuery(TOKEN_BALANCE_QUERY);
 
     const handleNextClick = () => history.push(SIGNUP_SUMMARY_ROUTE);
 
     const handleReturnClick = () => history.push(SIGNUP_NFT_ROUTE);
 
-    useEffect(() => {
-        const { loading, error, data } = tokenListQueryCallback;
+    const execTokenListQuery = async () => {
+        const { loading, data, error } = await tokenListQuery({
+            variables: {
+                address: address,
+                symbols: tokenListVariable,
+                priceSymbols: priceSymbols
+            }
+        });
+
         if (!loading) {
-            const _tokenList = data.tokenList?.map((t: ITokenBalance) => {
-                let lastPrice = getLastPriceBySymbol(t, data.priceFeed);
-
-                return { ...t, lastPrice: lastPrice }
-            });
-
-            setTokenList(_tokenList);
-        };
-        if (error) {
-            throw(error)
+            if (error) {
+                console.log(error)
+            } else {
+                const _tokenList = data.tokenList?.map((t: ITokenBalance) => {
+                    let lastPrice = getLastPriceBySymbol(t, data.priceFeed);
+    
+                    return { ...t, lastPrice: lastPrice }
+                });
+    
+                setTokenList(_tokenList);
+            }
         }
-    }, [tokenListQueryCallback.loading, tokenListQueryCallback.data]);
+    }
+
+    useEffect(() => {
+        if (tokenListVariable.length > 0 && priceSymbols.length > 0) {
+            execTokenListQuery();
+        }
+    }, [tokenListVariable, priceSymbols])
 
     return (
         <div className="rd-signup-body">
