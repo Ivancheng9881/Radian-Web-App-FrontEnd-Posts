@@ -102,6 +102,7 @@ const SignupSummaryPage : FC = () => {
 
     return (
         <div className="rd-signup-body">
+            <div className="rd-signup-illustration rd-signup-illustration-blank"></div>
             <div className="rd-signup-summary">
                 <Row gutter={[0, 48]}>
                     <Col lg={24}>
@@ -112,7 +113,7 @@ const SignupSummaryPage : FC = () => {
                     <Col lg={24}>
                         <Row >
                             <Col lg={24}>
-                                <Typography.Title level={3} className='rd-signup-summary-heading rd-typo-reverse'>
+                                <Typography.Title level={5} className='rd-signup-summary-heading rd-typo-reverse'>
                                     Basic Information 
                                     <EditOutlined className="rd-signup-summary-icon" onClick={routeToInfo} />
                                 </Typography.Title>
@@ -125,7 +126,7 @@ const SignupSummaryPage : FC = () => {
                     <Col lg={24}>
                         <Row >
                             <Col lg={24}>
-                                <Typography.Title level={3} className='rd-signup-summary-heading rd-typo-reverse'>
+                                <Typography.Title level={5} className='rd-signup-summary-heading rd-typo-reverse'>
                                     Token 
                                     <EditOutlined className="rd-signup-summary-icon" onClick={routeToToken} />
                                 </Typography.Title>
@@ -138,7 +139,7 @@ const SignupSummaryPage : FC = () => {
                     <Col lg={24} >
                         <Row>
                             <Col lg={24}>
-                                <Typography.Title level={3} className='rd-signup-summary-heading rd-typo-reverse'>
+                                <Typography.Title level={5} className='rd-signup-summary-heading rd-typo-reverse'>
                                     NFT 
                                     <EditOutlined className="rd-signup-summary-icon" onClick={routeToNft}/>
                                 </Typography.Title>

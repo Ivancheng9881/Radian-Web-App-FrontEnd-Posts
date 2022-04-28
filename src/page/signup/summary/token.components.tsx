@@ -1,3 +1,4 @@
+import { Typography } from "antd";
 import { FC, useEffect, useState } from "react";
 import HorizontalCarousel from "../../../components/HorizontalCarousel";
 import TokenCarouselItem from "../../../components/TokenFrame/CarouselItem";
@@ -12,16 +13,22 @@ const SignupSummaryToken : FC<SignupSummaryTokenProps> = (props) => {
     const { tokenList=[] } = props;
 
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [ noPublicTokenAlert, setNoPublicTokenAlert ] = useState<string>();
 
     useEffect(() => {
         if (tokenList.length > 0) {
-            setIsLoading(false)
+            setIsLoading(false);
+        } else {
+            setTimeout(() => {
+                setIsLoading(false);
+                setNoPublicTokenAlert(`You didn't select any token`)
+            }, 5000);
         }
     }, [tokenList]);
 
     return (
         <div className="">
-            <HorizontalCarousel 
+            {!noPublicTokenAlert && <HorizontalCarousel 
                 itemWidth={200}
                 itemPadding={10}
                 iconSize={20}
@@ -39,8 +46,8 @@ const SignupSummaryToken : FC<SignupSummaryTokenProps> = (props) => {
                 {isLoading && [0,1,2,3,4,5,6].map((t) => {
                     return (<TokenCarouselItemSkeleton key={`token-skeleton-${t}`} />)
                 })}
-            </HorizontalCarousel>
-
+            </HorizontalCarousel>}
+            {noPublicTokenAlert && <Typography.Title className="rd-typo-reverse" level={5} >{noPublicTokenAlert}</Typography.Title>}
         </div>
     )
 };

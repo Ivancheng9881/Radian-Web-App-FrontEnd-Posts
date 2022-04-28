@@ -76,10 +76,9 @@ const fetchProfiles = async (
     try {
         let profile = await getIdentitytID(pid, network, SolWallet);
         let _profile = await ipfsUtils.getContentJson(profile.identityID);
-        console.log('kayton@debug', profile, _profile)
-        profile = {...profile, ..._profile, identityID: profile.identityID}
+        profile = {...profile, ..._profile, identityID: profile.identityID};
+        
         return profile
-    
     } catch(err) {
         console.log(err)
     }

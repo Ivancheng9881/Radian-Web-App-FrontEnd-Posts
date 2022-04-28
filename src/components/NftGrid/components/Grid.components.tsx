@@ -2,6 +2,7 @@ import { Col, Row } from "antd";
 import { FC } from "react";
 import { INFTList } from "..";
 import { INFTItem } from "../../../utils/nft/erc/index.d";
+import CustomScrollbar from "../../CustomScrollBar";
 import { NftGridItemActionProps } from "./Action/GridItemAction.components";
 import NftGridItem from "./GridItem.components";
 import NFTGridItemLoadmore from "./GridItemMore.components";
@@ -29,20 +30,22 @@ const NftGridView : FC<PageProps> = (props) => {
     
     return (
         <div className={`rd-nft-grid-root ${scrollable ? 'rd-nft-grid-scrollable' : ''}`}>
-            <Row gutter={[12, 12]}>
-                {data?.map((d, id) => {
-                    return (
-                        <NftGridItem 
-                            key={`${d.token_address}-${d.token_id}`}
-                            {...props}
-                            data={d}
-                            onIconClick={() => onIconClick(id)}
-                            visible={d[visibleKey]}
-                        />
-                    )
-                })}   
-                {handleFetchNext && <NFTGridItemLoadmore isLoading={buffering} onClick={handleFetchNext} /> }
-            </Row>
+            <CustomScrollbar height={500}>
+                <Row gutter={[12, 12]} style={{padding: 15}}>
+                    {data?.map((d, id) => {
+                        return (
+                            <NftGridItem 
+                                key={`${d.token_address}-${d.token_id}`}
+                                {...props}
+                                data={d}
+                                onIconClick={() => onIconClick(id)}
+                                visible={d[visibleKey]}
+                            />
+                        )
+                    })}   
+                    {handleFetchNext && <NFTGridItemLoadmore isLoading={buffering} onClick={handleFetchNext} /> }
+                </Row>
+            </CustomScrollbar>
         </div>
     )
 };

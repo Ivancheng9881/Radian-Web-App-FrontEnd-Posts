@@ -31,7 +31,7 @@ const PassportMePage : FC = () => {
             <Layout.Content>
                 <LandingSection />
                 <div style={{zIndex: 1001, position: 'relative'}}>
-                    <div className="rd-section" style={{marginTop: 80}}>
+                    <div className="rd-section" style={{paddingTop: 60}}>
                         <RadianPassport profile={profile} />
                     </div>
                     <div id='nft' className="rd-section rd-section-centered">
