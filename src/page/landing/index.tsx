@@ -7,14 +7,17 @@ import LandingSection2 from "./components/Section2";
 import LandingSection1 from "./components/Section1";
 import DefaultFooter from "../../components/Footer";
 import ScrollIndicator from "../../components/ScrollIndicator";
+import { useLocation } from "react-router";
 
-interface PageProps {
-
+interface LocationState {
+    scrollToSection?: number
 }
 
-const LangingPage : FC<PageProps> = () => {
+const LangingPage = () => {
 
     const NO_OF_ELEMENT = 3;
+
+    const location = useLocation<LocationState>();
 
     const [ scrollElHeight, setScrollElHeight ] = useState<number>(0);
     const [ slide, setSlide ] = useState<number>(1);
@@ -60,6 +63,13 @@ const LangingPage : FC<PageProps> = () => {
             window.removeEventListener('scroll', handleScroll);
         }
     }, [])
+
+    useEffect(() => {
+        if (location?.state?.scrollToSection > 0) {
+            let offset = (location.state.scrollToSection - 1) * window.innerHeight;
+            window.scrollTo(0, offset);
+        }
+    }, [location.state])
 
     return (
         <DefaultLayout>

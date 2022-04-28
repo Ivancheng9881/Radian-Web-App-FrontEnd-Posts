@@ -43,11 +43,12 @@ const SignupTokenPage : FC = () => {
         }
     `
 
-    const history = useHistory<History>();
+    const history = useHistory();
     const web3Context = useContext(Web3Context);
 
     const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>(COMMON_TOKEN_LIST);
-    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
+    // const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
+    const address = '0x6D0504A82d62689fE10877c846C644B630EA581e'
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
@@ -66,42 +67,18 @@ const SignupTokenPage : FC = () => {
     useEffect(() => {
         const { loading, error, data } = tokenListQueryCallback;
         if (!loading) {
-            const _tokenList = data.tokenList.map((t: ITokenBalance) => {
+            const _tokenList = data.tokenList?.map((t: ITokenBalance) => {
                 let lastPrice = getLastPriceBySymbol(t, data.priceFeed);
-                return {
-                    ...t,
-                    lastPrice: lastPrice
-                }
+
+                return { ...t, lastPrice: lastPrice }
             });
+
             setTokenList(_tokenList);
         };
         if (error) {
             throw(error)
         }
     }, [tokenListQueryCallback.loading, tokenListQueryCallback.data]);
-
-    /**
-     * method to get the latest price of the token
-     * @param t 
-     * @param priceFeed 
-     * @returns 
-     */
-    // const getLastPriceBySymbol = (t: ITokenBalance, priceFeed: IPriceFeed[]) => {
-    //     let b = t.tokens[0].symbol.toLowerCase();
-    //     let p : number = priceFeed.filter((v: IPriceFeed) => {
-    //         let a = v.symbol.toLowerCase();
-    //         if (b === 'weth') {
-    //             b = 'eth'
-    //         }
-    //         return a === b;
-    //     })[0]?.price || 1;
-        
-    //     if (b === 'usdt' || b === 'usdc') {
-    //         p = 1;
-    //     };
-
-    //     return p
-    // }
 
     return (
         <div className="rd-signup-body">

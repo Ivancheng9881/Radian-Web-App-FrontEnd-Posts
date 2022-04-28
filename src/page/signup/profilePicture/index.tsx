@@ -25,8 +25,20 @@ const SignupProfilePicturePage : FC = () => {
     const [ fileList, setFileList ] = useState<UploadFile[]>();
     const [ imgError, setImgError ] = useState<boolean>(true);
 
-    const handleNextClick = () => {
-        if (handleImgUpload()) history.push(SIGNUP_NFT_ROUTE);
+    const handleNextClick = async () => {
+        if (!file) {
+            return history.push(SIGNUP_NFT_ROUTE)
+        };
+
+        try {
+            const uploadResponse = await handleImgUpload();
+
+            if (uploadResponse) {
+                return history.push(SIGNUP_NFT_ROUTE)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     const handleReturnClick = () => history.push(SIGNUP_INFO_ROUTE);
@@ -38,11 +50,13 @@ const SignupProfilePicturePage : FC = () => {
     const handleImgUpload = async () : Promise<boolean> => {
         try {
             const response = await ipfsUtils.uploadContent(file);
+
             let cid = response.toString();
             setInfo({
                 ...info,
                 profilePictureCid: [cid, ...info.profilePictureCid]
             })
+
             return true;
         } catch (error: any) {
             console.log(error)

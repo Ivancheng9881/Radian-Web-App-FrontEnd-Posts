@@ -29,8 +29,6 @@ const SignupProvider : FC = ({children}) => {
     });
     const [ publicToken, setPublicToken ] = useState<string[]>([]);
 
-
-
     const updateInfo = (newState: ISignupInfo) => {
         setInfo(newState);
         localStorage.setItem(TEMP_PROFILE_KEY, JSON.stringify(newState))

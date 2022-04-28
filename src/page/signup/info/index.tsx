@@ -226,6 +226,8 @@ const SignupInfoPage : FC = () => {
                             <Col lg={24}>
                                 <RadianForm.Label label="Your interest(s)" >
                                     <RadianForm.TagSelect 
+                                        maxTagCount={5}
+                                        maxTagTextLength={20}
                                         options={TAG_OPTIONS} 
                                         onChange={arr => handleValUpdate('tags', arr)}
                                         value={info.tags} 

@@ -3,19 +3,10 @@ import Web3Context from '../../../utils/web3/context/web3.context';
 // import SolanaUtils from '../../utils/web3/context/solana.utils';
 import { truncateAddress } from '../../../utils/web3/general/parser.utils';
 import { useHistory } from 'react-router-dom';
-import { mainRoute, settingProfileRoute } from '../../../commons/route';
-
-import MetamaskIcon from '../../Icons/metamask.components';
-import PhantomIcon from '../../Icons/phantom.components';
-import Popup from 'reactjs-popup';
+import { mainRoute } from '../../../commons/route';
 import { preloadWalletIcon } from '../../../utils/preload';
-import UserContext from "../../../utils/user/context/user.context";
-import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
-import { Avatar, Button, Layout, Select, Space } from 'antd';
-import WalletPopupContext from '../../../utils/WalletPopup/context/walletPopup.context';
-import ProfileSettings from '../../ProfileCard/Full/ProfileSettings.components';
+import { Layout, Space, Typography } from 'antd';
 import config from '../../../commons/config';
-import { useImage } from 'react-image';
 import NavBarWalletPopOver from './ConnectWallet.components';
 import { FixLater } from '../../../schema/helper.interface';
 
@@ -23,15 +14,27 @@ const Navbar : FC = (props) => {
 
     const web3Context = useContext(Web3Context);
 
-    const history = useHistory<History>();
+    const history = useHistory();
     const [ address, setAddress ] = useState({});
     const [ currentWallet, setCurrentWallet ] = useState('Connect'); 
 
-    // const ref : React.RefObject<HTMLD> = useRef();
-    // const close = () => ref.current.close();  
-    
     const erc = 'metamask@erc';
     const sol = 'phantom@solana';
+
+    const routeToRadian = () => {
+        routeToLandingPage({scrollToSection: 2})
+    };
+
+    const routeToHowTo = () => {
+        routeToLandingPage({scrollToSection: 3})
+    };
+
+    const routeToLandingPage = (state: any) => {
+        history.push({
+            pathname: mainRoute,
+            state: state
+        })
+    }
 
     useEffect(() => {
         renderWalletBody();
@@ -88,9 +91,10 @@ const Navbar : FC = (props) => {
                     {/* use small icon when on mobile */}
                     <img src={`${config.assets.cdn}/logo/logo_horizontal_200x50.png`} alt="radian logo" />
                 </a>
-
                 {/* Wallet address on Navbar */}
                 <Space className='rd-navbar-control-root' size='large'>
+                    <Typography.Text className='rd-navbar-menuitem' onClick={routeToRadian} >RADIAN</Typography.Text>
+                    <Typography.Text className='rd-navbar-menuitem' onClick={routeToHowTo}>How to</Typography.Text>
                     <NavBarWalletPopOver />
                 </Space>
             </div>
