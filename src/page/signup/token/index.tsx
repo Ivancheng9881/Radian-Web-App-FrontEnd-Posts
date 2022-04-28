@@ -47,8 +47,7 @@ const SignupTokenPage : FC = () => {
     const web3Context = useContext(Web3Context);
 
     const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>(COMMON_TOKEN_LIST);
-    // const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
-    const address = '0x6D0504A82d62689fE10877c846C644B630EA581e'
+    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
