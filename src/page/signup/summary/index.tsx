@@ -82,7 +82,7 @@ const SignupSummaryPage : FC = () => {
     }
 
     useEffect(() => {
-        if (tokenListVariable) {
+        if (tokenListVariable.length > 0) {
             execQuery();
         }
     }, [tokenListVariable]);

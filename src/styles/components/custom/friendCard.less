@@ -1,0 +1,47 @@
+@friend-card-height: 260px;
+@friend-card-width: 210px;
+@friend-card-badge-size: 100px;
+
+.rd-friendCard-root {
+    margin: 10px;
+
+    .rd-friendCard-inner {
+        background-color: @theme-color-white-100;
+        height: @friend-card-height;
+        width: @friend-card-width;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: @card-shadow;
+    
+        padding: 45px 20px;
+
+        .rd-friendCard-avatar-root {
+            margin-bottom: 1rem;
+
+            .ant-badge,
+            .ant-avatar {
+                width: @friend-card-badge-size;
+                height: @friend-card-badge-size;
+            }
+        }
+
+        .rd-friendCard-info-root {
+            .ant-typography {
+                margin-bottom: 0px;
+            }
+            
+            .rd-friendCard-info-meta {
+                color: @theme-color-grey-100;
+                opacity: 0.5;
+                font-size: 18px;
+            }
+        }
+    }
+}
+
+.rd-friendCard-carousel-root {
+    width: 90vw;
+    max-width: (@friend-card-width * 7.5);
+    margin-left: auto;
+    margin-right: auto;
+}

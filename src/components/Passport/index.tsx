@@ -1,9 +1,9 @@
 import { Button, Col, Image, Row, Space, Tag, Typography } from "antd";
 import { FC, useEffect, useState } from "react"
 import { useImage } from "react-image";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import config from "../../commons/config";
-import { PASSPORT_ME_ROUTE } from "../../commons/route";
+import { PASSPORT_ME_ROUTE, PASSPORT_ROUTE } from "../../commons/route";
 import { FullProfile } from "../../schema/profile/profile.interface";
 import ipfsUtils from "../../utils/web3/ipfs/ipfs.utils";
 
@@ -15,15 +15,19 @@ interface PageProps {
 const RadianPassport: FC<PageProps> = (props) => {
     const { profile, clickable=false} = props;
     const history = useHistory();
+    const location = useLocation()
 
     const [ imgList, setImgList ] = useState<string[]>([]);
 
-    const routeToPassportMe = () => history.push({
-        pathname: PASSPORT_ME_ROUTE,
-        state: {
-            scrollTo: 'nft'
-        }
-    });
+    const routeToPassportMe = () => {
+        let path = location.pathname === PASSPORT_ROUTE ? PASSPORT_ME_ROUTE : PASSPORT_ROUTE;
+        history.push({
+            pathname: path,
+            state: {
+                scrollTo: 'nft'
+            }
+        });
+    }
 
     useEffect(() => {
         if (profile?.profilePictureCid?.length > 0) {
@@ -36,7 +40,7 @@ const RadianPassport: FC<PageProps> = (props) => {
             <div className="rd-passport-body">
                 <Row style={{height: '100%'}} gutter={[36, 0]}>
                     <Col lg={8} >
-                        <Space direction="vertical" size='large' style={{height: '100%'}}>
+                        <Space direction="vertical" size='large' style={{height: '100%', gap: 56}} >
                             <Image
                                 src={`${config.assets.cdn}/logo/logo_black.png`} 
                                 preview={false}
@@ -50,7 +54,7 @@ const RadianPassport: FC<PageProps> = (props) => {
                                     preview={false}     
                                 />
                             </div>
-                            <div >
+                            <div className="rd-passport-username">
                                 <Typography.Text className='rd-typo-reverse rd-passport-label'>
                                     username:
                                 </Typography.Text>
@@ -138,9 +142,9 @@ const RadianPassport: FC<PageProps> = (props) => {
                                     })}
                                     </div>
                                 </Col>
-                                {clickable && <Col lg={8}>
+                                {<Col lg={8} style={{paddingTop: 60}} >
                                     <Button onClick={routeToPassportMe} size="large" shape="round" type="primary" className="rd-btn-light" >
-                                        Assets
+                                        {location.pathname === PASSPORT_ROUTE ? 'Assets' : 'Back'}
                                     </Button>
                                 </Col>}
                             </Row>

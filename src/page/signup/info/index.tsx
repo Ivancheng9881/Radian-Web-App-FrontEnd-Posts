@@ -145,6 +145,7 @@ const SignupInfoPage : FC = () => {
                                     isError={validation.username.error}
                                 >
                                     <RadianForm.Input 
+                                        maxLength={12}
                                         id='signup-username'
                                         onChange={e => handleValUpdate('username', e.target.value)} 
                                         value={info.username}    

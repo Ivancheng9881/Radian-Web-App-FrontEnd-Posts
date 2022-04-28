@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 import Web3Context from "../../../utils/web3/context/web3.context";
 import { truncateAddress } from "../../../utils/web3/general/parser.utils";
 import NavBarWalletPopOverContent from "./ConnectWalletPopOverContent.components";
-import { PASSPORT_ME_ROUTE } from "../../../commons/route";
+import { PASSPORT_ME_ROUTE, PASSPORT_ROUTE } from "../../../commons/route";
 
 
 const NavBarWalletPopOver : FC = () => {
@@ -20,7 +20,7 @@ const NavBarWalletPopOver : FC = () => {
             size='large' 
             type='primary' 
             className='rd-wallet-connected'
-            onClick={e => history.push(PASSPORT_ME_ROUTE)}
+            onClick={e => history.push(PASSPORT_ROUTE)}
         >
             {truncateAddress(providers[providers.selected])}
         </Button>

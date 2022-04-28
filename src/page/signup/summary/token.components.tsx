@@ -13,17 +13,13 @@ const SignupSummaryToken : FC<SignupSummaryTokenProps> = (props) => {
     const { tokenList=[] } = props;
 
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
-    const [ noPublicTokenAlert, setNoPublicTokenAlert ] = useState<string>();
+    const [ noPublicTokenAlert, setNoPublicTokenAlert ] = useState<string>(`You didn't select any token`);
 
     useEffect(() => {
+        console.log(tokenList)
         if (tokenList.length > 0) {
             setIsLoading(false);
-        } else {
-            setTimeout(() => {
-                setIsLoading(false);
-                setNoPublicTokenAlert(`You didn't select any token`)
-            }, 5000);
-        }
+        };
     }, [tokenList]);
 
     return (
@@ -43,11 +39,11 @@ const SignupSummaryToken : FC<SignupSummaryTokenProps> = (props) => {
                         label={t.tokens[0].symbol}
                     />)
                 })}
-                {isLoading && [0,1,2,3,4,5,6].map((t) => {
+                {/* {isLoading && [0,1,2,3,4,5,6].map((t) => {
                     return (<TokenCarouselItemSkeleton key={`token-skeleton-${t}`} />)
-                })}
+                })} */}
             </HorizontalCarousel>}
-            {noPublicTokenAlert && <Typography.Title className="rd-typo-reverse" level={5} >{noPublicTokenAlert}</Typography.Title>}
+            {(tokenList.length === 0) && <Typography.Title className="rd-typo-reverse" level={5} >{noPublicTokenAlert}</Typography.Title>}
         </div>
     )
 };

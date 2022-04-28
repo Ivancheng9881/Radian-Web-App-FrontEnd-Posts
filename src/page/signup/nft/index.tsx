@@ -28,8 +28,8 @@ const SignupTokenPage : FC = () => {
     const web3Context = useContext(Web3Context);
     const signupContext: ISignupContext = useContext(SignupContext);
     
-    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
-    // const address = '0x8e79eF9e545Fa14e205D89970d50E7caA3456683'
+    // const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
+    const address = '0x8e79eF9e545Fa14e205D89970d50E7caA3456683'
     const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum');
 
     const handleNextClick = () => {

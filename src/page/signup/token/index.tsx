@@ -98,15 +98,17 @@ const SignupTokenPage : FC = () => {
                             <div className="rd-flexbox rd-flexbox-full rd-flexbox-vertical">
                                 {/* title */}
                                 <div className="rd-signup-card-title">
-                                    <Typography.Title level={2}>
+                                    <Typography.Title level={3}>
                                         Token Assets
                                     </Typography.Title>
                                 </div>
                                 {/* subtitle */}
+                                {/* <br/><br/><br/>
+                                <br/> */}
                                 <div className="rd-signup-card-subtitle">
-                                    <Typography.Title level={3}>
+                                    {/* <Typography.Title level={3}>
                                         New Tokens Assets
-                                    </Typography.Title>
+                                    </Typography.Title> */}
                                 </div>
                                 <TokenTable data={tokenList} />
                             </div>
