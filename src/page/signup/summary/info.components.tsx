@@ -1,5 +1,6 @@
 import { Col, Image, Row } from "antd";
 import { FC, useContext } from "react";
+import { useImage } from "react-image";
 import config from "../../../commons/config";
 import RadianInput from "../../../components/RadianForm";
 import ipfsUtils from "../../../utils/web3/ipfs/ipfs.utils";
@@ -10,13 +11,17 @@ import { ISignupContext } from "../type";
 const SignupSummaryInfo : FC = () => {
 
     const { info } : ISignupContext = useContext(SignupContext);
+    const { src, isLoading } = useImage({
+        srcList: ipfsUtils.getImageFromCDNFailover(info.profilePictureCid[0]),
+        useSuspense: false,
+    });
 
     return (
         <Row>
             <Col lg={8} className="rd-propic" >
                 <Image
                     width={300}
-                    src={ipfsUtils.getContentUrl(info.profilePictureCid[0])} 
+                    src={src} 
                     fallback={`${config.assets.cdn}/misc/propic_placeholder.png`}
                     preview={false}
                 />

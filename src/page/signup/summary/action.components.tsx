@@ -31,9 +31,15 @@ const SignupSummaryAction : FC = () => {
             nft: publicNft,
             token: publicToken
         };
-        const cid = await ProfileContractUtils.createProfileCid(identityJson)
-        setIdentityCid(cid);
-        createProfileTx(cid);
+        try {
+            const cid = await ProfileContractUtils.createProfileCid(identityJson);
+            if (cid) {
+                setIdentityCid(cid);
+                await createProfileTx(cid);                    
+            }
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     const createProfileTx = async (cid: any) => {

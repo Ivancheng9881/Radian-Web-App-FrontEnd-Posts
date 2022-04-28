@@ -12,7 +12,6 @@ const FriendAvatar : FC<PageProps> = ({
     identity
 }) => {
 
-
     const { src, isLoading } = useImage({
         srcList: ipfsUtils.getImageFromCDNFailover(identity.content.profilePictureCid[0]),
         useSuspense: false,

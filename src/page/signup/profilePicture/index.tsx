@@ -1,4 +1,4 @@
-import { Button, Image, Typography, Upload } from "antd";
+import { Button, Image, message, Typography, Upload } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import ImgCrop from "antd-img-crop";
@@ -23,6 +23,7 @@ const SignupProfilePicturePage : FC = () => {
     const [ previewImg, setPreviewImg ] = useState('');
     const [ file, setFile ] = useState<UploadFile>();
     const [ fileList, setFileList ] = useState<UploadFile[]>();
+    const [ imgError, setImgError ] = useState<boolean>(true);
 
     const handleNextClick = () => {
         if (handleImgUpload()) history.push(SIGNUP_NFT_ROUTE);
@@ -48,16 +49,40 @@ const SignupProfilePicturePage : FC = () => {
         }
     }
 
-    const handleUploadClick = async (file: any, fileList: UploadFile[]) => {
-        setFile(file);
-        setFileList(fileList);
-        try {
-            let preview = await _getBase64(file);
-            setPreviewImg(preview)
-        } catch (error) {
-            console.log(error)
+    const validateImg = (file: any) : boolean => {
+        let acceptedFileFormat = ['image/jpg', 'image/jpeg', 'image/png'];
+        if (!acceptedFileFormat.includes(file.type)) {
+            message.error('You can upload JPG/JPEG/PNG file!');
+            return false
         }
-        return false
+
+        let maxImgSize = 1024 * 1024 / 2;
+        if (file.size > maxImgSize) {
+            message.error('Your file is large than 500KB');
+            return false
+        }
+
+        return true;
+    }
+
+    const handleUploadClick = async (file: any, fileList: UploadFile[]) => {
+        const validatedImg = validateImg(file);
+        if (!validatedImg) {
+            setImgError(true)
+            return false;
+        } else {
+            setImgError(false)
+            setFile(file);
+            setFileList(fileList);
+            try {
+                let preview = await _getBase64(file);
+                setPreviewImg(preview)
+            } catch (error) {
+                console.log(error)
+            }
+            return false
+    
+        }
     };
 
     const _getBase64 = async (file: any): Promise<string> => {
@@ -81,6 +106,7 @@ const SignupProfilePicturePage : FC = () => {
         if (info.profilePictureCid.length > 0) {
             let src = ipfsUtils.getMediaUrl(info.profilePictureCid[0]);
             setPreviewImg(src);
+            setImgError(false)
         }
     }, [info.profilePictureCid])
 
@@ -111,7 +137,7 @@ const SignupProfilePicturePage : FC = () => {
                                     </Typography.Title>
                                     <div>
                                         <Typography.Text strong>
-                                            Max file size 10 MB
+                                            Max file size 500KB
                                         </Typography.Text>
                                     </div>
                                 </div>
@@ -141,6 +167,7 @@ const SignupProfilePicturePage : FC = () => {
                             shape="round"
                             size="large"
                             onClick={handleNextClick}
+                            disabled={imgError}
                         >
                             Next
                         </Button>

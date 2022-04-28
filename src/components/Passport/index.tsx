@@ -1,5 +1,6 @@
 import { Button, Col, Image, Row, Space, Tag, Typography } from "antd";
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
+import { useImage } from "react-image";
 import { useHistory } from "react-router";
 import config from "../../commons/config";
 import { PASSPORT_ME_ROUTE } from "../../commons/route";
@@ -15,6 +16,8 @@ const RadianPassport: FC<PageProps> = (props) => {
     const { profile, clickable=false} = props;
     const history = useHistory();
 
+    const [ imgList, setImgList ] = useState<string[]>([]);
+
     const routeToPassportMe = () => history.push({
         pathname: PASSPORT_ME_ROUTE,
         state: {
@@ -22,21 +25,28 @@ const RadianPassport: FC<PageProps> = (props) => {
         }
     });
 
+    useEffect(() => {
+        if (profile?.profilePictureCid?.length > 0) {
+            setImgList(ipfsUtils.getImageFromCDNFailover(profile.profilePictureCid[0]))
+        }
+    }, [profile?.profilePictureCid])
+
     return (
         <div className="rd-passport-root">
             <div className="rd-passport-body">
                 <Row style={{height: '100%'}} gutter={[36, 0]}>
                     <Col lg={8} >
                         <Space direction="vertical" size='large' style={{height: '100%'}}>
-                            <Image 
+                            <Image
                                 src={`${config.assets.cdn}/logo/logo_black.png`} 
                                 preview={false}
                                 width={200}
                             />
                             <div className="rd-passport-avatar">
                                 <Image 
-                                    src={`${ipfsUtils.getContentUrl(profile.profilePictureCid[0])}`} 
-                                    fallback={`${config.assets.cdn}/misc/propic_placeholder.png`}
+                                    src={imgList.length > 0 && imgList[0]}
+                                    fallback={imgList.length > 0 && imgList[1]}
+                                    placeholder={<img src={`${config.assets.cdn}/misc/propic_placeholder.png`} />}
                                     preview={false}     
                                 />
                             </div>
