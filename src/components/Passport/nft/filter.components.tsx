@@ -21,7 +21,7 @@ const NftPaginationFilter : FC<NftPaginationFilterProps> = (props) => {
         <div className="rd-nft-filter-action">
             <RadianInput.Select value={network}  onChange={value => setNetwork(value)}>
                 {supportedNetwork.map((o) => {
-                    return <Select.Option value={o} key={`nft-page-filter-option-${o}`}>{o}</Select.Option>
+                    return <Select.Option value={o} key={`nft-page-filter-option-${o}`}>{o.toUpperCase()}</Select.Option>
                 })}
             </RadianInput.Select>
         </div>

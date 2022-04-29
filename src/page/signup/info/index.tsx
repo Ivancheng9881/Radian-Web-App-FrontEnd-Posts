@@ -185,10 +185,11 @@ const SignupInfoPage : FC = () => {
                                     <RadianForm.Select 
                                         value={info.gender}
                                         onChange={val => handleValUpdate('gender', val)} 
+                                        style={{textTransform: 'capitalize'}}
                                     >
                                         { gender.map((g) => {
                                             return <Select.Option key={`signup-${g.value}`} value={g.value}>
-                                                {g.label}
+                                                <span style={{textTransform: 'capitalize'}}>{g.label}</span>
                                             </Select.Option>
                                         })}
                                     </RadianForm.Select>

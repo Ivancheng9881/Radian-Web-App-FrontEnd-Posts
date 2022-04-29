@@ -55,7 +55,7 @@ const SignupSummaryInfo : FC = () => {
                     </Col>
                     <Col lg={8} sm={8} >
                         <RadianInput.Label label='Gender' >
-                            <RadianInput.Input value={info.gender} disabled />
+                            <RadianInput.Input value={info.gender} disabled style={{textTransform: 'capitalize'}} />
                         </RadianInput.Label>
                     </Col>
                     <Col lg={8} sm={8} >

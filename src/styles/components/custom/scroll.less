@@ -26,10 +26,12 @@
     .rd-scroll-body {
         position: relative;
         height: @rd-scroll-icon-height;
+        opacity: 1;
         width: @rd-scroll-icon-width;
         border: @rd-scoll-border-width solid @theme-color-purple-100;
         border-radius: (@rd-scroll-icon-width / 2);
         background: transparent;
+        transform: .3s;
 
         .rd-scroll-dot-root {
             position: absolute;
@@ -40,5 +42,13 @@
             left: ((@rd-scroll-icon-width - @rd-scroll-dot-size - @rd-scoll-border-width * 2) / 2);
             animation: scroll-dot-movement 2s infinite;
         }
+    }
+}
+
+.rd-scroll-root-hidden {
+    .rd-scroll-body {
+        height: 0px;
+        opacity: 0;
+        transition: .3s;
     }
 }

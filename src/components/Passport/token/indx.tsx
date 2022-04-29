@@ -15,6 +15,8 @@ interface PassportTokenAssetsProps {
 const PassportTokenAssets : FC<PassportTokenAssetsProps> = (props) => {
     const { data, address } = props;
 
+    console.log(address)
+
     const TOKEN_BALANCE_QUERY = gql`
         query getTokenList(
             $address: String!,
@@ -78,7 +80,7 @@ const PassportTokenAssets : FC<PassportTokenAssetsProps> = (props) => {
         if (tokenListVariable) {
             execQuery();
         }
-    }, [tokenListVariable]);
+    }, [tokenListVariable, address]);
 
     return (
         <div className="rd-passport-asset-root rd-passport-nft" >

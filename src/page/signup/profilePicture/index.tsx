@@ -95,7 +95,6 @@ const SignupProfilePicturePage : FC = () => {
                 console.log(error)
             }
             return false
-    
         }
     };
 
@@ -166,7 +165,7 @@ const SignupProfilePicturePage : FC = () => {
                                             onRemove={handleImgRemove}
                                         >
                                             <Button shape="round" size="large" type="primary" >
-                                                Upload Now
+                                                {file ? 'Upload now' : 'Replace image'}
                                             </Button>    
                                         </Upload>
                                     </ImgCrop>

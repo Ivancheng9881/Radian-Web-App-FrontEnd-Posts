@@ -28,8 +28,8 @@ const SignupTokenPage : FC = () => {
     const web3Context = useContext(Web3Context);
     const signupContext: ISignupContext = useContext(SignupContext);
     
-    // const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
-    const address = '0x8e79eF9e545Fa14e205D89970d50E7caA3456683'
+    const [ address, setAddress ] = useState<string>(web3Context.providers?.['metamask@erc']);
+    // const address = '0x8e79eF9e545Fa14e205D89970d50E7caA3456683'
     const [ currentNetwork, setCurrentNetwork ] = useState<string>('ethereum');
 
     const handleNextClick = () => {
@@ -98,7 +98,7 @@ const SignupTokenPage : FC = () => {
                         <Row className="rd-signup-nft-network">
                             <Col lg={24} style={{textAlign: 'center'}} >
                                 <Typography.Title level={3}>
-                                    NFTs Assets
+                                    NFT Asset
                                 </Typography.Title>
                             </Col>
                             <Col lg={3} sm={4}>
@@ -106,9 +106,10 @@ const SignupTokenPage : FC = () => {
                                     <RadianInput.Select 
                                         value={currentNetwork} 
                                         onChange={handleNetworkChange}
+                                        style={{textTransform: 'capitalize'}}
                                     >
                                         {NETWORK_OPTIONS.map((n) => {
-                                            return (<Select.Option key={n.value} value={n.value} >
+                                            return (<Select.Option key={n.value} value={n.value} style={{textTransform: 'capitalize'}}>
                                                 {n.label}
                                             </Select.Option>)
                                         })}

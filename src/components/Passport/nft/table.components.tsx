@@ -7,6 +7,7 @@ import CustomScrollbar from "../../CustomScrollBar";
 import NftPaginationAction from "./pagination.components";
 import NftPaginationFilter, { NftPaginationFilterProps } from "./filter.components";
 import { IDisplayNft } from "../../../schema/profile/profile.interface";
+import config from "../../../commons/config";
 
 interface NftPaginatedViewProps extends NftGridItemActionProps, NftPaginationFilterProps {
     data: IDisplayNft,
@@ -72,18 +73,28 @@ const NftPaginatedView : FC<NftPaginatedViewProps> = (props) => {
                     setCurrentPage={setCurrentPage}
                 />
             </div>
-            <CustomScrollbar height={550}>
-                <Row gutter={[12, 12]} style={{padding: 10}}>
-                    {displayData?.slice(...slices).map((d, id) => {
-                        return (<NftGridItem 
-                            key={`${d.token_address}-${d.token_id}-${id}`}
-                            {...props}
-                            data={d}
-                            visible={d[visibleKey]}
-                        />)
-                    })}
-                </Row>
-            </CustomScrollbar>
+            {
+                !(displayData?.length > 0) 
+                ? <div className="rd-grid-not-found">
+                    <img src={`${config.assets.cdn}/passport/nft_not_found.png`} />
+                    <div className="rd-grid-not-found-content">
+                        Get NFT to unlock this function! 
+                    </div>
+                </div>
+                : <CustomScrollbar height={550}>
+                    <Row gutter={[12, 12]} style={{padding: 10}}>
+                        {displayData?.slice(...slices).map((d, id) => {
+                            return (<NftGridItem 
+                                key={`${d.token_address}-${d.token_id}-${id}`}
+                                {...props}
+                                data={d}
+                                visible={d[visibleKey]}
+                            />)
+                        })}
+
+                    </Row>
+                </CustomScrollbar>
+            }
         </div>
     )
 };

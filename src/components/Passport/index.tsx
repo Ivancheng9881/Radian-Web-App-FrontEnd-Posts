@@ -38,9 +38,9 @@ const RadianPassport: FC<PageProps> = (props) => {
     return (
         <div className="rd-passport-root">
             <div className="rd-passport-body">
-                <Row style={{height: '100%'}} gutter={[36, 0]}>
+                {profile && <Row style={{height: '100%'}} gutter={[36, 0]}>
                     <Col lg={8} >
-                        <Space direction="vertical" size='large' style={{height: '100%', gap: 56}} >
+                        <Space className="rd-passport-left-row" direction="vertical" size='large' style={{height: '100%'}} >
                             <Image
                                 src={`${config.assets.cdn}/logo/logo_black.png`} 
                                 preview={false}
@@ -59,7 +59,7 @@ const RadianPassport: FC<PageProps> = (props) => {
                                     username:
                                 </Typography.Text>
                                 <Typography.Title level={3} className='rd-typo-reverse'>
-                                    {profile.username?.toUpperCase() || ''}
+                                    {profile.username || ''}
                                 </Typography.Title>
                             </div>
                         </Space>
@@ -96,7 +96,7 @@ const RadianPassport: FC<PageProps> = (props) => {
                                         Gender:
                                     </Typography.Text>
                                     <div className="rd-passport-field">
-                                        <Typography.Title level={5} className='rd-typo-reverse'>
+                                        <Typography.Title level={5} className='rd-typo-reverse' style={{textTransform: 'capitalize'}}>
                                             {profile.gender}
                                         </Typography.Title>
                                     </div>
@@ -150,7 +150,7 @@ const RadianPassport: FC<PageProps> = (props) => {
                             </Row>
                         </Space>
                     </Col>
-                </Row>
+                </Row>}
             </div>
         </div>
     )

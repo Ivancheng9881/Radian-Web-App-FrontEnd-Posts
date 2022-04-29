@@ -70,7 +70,7 @@ const LandingSection1 : FC<PageProps> = ({isActive, passRef}) => {
                         <Row gutter={{sm: 0, md: 24}}>
                             <Col span={24}>
                                 <LandingConnectWallet 
-                                    title='Metamamsk'
+                                    title='Metamask'
                                     iconName="metamask_square.png"
                                     downloadUri={WALLET_DOWNLOAD_LINK['metamask'][userAgent]}
                                     onClick={handleConnectMetamask}

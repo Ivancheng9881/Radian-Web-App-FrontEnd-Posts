@@ -1,6 +1,7 @@
 import { CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import React, { useState, FC, useEffect, useRef, useLayoutEffect, memo } from "react";
+import { clearInterval } from "timers";
 import { StyleSheet } from "../../schema/helper.interface";
 
 interface PageProps {
@@ -11,6 +12,7 @@ interface PageProps {
     count: number,
     fetchDataCallback?: () => Promise<void>,
     fetchBuffer?: number,
+    autoScroll?: boolean
 }
 
 const HorizontalCarousel : FC<PageProps> = ({
@@ -21,7 +23,8 @@ const HorizontalCarousel : FC<PageProps> = ({
     iconMargin=10,
     count,
     fetchDataCallback,
-    fetchBuffer=5
+    fetchBuffer=5,
+    autoScroll=false
 }) => {
 
     const [ offset, setOffset ] = useState(0);
@@ -30,7 +33,17 @@ const HorizontalCarousel : FC<PageProps> = ({
 
     useEffect(() => {
         setBuffering(false);
-    }, [count])
+    }, [count]);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            handleNext();
+        }, 10);
+
+        return () => {
+            clearInterval(intervalId)
+        }
+    }, [autoScroll]);
 
     const styles: StyleSheet = {
         root: {
@@ -62,27 +75,30 @@ const HorizontalCarousel : FC<PageProps> = ({
         },
     };
 
-    const handlePrev = (e: any) => {
-        e.preventDefault()
+    const handlePrev = () => {
         setOffset((prevState) => {
             prevState--
             return prevState
         });
     }
 
-    const handleNext = (e: any) => {
-        e.preventDefault()
+    const handleNext = () => {
         setOffset((prevState) => {
-            prevState++
+            if (shouldUpdateOffset(prevState)) return prevState;
+
+            prevState++;
             if (prevState + fetchBuffer > count && !buffering) {
                 setBuffering(true)
-                fetchDataCallback();
+                fetchDataCallback && fetchDataCallback();
             };
+
             return prevState
         });
     };
 
-    const shouldNextDisabled = count < Math.floor(bodyInnerRef.current?.offsetWidth / itemWidth) + offset
+    const shouldUpdateOffset = (val: number) => count < Math.floor(bodyInnerRef.current?.offsetWidth / itemWidth) + val;
+
+    const shouldNextDisabled = shouldUpdateOffset(offset);
 
     return (
         <div style={styles.root}>

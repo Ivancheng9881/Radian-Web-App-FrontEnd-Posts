@@ -44,7 +44,7 @@ const LandingSection3 : FC<PageProps> = ({passRef, isActive}) => {
     }
 
     useEffect(() => {
-      const timer = setInterval(() => setCounter(counter + 1), 5000);
+      const timer = setInterval(() => setCounter(counter + 1), 3500);
       return () => clearInterval(timer);
     }, [counter]);
 

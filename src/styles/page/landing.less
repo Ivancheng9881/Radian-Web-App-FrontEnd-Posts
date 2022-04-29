@@ -5,7 +5,6 @@
 @rd-landing-circle-size: 250px;
 @rd-landing-circle-offset: (@rd-landing-circle-size / 2);
 
-
 .rd-bkgd-circle-group {
     position: absolute;
 
@@ -95,10 +94,10 @@
 
 @rd-landing-orbit-size: 1000px;
 
-@orbit-rotation-item-1: 180deg;
+@orbit-rotation-item-1: 195deg;
 @orbit-rotation-item-2: 240deg;
 @orbit-rotation-item-3: 300deg;
-@orbit-rotation-item-4: 360deg;
+@orbit-rotation-item-4: 345deg;
 
 
 .rd-landing-orbit-root {
@@ -127,6 +126,7 @@
     .rd-landing-orbit-item {
         filter: grayscale(1);
         background-color: #fefefe;
+        opacity: 0.6;
         border-radius: 50%;
         grid-column: 1;
         grid-row: 1;
@@ -135,6 +135,7 @@
 
     .rd-landing-orbit-item.rd-active {
         filter: grayscale(0);
+        opacity: 1;
         background-color: @theme-color-white-100;
         grid-column: 1;
         grid-row: 1;

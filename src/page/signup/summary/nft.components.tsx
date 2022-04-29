@@ -1,3 +1,4 @@
+import { Typography } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
 import NftGridView from "../../../components/NftGrid/components/Grid.components";
 import { INFTItem } from "../../../utils/nft/erc/index.d";
@@ -22,7 +23,10 @@ const SignupSummaryNft : FC = () => {
     
     return (
         <div>
-            <NftGridView data={data} buffering={buffering} scrollable />
+            {(data?.length === 0) 
+                ? <Typography.Title className="rd-typo-reverse" level={5} >You didn't select any NFT</Typography.Title>
+                : <NftGridView data={data} buffering={buffering} scrollable />
+            }
         </div>
     )
 };
