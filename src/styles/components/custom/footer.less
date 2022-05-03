@@ -9,16 +9,16 @@
     background: linear-gradient(0deg, rgba(255,255,255,1) 80%, rgba(255,255,255,0) 100%);
     display: flex;
     align-items: flex-end;
-
     .rd-footer {
         height: @rd-footer-height;
         background-color: @theme-color-black-200;
         width: 100%;
-        padding: 250px 200px;
-
+        padding: 250px 100px;
         .rd-footer-text {
             color: @theme-color-white-100;
             font-size: 16px;
+            display: flex;
+            width: 300px;
         }
     }
 
@@ -27,7 +27,7 @@
             height: @rd-footer-height;
             background-color: @theme-color-black-200;
             width: 100%;
-            padding: 60px 30px 30px;
+            padding: 90px 30px 90px;
         }
     }
 }
@@ -41,7 +41,6 @@
 
         .rd-footer {
             height: calc(@rd-footer-height-sm - @rd-landing-section-offset-top);
-
             .rd-footer-logo {
                 width: 200px;
             }
@@ -54,3 +53,4 @@
         }    
     }
 }
+

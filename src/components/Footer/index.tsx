@@ -68,14 +68,15 @@ const DefaultFooter: FC<DefaultFooterProps> = (props) => {
                 </Space>
               </Space>
             </Col>
-            <Col lg={12} md={24}>
-              <Typography.Text className="rd-footer-text">
-                Liberate The Social Ecosystem  
-                <br>
-                </br>
-                Redefine The Ownership of Data
-              </Typography.Text>
-            </Col>
+            <Space direction="horizontal" size="large">
+              <Col lg={12} md={24} sm={24}>
+                <Typography.Text className="rd-footer-text">
+                  Liberate The Social Ecosystem 
+                  <br></br>
+                  Redefine The Ownership of Data
+                </Typography.Text>
+              </Col>
+            </Space>
           </Row>
         </div>
       </div>
