@@ -1,6 +1,7 @@
 @rd-passport-width: 971px;
 @rd-passport-avatar-size: 200px;
 
+
 .rd-passport-root {
     padding: 30px 0;
 
@@ -29,7 +30,7 @@
         }
 
         .rd-passport-label {
-            font-size: 20px;
+            font-size: 2vw;
             font-weight: 600;
         }
 
@@ -52,6 +53,20 @@
                 overflow: hidden;
             }
         }
+    }
+    @media screen and (max-width: 1000px) {
+        .rd-passport-body {
+            width: 80vw;
+
+            .rd-passport-avatar {
+                img {
+                    height: (@rd-passport-avatar-size / 1.6);
+                    width: (@rd-passport-avatar-size / 1.6);
+                    border-radius: calc(@rd-passport-avatar-size / 2);
+                }
+            }
+        }
+
     }
 }
 
@@ -116,4 +131,10 @@
         color: @theme-color-white-100;
     }
 
+}
+
+.rd-passport-title {
+    width: 100%;
+    max-width: 150px;
+    height: 100%;
 }
