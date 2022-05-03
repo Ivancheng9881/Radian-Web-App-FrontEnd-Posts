@@ -34,7 +34,7 @@ const NftGridView : FC<PageProps> = (props) => {
             { data?.length === 0 
                 ? <div className="rd-grid-not-found rd-typo-reverse rd-typo-solid" style={{paddingTop: 100}}>
                     <img src={`${config.assets.cdn}/passport/nft_not_found_white.png`} />
-                    <div className="rd-grid-not-found-content">
+                    <div className="rd-grid-not-found-content" style={{paddingTop: 30}}>
                         Get NFT to unlock this function! 
                     </div>
                 </div>

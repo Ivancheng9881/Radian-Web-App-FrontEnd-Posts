@@ -87,7 +87,6 @@ const Web3Provider : FC = ({ children }) => {
 
         try {
             const result = await window.solana.connect({onlyIfTrusted: true });
-            console.log(result)
             setProviders((prevState) => ({
                 ...prevState,
                 [phantomObjKey]: result.publicKey,
@@ -109,13 +108,13 @@ const Web3Provider : FC = ({ children }) => {
             if (result.length != 0) {
                 connectERCProvider(true).then(
                     (addressList)=>{
-                        console.log("Address list", addressList);
                         const connectingAddress: string = prevProviders && prevProviders["metamask@erc"] in addressList ? prevProviders["metamask@erc"] : addressList[0];
                         setProviders((prevState) => ({
                             ...prevState,
                             [metamaskObjKey]: connectingAddress, 
                             selected: prevProviders && prevProviders.selected == 'metamask@erc' ? 'metamask@erc' : prevState.selected
                         }));
+                        setNetworkId(getEthereumChainId());
                     }                        
                 ); // handle connection here    
             }
@@ -162,9 +161,11 @@ const Web3Provider : FC = ({ children }) => {
             storeProviderDetails({...prevState, selected: newProvider});
             return {...prevState, selected: newProvider};
         });
-    }
+    };
 
-    const connectProvider = async (network: string) => {
+    const connectProvider = async (
+        network: 'erc' | 'solana'
+        ) => {
         SplashContext.setIsLoading(true);
 
         if (network === 'solana') {
@@ -176,6 +177,7 @@ const Web3Provider : FC = ({ children }) => {
                 const resp: string[] = await connectERCProvider();
                 if (resp.length > 0) {
                     message.success(`${resp.length} wallet(s) connected`);
+                    setNetworkId(getEthereumChainId())
                     SplashContext.setIsLoading(false);
                 }
                 return resp;            
@@ -184,6 +186,27 @@ const Web3Provider : FC = ({ children }) => {
             }
         }
     };
+
+    const getEthereumChainId = (): number => {
+        return window.ethereum.networkVersion;
+    }   
+
+    const isPolygonOrChangeNetwork = async () : Promise<boolean> => {
+        // first verify is the wallet is connected
+        console.log('isPolygonOrChangeNetwork')
+        try {
+            if (networkId != 137) {
+                message.info('we are switching you to the Polygon Mainnet')
+                
+                return await ERCUtils.switchNetwork('0x89');
+            } else {
+                return true;
+            }
+
+        } catch (error) {
+            
+        }
+    }
 
     const storeProviderDetails = (providerObj: WalletProvider) => {
         window.localStorage.setItem('providerDetails', JSON.stringify(providerObj));
@@ -211,6 +234,7 @@ const Web3Provider : FC = ({ children }) => {
     const providerValue = {
         connect: connectProvider,
         switchProvider: switchProvider,
+        isPolygonOrChangeNetwork: isPolygonOrChangeNetwork,
         providers: providers,
         network: networkId,
         hasMetamask: hasMetamask,

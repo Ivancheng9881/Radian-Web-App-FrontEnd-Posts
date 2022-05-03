@@ -1,6 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
+import { FC, useContext, useEffect, useState } from "react";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { ITokenList } from "../../../schema/Token/tokenList";
+import Web3Context from "../../../utils/web3/context/web3.context";
+import { Web3ProviderType } from "../../../utils/web3/context/web3.interface";
 import { IPublicNftList, ISignupInfo } from "../type";
 import SignupContext from "./signup.context";
 
@@ -10,6 +13,10 @@ const SignupProvider : FC = ({children}) => {
     const TEMP_PROFILE_KEY = 'radian:identity:temp';
     const TEMP_NFT_LIST_KEY = 'radian:nftList:temp';
     const TEMP_TOKEN_LIST_KEY = 'radian:tokenList:temp';
+    const WALLET_PROVIDER = 'metamask@erc';
+    const CHAIN_ID = 137;
+
+    const web3Context: Web3ProviderType = useContext(Web3Context)
 
     const [ publicNft, setPublicNft ] = useState<IPublicNftList>({
         eth: [],
@@ -57,7 +64,7 @@ const SignupProvider : FC = ({children}) => {
     const initTokenList = () => {
         let temp = localStorage.getItem(TEMP_TOKEN_LIST_KEY);
         if (temp) setPublicToken([...publicToken, ...JSON.parse(temp)]);
-    }
+    };
 
     useEffect(() => {
         initInfo();

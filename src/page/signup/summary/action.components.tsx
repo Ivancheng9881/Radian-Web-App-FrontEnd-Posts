@@ -8,20 +8,28 @@ import { FullProfile } from "../../../schema/profile/profile.interface";
 import { createProfileErc } from "../../../utils/web3/contract/profileContract/erc";
 import { useHistory } from "react-router";
 import { PASSPORT_ROUTE } from "../../../commons/route";
+import { Web3ProviderType } from "../../../utils/web3/context/web3.interface";
+import Web3Context from "../../../utils/web3/context/web3.context";
 
 const SignupSummaryAction : FC = () => {
 
     // context
     const history = useHistory();
     const {info, publicNft, publicToken} : ISignupContext = useContext(SignupContext);
+    const {isPolygonOrChangeNetwork} : Web3ProviderType = useContext(Web3Context);
 
     // state
     const [ tnc, setTnc ] = useState<boolean>(false);
     const [ identityCid, setIdentityCid ] = useState();
     const [ loading, setLoading ] = useState<boolean>(false);
 
-    const handleClick = async () => {
-        createIdentity();
+    const handleClick = async (e: any) => {
+        e.preventDefault();
+        console.log('handle click')
+        const isPolygon = await isPolygonOrChangeNetwork();
+        if (isPolygon) {
+            createIdentity();
+        }
     };
 
     const createIdentity = async () => {

@@ -18,7 +18,6 @@ const truncateAddress = (
 
 const encodeUint8Array = (text: string) : Uint8Array => new TextEncoder().encode(text);
 
-
 export {
     truncateAddress,
     encodeUint8Array
