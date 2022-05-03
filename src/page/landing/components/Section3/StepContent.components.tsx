@@ -4,7 +4,6 @@ import { FC } from "react";
 interface IContent {
     title: string
     subtitle: string,
-    body: string
 }
 
 interface PageProps {
@@ -24,9 +23,6 @@ const StepContent: FC<PageProps> = ({
             </Typography.Text>
             <Typography.Text className="rd-landing-orbit-text-animation rd-landing-orbit-title">
                 {content.subtitle}
-            </Typography.Text>
-            <Typography.Text className="rd-landing-orbit-text-animation rd-landing-orbit-desc rd-typo-family-regular">
-                {content.body}
             </Typography.Text>
         </div>
     )

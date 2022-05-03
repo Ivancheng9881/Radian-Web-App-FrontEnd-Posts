@@ -23,9 +23,7 @@ const SignupSummaryAction : FC = () => {
     const [ identityCid, setIdentityCid ] = useState();
     const [ loading, setLoading ] = useState<boolean>(false);
 
-    const handleClick = async (e: any) => {
-        e.preventDefault();
-        console.log('handle click')
+    const handleClick = async () => {
         const isPolygon = await isPolygonOrChangeNetwork();
         if (isPolygon) {
             createIdentity();

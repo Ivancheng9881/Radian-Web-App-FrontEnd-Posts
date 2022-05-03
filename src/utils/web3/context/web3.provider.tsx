@@ -193,7 +193,6 @@ const Web3Provider : FC = ({ children }) => {
 
     const isPolygonOrChangeNetwork = async () : Promise<boolean> => {
         // first verify is the wallet is connected
-        console.log('isPolygonOrChangeNetwork')
         try {
             if (networkId != 137) {
                 message.info('we are switching you to the Polygon Mainnet')
@@ -214,7 +213,6 @@ const Web3Provider : FC = ({ children }) => {
 
     const loadProviderDetails = ()=> {
         const providerCache = window.localStorage.getItem('providerDetails');
-        console.log("Loaded data", providerCache)
         return providerCache === undefined ? null : JSON.parse(providerCache);
     }
 
