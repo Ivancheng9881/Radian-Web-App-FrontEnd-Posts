@@ -71,8 +71,8 @@ function SplashScreen() {
 
   return (
     <>
-      <div className="container">
-        <div className="wrapper">
+      <div className="splash-container">
+        <div className="splash-wrapper">
           <svg
             className="logo1"
             xmlns="http://www.w3.org/2000/svg"

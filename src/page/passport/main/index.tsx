@@ -130,7 +130,7 @@ const PassportOverviewPage: FC = () => {
           </div>
           <div className="rd-section" style={{ textAlign: "center" }}>
             <Typography.Title level={4} className="rd-typo-marginless">
-              Meet our
+              Join the
             </Typography.Title>
             <Typography.Title level={1} className="rd-typo-marginless">
               Social Community
@@ -140,8 +140,9 @@ const PassportOverviewPage: FC = () => {
               style={{ width: 800, margin: "auto" }}
             >
               <Typography.Text className="rd-typo-desc">
-                Social in the Web3 way. You now have the freedom of speech, the
-                ownership of your identity, relationships and content.
+                Start Web3 style of social by clicking into the profile! You now
+                have the freedom of speech, the ownership of your identity,
+                relationships and content.
               </Typography.Text>
             </div>
             <br />

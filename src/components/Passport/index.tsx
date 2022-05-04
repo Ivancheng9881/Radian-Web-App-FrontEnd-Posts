@@ -96,7 +96,7 @@ const RadianPassport: FC<PageProps> = (props) => {
                 <Space
                   direction="vertical"
                   size="large"
-                  style={{ height: "100%", paddingTop: 20, paddingLeft: 40 }}
+                  style={{ height: "100%", paddingTop: 50, paddingLeft: 40 }}
                 >
                   <Row gutter={[36, 36]}>
                     <Col lg={12} sm={12} md={12} xs={12}>
