@@ -1,140 +1,139 @@
 @rd-passport-width: 971px;
 @rd-passport-avatar-size: 200px;
 
-
 .rd-passport-root {
-    padding: 30px 0;
+  padding: 30px 0;
 
-    .ant-typography {
-        margin: 0 !important;
+  .ant-typography {
+    margin: 0 !important;
+  }
+  .rd-passport-body {
+    width: @rd-passport-width;
+    height: (@rd-passport-width / 1.65);
+    perspective: 2000;
+    margin: auto;
+    background: url("https://d1skj8m4trskbx.cloudfront.net/misc/card_front.jpg");
+    background-size: cover;
+    border-radius: 40px;
+    padding: 60px;
+    .rd-passport-left-row {
+      row-gap: 56px !important;
     }
+
+    .rd-passport-avatar {
+      img {
+        height: @rd-passport-avatar-size;
+        width: @rd-passport-avatar-size;
+        border-radius: calc(@rd-passport-avatar-size / 2);
+      }
+    }
+
+    .rd-passport-label {
+      font-size: 2vw;
+      font-weight: 600;
+    }
+
+    .rd-passport-field {
+      border-bottom: 1px solid @theme-color-white-100;
+      width: 100%;
+      .ant-typography {
+        min-height: 30px;
+      }
+    }
+
+    .rd-passport-username {
+      padding-top: 22px;
+
+      h3.ant-typography {
+        font-size: 32px;
+        max-width: 80%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+  @media screen and (max-width: 1000px) {
     .rd-passport-body {
-        width: @rd-passport-width;
-        height: (@rd-passport-width / 1.65);
-        margin: auto;
-        background: url('https://d1skj8m4trskbx.cloudfront.net/misc/card_front.jpg');
-        background-size: cover;
-        border-radius: 40px;
-        padding: 60px;
+      width: 80vw;
 
-        .rd-passport-left-row {
-            row-gap: 56px !important;
+      .rd-passport-avatar {
+        img {
+          height: (@rd-passport-avatar-size / 1.6);
+          width: (@rd-passport-avatar-size / 1.6);
+          border-radius: calc(@rd-passport-avatar-size / 2);
         }
-
-        .rd-passport-avatar {
-            img {
-                height: @rd-passport-avatar-size;
-                width: @rd-passport-avatar-size;
-                border-radius: calc(@rd-passport-avatar-size / 2);
-            }
-        }
-
-        .rd-passport-label {
-            font-size: 2vw;
-            font-weight: 600;
-        }
-
-        .rd-passport-field {
-            border-bottom: 1px solid @theme-color-white-100;
-            width: 100%;
-            .ant-typography {
-                min-height: 30px;
-            }
-        }
-
-        .rd-passport-username {
-            padding-top: 22px;
-            
-            h3.ant-typography {
-                font-size: 32px;
-                max-width: 80%;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-        }
+      }
     }
-    @media screen and (max-width: 1000px) {
-        .rd-passport-body {
-            width: 80vw;
-
-            .rd-passport-avatar {
-                img {
-                    height: (@rd-passport-avatar-size / 1.6);
-                    width: (@rd-passport-avatar-size / 1.6);
-                    border-radius: calc(@rd-passport-avatar-size / 2);
-                }
-            }
-        }
-
-    }
+  }
 }
 
 .rd-assets-root {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 20px;
-    box-shadow: 0 0 20px @theme-color-black-500-80;
-    padding: 45px 60px 30px;
-    height: auto;
-    overflow: initial;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 20px;
+  box-shadow: 0 0 20px @theme-color-black-500-80;
+  padding: 45px 60px 30px;
+  height: auto;
+  overflow: initial;
 }
 
 .rd-assets-token-root {
-    background-color: @theme-color-purple-100;
+  background-color: @theme-color-purple-100;
 
-    .rd-assets-token-row {
-        color: @theme-color-white-100;
-        height: 70px;
-        align-items: center;
-        font-weight: 600;
-        font-size: @heading-5-size;
-        font-family: @font-family-regular;
-    }
+  .rd-assets-token-row {
+    color: @theme-color-white-100;
+    height: 70px;
+    align-items: center;
+    font-weight: 600;
+    font-size: @heading-5-size;
+    font-family: @font-family-regular;
+  }
 
-    .rd-assets-token-header {
-        border-bottom: 2px solid @theme-color-white-100-trans;
-        height: initial;
-        padding-bottom: 10px;
-    }
+  .rd-assets-token-header {
+    border-bottom: 2px solid @theme-color-white-100-trans;
+    height: initial;
+    padding-bottom: 10px;
+  }
 }
 
 .rd-grid-not-found {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding-top: 10px;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  flex-direction: column;
 
-    img {
-        width: 200px;
-    }
+  img {
+    width: 200px;
+  }
 
-    .rd-grid-not-found-content {
-        color: @theme-color-purple-100;
-        font-size: 28px;
-        font-weight: 700;
-        padding-top: 1rem;
-    }
+  .rd-grid-not-found-content {
+    color: @theme-color-purple-100;
+    font-size: 28px;
+    font-weight: 700;
+    padding-top: 1rem;
+  }
 }
 
 .rd-grid-not-found.rd-typo-reverse {
-    .rd-grid-not-found-content {
-        color: @theme-color-white-100-trans;
-    }
+  .rd-grid-not-found-content {
+    color: @theme-color-white-100-trans;
+  }
 }
 
 .rd-grid-not-found.rd-typo-solid {
-    .rd-grid-not-found-content {
-        color: @theme-color-white-100;
-    }
-
+  .rd-grid-not-found-content {
+    color: @theme-color-white-100;
+  }
 }
 
 .rd-passport-title {
-    width: 100%;
-    max-width: 150px;
-    height: 100%;
+  width: 100%;
+  max-width: 150px;
+  height: 100%;
 }
+
+

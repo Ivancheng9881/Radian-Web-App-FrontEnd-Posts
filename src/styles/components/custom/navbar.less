@@ -1,5 +1,11 @@
 @import '../../theme/color.less';
 
+@media (max-width: 800px) {
+    .rd-navbar-menuitem {
+        display: none;
+    }
+}
+
 .rd-navbar-root {
     // background-color: @theme-color-white-100;
     width: 100%;
@@ -13,7 +19,7 @@
     }
 
     .rd-navbar-menuitem {
-        padding-right: 20px;
+        padding-right: 0.75em;
         font-weight: 700;
         cursor: pointer;
         color: @theme-color-grey-100;
@@ -35,3 +41,4 @@
         opacity: 1;
     }
 }
+
