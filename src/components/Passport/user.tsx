@@ -19,17 +19,20 @@ const RadianPassportUser: FC<PageProps> = (props) => {
 
     return (
         <RadianPassportBase {...props}>
-            <Spin spinning={!props.address}>
-                <Button 
-                    onClick={handleFollow} 
-                    size="large" 
-                    shape="round" 
-                    type="primary" 
-                    className="rd-btn-light" 
-                >
-                    {props.isFollowing ? 'Unfollow' : 'Follow'}
-                </Button>
-            </Spin>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Spin spinning={!props.address}>
+                    <Button 
+                        onClick={handleFollow} 
+
+                        size="large" 
+                        shape="round" 
+                        type="primary" 
+                        className="rd-btn-light" 
+                    >
+                        {props.isFollowing ? 'Unfollow' : 'Follow'}
+                    </Button>
+                </Spin>
+            </div>
         </RadianPassportBase>
     )
 };
