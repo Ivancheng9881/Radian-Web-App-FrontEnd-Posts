@@ -6,6 +6,7 @@ import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { mapTokenPrice } from "../../../utils/web3/tokenPrice";
 import TokenBalanceScrollView from "./table.components";
+import searchEngineClient from "../../../utils/web3/searchEngine";
 
 interface PassportTokenAssetsProps {
     data: string[],
@@ -14,8 +15,6 @@ interface PassportTokenAssetsProps {
 
 const PassportTokenAssets : FC<PassportTokenAssetsProps> = (props) => {
     const { data, address } = props;
-
-    console.log(address)
 
     const TOKEN_BALANCE_QUERY = gql`
         query getTokenList(
@@ -45,13 +44,13 @@ const PassportTokenAssets : FC<PassportTokenAssetsProps> = (props) => {
             }
         }
     `;
-    const [ getTokenBalance ] = useLazyQuery(TOKEN_BALANCE_QUERY);
 
     const [ tokenListVariable, setTokenListVariable ] = useState<ITokenList[]>();
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
     const execQuery = async () => {
-        const { loading, data, error } = await getTokenBalance({
+        const { loading, data, error } = await searchEngineClient.query({
+            query: TOKEN_BALANCE_QUERY,
             variables: {
                 address: address,
                 symbols: tokenListVariable,
@@ -77,7 +76,7 @@ const PassportTokenAssets : FC<PassportTokenAssetsProps> = (props) => {
     }, [data])
 
     useEffect(() => {
-        if (tokenListVariable) {
+        if (tokenListVariable && address) {
             execQuery();
         }
     }, [tokenListVariable, address]);

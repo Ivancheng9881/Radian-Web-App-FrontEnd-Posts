@@ -11,6 +11,7 @@ import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import Web3Context from "../../../utils/web3/context/web3.context";
 import { getLastPriceBySymbol } from "../../../utils/web3/tokenPrice";
+import searchEngineClient from "../../../utils/web3/searchEngine";
 
 const SignupTokenPage : FC = () => {
 
@@ -51,14 +52,13 @@ const SignupTokenPage : FC = () => {
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
-    const [tokenListQuery] = useLazyQuery(TOKEN_BALANCE_QUERY);
-
     const handleNextClick = () => history.push(SIGNUP_SUMMARY_ROUTE);
 
     const handleReturnClick = () => history.push(SIGNUP_NFT_ROUTE);
 
     const execTokenListQuery = async () => {
-        const { loading, data, error } = await tokenListQuery({
+        const { loading, data, error } = await searchEngineClient.query({
+            query: TOKEN_BALANCE_QUERY,
             variables: {
                 address: address,
                 symbols: tokenListVariable,

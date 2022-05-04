@@ -1,7 +1,6 @@
 import { Layout, Typography } from "antd";
 import { FC, useContext, useEffect } from "react";
 import DefaultFooter from "../../../components/Footer";
-import RadianPassport from "../../../components/Passport";
 import UserContext from "../../../utils/user/context/user.context";
 import LandingSection from "../../landing/components/Section.components";
 import PassportNftAssets from "../../../components/Passport/nft";
@@ -9,7 +8,7 @@ import PassportTokenAssets from "../../../components/Passport/token/indx";
 import Web3Context from "../../../utils/web3/context/web3.context";
 import { Web3ProviderType } from "../../../utils/web3/context/web3.interface";
 import { useLocation } from "react-router";
-import ScrollIndicator from "../../../components/ScrollIndicator";
+import RadianPassportMe from "../../../components/Passport/me";
 
 interface LocationState {
     scrollTo?: string,
@@ -33,7 +32,7 @@ const PassportMePage : FC = () => {
                 <LandingSection />
                 <div style={{zIndex: 1001, position: 'relative'}}>
                     <div className="rd-section" style={{paddingTop: 60}}>
-                        <RadianPassport profile={profile} />
+                        <RadianPassportMe profile={profile} />
                     </div>
                     <div id='nft' className="rd-section rd-section-centered">
                         <Typography.Title level={3}>NFT Assets</Typography.Title>

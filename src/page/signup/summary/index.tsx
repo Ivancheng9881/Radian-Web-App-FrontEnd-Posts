@@ -1,11 +1,12 @@
 import { EditOutlined } from "@ant-design/icons";
-import { gql, useLazyQuery, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { Col, Row, Typography } from "antd";
 import { FC, useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { SIGNUP_INFO_ROUTE, SIGNUP_NFT_ROUTE, SIGNUP_TOKEN_ROUTE } from "../../../commons/route";
 import { COMMON_TOKEN_LIST } from "../../../commons/web3";
 import { ITokenBalance, ITokenList } from "../../../schema/Token/tokenList";
+import searchEngineClient from "../../../utils/web3/searchEngine";
 import { mapTokenPrice } from "../../../utils/web3/tokenPrice";
 import SignupContext from "../context/signup.context";
 import { ISignupContext } from "../type";
@@ -53,8 +54,6 @@ const SignupSummaryPage : FC = () => {
     const [ priceSymbols, setPriceSymbols ] = useState<string[]>(['eth', 'matic']);
     const [ tokenList, setTokenList ] = useState<ITokenBalance[]>();
 
-    const [ getTokenBalance ] = useLazyQuery(TOKEN_BALANCE_QUERY);
-
     const routeToInfo = () => handleRoute(SIGNUP_INFO_ROUTE);
 
     const routeToNft = () => handleRoute(SIGNUP_NFT_ROUTE);
@@ -69,7 +68,8 @@ const SignupSummaryPage : FC = () => {
     };
 
     const execQuery = async () => {
-        const { loading, data, error } = await getTokenBalance({
+        const { loading, data, error } = await searchEngineClient.query({
+            query: TOKEN_BALANCE_QUERY,
             variables: {
                 address: address,
                 symbols: tokenListVariable,

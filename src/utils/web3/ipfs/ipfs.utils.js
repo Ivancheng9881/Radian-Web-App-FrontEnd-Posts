@@ -68,8 +68,6 @@ async function getContentJsonFallover(cid) {
     }
 }
 
-
-
 async function getContentJson(cid, readonly=true) {
     try {
         if (cid !== undefined) {
