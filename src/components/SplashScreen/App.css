@@ -10,10 +10,29 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  margin: auto;
 }
 
 img {
   pointer-events: none;
+}
+
+@keyframes spinning {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  20% {
+    transform: rotate(0deg);
+  }
+
+  80% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .splash-wrapper {
@@ -21,7 +40,8 @@ img {
   height: 100%;
   margin: 0;
   padding: 0;
-  /* transform: rotate(360deg); */
+  animation: spinning infinite ease-in-out 1.5s;
+  animation-delay: 1.5s;
 }
 
 .logo1 {
