@@ -84,7 +84,7 @@ const RadianPassport: FC<PageProps> = (props) => {
                   </div>
                   <div className="rd-passport-username">
                     <Typography.Text className="rd-typo-reverse rd-passport-label">
-                      username:
+                      Username:
                     </Typography.Text>
                     <Typography.Title level={5} className="rd-typo-reverse">
                       {profile.username || ""}

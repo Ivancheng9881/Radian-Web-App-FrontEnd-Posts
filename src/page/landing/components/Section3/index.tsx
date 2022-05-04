@@ -18,22 +18,22 @@ const LandingSection3 : FC<PageProps> = ({passRef, isActive}) => {
         {
             title: 'Step 1:',
             subtitle: 'Personal Information',
-            body: 'Lorem ipsum dolor sit amet, consectetur adipiscing ! elit. Nunc lacus, pharetra nunc aliquam sem ut sed tincidunt. Neque tristique risus egestas condimentum integer odio. Eget vitae congue amet duis sed eget. Viverra feugiat amet tortor, nunc id.'
+            body: ''
         },
         {
             title: 'Step 2:',
             subtitle: 'Your Assets',
-            body: 'Lorem ipsum dolor sit amet, consectetur adipiscing ! elit. Nunc lacus, pharetra nunc aliquam sem ut sed tincidunt. Neque tristique risus egestas condimentum integer odio. Eget vitae congue amet duis sed eget. Viverra feugiat amet tortor, nunc id.'
+            body: ''
         },
         {
             title: 'Step 3:',
             subtitle: 'Summary',
-            body: 'Lorem ipsum dolor sit amet, consectetur adipiscing ! elit. Nunc lacus, pharetra nunc aliquam sem ut sed tincidunt. Neque tristique risus egestas condimentum integer odio. Eget vitae congue amet duis sed eget. Viverra feugiat amet tortor, nunc id.'
+            body: ''
         },
         {
             title: 'Step 4:',
             subtitle: 'All Set!',
-            body: 'Lorem ipsum dolor sit amet, consectetur adipiscing ! elit. Nunc lacus, pharetra nunc aliquam sem ut sed tincidunt. Neque tristique risus egestas condimentum integer odio. Eget vitae congue amet duis sed eget. Viverra feugiat amet tortor, nunc id.'
+            body: ''
         }
     ] as const;
 

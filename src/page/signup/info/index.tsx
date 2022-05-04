@@ -178,7 +178,7 @@ const SignupInfoPage: FC = () => {
                 </RadianForm.Label>
               </Col>
               <Col lg={8} md={12}>
-                <RadianForm.Label label="Religions">
+                <RadianForm.Label label="Religion">
                   <RadianForm.Input
                     id="signup-religion"
                     onChange={(e) =>

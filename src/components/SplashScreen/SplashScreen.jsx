@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import { useSprings, animated } from "react-spring";
 
-
 function LargeElement() {
   return (
     <path
@@ -31,8 +30,12 @@ function Triangle2() {
   );
 }
 
-function App() {
+function SplashScreen() {
   const [toggle, setToggle] = useState(false);
+
+  useEffect(() => {
+    setToggle(true);
+  }, []);
 
   const fragments = [
     <Triangle1 key="envelope-1" />,
@@ -68,14 +71,6 @@ function App() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => {
-          setToggle(!toggle);
-        }}
-      >
-        Toggle animation
-      </button>
       <div className="container">
         <div className="wrapper">
           <svg
@@ -134,4 +129,4 @@ function App() {
   );
 }
 
-export default App;
+export default SplashScreen;
