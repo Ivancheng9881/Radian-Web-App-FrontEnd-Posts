@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import SuspenseScreen from "../../components/SuspenseScreen";
 import SplashScreenContext from "./Splash.context";
+import SplashScreen from "../../components/SplashScreen/SplashScreen";
 
 
 const SplashScreenProvider : FC = ({children}) => {

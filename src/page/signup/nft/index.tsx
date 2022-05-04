@@ -98,7 +98,7 @@ const SignupTokenPage : FC = () => {
                         <Row className="rd-signup-nft-network">
                             <Col lg={24} style={{textAlign: 'center'}} >
                                 <Typography.Title level={3}>
-                                    NFT Asset
+                                    NFT Assets
                                 </Typography.Title>
                             </Col>
                             <Col lg={3} sm={4}>

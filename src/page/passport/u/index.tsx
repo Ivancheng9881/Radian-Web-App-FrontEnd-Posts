@@ -17,7 +17,7 @@ import searchEngineClient from "../../../utils/web3/searchEngine";
 import ProfileContext from "../../../utils/user/context/user.context";
 
 interface LocationState {
-    scrollTo?: string,
+  scrollTo?: string;
 }
 
 const PassportUserPage : FC = () => {
@@ -32,32 +32,32 @@ const PassportUserPage : FC = () => {
     const fetchProfile = async (profileID: string, identityID: string) => {
         let _profile = await ipfsUtils.getContentJson(identityID);
         setProfile({
-            ..._profile,
-            identityID: identityID,
-            profileID: profileID,
+        ..._profile,
+        identityID: identityID,
+        profileID: profileID,
         });
         getAddressFromProfile(profileID);
-    }
+    };
 
-    const getAddressFromProfile = async (profileID: string) => {
-        const addresses = await getMappedAddresses(parseInt(profileID));
-        setAddress(addresses[0]);        
-    }
+        const getAddressFromProfile = async (profileID: string) => {
+            const addresses = await getMappedAddresses(parseInt(profileID));
+            setAddress(addresses[0]);        
+        }
 
     useEffect(() => {
         if (location.pathname) {
-            let param = location.pathname.split('/');
-            let profileID = param[3];
-            let identityID = param[4];
-            fetchProfile(profileID, identityID)
+        let param = location.pathname.split("/");
+        let profileID = param[3];
+        let identityID = param[4];
+        fetchProfile(profileID, identityID);
         }
-    }, [location]) 
-
+    }, [location]);
 
     // handle shallow routing scroll restoration
     useEffect(() => {
-        window.scrollTo(0,0)
-    }, [location.state])
+        window.scrollTo(0, 0);
+    }, [location.state]);
+
 
     const FOLLOW_USER_MUTATION = gql`
         mutation FollowUserMutation ($address: String!, $unfollow: Boolean) {
@@ -72,7 +72,6 @@ const PassportUserPage : FC = () => {
     const handleFollow = async () => {
         // get current signer
         const userSession = new UserSession();
-        console.log(userContext)
         if (!userContext.authToken) {
             const token = await userSession.create();
             userContext.setAuthToken(token)
@@ -105,7 +104,6 @@ const PassportUserPage : FC = () => {
                 user: web3Context.providers['metamask@erc'],
             }
         });
-        console.log(callback.data.isFollowing)
         setIsFollowing(callback.data.isFollowing);
     }
 
@@ -142,11 +140,11 @@ const PassportUserPage : FC = () => {
                     </div>
                     </> }
 
-                    <DefaultFooter disableGutter />
-                </div>
-            </Layout.Content>
-        </>
-    )
+          <DefaultFooter disableGutter />
+        </div>
+      </Layout.Content>
+    </>
+  );
 };
 
 export default PassportUserPage;
