@@ -3,6 +3,8 @@ import SolanaWalletProvider from "./utils/web3/context/solanaWallet.provider";
 import Web3Provider from "./utils/web3/context/web3.provider";
 import UserProfile from "./utils/user/context/user.provider";
 import WalletPopupProvider from "./utils/WalletPopup/context/walletPopup.provider";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 import './styles/main.css';
 import './styles/app.less';

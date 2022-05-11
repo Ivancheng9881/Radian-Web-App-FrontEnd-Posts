@@ -29,3 +29,6 @@ export const settingNFTSolanaRoute = '/settings/nft/solana'
 export const PASSPORT_ROUTE = '/passport';
 export const PASSPORT_ME_ROUTE = '/passport/me';
 export const PASSPORT_USER_ROUTE = '/passport/u/:identityId/:profileCid'
+
+
+export const postsRoute = '/comments';
