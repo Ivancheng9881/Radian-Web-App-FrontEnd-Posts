@@ -15,9 +15,7 @@ const PostsPage = () => {
 
     <DefaultLayout>
     <Layout.Content>
-      <LandingSection>
         <PostsList />
-      </LandingSection>
     </Layout.Content>
   </DefaultLayout>
  

@@ -3,11 +3,12 @@ import React, {
   FC,
   useEffect,
 } from "react";
+import SmallReply from "./smallreply";
 
 import { Container, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 
-import photo from "./unsplash_y3kC_7Qhmjkjohndoe.png";
+import photo from "../PostsSection/unsplash_y3kC_7Qhmjkjohndoe.png"
 
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -18,12 +19,12 @@ const Name = "John Doe";
 const Time = "5 min ago";
 const TitleText = "Enjoy the real Web 3 Social experience!";
 const ContentText =
-  "From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare rutrum amet, a nunc mi lacinia in iaculis. Pharetra ut integer nibh urna.From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare rutrum amet, a nunc mi lacinia in iaculis. Pharetra ut integer nibh urna.From now on, I From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectFrom now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor.";
+  "From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare rutrum amet, a nunc mi lacinia in iaculis. Pharetra ut integer nibh urna.";
 
 const StyledContainer = styled(Container)`
   background-color: white;
   padding-top: 25px;
-  padding-left: 45px;
+  padding-left: 25px;
   padding-right: 35px;
   padding-bottom: 25px;
   box-shadow: 0px 4px 4px rgba(0,0,0,0.1);
@@ -65,15 +66,22 @@ const StyledTitle = styled.p`
 
 const StyledContentText = styled.p`
   font-size: 13px;
+  margin-bottom: 0;
 `;
 
 const StyledDiv2 = styled.div`
   padding: 0;
   margin-top: 10px;
   margin-left: 5px;
-  text-align: center;
+  width: 100%;
   line-height: 2px;
 `;
+
+const StyledDiv3 = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+`
 
 const Wrapper = styled.div`
   padding-left: 10px;
@@ -83,8 +91,17 @@ const Wrapper = styled.div`
 
 const StyledButton = styled.button`
   font-size: 12px;
+  text-align: start;
   color: #5829E3
 `;
+
+const StyledIndentedReplyContainer = styled.div`
+  position: relative;
+  width: 90%;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+`
 
 const useGenerateRandomColor = () => {
   const [color, setColor] = useState("");
@@ -94,7 +111,8 @@ const useGenerateRandomColor = () => {
   return { color, generateColor };
 };
 
-const PostsSection = () => {
+
+function Me() {
   const { color, generateColor } = useGenerateRandomColor();
   // const { likes, setLikes } = useState(0);
 
@@ -106,7 +124,6 @@ const PostsSection = () => {
     <Wrapper style={{ backgroundColor: "#" + color }}>
       <StyledContainer fluid>
         <StyledRow>
-          <StyledRow></StyledRow>
           <StyledCol>
             <StyledPhoto src={photo} alt="profilepic" />
             <StyledDiv>
@@ -114,37 +131,22 @@ const PostsSection = () => {
                 <StyledName>{Name}</StyledName>
                 <StyledLightFont>{Time}</StyledLightFont>
               </StyledDiv2>
-            </StyledDiv>
-          </StyledCol>
-          <StyledRow>
-            <StyledCol>
-              <StyledDiv>
-                <StyledTitle>{TitleText}</StyledTitle>
+              <StyledDiv3>
                 <StyledContentText>{ContentText}</StyledContentText>
-              </StyledDiv>
-            </StyledCol>
-          </StyledRow>
-          <StyledRow>
-            <StyledCol>
-              <div>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<FavoriteBorder />}
-                      checkedIcon={<Favorite />}
-                      name="checkedH"
-                    />
-                  }
-                  label="15 likes"
-                />
-              </div>
-              <StyledButton>Reply to</StyledButton>
-            </StyledCol>
-          </StyledRow>
+                <StyledButton>Reply to</StyledButton>
+                </StyledDiv3>
+            </StyledDiv>
+            
+          </StyledCol>
         </StyledRow>
+        <StyledIndentedReplyContainer>
+        <SmallReply />
+        <SmallReply />
+        <SmallReply />
+        </StyledIndentedReplyContainer>
       </StyledContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default PostsSection;
+export default Me;
