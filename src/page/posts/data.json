@@ -1,0 +1,62 @@
+[
+  {
+      "__typename": "Post",
+      "postId": 1602,
+      "content": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+      "referenceId": 1601,
+      "level": 1,
+      "createdBy": "18",
+      "creatorIdentityId": null,
+      "groupId": 1,
+      "noOfComments": 2,
+      "createdAt": "2022-05-05T11:53:30.327Z"
+  },
+  {
+      "__typename": "Post",
+      "postId": 1605,
+      "content": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      "referenceId": 1601,
+      "level": 1,
+      "createdBy": "14",
+      "creatorIdentityId": null,
+      "groupId": 1,
+      "noOfComments": 2,
+      "createdAt": "2022-05-06T01:18:41.438Z"
+  },
+  {
+      "__typename": "Post",
+      "postId": 1608,
+      "content": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+      "referenceId": 1601,
+      "level": 1,
+      "createdBy": "16",
+      "creatorIdentityId": null,
+      "groupId": 1,
+      "noOfComments": 2,
+      "createdAt": "2022-05-06T02:08:51.488Z"
+  },
+  {
+      "__typename": "Post",
+      "postId": 1611,
+      "content": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+      "referenceId": 1601,
+      "level": 1,
+      "createdBy": "22",
+      "creatorIdentityId": null,
+      "groupId": 1,
+      "noOfComments": 2,
+      "createdAt": "2022-05-06T09:15:18.442Z"
+  },
+  {
+      "__typename": "Post",
+      "postId": 1614,
+      "content": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+      "referenceId": 1601,
+      "level": 1,
+      "createdBy": "16",
+      "creatorIdentityId": null,
+      "groupId": 1,
+      "noOfComments": 2,
+      "createdAt": "2022-05-05T15:30:52.901Z"
+  }
+]

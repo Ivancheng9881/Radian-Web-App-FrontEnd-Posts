@@ -5,14 +5,10 @@ import styled from "styled-components";
 
 import photo from "../PostsSection/unsplash_y3kC_7Qhmjkjohndoe.png";
 
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Favorite from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import SmallComment from "../PostComment/smallcomment";
 
 const Name = "John Doe";
 const Time = "5 min ago";
-const TitleText = "Enjoy the real Web 3 Social experience!";
 const ContentText =
   "From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare rutrum amet, a nunc mi lacinia in iaculis. Pharetra ut integer nibh urna.";
 
@@ -44,11 +40,6 @@ const StyledDiv = styled.div`
   margin-bottom: 25px;
 `;
 
-const StyledTitle = styled.p`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 23px;
-`;
 
 const StyledContentText = styled.p`
   font-size: 13px;
@@ -76,13 +67,11 @@ const StyledButton = styled.button`
   color: #5829E3
 `;
 
-const StyledContainer = styled.div`
-  position: relative;
-  display: flex;
-  margin-left: 70px;
-`;
+
 
 function SmallReply() {
+  const [reply, setReply] = useState(false);
+
   return (
     <StyledRow>
       <StyledCol>
@@ -94,12 +83,13 @@ function SmallReply() {
           </StyledDiv2>
           <StyledDiv3>
             <StyledContentText>{ContentText}</StyledContentText>
-            <StyledButton>Reply to</StyledButton>
+            <StyledButton onClick={() => setReply(!reply)}>Reply to</StyledButton>
           </StyledDiv3>
         </StyledDiv>
       </StyledCol>
+      {reply && <SmallComment />}
     </StyledRow>
   );
-}
+};
 
 export default SmallReply;

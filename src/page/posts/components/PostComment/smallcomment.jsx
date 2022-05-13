@@ -7,18 +7,14 @@ import { SendOutlined } from "@ant-design/icons";
 
 const StyledContainer = styled.div`
     position: relative;
-    width: 100%;
+    width: 90%;
     height: 50px;
     display: flex;
     flex-direction: row;
-    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 5%;
 `
 
-const ImageDiv = styled.div`
-    position: relative;
-    width: 50px;
-    height: 50px;
-`
 
 const CommentInput = styled.input`
     width: 100%;
@@ -26,15 +22,13 @@ const CommentInput = styled.input`
     padding: 12px 20px;
     box-sizing: border-box;
     border-radius: 20px;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    background-color: #F0F0F0;
 `
 
 const CommentInputContainer = styled.form`
     position: relative;
     width: 100%;
-    height: 50px;
-    padding-left: 10px;
-    padding-top: 5px;
+    height: 40px;
     display: flex;
 `
 
@@ -46,7 +40,7 @@ const SendButtonContainer = styled.div`
 `
 
 
-function PostComment() {
+function SmallComment() {
     const [inputValue, setInputValue] = useState('');
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,16 +55,12 @@ function PostComment() {
 
   return (
     <StyledContainer>
-        <ImageDiv>
-            <img src={photo} alt="profilepic" />
-        </ImageDiv>
         <CommentInputContainer>
-            <CommentInput value={inputValue} onChange={handleInputChange}/>
-            <button onClick={handleClick}>Submit</button>
+            <CommentInput placeholder="Replying to..." value={inputValue} onChange={handleInputChange}/>
         </CommentInputContainer>
    
     </StyledContainer>
   )
 }
 
-export default PostComment
+export default SmallComment;

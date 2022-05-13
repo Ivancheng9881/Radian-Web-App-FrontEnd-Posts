@@ -1,24 +1,12 @@
-import React, {
-  useState,
-  FC,
-  useEffect,
-} from "react";
+import React, { useState, FC, useEffect } from "react";
 
 import { Container, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 
 import photo from "./unsplash_y3kC_7Qhmjkjohndoe.png";
 
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Favorite from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
-const Name = "John Doe";
-const Time = "5 min ago";
-const TitleText = "Enjoy the real Web 3 Social experience!";
-const ContentText =
-  "From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare rutrum amet, a nunc mi lacinia in iaculis. Pharetra ut integer nibh urna.From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare rutrum amet, a nunc mi lacinia in iaculis. Pharetra ut integer nibh urna.From now on, I From now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor sit amet, consectFrom now on, I get to own my content and connections! Great news, my friends <3 Lorem ipsum dolor.";
+
 
 const StyledContainer = styled(Container)`
   background-color: white;
@@ -26,7 +14,7 @@ const StyledContainer = styled(Container)`
   padding-left: 45px;
   padding-right: 35px;
   padding-bottom: 25px;
-  box-shadow: 0px 4px 4px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const StyledRow = styled(Row)``;
@@ -83,7 +71,7 @@ const Wrapper = styled.div`
 
 const StyledButton = styled.button`
   font-size: 12px;
-  color: #5829E3
+  color: #5829e3;
 `;
 
 const useGenerateRandomColor = () => {
@@ -94,9 +82,17 @@ const useGenerateRandomColor = () => {
   return { color, generateColor };
 };
 
-const PostsSection = () => {
+
+
+const PostsSection = (props) => {
+  const { postData } = props;
   const { color, generateColor } = useGenerateRandomColor();
-  // const { likes, setLikes } = useState(0);
+
+  console.log(postData)
+
+
+
+
 
   useEffect(() => {
     generateColor();
@@ -111,34 +107,17 @@ const PostsSection = () => {
             <StyledPhoto src={photo} alt="profilepic" />
             <StyledDiv>
               <StyledDiv2>
-                <StyledName>{Name}</StyledName>
-                <StyledLightFont>{Time}</StyledLightFont>
+                <StyledName>{postData.createdBy}</StyledName>
+                <StyledLightFont>{postData.createdAt}</StyledLightFont>
               </StyledDiv2>
             </StyledDiv>
           </StyledCol>
           <StyledRow>
             <StyledCol>
               <StyledDiv>
-                <StyledTitle>{TitleText}</StyledTitle>
-                <StyledContentText>{ContentText}</StyledContentText>
+                <StyledTitle>{postData.postId}</StyledTitle>
+                <StyledContentText>{postData.content}</StyledContentText>
               </StyledDiv>
-            </StyledCol>
-          </StyledRow>
-          <StyledRow>
-            <StyledCol>
-              <div>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      icon={<FavoriteBorder />}
-                      checkedIcon={<Favorite />}
-                      name="checkedH"
-                    />
-                  }
-                  label="15 likes"
-                />
-              </div>
-              <StyledButton>Reply to</StyledButton>
             </StyledCol>
           </StyledRow>
         </StyledRow>
