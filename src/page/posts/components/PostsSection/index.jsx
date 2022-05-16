@@ -1,12 +1,12 @@
 import React, { useState, FC, useEffect } from "react";
-
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Favorite from "@material-ui/icons/Favorite";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { Container, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
-
 import photo from "./unsplash_y3kC_7Qhmjkjohndoe.png";
-
-
-
+import SettingLayout from "../../../settings/components/SettingLayout";
 
 const StyledContainer = styled(Container)`
   background-color: white;
@@ -82,17 +82,29 @@ const useGenerateRandomColor = () => {
   return { color, generateColor };
 };
 
-
-
 const PostsSection = (props) => {
-  const { postData } = props;
   const { color, generateColor } = useGenerateRandomColor();
+  const [liked, updateLiked] = useState(false);
+  const [likes, updateLikes] = useState(20);
+  const [hasLiked, setHasLiked] = useState(false);
 
-  console.log(postData)
+  const handleChange = () => {
+    updateLiked(!liked);
+    setHasLiked(true);
+  };
 
+  useEffect(() => {
+    if (liked === true) {
+      updateLikes(likes + 1);
+    }
+    if (liked === false && hasLiked === true) {
+      updateLikes(likes - 1);
+    }
+  }, [liked]);
 
-
-
+  useEffect(() => {
+    console.log(likes);
+  });
 
   useEffect(() => {
     generateColor();
@@ -107,16 +119,29 @@ const PostsSection = (props) => {
             <StyledPhoto src={photo} alt="profilepic" />
             <StyledDiv>
               <StyledDiv2>
-                <StyledName>{postData.createdBy}</StyledName>
-                <StyledLightFont>{postData.createdAt}</StyledLightFont>
+                <StyledName>{props.postData.createdBy}</StyledName>
+                <StyledLightFont>{props.postData.createdAt}</StyledLightFont>
               </StyledDiv2>
             </StyledDiv>
           </StyledCol>
           <StyledRow>
             <StyledCol>
               <StyledDiv>
-                <StyledTitle>{postData.postId}</StyledTitle>
-                <StyledContentText>{postData.content}</StyledContentText>
+                <StyledTitle>{props.postData.postId}</StyledTitle>
+                <StyledContentText>{props.postData.content}</StyledContentText>
+                <div className="rd-post-likes-container">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        icon={<FavoriteBorder />}
+                        checkedIcon={<Favorite />}
+                        name="checkedH"
+                        onClick={handleChange}
+                      />
+                    }
+                    label={`${likes}` + " likes"}
+                  />
+                </div>
               </StyledDiv>
             </StyledCol>
           </StyledRow>

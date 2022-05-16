@@ -1,10 +1,10 @@
 import PostsSection from "../PostsSection/index";
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { ArrowLeftOutlined } from "@ant-design/icons";
-import { gql } from "@apollo/client";
-import searchEngineClient from "../../../../utils/web3/searchEngine";
+import { gql, useQuery } from "@apollo/client";
 import LevelOneComments from "../CommentSection/LevelOneComments";
+import PostComment from "../PostComment/index";
+import { useEffect, useRef } from "react";
 
 const StyledContainer = styled.div`
   width: 50%;
@@ -35,56 +35,36 @@ const StyledTopDiv = styled.div`
   margin-top: 0.5rem;
 `;
 
+const POST_DATA_QUERY = gql`
+  query Query($groupId: Int, $level: Int, $refId: Int, $limit: Int) {
+    postList(groupId: $groupId, level: $level, refId: $refId, limit: $limit) {
+      data {
+        postId
+        content
+        level
+        createdBy
+        creatorIdentityId
+        groupId
+        noOfComments
+        createdAt
+      }
+    }
+  }
+`;
+
 const PostsList = () => {
-  const [postData, setPostData] = useState({});
-  const [hasComments, setHasComments] = useState(false);
-
-  const POST_DATA_QUERY = gql`
-    query Query($groupId: Int, $level: Int, $refId: Int, $limit: Int) {
-      postList(groupId: $groupId, level: $level, refId: $refId, limit: $limit) {
-        data {
-          postId
-          content
-          level
-          createdBy
-          creatorIdentityId
-          groupId
-          noOfComments
-          createdAt
-        }
-      }
-    }
-  `;
-
-  const postDataQuery = async () => {
-    const { loading, data, error } = await searchEngineClient.query({
-      query: POST_DATA_QUERY,
-      variables: {
-        groupId: 1,
-        level: 0,
-        refId: null,
-        limit: 1,
-      },
-    });
-    if (!loading) {
-      if (error) {
-        console.log(error);
-      }
-      if (data) {
-        setPostData(data.postList.data[0]);
-      }
-    }
-  };
+  const { loading, error, data } = useQuery(POST_DATA_QUERY, {
+    variables: { groupId: 1, level: 0, refId: null, limit: 1 },
+  });
 
   useEffect(() => {
-    postDataQuery();
-  }, [postData]);
+    let element = document.getElementById("rd-post-comment-container");
+    console.log(element + "sdfsdfsdfsdf");
+  }, []);
 
-  useEffect(() => {
-    if (postData.noOfComments > 0) {
-      setHasComments(true);
-    }
-  }, [postData]);
+  if (loading) return null;
+  if (error) return "ERROR!";
+  if (data) console.log(data);
 
   return (
     <StyledContainer>
@@ -92,8 +72,15 @@ const PostsList = () => {
         <StyledTopDiv>
           <ArrowLeftOutlined style={{ fontSize: "23px", color: "#8e94ff" }} />
         </StyledTopDiv>
-        <PostsSection postData={postData} />
-        {hasComments && <div>dsfsdfsdfdsf</div>}
+        <PostsSection postData={data.postList.data[0]} />
+        <button> Click to scroll </button>
+
+        {data.postList.data[0].noOfComments > 0 && (
+          <LevelOneComments
+            amountOfComments={data.postList.data[0].noOfComments}
+          />
+        )}
+        <PostComment />
       </StyledWrapper>
     </StyledContainer>
   );
