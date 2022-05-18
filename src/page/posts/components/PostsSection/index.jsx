@@ -11,8 +11,6 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ModalComment from "../CommentSection/ModalComment";
 
-
-
 const StyledRow = styled(Row)``;
 
 const StyledPhoto = styled.img`
@@ -74,11 +72,13 @@ const PostsSection = (props) => {
 
   return (
     <div
-      className="rd-post-color-container"
+      className="rd-post-color-container-main"
       style={{ backgroundColor: "#" + color }}
     >
       <div className="rd-post-color-inner-wrapper">
         <StyledRow>
+          <div id="controls"></div>
+
           <div>
             <div className="rd-post-header-container">
               <div className="rd-post-profile-pic-wrapper">

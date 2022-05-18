@@ -3,8 +3,34 @@ import { ArrowLeftOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { gql, useQuery } from "@apollo/client";
 import LevelOneComments from "../CommentSection/LevelOneComments";
 import PostComment from "../PostComment/index";
-
 import { BackTop } from "antd";
+import { motion } from "framer-motion";
+import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+
+const ScrollToTopBtn = () => {
+  return (
+    <motion.button
+      className="rd-scroll-top-btn"
+      whileHover={{ scale: 1.4 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      <VerticalAlignTopOutlined
+        style={{ fontSize: "23px", color: "#8e94ff" }}
+      ></VerticalAlignTopOutlined>
+    </motion.button>
+  );
+};
+const BackBtn = () => {
+  return (
+    <motion.button
+      className="rd-scroll-top-btn"
+      whileHover={{ scale: 1.4 }}
+      whileTap={{ scale: 0.9 }}
+    >
+      <ArrowLeftOutlined style={{ fontSize: "25px", color: "#8e94ff" }} />
+    </motion.button>
+  );
+};
 
 const POST_DATA_QUERY = gql`
   query Query($groupId: Int, $level: Int, $refId: Int, $limit: Int) {
@@ -35,14 +61,11 @@ const PostsList = () => {
   return (
     <div className="rd-post-section-wrapper">
       <div className="rd-post-list-wrapper-header">
-        <ArrowLeftOutlined style={{ fontSize: "23px", color: "#8e94ff" }} />
-        <button className="rd-scroll-top-btn">
-          <VerticalAlignTopOutlined
-            style={{ fontSize: "23px", color: "#8e94ff" }}
-          ></VerticalAlignTopOutlined>
-        </button>
+        <BackBtn />
+        <ScrollToTopBtn />
       </div>
       <div className="rd-post-list-wrapper">
+        <BackTop />
         <div>
           <PostsSection postData={data.postList.data[0]} />
         </div>
@@ -52,27 +75,10 @@ const PostsList = () => {
             amountOfComments={data.postList.data[0].noOfComments}
           />
         )}
-        {data.postList.data[0].noOfComments > 0 && (
-          <LevelOneComments
-            amountOfComments={data.postList.data[0].noOfComments}
-          />
-        )}
-        {data.postList.data[0].noOfComments > 0 && (
-          <LevelOneComments
-            amountOfComments={data.postList.data[0].noOfComments}
-          />
-        )}
-        {data.postList.data[0].noOfComments > 0 && (
-          <LevelOneComments
-            amountOfComments={data.postList.data[0].noOfComments}
-          />
-        )}
       </div>
       <div className="rd-post-comment-container">
         <PostComment />
       </div>
-      <BackTop />
-
     </div>
   );
 };

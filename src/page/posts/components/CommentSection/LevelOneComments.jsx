@@ -1,8 +1,6 @@
 import { Comment, List } from "antd";
 import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Container, Row, Col } from "react-bootstrap";
-import styled from "styled-components";
 import NestedComments from "../CommentSection/NestedComments";
 import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 import ModalComponent from "./ModalComment";

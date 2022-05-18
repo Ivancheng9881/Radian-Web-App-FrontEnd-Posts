@@ -2,12 +2,14 @@ import { Comment, Avatar, Form, Button, List, Input } from "antd";
 import moment from "moment";
 import { useState, useEffect } from "react";
 import { SendOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 
 const { TextArea } = Input;
 
 const colorzzz = () => {
   return Math.floor(Math.random() * 16777215).toString(16);
 };
+
 
 const CommentList = ({ comments }) => (
   <List
@@ -44,13 +46,18 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </div>
     <div className="rd-post-comment-send-button">
       <Form.Item>
-        <SendOutlined
-          htmlType="submit"
-          loading={submitting}
-          onClick={onSubmit}
-          type="primary"
-          style={{ fontSize: "20px", color: `#5829E3` }}
-        />
+        <motion.button
+          whileHover={{ scale: 1.4 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <SendOutlined
+            htmlType="submit"
+            loading={submitting}
+            onClick={onSubmit}
+            type="primary"
+            style={{ fontSize: "20px", color: `#5829E3` }}
+          />
+        </motion.button>
       </Form.Item>
     </div>
   </div>
