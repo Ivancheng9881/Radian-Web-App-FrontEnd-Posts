@@ -1,25 +1,9 @@
 import { Comment, Avatar, Form, Button, List, Input } from "antd";
 import moment from "moment";
 import { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import styled from "styled-components";
+import { SendOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
-
-const StyledContainer = styled(Container)`
-  background-color: white;
-  padding-top: 25px;
-  padding-left: 45px;
-  padding-right: 35px;
-  padding-bottom: 25px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const Wrapper = styled.div`
-  padding-left: 10px;
-  position: relative;
-  margin-bottom: 10px;
-`;
 
 const colorzzz = () => {
   return Math.floor(Math.random() * 16777215).toString(16);
@@ -31,42 +15,45 @@ const CommentList = ({ comments }) => (
     header={`${comments.length} ${comments.length > 1 ? "replies" : "reply"}`}
     itemLayout="horizontal"
     renderItem={(props) => (
-      <Wrapper style={{ backgroundColor: "#" + `${colorzzz()}` }}>
-        <StyledContainer fluid>
+      <div
+        className="rd-post-color-container"
+        style={{ backgroundColor: "#" + `${colorzzz()}` }}
+      >
+        <div className="rd-post-color-inner-wrapper">
           <Comment {...props} />
-        </StyledContainer>
-      </Wrapper>
+        </div>
+      </div>
     )}
   />
 );
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
-  <>
-    <div className="rd-post-comment-container">
+  <div className="rd-post-comment-wrapper">
+    <div className="rd-post-text-input">
       <Form.Item>
         <TextArea
-          className="rd-reply-input"
           rows={1}
-          allowClear
           autoSize
+          allowClear
           showCount
           onChange={onChange}
           value={value}
           placeHolder={"Reply to......"}
         />
       </Form.Item>
+    </div>
+    <div className="rd-post-comment-send-button">
       <Form.Item>
-        <Button
+        <SendOutlined
           htmlType="submit"
           loading={submitting}
           onClick={onSubmit}
           type="primary"
-        >
-          Add Comment
-        </Button>
+          style={{ fontSize: "20px", color: `#5829E3` }}
+        />
       </Form.Item>
     </div>
-  </>
+  </div>
 );
 
 const PostComment = () => {
@@ -112,25 +99,23 @@ const PostComment = () => {
   };
 
   return (
-    <>
-      <div id="rd-post-comment-container">
-        {state.comments.length > 0 && <CommentList comments={state.comments} />}
+    <div>
+      {state.comments.length > 0 && <CommentList comments={state.comments} />}
 
-        <Comment
-          avatar={
-            <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
-          }
-          content={
-            <Editor
-              onChange={handleChange}
-              onSubmit={handleSubmit}
-              submitting={state.submitting}
-              value={state.value}
-            />
-          }
-        />
-      </div>
-    </>
+      <Comment
+        avatar={
+          <Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />
+        }
+        content={
+          <Editor
+            onChange={handleChange}
+            onSubmit={handleSubmit}
+            submitting={state.submitting}
+            value={state.value}
+          />
+        }
+      />
+    </div>
   );
 };
 

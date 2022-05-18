@@ -4,21 +4,11 @@ import { gql, useQuery } from "@apollo/client";
 import { Container, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import NestedComments from "../CommentSection/NestedComments";
+import { set } from "@project-serum/anchor/dist/cjs/utils/features";
+import ModalComponent from "./ModalComment";
+import PostComment from "../PostComment";
 
-const StyledContainer = styled(Container)`
-  background-color: white;
-  padding-top: 25px;
-  padding-left: 45px;
-  padding-right: 35px;
-  padding-bottom: 25px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-`;
 
-const Wrapper = styled.div`
-  padding-left: 10px;
-  position: relative;
-  margin-bottom: 10px;
-`;
 
 const COMMENT_DATA_QUERY = gql`
   query PostList($level: Int, $refId: Int, $groupId: Int) {
@@ -55,27 +45,30 @@ const LevelOneComments = (props) => {
     <>
       <List
         className="comment-list"
-        header={`${data.postList.data.length} replies`}
+        // header={`${props.amountOfComments}` + ` replies`}
         itemLayout="horizontal"
         dataSource={data.postList.data}
         renderItem={(item) => (
           <li>
-            <Wrapper style={{ backgroundColor: "#" + `${colorzzz()}` }}>
-              <StyledContainer fluid>
+            <div
+              className="rd-post-color-container-level-one"
+              style={{ backgroundColor: "#" + `${colorzzz()}` }}
+            >
+              <div className="rd-post-color-inner-wrapper">
                 <Comment
-                  actions={[
-                    <span key="comment-list-reply-to-0">Reply to</span>,
-                  ]}
+                  actions={[<ModalComponent refId={item.createdBy} />]}
                   author={item.createdBy}
                   avatar="https://joeschmoe.io/api/v1/random"
                   content={item.content}
                   datetime={item.createdAt}
                 />
                 <div className="rd-nested-comments-container">
-                  <NestedComments referenceId={item.postId} />
+                  {props.amountOfComments > 0 && (
+                    <NestedComments referenceId={item.postId} />
+                  )}
                 </div>
-              </StyledContainer>
-            </Wrapper>
+              </div>
+            </div>
           </li>
         )}
       />

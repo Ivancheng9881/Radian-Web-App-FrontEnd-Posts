@@ -8,10 +8,6 @@ import DefaultFooter from "../../components/Footer";
 import { useLocation } from "react-router";
 import LandingSection from "../landing/components/Section.components";
 
-
-
-
-
 const PostsPage = () => {
   return (
     <DefaultLayout>

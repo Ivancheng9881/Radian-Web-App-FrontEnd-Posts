@@ -7,42 +7,17 @@ import { Container, Row, Col } from "react-bootstrap";
 import styled from "styled-components";
 import photo from "./unsplash_y3kC_7Qhmjkjohndoe.png";
 import SettingLayout from "../../../settings/components/SettingLayout";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import ModalComment from "../CommentSection/ModalComment";
 
-const StyledContainer = styled(Container)`
-  background-color: white;
-  padding-top: 25px;
-  padding-left: 45px;
-  padding-right: 35px;
-  padding-bottom: 25px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-`;
+
 
 const StyledRow = styled(Row)``;
-
-const StyledCol = styled(Col)`
-  display: flex;
-  flex-direction: row;
-`;
 
 const StyledPhoto = styled.img`
   width: 50px;
   height: 50px;
-`;
-
-const StyledName = styled.p`
-  font-size: 10px;
-  font-weight: 600;
-`;
-
-const StyledLightFont = styled.p`
-  font-size: 8px;
-  font-weight: 100;
-`;
-
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 25px;
 `;
 
 const StyledTitle = styled.p`
@@ -53,25 +28,6 @@ const StyledTitle = styled.p`
 
 const StyledContentText = styled.p`
   font-size: 13px;
-`;
-
-const StyledDiv2 = styled.div`
-  padding: 0;
-  margin-top: 10px;
-  margin-left: 5px;
-  text-align: center;
-  line-height: 2px;
-`;
-
-const Wrapper = styled.div`
-  padding-left: 10px;
-  position: relative;
-  margin-bottom: 10px;
-`;
-
-const StyledButton = styled.button`
-  font-size: 12px;
-  color: #5829e3;
 `;
 
 const useGenerateRandomColor = () => {
@@ -87,6 +43,11 @@ const PostsSection = (props) => {
   const [liked, updateLiked] = useState(false);
   const [likes, updateLikes] = useState(20);
   const [hasLiked, setHasLiked] = useState(false);
+  const [saved, updateSaved] = useState(false);
+
+  const handleSaved = () => {
+    updateSaved(!saved);
+  };
 
   const handleChange = () => {
     updateLiked(!liked);
@@ -104,6 +65,7 @@ const PostsSection = (props) => {
 
   useEffect(() => {
     console.log(likes);
+    console.log(saved);
   });
 
   useEffect(() => {
@@ -111,43 +73,64 @@ const PostsSection = (props) => {
   }, []);
 
   return (
-    <Wrapper style={{ backgroundColor: "#" + color }}>
-      <StyledContainer fluid>
+    <div
+      className="rd-post-color-container"
+      style={{ backgroundColor: "#" + color }}
+    >
+      <div className="rd-post-color-inner-wrapper">
         <StyledRow>
-          <StyledRow></StyledRow>
-          <StyledCol>
-            <StyledPhoto src={photo} alt="profilepic" />
-            <StyledDiv>
-              <StyledDiv2>
-                <StyledName>{props.postData.createdBy}</StyledName>
-                <StyledLightFont>{props.postData.createdAt}</StyledLightFont>
-              </StyledDiv2>
-            </StyledDiv>
-          </StyledCol>
+          <div>
+            <div className="rd-post-header-container">
+              <div className="rd-post-profile-pic-wrapper">
+                <StyledPhoto src={photo} alt="profilepic" />
+              </div>
+              <div className="rd-post-header-item-wrapper">
+                <div>{props.postData.createdBy}</div>
+                <div>{props.postData.createdAt}</div>
+              </div>
+
+              <div className="rd-post-bookmark-wrapper">
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      icon={<BookmarkBorderIcon />}
+                      checkedIcon={<BookmarkIcon />}
+                      name="checkedBookmark"
+                      onClick={handleSaved}
+                    />
+                  }
+                />
+              </div>
+            </div>
+          </div>
           <StyledRow>
-            <StyledCol>
-              <StyledDiv>
-                <StyledTitle>{props.postData.postId}</StyledTitle>
-                <StyledContentText>{props.postData.content}</StyledContentText>
-                <div className="rd-post-likes-container">
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                        name="checkedH"
-                        onClick={handleChange}
-                      />
-                    }
-                    label={`${likes}` + " likes"}
-                  />
-                </div>
-              </StyledDiv>
-            </StyledCol>
+            <div className="rd-post-body-container">
+              <StyledTitle>{props.postData.postId}</StyledTitle>
+              <StyledContentText>{props.postData.content}</StyledContentText>
+            </div>
+            <div className="rd-post-likes-container">
+              <div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      icon={<FavoriteBorder />}
+                      checkedIcon={<Favorite />}
+                      name="checkedH"
+                      onClick={handleChange}
+                    />
+                  }
+                  label={`${likes}` + " likes"}
+                />
+              </div>
+
+              <div className="rd-post-reply-to-wrapper">
+                <ModalComment refId={props.postData.postId} />
+              </div>
+            </div>
           </StyledRow>
         </StyledRow>
-      </StyledContainer>
-    </Wrapper>
+      </div>
+    </div>
   );
 };
 

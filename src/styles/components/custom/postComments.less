@@ -1,13 +1,139 @@
 .rd-nested-comments-container {
-    margin-left: 40px;
+  margin-left: 40px;
 }
 
 .rd-post-section-container {
-    width: 100vw;
-    min-height: 10000px;
-    border: 10px solid black;
-    margin-top: 100px;
-    background-color: rgb(172, 193, 244);
+  width: 100vw;
+  height: 100vh;
+  margin-top: 100px;
+  background-color: rgb(172, 193, 244);
+  position: absolute;
 }
 
-// 
+.rd-post-section-wrapper {
+  width: 50%;
+  height: 85%;
+  padding: 10px;
+  background-color: rgba(256, 256, 256, 0.5);
+  border-radius: 20px;
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 25%;
+  margin-top: 10px;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.rd-post-list-wrapper {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-left: 3px;
+}
+
+.rd-post-color-inner-wrapper {
+  background-color: white;
+  padding-top: 20px;
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-bottom: 20px;
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.4);
+  display: flex;
+  position: relative;
+  margin-left: 10px;
+  flex-direction: column;
+}
+
+.rd-post-color-container {
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.rd-post-color-container-level-one {
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+}
+.rd-post-list-wrapper-header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  margin-top: 5px;
+}
+
+.rd-post-header-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.rd-post-profile-pic-wrapper {
+  width: 50px;
+  height: 50px;
+}
+
+.rd-post-header-item-wrapper {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+  margin-top: 3px;
+  margin-right: auto;
+}
+
+.rd-post-body-container {
+  margin-top: 10px;
+}
+
+.rd-post-likes-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.rd-post-reply-to-wrapper {
+  padding-top: 10px;
+}
+
+.rd-post-comment-container {
+  width: 100%;
+  padding-left: 15px;
+}
+
+.rd-post-comment-wrapper {
+  display: flex;
+  flex-direction: row;
+ 
+}
+
+.rd-post-comment-send-button {
+  margin-left: 2%;
+}
+
+.rd-post-text-input {
+  width: 90%;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 90%;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8c8c8;
+}
+
