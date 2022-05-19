@@ -3,9 +3,8 @@ import { ArrowLeftOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { gql, useQuery } from "@apollo/client";
 import LevelOneComments from "../CommentSection/LevelOneComments";
 import PostComment from "../PostComment/index";
-import { BackTop } from "antd";
 import { motion } from "framer-motion";
-import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+
 
 const ScrollToTopBtn = () => {
   return (
@@ -65,16 +64,15 @@ const PostsList = () => {
         <ScrollToTopBtn />
       </div>
       <div className="rd-post-list-wrapper">
-        <BackTop />
         <div>
           <PostsSection postData={data.postList.data[0]} />
         </div>
 
-        {data.postList.data[0].noOfComments > 0 && (
+        {/* {data.postList.data[0].noOfComments > 0 && (
           <LevelOneComments
             amountOfComments={data.postList.data[0].noOfComments}
           />
-        )}
+        )} */}
       </div>
       <div className="rd-post-comment-container">
         <PostComment />

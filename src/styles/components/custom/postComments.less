@@ -3,23 +3,34 @@
 }
 
 .rd-post-section-container {
-  width: 100vw;
-  height: 100vh;
-  margin-top: 100px;
-  background-color: rgb(172, 193, 244);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: absolute;
+  padding-top: 100px;
 }
 
 .rd-post-section-wrapper {
-  width: 50%;
-  height: 85%;
+  width: 90%;
+  max-height: 900px;
   padding: 10px;
   background-color: rgba(256, 256, 256, 0.5);
   border-radius: 20px;
   display: inline-flex;
   flex-direction: column;
-  margin-left: 25%;
-  margin-top: 10px;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 10px;
+}
+.rd-post-section-home-wrapper {
+  width: 90%;
+  padding: 10px;
+  background-color: rgba(256, 256, 256, 0.5);
+  border-radius: 20px;
+  display: inline-flex;
+  flex-direction: column;
   position: relative;
   justify-content: center;
   align-items: center;
@@ -32,7 +43,16 @@
   height: 95%;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: scroll;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-left: 3px;
+}
+.rd-post-list-home-wrapper {
+  position: relative;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
   padding-right: 10px;
   padding-top: 10px;
   padding-left: 3px;
@@ -118,7 +138,6 @@
 .rd-post-comment-wrapper {
   display: flex;
   flex-direction: row;
- 
 }
 
 .rd-post-comment-send-button {
@@ -141,4 +160,49 @@
 ::-webkit-scrollbar-thumb {
   background: #c8c8c8;
 }
+
+.rd-post-background-container {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' %3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='0' y2='1' gradientTransform='rotate(114,0.5,0.5)'%3E%3Cstop offset='0' stop-color='%2380F'/%3E%3Cstop offset='1' stop-color='%23f40'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpattern id='b' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Ccircle fill='%23ffffff' cx='2' cy='2' r='2'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23b)' fill-opacity='0.41'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  border: 3px solid black;
+  overflow: auto;
+}
+
+
+
+.rd-left-side-post-container {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid yellow;
+  padding-left: 30px;
+  height: 400px;
+
+}
+.rd-right-side-post-container {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  border: 2px solid yellow;
+
+}
+
+.rd-left-side-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rd-middle-column-post {
+  display: flex;
+  justify-content: center;
+}
+
+.rd-post-home-comment {
+  display: flex;
+  width: 93%;
+
+}
+
+
 
