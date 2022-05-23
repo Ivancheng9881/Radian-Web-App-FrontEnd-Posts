@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useLazyQuery } from "@apollo/client";
 import { FC, useEffect, useState, useContext } from "react";
 import config from "../../../../commons/config";
 import ipfsUtils from "../../../../utils/web3/ipfs/ipfs.utils";
@@ -7,7 +7,7 @@ import { ArrowLeftOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { Image, Input } from "antd";
 import UserContext from "../../../../utils/user/context/user.context";
 import PostsSection from "../PostsSection";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useInView } from "react-cool-inview";
 
 const { TextArea } = Input;
 
@@ -37,25 +37,7 @@ const BackBtn = () => {
 };
 
 const POST_HOME_QUERY = gql`
-  query PostList($groupId: Int, $level: Int, $refId: Int, $limit: Int) {
-    postList(groupId: $groupId, level: $level, refId: $refId, limit: $limit) {
-      data {
-        postId
-        content
-        referenceId
-        level
-        createdBy
-        creatorIdentityId
-        groupId
-        noOfComments
-        createdAt
-      }
-    }
-  }
-`;
-
-const MORE_POST_QUERY = gql`
-  query PostList(
+  query Query(
     $groupId: Int
     $level: Int
     $refId: Int
@@ -80,51 +62,61 @@ const MORE_POST_QUERY = gql`
         noOfComments
         createdAt
       }
+      meta {
+        count
+      }
     }
   }
 `;
 
-const executeMorePosts = () => {
-  
-}
-
 const PostHome = () => {
-  // const { profile } = useContext(UserContext);
-  // const [getPosts, setGetPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [groupId, setGroupId] = useState(1);
+  const [level, setLevel] = useState(0);
+  const [refId, setRefId] = useState(null);
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(5);
+  const [postCount, setPostCount] = useState(0);
+  const [isFetchMoreLoading, setIsFetchMoreLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if(data) {
-  //     setGetPosts(data.postList.data)
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (posts) {
+      console.log(posts);
+    }
+  }, [posts]);
 
-  // const [imgList, setImgList] = useState<string[]>([]);
-
-  // useEffect(() => {
-  //   if (profile?.profilePictureCid?.length > 0) {
-  //     setImgList(
-  //       ipfsUtils.getImageFromCDNFailover(profile.profilePictureCid[0])
-  //     );
-  //   }
-  // }, [profile?.profilePictureCid]);
-
-  // useEffect(() => {
-  //   if (profile) {
-  //     console.log(profile.nationality);
-  //   }
-  // });
-  const [items, setItems] = useState(5);
-  const { loading, error, data } = useQuery(POST_HOME_QUERY, {
-    variables: { groupId: 1, level: 0, refId: null, limit: 5 },
+  const { loading, error, fetchMore } = useQuery(POST_HOME_QUERY, {
+    variables: { groupId, level, refId, skip, limit },
+    onCompleted: (queryData) => {
+      const { data, meta } = queryData.postList;
+      setPosts(data);
+      setPostCount(meta.count);
+    },
   });
 
-  if (loading) return <p>Loading</p>;
-  if (error) return <p>Error</p>;
-  if (!data) return <p>No Data</p>;
+  if (loading) return <p>loading...</p>;
+  if (error) return <p>error</p>;
 
-  // fetchMoreData = () => {
+  const handleChange = () => {
+    if (skip < postCount) {
+      setTimeout(() => {
+        FetchMorePosts();
+      }, 300);
+      return;
+    }
+  };
 
-  // }
+  const FetchMorePosts = async () => {
+    setSkip((prev) => prev + limit);
+
+    const fetchedMore = await fetchMore({
+      variables: { groupId, level, refId, skip, limit },
+    });
+
+    const { data } = fetchedMore.postList;
+    setPosts((previousData) => [...previousData, ...data]);
+    setIsFetchMoreLoading(false);
+  };
 
   return (
     <div className="rd-post-section-home-wrapper">
@@ -139,10 +131,11 @@ const PostHome = () => {
         ></TextArea>
       </div>
       <div className="rd-post-list-home-wrapper">
-        {data.postList.data.map((object) => (
+        {posts.map((object) => (
           <PostsSection key={object.postId} postData={object} />
         ))}
       </div>
+      <button onClick={handleChange}>load more</button>
     </div>
   );
 };

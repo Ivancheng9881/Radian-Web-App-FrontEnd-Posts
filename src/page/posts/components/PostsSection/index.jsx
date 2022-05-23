@@ -62,11 +62,6 @@ const PostsSection = (props) => {
   }, [liked]);
 
   useEffect(() => {
-    console.log(likes);
-    console.log(saved);
-  });
-
-  useEffect(() => {
     generateColor();
   }, []);
 
