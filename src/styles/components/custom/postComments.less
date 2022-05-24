@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  padding-top: 100px;
+  padding-top: 15%;
 }
 
 .rd-post-section-wrapper {
@@ -24,16 +24,14 @@
   align-items: center;
   padding-bottom: 10px;
 }
-.rd-post-section-home-wrapper {
+#rd-post-section-home-wrapper {
   width: 90%;
   padding: 10px;
   background-color: rgba(256, 256, 256, 0.5);
   border-radius: 20px;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   position: relative;
-  justify-content: center;
-  align-items: center;
   padding-bottom: 10px;
 }
 
@@ -53,9 +51,12 @@
   width: 95%;
   display: flex;
   flex-direction: column;
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-left: 3px;
+}
+#rd-post-list-home-wrapper {
+  position: relative;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
 }
 
 .rd-post-color-inner-wrapper {
@@ -64,11 +65,16 @@
   padding-left: 35px;
   padding-right: 35px;
   padding-bottom: 20px;
-  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.4);
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
   display: flex;
   position: relative;
   margin-left: 10px;
   flex-direction: column;
+  transition: background-color .3s;
+}
+
+.rd-post-color-inner-wrapper:hover {
+  background-color: #c8c8c8;
 }
 
 .rd-post-color-container {
@@ -83,6 +89,8 @@
   display: flex;
   flex-direction: column;
 }
+
+
 .rd-post-color-container-level-one {
   position: relative;
   margin-bottom: 10px;
@@ -90,11 +98,11 @@
   flex-direction: column;
 }
 .rd-post-list-wrapper-header {
-  position: relative;
   display: flex;
   justify-content: space-between;
-  width: 95%;
-  margin-top: 5px;
+  margin-top: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .rd-post-header-container {
@@ -200,9 +208,18 @@
 
 .rd-post-home-comment {
   display: flex;
-  width: 93%;
-
+  width: 95%;
+  align-self: center;
+  margin-top: 1%;
 }
+
+#rd-what-the-fuck {
+  display:flex;
+  overflow: auto;
+  margin-top: 1%;
+}
+
+
 
 
 

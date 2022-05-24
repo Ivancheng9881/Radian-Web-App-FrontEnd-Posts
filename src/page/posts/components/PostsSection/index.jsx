@@ -10,6 +10,7 @@ import SettingLayout from "../../../settings/components/SettingLayout";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ModalComment from "../CommentSection/ModalComment";
+import { motion } from "framer-motion";
 
 const StyledRow = styled(Row)``;
 
@@ -51,6 +52,7 @@ const PostsSection = (props) => {
     updateLiked(!liked);
     setHasLiked(true);
   };
+
 
   useEffect(() => {
     if (liked === true) {
@@ -120,6 +122,7 @@ const PostsSection = (props) => {
 
               <div className="rd-post-reply-to-wrapper">
                 <ModalComment refId={props.postData.postId} />
+                {/* <p>{props.postData.noOfComments} comments</p> */}
               </div>
             </div>
           </StyledRow>
