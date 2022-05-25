@@ -4,7 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import LevelOneComments from "../CommentSection/LevelOneComments";
 import PostComment from "../PostComment/index";
 import { motion } from "framer-motion";
-
+import { useEffect } from "react";
 
 const ScrollToTopBtn = () => {
   return (
@@ -48,35 +48,29 @@ const POST_DATA_QUERY = gql`
   }
 `;
 
-const PostsList = () => {
-  const { loading, error, data } = useQuery(POST_DATA_QUERY, {
-    variables: { groupId: 1, level: 0, refId: null, limit: 1 },
-  });
+const PostsList = (props) => {
+  useEffect(() => {
+    if (props) {
+      console.log(props.postData.object.postId);
+    }
+  }, []);
+  // const { loading, error, data } = useQuery(POST_DATA_QUERY, {
+  //   variables: { groupId: 1, level: 0, refId: null, limit: 1 },
+  // });
 
-  if (loading) return null;
-  if (error) return error;
-  if (data) console.log(data);
+  // if (loading) return null;
+  // if (error) return error;
+  // if (data) console.log("og data");
 
   return (
-    <div className="rd-post-section-wrapper">
-      <div className="rd-post-list-wrapper-header">
-        <BackBtn />
-        <ScrollToTopBtn />
-      </div>
-      <div className="rd-post-list-wrapper">
-        <div>
-          <PostsSection postData={data.postList.data[0]} />
-        </div>
-
-        {/* {data.postList.data[0].noOfComments > 0 && (
-          <LevelOneComments
-            amountOfComments={data.postList.data[0].noOfComments}
-          />
-        )} */}
-      </div>
-      <div className="rd-post-comment-container">
-        <PostComment />
-      </div>
+    <div>
+      <PostsSection postData={props.postData.object} />
+      {props.postData.object.noOfComments > 0 && (
+        <LevelOneComments
+          amountOfComments={props.postData.object.noOfComments}
+        />
+      )}
+      <PostComment />
     </div>
   );
 };

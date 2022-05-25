@@ -19,6 +19,7 @@ import { useInView } from "react-cool-inview";
 import { Avatar, Divider, List, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { set } from "@project-serum/anchor/dist/cjs/utils/features";
+import PostList from "../PostsList/index";
 
 const { TextArea } = Input;
 
@@ -66,7 +67,7 @@ const PostHome = () => {
   const [postCount, setPostCount] = useState(0);
   const [isFetchMoreLoading, setIsFetchMoreLoading] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(false);
-  const [clickedPost, setClickedPost] = useState();
+  const [clickedPost, setClickedPost] = useState({});
   const [toggleHomePage, setToggleHomePage] = useState(true);
 
   const myRef = useRef(null);
@@ -130,17 +131,16 @@ const PostHome = () => {
   };
 
   const handleChange = () => {
-    console.log("handle change");
     if (skip >= postCount) {
-      console.log("no more posts");
     } else {
       FetchMorePosts();
     }
   };
 
   const handleClicked = (selectedPost) => {
-    // setToggleHomePage(false);
     console.log(selectedPost);
+    setClickedPost(selectedPost);
+    setToggleHomePage(false);
   };
 
   const handleBack = () => {
@@ -148,7 +148,6 @@ const PostHome = () => {
   };
 
   const FetchMorePosts = async () => {
-    console.log("lets go!");
     const fetchedMore = await fetchMore({
       variables: { groupId, level, refId, skip, limit },
     });
@@ -168,13 +167,16 @@ const PostHome = () => {
         <BackBtn />
         <ScrollToTopBtn />
       </div>
+
       <div className="rd-post-home-comment">
-        <TextArea
-          rows={5}
-          style={{ backgroundColor: "rgba(256, 256, 256, 0.7)" }}
-        ></TextArea>
+        {toggleHomePage && (
+          <TextArea
+            rows={5}
+            style={{ backgroundColor: "rgba(256, 256, 256, 0.7)" }}
+          />
+        )}
       </div>
-      <div id="rd-what-the-fuck">
+      <div id="rd-infinite-scroll-post">
         <InfiniteScroll
           style={{
             display: "flex",
@@ -184,35 +186,31 @@ const PostHome = () => {
           dataLength={posts.length - 1}
           next={handleChange}
           hasMore={true}
-          scrollableTarget={"rd-what-the-fuck"}
-          onScroll={() => {
-            console.log("we out here" + skip);
-          }}
-          loader={
-            <Skeleton
-              // avatar
-              paragraph={{
-                rows: 2,
-              }}
-              active
-            />
-          }
+          scrollableTarget={"rd-infinite-scroll-post"}
+          // loader={
+          //   <Skeleton
+          //     avatar
+          //     paragraph={{
+          //       rows: 2,
+          //     }}
+          //     active
+          //   />
+          // }
         >
           <div ref={myRef}></div>
-          {toggleHomePage && (
+          {toggleHomePage ? (
             <div className="rd-post-list-home-wrapper">
-              {posts.map((object) => (
-                <div>
-                  <PostsSection
-                    key={object.postId}
-                    postData={object}
-                  ></PostsSection>
-                  <button onClick={e => handleClicked(object.postId)}>
+              {posts.map((object, idx) => (
+                <li key={idx} style={{ listStyle: "none" }}>
+                  <PostsSection postData={object}></PostsSection>
+                  <button onClick={(e) => handleClicked({ object })}>
                     {object.noOfComments} comments
                   </button>
-                </div>
+                </li>
               ))}
             </div>
+          ) : (
+            <PostList postData={clickedPost} />
           )}
         </InfiniteScroll>
       </div>
