@@ -1,6 +1,6 @@
 import { Comment, Tooltip, List } from "antd";
 import { gql, useQuery } from "@apollo/client";
-import { useState, useEfffect } from "react";
+import { useState } from "react";
 import ModalComment from "./ModalComment";
 
 const NESTED_COMMENTS_QUERY = gql`
@@ -30,7 +30,6 @@ const NestedComments = (props) => {
 
   if (loading) return null;
   if (error) return "ERROR!";
-  if (data) console.log(data);
 
   const handleExpand = () => {
     setExpand(!expand);

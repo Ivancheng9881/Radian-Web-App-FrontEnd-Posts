@@ -1,16 +1,14 @@
-import React, { useState, FC, useEffect } from "react";
+import { useState, useEffect } from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import { Container, Row, Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import styled from "styled-components";
 import photo from "./unsplash_y3kC_7Qhmjkjohndoe.png";
-import SettingLayout from "../../../settings/components/SettingLayout";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ModalComment from "../CommentSection/ModalComment";
-import { motion } from "framer-motion";
 
 const StyledRow = styled(Row)``;
 
@@ -43,6 +41,27 @@ const PostsSection = (props) => {
   const [likes, updateLikes] = useState(20);
   const [hasLiked, setHasLiked] = useState(false);
   const [saved, updateSaved] = useState(false);
+  const [time, setTime] = useState("");
+
+  const currentTime = new Date().toISOString();
+
+  useEffect(() => {
+    if (currentTime) {
+      let d1 = new Date(currentTime).getTime() / 1000;
+      let d2 = new Date(props.postData.createdAt).getTime() / 1000;
+      var diff = d1 - d2;
+      if (diff > 86400) {
+        setTime(Math.floor(diff / 86400) + " days ago");
+      } else if (diff >= 3600) {
+        setTime(Math.floor(diff / 3600) + " hours ago");
+      } else if (diff >= 60) {
+        setTime(Math.floor(diff / 60) + " minutes ago");
+      } else if (diff < 60) {
+        setTime(diff + " seconds ago");
+      }
+    }
+    return;
+  }, []);
 
   const handleSaved = () => {
     updateSaved(!saved);
@@ -52,7 +71,6 @@ const PostsSection = (props) => {
     updateLiked(!liked);
     setHasLiked(true);
   };
-
 
   useEffect(() => {
     if (liked === true) {
@@ -83,7 +101,7 @@ const PostsSection = (props) => {
               </div>
               <div className="rd-post-header-item-wrapper">
                 <div>{props.postData.createdBy}</div>
-                <div>{props.postData.createdAt}</div>
+                <div>{time}</div>
               </div>
 
               <div className="rd-post-bookmark-wrapper">
@@ -122,7 +140,6 @@ const PostsSection = (props) => {
 
               <div className="rd-post-reply-to-wrapper">
                 <ModalComment refId={props.postData.postId} />
-                {/* <p>{props.postData.noOfComments} comments</p> */}
               </div>
             </div>
           </StyledRow>

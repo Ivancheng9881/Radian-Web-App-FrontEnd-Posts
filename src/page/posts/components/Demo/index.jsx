@@ -1,7 +1,7 @@
-import { Avatar, Divider, List, Skeleton } from "antd";
-import { useEffect, useState } from "react";
+import { Divider, List, Skeleton } from "antd";
+import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { gql, useQuery, useLazyQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 const POST_HOME_QUERY = gql`
   query GetData(
@@ -45,8 +45,6 @@ const DemoOne = () => {
   const [postCount, setPostCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [postData, setPostData] = useState([]);
-
-
 
   const { loading, error, data, fetchMore } = useQuery(POST_HOME_QUERY, {
     variables: { groupId, level, refId, skip, limit },

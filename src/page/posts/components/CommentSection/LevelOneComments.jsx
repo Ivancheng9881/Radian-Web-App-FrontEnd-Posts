@@ -1,12 +1,7 @@
 import { Comment, List } from "antd";
-import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import NestedComments from "../CommentSection/NestedComments";
-import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 import ModalComponent from "./ModalComment";
-import PostComment from "../PostComment";
-
-
 
 const COMMENT_DATA_QUERY = gql`
   query PostList($level: Int, $refId: Int, $groupId: Int) {
@@ -33,7 +28,6 @@ const LevelOneComments = (props) => {
 
   if (loading) return null;
   if (error) return "Error!";
-  if (data) console.log(Object.keys(data.postList.data));
 
   const colorzzz = () => {
     return Math.floor(Math.random() * 16777215).toString(16);
@@ -58,7 +52,7 @@ const LevelOneComments = (props) => {
                   author={item.createdBy}
                   avatar="https://joeschmoe.io/api/v1/random"
                   content={item.content}
-                  datetime={item.createdAt}
+                  datetime={new Date(item.createdAt).toString()}
                 />
                 <div className="rd-nested-comments-container">
                   {props.amountOfComments > 0 && (

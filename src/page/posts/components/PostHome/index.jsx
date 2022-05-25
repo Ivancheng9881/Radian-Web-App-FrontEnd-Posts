@@ -1,4 +1,4 @@
-import { gql, useQuery, useLazyQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import {
   FC,
   useEffect,
@@ -7,19 +7,15 @@ import {
   useCallback,
   useRef,
 } from "react";
-import { useHistory } from "react-router-dom";
-import config from "../../../../commons/config";
-import ipfsUtils from "../../../../utils/web3/ipfs/ipfs.utils";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeftOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
-import { Image, Input } from "antd";
-import UserContext from "../../../../utils/user/context/user.context";
+import { Input } from "antd";
 import PostsSection from "../PostsSection";
-import { useInView } from "react-cool-inview";
 import { Avatar, Divider, List, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 import PostList from "../PostsList/index";
+import date from "date-and-time";
 
 const { TextArea } = Input;
 
@@ -65,16 +61,16 @@ const PostHome = () => {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(5);
   const [postCount, setPostCount] = useState(0);
-  const [isFetchMoreLoading, setIsFetchMoreLoading] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(false);
   const [clickedPost, setClickedPost] = useState({});
   const [toggleHomePage, setToggleHomePage] = useState(true);
-
+  const [textAreaPlaceholder, setTextAreaPlaceholder] =
+    useState("Create a post....");
   const myRef = useRef(null);
 
   const { loading, error, data, fetchMore } = useQuery(POST_HOME_QUERY, {
     variables: {
-      groupId: 1,
+      groupId: 2,
       level: 0,
       refId: null,
       skip: 0,
@@ -82,12 +78,22 @@ const PostHome = () => {
     },
     onCompleted: (queryData) => {
       const { data, meta } = queryData.postList;
-      console.log("kirby");
       setPosts(data);
       setPostCount(meta.count);
       setSkip((prev) => prev + limit);
     },
   });
+
+  useEffect(() => {
+    if (skip < postCount) {
+      setHasMorePosts(true);
+    } else {
+      setHasMorePosts(false);
+    }
+  }, [skip, postCount]);
+
+  if (loading) return console.log(`loading`);
+  if (error) return console.log(`${error}`);
 
   const ScrollToTopBtn = () => {
     return (
@@ -108,21 +114,13 @@ const PostHome = () => {
       <motion.button
         className="rd-scroll-top-btn"
         whileHover={{ scale: 1.4 }}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 1 }}
         onClick={handleBack}
       >
         <ArrowLeftOutlined style={{ fontSize: "25px", color: "#8e94ff" }} />
       </motion.button>
     );
   };
-
-  useEffect(() => {
-    if (skip < postCount) {
-      setHasMorePosts(true);
-    } else {
-      setHasMorePosts(false);
-    }
-  }, [skip, postCount]);
 
   const handleScrollToTop = () => {
     myRef.current.scrollIntoView({
@@ -138,7 +136,6 @@ const PostHome = () => {
   };
 
   const handleClicked = (selectedPost) => {
-    console.log(selectedPost);
     setClickedPost(selectedPost);
     setToggleHomePage(false);
   };
@@ -161,7 +158,7 @@ const PostHome = () => {
   return (
     <div
       id="rd-post-section-home-wrapper"
-      style={{ overflow: "scroll", height: 800 }}
+      style={{ overflow: "scroll", height: "90vh" }}
     >
       <div className="rd-post-list-wrapper-header">
         <BackBtn />
@@ -173,9 +170,11 @@ const PostHome = () => {
           <TextArea
             rows={5}
             style={{ backgroundColor: "rgba(256, 256, 256, 0.7)" }}
+            placeholder={textAreaPlaceholder}
           />
         )}
       </div>
+
       <div id="rd-infinite-scroll-post">
         <InfiniteScroll
           style={{
@@ -187,27 +186,23 @@ const PostHome = () => {
           next={handleChange}
           hasMore={true}
           scrollableTarget={"rd-infinite-scroll-post"}
-          // loader={
-          //   <Skeleton
-          //     avatar
-          //     paragraph={{
-          //       rows: 2,
-          //     }}
-          //     active
-          //   />
-          // }
         >
           <div ref={myRef}></div>
           {toggleHomePage ? (
             <div className="rd-post-list-home-wrapper">
-              {posts.map((object, idx) => (
-                <li key={idx} style={{ listStyle: "none" }}>
-                  <PostsSection postData={object}></PostsSection>
-                  <button onClick={(e) => handleClicked({ object })}>
-                    {object.noOfComments} comments
-                  </button>
-                </li>
-              ))}
+              <ul id="todo-list">
+                {posts.map((object, idx) => (
+                  <li key={idx} style={{ listStyle: "none" }}>
+                    <PostsSection postData={object}></PostsSection>
+                    <button
+                      className="rd-post-home-comments-expand-button"
+                      onClick={(e) => handleClicked({ object })}
+                    >
+                      {object.noOfComments} comments
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           ) : (
             <PostList postData={clickedPost} />
@@ -220,14 +215,3 @@ const PostHome = () => {
 
 export default PostHome;
 
-// <Image
-// src={imgList.length > 0 && imgList[0]}
-// fallback={imgList.length > 0 && imgList[1]}
-// placeholder={
-//   <img
-//     src={`${config.assets.cdn}/misc/propic_placeholder.png`}
-//     alt="avatar pic lul"
-//   />
-// }
-// preview={false}
-// />
