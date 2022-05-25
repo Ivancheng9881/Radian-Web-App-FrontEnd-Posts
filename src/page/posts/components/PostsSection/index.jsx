@@ -9,8 +9,15 @@ import photo from "./unsplash_y3kC_7Qhmjkjohndoe.png";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ModalComment from "../CommentSection/ModalComment";
+import { message } from "antd";
+import { ErrorDescription } from "@ethersproject/contracts/node_modules/@ethersproject/abi/lib/interface";
 
-const StyledRow = styled(Row)``;
+const success = () => {
+  message.success(`Successfully bookmarked`);
+};
+const error = () => {
+  message.error(`Removed from bookmarks`);
+};
 
 const StyledPhoto = styled.img`
   width: 50px;
@@ -42,6 +49,7 @@ const PostsSection = (props) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [saved, updateSaved] = useState(false);
   const [time, setTime] = useState("");
+  const [photo, setPhoto] = useState("https://joeschmoe.io/api/v1/random");
 
   const currentTime = new Date().toISOString();
 
@@ -60,11 +68,17 @@ const PostsSection = (props) => {
         setTime(diff + " seconds ago");
       }
     }
-    return;
+    return console.log("done");
   }, []);
 
   const handleSaved = () => {
-    updateSaved(!saved);
+    if (saved === false) {
+      updateSaved(true);
+      success();
+    } else if (saved === true) {
+      updateSaved(false);
+      error();
+    }
   };
 
   const handleChange = () => {
@@ -91,7 +105,7 @@ const PostsSection = (props) => {
       style={{ backgroundColor: "#" + color }}
     >
       <div className="rd-post-color-inner-wrapper">
-        <StyledRow>
+        <div>
           <div id="controls"></div>
 
           <div>
@@ -118,7 +132,7 @@ const PostsSection = (props) => {
               </div>
             </div>
           </div>
-          <StyledRow>
+          <div>
             <div className="rd-post-body-container">
               <StyledTitle>{props.postData.postId}</StyledTitle>
               <StyledContentText>{props.postData.content}</StyledContentText>
@@ -134,7 +148,7 @@ const PostsSection = (props) => {
                       onClick={handleChange}
                     />
                   }
-                  label={`${likes}` + " likes"}
+                  label={`${likes} likes`}
                 />
               </div>
 
@@ -142,8 +156,8 @@ const PostsSection = (props) => {
                 <ModalComment refId={props.postData.postId} />
               </div>
             </div>
-          </StyledRow>
-        </StyledRow>
+          </div>
+        </div>
       </div>
     </div>
   );

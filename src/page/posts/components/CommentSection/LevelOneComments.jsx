@@ -37,7 +37,6 @@ const LevelOneComments = (props) => {
     <>
       <List
         className="comment-list"
-        // header={`${props.amountOfComments}` + ` replies`}
         itemLayout="horizontal"
         dataSource={data.postList.data}
         renderItem={(item) => (

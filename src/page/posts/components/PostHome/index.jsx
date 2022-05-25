@@ -92,8 +92,8 @@ const PostHome = () => {
     }
   }, [skip, postCount]);
 
-  if (loading) return console.log(`loading`);
-  if (error) return console.log(`${error}`);
+  if (loading) return <div>loading...</div>;
+  if (error) return <div>error</div>;
 
   const ScrollToTopBtn = () => {
     return (
