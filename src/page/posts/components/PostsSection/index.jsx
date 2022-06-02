@@ -10,7 +10,6 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ModalComment from "../CommentSection/ModalComment";
 import { message } from "antd";
-import { ErrorDescription } from "@ethersproject/contracts/node_modules/@ethersproject/abi/lib/interface";
 
 const success = () => {
   message.success(`Successfully bookmarked`);

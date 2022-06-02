@@ -13,7 +13,6 @@ import { Input } from "antd";
 import PostsSection from "../PostsSection";
 import { Avatar, Divider, List, Skeleton } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 import PostList from "../PostsList/index";
 import date from "date-and-time";
 
@@ -214,4 +213,3 @@ const PostHome = () => {
 };
 
 export default PostHome;
-

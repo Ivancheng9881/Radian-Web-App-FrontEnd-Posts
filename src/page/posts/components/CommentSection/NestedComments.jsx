@@ -2,6 +2,8 @@ import { Comment, Tooltip, List } from "antd";
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 import ModalComment from "./ModalComment";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 const NESTED_COMMENTS_QUERY = gql`
   query Query($groupId: Int, $level: Int, $refId: Int) {

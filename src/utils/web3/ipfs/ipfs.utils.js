@@ -13,7 +13,7 @@ async function uploadContent(content) {
     try {
         if (content !== undefined) {
             const { cid } = await ipfs.add(content, { "pin": true });
-            // console.log('cid added', cid);
+            console.log('cid added', cid);
             return cid;
         }
     } catch (err) {
