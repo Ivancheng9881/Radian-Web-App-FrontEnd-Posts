@@ -3,7 +3,7 @@ import Web3Context from '../../../utils/web3/context/web3.context';
 // import SolanaUtils from '../../utils/web3/context/solana.utils';
 import { truncateAddress } from '../../../utils/web3/general/parser.utils';
 import { useHistory, useLocation } from 'react-router-dom';
-import { mainRoute, SIGNUP_INFO_ROUTE, SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE, SIGNUP_TOKEN_ROUTE, postsRoute } from '../../../commons/route';
+import { mainRoute, SIGNUP_INFO_ROUTE, SIGNUP_NFT_ROUTE, SIGNUP_PROPIC_ROUTE, SIGNUP_SUMMARY_ROUTE, SIGNUP_TOKEN_ROUTE, postsRoute, groupsRoute } from '../../../commons/route';
 import { preloadWalletIcon } from '../../../utils/preload';
 import { Layout, Space, Typography } from 'antd';
 import config from '../../../commons/config';
@@ -45,6 +45,17 @@ const Navbar : FC = (props) => {
     const routeToPostsPage = (state: any) => {
         history.push({
             pathname: postsRoute,
+            state: state
+        })
+    }
+
+    const routeToGroups = () => {
+        routeToGroupsPage({groupsRoute})
+    };
+
+    const routeToGroupsPage = (state: any) => {
+        history.push({
+            pathname: groupsRoute,
             state: state
         })
     }
@@ -124,6 +135,7 @@ const Navbar : FC = (props) => {
                         <Typography.Text className='rd-navbar-menuitem' onClick={routeToRadian} >RADIAN</Typography.Text>
                         <Typography.Text className='rd-navbar-menuitem' onClick={routeToHowTo}>How to</Typography.Text>
                         <Typography.Text className='rd-navbar-menuitem' onClick={routeToPosts}>Posts</Typography.Text>
+                        <Typography.Text className='rd-navbar-menuitem' onClick={routeToGroups}>Groups</Typography.Text>
                     </> }
                     <NavBarWalletPopOver />
                 </Space>

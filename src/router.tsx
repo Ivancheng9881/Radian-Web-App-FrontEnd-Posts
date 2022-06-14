@@ -4,7 +4,7 @@ import {
     Switch,
 } from 'react-router-dom';
 import { Suspense, lazy } from "react";
-import { mainRoute, SIGNUP_ROUTE, startRoute, profileRoute, settingRoute, homeRoute, PASSPORT_ROUTE, postsRoute } from './commons/route'
+import { mainRoute, SIGNUP_ROUTE, startRoute, profileRoute, settingRoute, homeRoute, PASSPORT_ROUTE, postsRoute, groupsRoute } from './commons/route'
 import SuspenseScreen from './components/SuspenseScreen';
 
 const HomePage = lazy(() => import('./page/home'));
@@ -15,6 +15,7 @@ const PassportRouter = lazy(() => import('./page/passport/router'));
 const LandingPage = lazy(() => import('./page/landing'));
 const SignupPage = lazy(() => import('./page/signup/router'))
 const PostsPage = lazy(() => import('./page/posts'));
+const GroupsPage = lazy(() => import('./page/groups'));
 
 
 export default function Router() {
@@ -47,6 +48,9 @@ export default function Router() {
                     </Route>
                     <Route path={postsRoute}>
                         <PostsPage />
+                    </Route>
+                    <Route path={groupsRoute}>
+                        <GroupsPage />
                     </Route>
                 </Switch>
             </Suspense>

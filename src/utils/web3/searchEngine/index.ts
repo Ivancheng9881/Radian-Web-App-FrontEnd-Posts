@@ -9,7 +9,7 @@ import searchEngineConfig from "./config";
 const httpLink = createHttpLink({
     uri: searchEngineConfig.graphqlRoot
 });
-
+ 
 const authLink = setContext((_, { headers }) => {
     const token = localStorage.getItem('radian:auth:jwt');
 

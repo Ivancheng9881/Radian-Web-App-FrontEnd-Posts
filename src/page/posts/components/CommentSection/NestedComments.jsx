@@ -7,7 +7,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const NESTED_COMMENTS_QUERY = gql`
   query Query($groupId: Int, $level: Int, $refId: Int) {
-    postList(groupId: $groupId, level: $level, refId: $refId) {
+    getPostList(groupId: $groupId, level: $level, refId: $refId) {
       data {
         postId
         content

@@ -32,3 +32,5 @@ export const PASSPORT_USER_ROUTE = '/passport/u/:identityId/:profileCid'
 
 
 export const postsRoute = '/comments';
+
+export const groupsRoute = './groups';

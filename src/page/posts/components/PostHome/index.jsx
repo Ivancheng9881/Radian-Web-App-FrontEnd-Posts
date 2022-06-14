@@ -20,13 +20,13 @@ const { TextArea } = Input;
 
 const POST_HOME_QUERY = gql`
   query Query(
-    $groupId: Int
+    $groupId: String
     $level: Int
     $refId: Int
     $skip: Int
     $limit: Int
   ) {
-    postList(
+    getPostList(
       groupId: $groupId
       level: $level
       refId: $refId

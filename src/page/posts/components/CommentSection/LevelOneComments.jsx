@@ -5,7 +5,7 @@ import ModalComponent from "./ModalComment";
 
 const COMMENT_DATA_QUERY = gql`
   query PostList($level: Int, $refId: Int, $groupId: Int) {
-    postList(level: $level, refId: $refId, groupId: $groupId) {
+    getPostList(level: $level, refId: $refId, groupId: $groupId) {
       data {
         postId
         content
